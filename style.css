@@ -1,120 +1,152 @@
 :root {
-    --primary-color: #F6F7F9;
+    --primary-color: #ffffff;
     --secondary-color: #EEEEEE;
     --primary-button-color: #4169E1;
     --dark-button-color: #384047;
     --primary-text-color: #343434;
-    --seconday-text-color: #53575e;
-    --border-color: #d9d9d9;
+    --seconday-text-color: #7e7e7e;
+    --grey-text-color: #53575e;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --grey-tone: #eee;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
 }
 
 body {
-    margin: 0;
-    user-select: none;
     font-family: 'Roboto', sans-serif;
 }
 
-main {
-    margin: 8px;
+button, input {
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+}
+
+input {
+    /*background-color: var(--secondary-color);*/
 }
 
 .wrapper {
-    height: 100vh;
     display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 0.05fr 0.95fr;
+    height: 100vh;
+    grid-template-rows: 0.2fr 1.4fr 1.4fr;
+    grid-template-columns: 280px 1.2fr 1.2fr;
     grid-template-areas:
-            "sidebar header"
-            "sidebar container";
+            "navbar header header"
+            "navbar content content"
+            "navbar content content";
 }
 
-header {
+.header {
+    overflow: hidden;
+    grid-area: header;
     background-color: var(--primary-color);
-    position: sticky;
-    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 15px;
 }
 
-.sidebar {
-    grid-area: sidebar;
+.navbar {
+    overflow: auto;
+    grid-area: navbar;
     background-color: var(--primary-color);
-    height: 100%;
-    max-width: 250px;
-    margin: 0;
-    display: inline-block;
-    text-align: center;
-    position: sticky;
-    top: 0;
+    padding: 15px;
     border-right: 1px solid var(--border-color);
 }
 
 .logo {
-    max-width: 100%;
-    text-align: center;
-    padding: 10px 0;
-}
-
-.logo img:nth-of-type(1) {
-    max-width: 15%;
-}
-
-.logo img:nth-of-type(2) {
-    max-width: 50%;
-}
-
-.sidebar a {
-    display: block;
-    text-align: left;
-    color: var(--seconday-text-color);
-    padding: 0.5rem 0 0.5rem 2rem;
-    margin: 0.3rem 0;
-    text-decoration: none;
-}
-
-.sidebar a:hover {
-    background-color: var(--secondary-color)
-}
-
-.sidebar input {
-    background-color: var(--secondary-color);
-    border: none;
-    font-size: 1rem;
-    padding: 0.5rem 0 0.5rem 0;
-    flex-basis: 0;
-    margin: 1em 0 1em 2rem;
-}
-
-.sidebar button {
-    border: none;
-    background-color: yellow;
-}
-
-.sidebar div {
-    margin: auto 0;
-}
-
-.sidebar form {
     display: flex;
-    border: 5px solid crimson;
-    border: var(--border-color)
+    justify-content: space-between;
+    align-items: center;
 }
 
-.items {
-    list-style-type: none;
+.logo i {
+    cursor: pointer;
 }
 
-.container {
-    grid-area: container;
-    background-color: var(--primary-color);
-    display: inline-block;
-    padding: 35px 25px;
-    margin: 0;
+.logo a {
+    max-height: 25px;
+}
+
+.logo img {
+    max-height: 25px;
+}
+
+.logo i {
+    margin: 0 5px;
+}
+
+.search form {
+    display: flex;
+    margin-top: 20px;
+}
+
+.search i {
+    color: var(--seconday-text-color);
+}
+
+.search input {
+    color: orange;
+    background-color: var(--grey-tone);
+    margin-right: 5px;
+    flex-grow: 1;
+}
+
+.search input::placeholder {
+    color: var(--seconday-text-color);
+    background-color: var(--grey-tone);
+}
+
+.nav-items {
+    padding: 10px 0;
+    font-weight: 300;
+}
+
+.nav-items a {
+    color: var(--grey-text-color);
+    display: block;
+    padding: 8px 16px;
+}
+
+.nav-items a:hover {
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+}
+
+.nav-items i {
+    margin-right: 7px;
+    width: 15px;
+}
+
+.content {
+    grid-area: content;
+    background-color: var(--secondary-color);
+    padding: 25px;
     overflow: auto;
+    scrollbar-color: rgba(0, 0, 0, .1);;
+    scrollbar-width: thin;
 }
 
-.container p {
-    display: inline;
+::-webkit-scrollbar {
+    width: 9px;
 }
 
-a i {
-    padding-right: 1rem;
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .3);
+    width: 9px;
+    border-radius: 4px;
+    top: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+
 }
