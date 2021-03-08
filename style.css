@@ -1,13 +1,12 @@
 :root {
     --primary-color: #ffffff;
-    --secondary-color: #EEEEEE;
+    --secondary-color: #eee;
     --primary-button-color: #4169E1;
     --dark-button-color: #384047;
     --primary-text-color: #343434;
     --seconday-text-color: #7e7e7e;
     --grey-text-color: #53575e;
     --border-color: rgba(0, 0, 0, 0.1);
-    --grey-tone: #eee;
 }
 
 * {
@@ -25,6 +24,14 @@ button, input {
     padding: 5px;
     border: none;
     border-radius: 3px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:focus, input:focus, button:hover, input:hover {
+    color: var(--primary-button-color);
 }
 
 input {
@@ -53,6 +60,61 @@ input {
     padding: 0 15px;
 }
 
+.header .info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header .color-changer {
+    height: 32px;
+    width: 32px;
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    position: relative;
+    margin-right: 15px;
+}
+
+.header .color-wheel {
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    position: absolute;
+    border: 2px solid black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header h2 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+}
+
+.header p {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--seconday-text-color);
+}
+
+.header p:hover {
+    cursor:pointer;
+}
+
+.header .share i {
+    margin-right: 5px;
+    color: var(--seconday-text-color);
+}
+
+.header .share button {
+    border: 1px solid var(--border-color);;
+    color: var(--seconday-text-color);
+    background-color: var(--primary-color);
+    padding: 6px 9px;
+    border-radius: 5px;
+}
+
 .navbar {
     overflow: auto;
     grid-area: navbar;
@@ -69,6 +131,11 @@ input {
 
 .logo i {
     cursor: pointer;
+    margin: 0 5px;
+}
+
+.logo i:hover {
+    color: #0d70b7;
 }
 
 .logo a {
@@ -77,10 +144,6 @@ input {
 
 .logo img {
     max-height: 25px;
-}
-
-.logo i {
-    margin: 0 5px;
 }
 
 .search form {
@@ -93,15 +156,14 @@ input {
 }
 
 .search input {
-    color: orange;
-    background-color: var(--grey-tone);
+    background-color: var(--secondary-color);
     margin-right: 5px;
     flex-grow: 1;
 }
 
 .search input::placeholder {
     color: var(--seconday-text-color);
-    background-color: var(--grey-tone);
+    background-color: var(--secondary-color);
 }
 
 .nav-items {
@@ -130,7 +192,7 @@ input {
     background-color: var(--secondary-color);
     padding: 25px;
     overflow: auto;
-    scrollbar-color: rgba(0, 0, 0, .1);;
+    scrollbar-color: rgba(0, 0, 0, .3);;
     scrollbar-width: thin;
 }
 
