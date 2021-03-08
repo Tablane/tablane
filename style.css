@@ -113,6 +113,11 @@ input {
     background-color: var(--primary-color);
     padding: 6px 9px;
     border-radius: 5px;
+    transition-duration: 0.2s;
+}
+
+.header .share button:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 .navbar {
@@ -131,11 +136,15 @@ input {
 
 .logo i {
     cursor: pointer;
-    margin: 0 5px;
+    margin: 0 5px 0 0;
+    padding: 5px;
+    transition-duration: 0.2s;
 }
 
 .logo i:hover {
     color: #0d70b7;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
 }
 
 .logo a {
@@ -152,13 +161,27 @@ input {
 }
 
 .search i {
+    color: inherit;
+    transition-duration: 0.2s;
+}
+
+.search button {
     color: var(--seconday-text-color);
+}
+
+.search button:hover {
+    color: #4169E1;
 }
 
 .search input {
     background-color: var(--secondary-color);
     margin-right: 5px;
     flex-grow: 1;
+    transition-duration: 1s;
+}
+
+.search input:hover::placeholder {
+    color: #4169E1;
 }
 
 .search input::placeholder {
@@ -175,6 +198,7 @@ input {
     color: var(--grey-text-color);
     display: block;
     padding: 8px 16px;
+    transition-duration: 0.2s;
 }
 
 .nav-items a:hover {
