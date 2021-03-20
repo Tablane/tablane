@@ -22,7 +22,7 @@ function addStatusColors() {
         'rgb(255, 120, 0)',
         'rgb(230, 81, 0)',
         'rgb(181, 188, 194)',
-        'rgb(102, 118, 132)'
+        'rgb(102, 118, 132)',
     ];
 
     for (let i = 0; i < colors.length; i++) {
@@ -33,3 +33,20 @@ function addStatusColors() {
 }
 
 addStatusColors()
+
+document.querySelectorAll('.dropdown div').forEach(dropdownColor => {
+    dropdownColor.addEventListener('click', x => {
+        console.dir(x.currentTarget)
+        x.currentTarget.parentElement.parentElement.className = `prop ${x.currentTarget.className}`
+        x.currentTarget.parentElement.parentElement.children[0].textContent = x.currentTarget.children[0].textContent
+    })
+})
+
+document.querySelectorAll('.task-footer .prop').forEach(x => {
+    x.addEventListener('click', x => {
+        let doc = document.createElement('div')
+        doc.classList.add('task')
+        x.currentTarget.parentElement.parentElement.children[1].append(doc)
+    })
+})
+

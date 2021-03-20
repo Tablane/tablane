@@ -11,6 +11,11 @@
     --test: #384047;
 }
 
+.color24 {
+    background-color: rgb(196,196,196);
+    color: rgb(196,196,196);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +26,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    user-select: text;
+    user-select: none;
 }
 
 button, input {
@@ -238,19 +243,20 @@ input {
 }
 
 .task-header .name {
-    flex-basis: 40%;
+    flex: 1 0 180px;
+    position: sticky;
+    left: 0;
+    background-color: var(--secondary-color);
     margin-right: auto;
 }
 
 .task-header .prop {
+    flex: 0 0 140px;
     font-size: 12px;
     text-transform: uppercase;
     color: rgba(52,52,52,.6);
     font-weight: 500;
-    flex-basis: 0;
-    flex-grow: 5;
     text-align: center;
-    max-width: 140px;
 }
 
 .task-header .placeholder {
@@ -288,6 +294,7 @@ input {
 
 .task {
     display: flex;
+    min-width: 800px;
     justify-content: flex-end;
 }
 
@@ -296,19 +303,50 @@ input {
 }
 
 .task .name {
-    flex-basis: 40%;
+    flex: 1 0 180px;
+    max-width: 180px;
+    position: sticky;
+    left: 0;
     /*color: rgba(0, 0, 0, 0.9);*/
     /*font-size: 0.95rem;*/
     margin-right: auto;
     padding: 8px;
 }
 
-.task .prop {
+.prop .dropdown {
+    visibility: hidden;
+    position: absolute;
+    width: 140px;
+    background-color: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.32);
     padding: 8px;
-    flex-basis: 0;
-    flex-grow: 5;
+    vertical-align: top;
+    z-index: 1;
+    color: white;
+    font-size: 13px;
+}
+
+.dropdown div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 32px;
+    margin-bottom: 8px;
+}
+
+.dropdown div:last-child {
+    margin-bottom: 0;
+}
+
+.prop:hover .dropdown {
+    visibility: visible;
+}
+
+.task .prop {
+    flex: 0 0 140px;
+    padding-top: 8px;
     text-align: center;
-    max-width: 140px;
 }
 
 .task .placeholder {
