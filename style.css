@@ -2,7 +2,7 @@
     --primary-color: #ffffff;
     --secondary-color: #eee;
     --secondary-hover-color: #eee;
-    --primary-button-color: #4169E1;
+    --blue-hover-color: #4169E1;
     --dark-button-color: #384047;
     --primary-text-color: #343434;
     --seconday-text-color: #7e7e7e;
@@ -42,7 +42,7 @@ button {
 }
 
 button:focus, input:focus, button:hover, input:hover  {
-    color: var(--primary-button-color);
+    color: var(--blue-hover-color);
 }
 
 input {
@@ -193,7 +193,7 @@ input {
 }
 
 .search button:hover {
-    color: #4169E1;
+    color: var(--blue-hover-color);
 }
 
 .search input {
@@ -205,7 +205,7 @@ input {
 }
 
 .search input:hover::placeholder {
-    color: #4169E1;
+    color: var(--blue-hover-color);
 }
 
 .search input::placeholder {
@@ -248,20 +248,35 @@ input {
 .tasks .task-header {
     color: rgba(52,52,52,.6);
     text-transform: uppercase;
-    border: 2px solid var(--secondary-color);
-    border-bottom: 0;
+    border-right: 4px solid var(--secondary-color);
 }
 
 .tasks .task-body {
+    cursor: pointer;
     border: 2px solid var(--primary-color);
+    border-radius: 0 0 3px 3px;
 }
 
-.tasks .task, .tasks .task-footer {
+.tasks .task {
     background-color: var(--primary-color);
 }
 
-.tasks .task:hover, .tasks .task-footer:hover {
+.tasks .task:hover {
     background-color: var(--secondary-color);
+}
+
+.tasks .task-footer {
+    background-color: var(--secondary-color);
+    font-size: 0.8rem;
+    color: var(--grey-text-color);
+}
+
+.tasks .task-footer:hover {
+    outline: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.task-body .task {
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .task-body > div, .task-header {
@@ -272,7 +287,7 @@ input {
 
 .task-header .name-cell {
      align-self: flex-end;
-    margin-right: 15px;
+    margin-right: 30px;
  }
 
 .task-header .name-cell span:nth-of-type(1) {
@@ -292,9 +307,10 @@ input {
     margin: 0 5px;
 }
 
-.task-header .prop-cell {
+.task-header .prop-cell span {
     font-weight: 500;
     font-size: 12px;
+    padding: 2px 3px;
 }
 
 .content .name-cell {
@@ -302,7 +318,52 @@ input {
 }
 
 .task-body .name-cell {
-    margin-left: 15px;
+    margin: 0 15px;
+    padding: 3px 5px;
+}
+
+.task-body .prop-cell {
+    border-right: 1px solid white;
+}
+
+.task-body .task .prop-cell:nth-last-child(2) {
+    border-right: 0;
+}
+
+.content span:focus, .content div:focus {
+    outline: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.task-footer .name-cell:focus {
+    outline: none;
+}
+
+.task-footer .name-cell:focus ~ div.save, .task-footer .name-cell:focus ~ div.remove {
+    opacity: 1;
+}
+
+.task-footer .remove:hover {
+    color: var(--blue-hover-color);
+}
+
+.task-footer div.save {
+    text-align: center;
+    margin-right: 10px;
+    flex: 0 0 50px;
+    background-color: var(--blue-hover-color);
+    border-radius: 2px;
+    padding: 2px 3px;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.task-footer .remove {
+    margin-right: 10px;
+    opacity: 0;
+    transition: opacity 0.1s;
 }
 
 .content .prop-cell {
@@ -317,6 +378,12 @@ input {
 .content .add-cell {
     text-align: center;
     flex: 0 0 38px;
+    color: rgba(52,52,52,.6);
+    cursor: pointer;
+}
+
+.content .add-cell:hover {
+    color: var(--blue-hover-color);
 }
 
 ::-webkit-scrollbar {
