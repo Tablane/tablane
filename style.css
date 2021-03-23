@@ -45,10 +45,6 @@ button:focus, input:focus, button:hover, input:hover  {
     color: var(--blue-hover-color);
 }
 
-input {
-    /*background-color: var(--secondary-color);*/
-}
-
 .wrapper {
     display: grid;
     height: 100vh;
@@ -367,6 +363,7 @@ input {
 }
 
 .content .prop-cell {
+    position: relative;
     height: 100%;
     text-align: center;
     flex: 0 0 140px;
@@ -384,6 +381,71 @@ input {
 
 .content .add-cell:hover {
     color: var(--blue-hover-color);
+}
+
+.status-picker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    z-index: 1;
+    top: 36px;
+    left: 0;
+    justify-content: center;
+    visibility: visible;
+    align-items: center;
+    transform-origin: 50% 0;
+    transition: top 0.1s, opacity 0.1s;
+    width: 140px;
+    box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
+    cursor: auto;
+}
+
+.status-picker .labels {
+    width: 100%;
+    padding: 16px 16px 8px;
+    border-bottom: 1px solid var(--border-color);;
+}
+
+.status-picker .labels div {
+    cursor: pointer;
+    color: white;
+    height: 32px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.status-picker .labels div:last-of-type {
+    margin-bottom: 0;
+}
+
+.status-picker .edit {
+    font-size: 13px;
+    cursor: pointer;
+    padding: 8px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #0085ff;
+}
+
+.status-picker .edit:hover {
+    background-color: #0085ff;
+    color: white;
+}
+
+.status-picker .edit i {
+    margin-right: 10px;
+}
+
+.hidden {
+    visibility: hidden;
+    top: 16px;
+    opacity: 0;
 }
 
 ::-webkit-scrollbar {
