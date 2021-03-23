@@ -34,19 +34,27 @@ function addStatusColors() {
 
 addStatusColors()
 
-document.querySelectorAll('.dropdown div').forEach(dropdownColor => {
-    dropdownColor.addEventListener('click', x => {
+function addStatusChangeListener(task) {
+    task.addEventListener('click', x => {
         console.dir(x.currentTarget)
         x.currentTarget.parentElement.parentElement.className = `prop ${x.currentTarget.className}`
         x.currentTarget.parentElement.parentElement.children[0].textContent = x.currentTarget.children[0].textContent
     })
+}
+
+document.querySelectorAll('.dropdown div').forEach(x => {
+    addStatusChangeListener(x)
 })
 
 document.querySelectorAll('.task-footer .prop').forEach(x => {
     x.addEventListener('click', x => {
         let doc = document.createElement('div')
+        doc.innerHTML = '<span class="name">Healing Station</span><div class="prop color24"><div style="padding-bottom:8px"><span>0</span></div><div class="dropdown"><div class="color17"><span>Confirmed</span></div><div class="color2"><span>Denied</span></div><div class="color18"><span>Cancelled</span></div><div class="color24"><span>0</span></div></div></div><div class="prop color24"><div style="padding-bottom:8px"><span>0</span></div><div class="dropdown"><div class="color17"><span>Confirmed</span></div><div class="color2"><span>Denied</span></div><div class="color18"><span>Cancelled</span></div><div class="color24"><span>0</span></div></div></div><div class="prop color24"><div style="padding-bottom:8px"><span>0</span></div><div class="dropdown"><div class="color17"><span>Confirmed</span></div><div class="color2"><span>Denied</span></div><div class="color18"><span>Cancelled</span></div><div class="color24"><span>0</span></div></div></div><span class="prop placeholder"></span>'
         doc.classList.add('task')
         x.currentTarget.parentElement.parentElement.children[1].append(doc)
+        doc.querySelectorAll('.dropdown div').forEach(x => {
+            addStatusChangeListener(x)
+        })
     })
 })
 
