@@ -2,7 +2,7 @@
 function addStatusColors() {
     let colors = [
         'rgb(128, 0, 0)', // 1
-        'rgb(229, 0, 0)',
+        'rgb(226, 68, 92)',
         'rgb(255, 64, 129)',
         'rgb(255, 127, 171)',
         'rgb(249, 0, 234)', // 5
