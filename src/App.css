@@ -1,0 +1,10 @@
+.App {
+    flex-direction: row;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 62px 1fr;
+    grid-template-areas:
+            "nav top"
+            "nav content";
+}

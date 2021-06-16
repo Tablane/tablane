@@ -1,0 +1,30 @@
+.SideBar {
+    grid-area: nav;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    height: 62px;
+}
+
+.header svg:first-of-type {
+    padding-right: 5px;
+}
+
+.header > div {
+    display: inline-block;
+}
+
+.boards {
+    padding: 0 15px;
+}
+
+.account {
+    margin-top: auto;
+}
