@@ -52,12 +52,13 @@
 .task .new-task {
     border: 2px solid white;
     border-radius: 0 0 2px 2px;
-    height: 36px;
+    height: 26px;
     display: flex;
     align-items: center;
+    margin-bottom: 25px;
 }
 
 .task .new-task p {
     margin: 0 0 0 15px;
-    font-size: 0.9em;
+    font-size: 0.8em;
 }

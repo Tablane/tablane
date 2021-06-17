@@ -7,7 +7,9 @@ class Board extends Component {
         return (
             <div className="Board">
                 <div className="task-group">
-                    <TaskGroup />
+                    {this.props.tasks.map(tasks => {
+                        return <TaskGroup key={tasks.name} tasks={tasks} />
+                    })}
                 </div>
             </div>
         );

@@ -2,6 +2,23 @@ import {Component} from 'react'
 import './assets/SideBar.css'
 
 class SideBar extends Component {
+
+    renderSpaces = () => {
+        return this.props.data.spaces.map(data => {
+            return (
+                <div className="board" key={data.name}>
+                    <div>
+                        <i className="fas fa-cloud"> </i>
+                        <p>{data.name}</p>
+                    </div>
+                    {data.boards.map(data => {
+                        return <span key={data.name}>{data.name}</span>
+                    })}
+                </div>
+            )
+        })
+    }
+
     render() {
         return (
             <div className="SideBar">
@@ -20,41 +37,14 @@ class SideBar extends Component {
                         <button><i className="fas fa-plus"> </i>New Space</button>
                     </div>
 
-                    <div className="board all">
+                    <div className="board">
                         <div>
                             <i className="fas fa-cloud"> </i>
                             <p>Everything</p>
                         </div>
                     </div>
 
-                    <div className="board">
-                        <div>
-                            <i className="fas fa-cloud"> </i>
-                            <p>Server Project</p>
-                        </div>
-                        <span>TTT</span>
-                        <span>Lobby</span>
-                        <span>Server</span>
-                    </div>
-
-                    <div className="board">
-                        <div>
-                            <i className="fas fa-cloud"> </i>
-                            <p>External Projects</p>
-                        </div>
-                        <span>BanSystem</span>
-                        <span>Effects</span>
-                    </div>
-
-                    <div className="board">
-                        <div>
-                            <i className="fas fa-cloud"> </i>
-                            <p>Dev Projects</p>
-                        </div>
-                        <span>TaskBoard</span>
-                        <span>bCrypt</span>
-                        <span>AirDrop</span>
-                    </div>
+                    {this.renderSpaces()}
 
                 </div>
                 <div className="account">

@@ -13,11 +13,11 @@
     height: 62px;
 }
 
-.header svg:first-of-type {
+.header i:first-of-type {
     padding-right: 5px;
 }
 
-.header svg {
+.header i {
     cursor: pointer;
 }
 
@@ -52,7 +52,7 @@
     cursor: pointer;
 }
 
-.boards button svg,
+.boards button i,
 .board button i {
     width: 12px;
     height: 12px;
@@ -72,6 +72,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-bottom: 5px;
 }
 
 .board p {
@@ -83,7 +84,7 @@
     line-height: 28px;
 }
 
-.boards svg,
+.boards i,
 .board i {
     flex-basis: 40px;
 }

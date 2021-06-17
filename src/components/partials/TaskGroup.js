@@ -4,13 +4,12 @@ import Task from './Task'
 
 class TaskGroup extends Component {
     render() {
-        const name = 'Fix Loading time in the secondary screen'
         return (
             <div className="task">
                 <div className="title">
                     <div>
-                        <p>Lobby Time</p>
-                        <p>5 TASKS</p>
+                        <p>{this.props.tasks.name}</p>
+                        <p>{this.props.tasks.task.length} TASKS</p>
                     </div>
                     <div className="attributes">
                         <p>Due Date</p>
@@ -20,9 +19,9 @@ class TaskGroup extends Component {
                     </div>
                 </div>
                 <div className="tasks">
-                    <Task name={name} />
-                    <Task name={name} />
-                    <Task name={name} />
+                    {this.props.tasks.task.map(task => {
+                        return <Task key={task.name} name={task.name} />
+                    })}
                 </div>
                 <div className="new-task">
                     <p>+ New Task</p>
