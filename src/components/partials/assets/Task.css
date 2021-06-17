@@ -1,0 +1,24 @@
+.Task {
+    height: 36px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Task > p {
+    margin: 0 0 0 15px;
+}
+
+.Task > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.Task > div > p {
+    text-align: center;
+    width: 120px;
+}

@@ -1,0 +1,63 @@
+.task {
+
+}
+
+.task .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task .title div:first-of-type > p:first-of-type {
+    background-color: #579BFC;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 3px 3px 0 0;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    margin-right: 15px;
+    margin-bottom: 0;
+}
+
+.task .title div,
+.task .title .attributes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task .title div > p:nth-of-type(2) {
+    font-size: 0.8em;
+    margin-bottom: 0;
+}
+
+.task .title .attributes > p {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    text-align: center;
+    width: 120px;
+    margin-bottom: 0;
+}
+
+.task .title > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.tasks {
+    border: 2px solid white;
+    border-radius: 0 2px 0 0;
+}
+
+.task .new-task {
+    border: 2px solid white;
+    border-radius: 0 0 2px 2px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.task .new-task p {
+    margin: 0 0 0 15px;
+    font-size: 0.9em;
+}

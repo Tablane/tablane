@@ -49,9 +49,13 @@
     text-transform: uppercase;
     padding: 5px 10px;
     font-weight: 600;
+    cursor: pointer;
 }
 
-.boards button svg {
+.boards button svg,
+.board button i {
+    width: 12px;
+    height: 12px;
     padding-right: 5px;
 }
 
@@ -79,7 +83,8 @@
     line-height: 28px;
 }
 
-.boards svg {
+.boards svg,
+.board i {
     flex-basis: 40px;
 }
 

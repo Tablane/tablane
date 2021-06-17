@@ -2,3 +2,7 @@
     grid-area: content;
     background-color: #eee;
 }
+
+.task-group {
+    padding: 25px;
+}
