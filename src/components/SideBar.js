@@ -15,26 +15,47 @@ class SideBar extends Component {
                     </div>
                 </div>
                 <div className="boards">
-                    <label>Boards</label>
-                    <ul>
-                        <li>Server Project</li>
-                        <ul>
-                            <li>TTT</li>
-                            <li>Lobby</li>
-                            <li>Server</li>
-                        </ul>
-                        <li>External Projects</li>
-                        <ul>
-                            <li>BanSystem</li>
-                            <li>Effects</li>
-                        </ul>
-                        <li>Dev Projects</li>
-                        <ul>
-                            <li>TaskBoard</li>
-                            <li>bCrypt</li>
-                            <li>AirDrop</li>
-                        </ul>
-                    </ul>
+                    <label>Spaces</label>
+                    <div className="new-btn">
+                        <button><i className="fas fa-plus"> </i>New Space</button>
+                    </div>
+
+                    <div className="board all">
+                        <div>
+                            <i className="fas fa-cloud"> </i>
+                            <p>Everything</p>
+                        </div>
+                    </div>
+
+                    <div className="board">
+                        <div>
+                            <i className="fas fa-cloud"> </i>
+                            <p>Server Project</p>
+                        </div>
+                        <span>TTT</span>
+                        <span>Lobby</span>
+                        <span>Server</span>
+                    </div>
+
+                    <div className="board">
+                        <div>
+                            <i className="fas fa-cloud"> </i>
+                            <p>External Projects</p>
+                        </div>
+                        <span>BanSystem</span>
+                        <span>Effects</span>
+                    </div>
+
+                    <div className="board">
+                        <div>
+                            <i className="fas fa-cloud"> </i>
+                            <p>Dev Projects</p>
+                        </div>
+                        <span>TaskBoard</span>
+                        <span>bCrypt</span>
+                        <span>AirDrop</span>
+                    </div>
+
                 </div>
                 <div className="account">
                     <p>account stuff</p>

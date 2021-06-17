@@ -9,9 +9,9 @@ class TopMenu extends Component {
                     <div className="pic">
                         <div> </div>
                     </div>
-                    <div>
-                        <p>bug queue</p>
-                        <p>Add details</p>
+                    <div className="info">
+                        <h1>Everything</h1>
+                        <span>Add details</span>
                     </div>
                 </div>
                 <div>

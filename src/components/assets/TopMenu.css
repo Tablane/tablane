@@ -17,23 +17,40 @@
 
 .details .pic {
     border-radius: 5px;
-    background-color: #7c828d;
+    background-color: #ebebeb;
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 15px;
 }
 
 .details .pic > div {
     border-radius: 50%;
-    border: 2px dotted #343434;
-    width: 14px;
-    height: 14px;
+    border: 2px solid #343434;
+    width: 12px;
+    height: 12px;
+    /*width: 50%;*/
+    /*height: 50%;*/
 }
 
-.details p {
+.details .info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.details h1 {
+    font-size: 15px;
+    font-weight: 500;
     margin: 0;
+}
+
+.details span {
+    font-size: 11px;
+    font-weight: 400;
+    cursor: pointer;
 }
 
 .TopMenu button.share {

@@ -17,13 +17,73 @@
     padding-right: 5px;
 }
 
+.header svg {
+    cursor: pointer;
+}
+
 .header > div {
     display: inline-block;
 }
 
 .boards {
-    padding: 0 15px;
+    margin-top: 25px;
+    padding: 15px 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+.boards label {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.boards .new-btn {
+    padding-top: 15px;
+}
+
+.boards button {
+    outline: none;
+    border: none;
+    background-color: #f3f4f7;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    font-weight: 600;
+}
+
+.boards button svg {
+    padding-right: 5px;
+}
+
+/*BOARDS CSS STYLING -______________-__________-_______*/
+
+.board {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+
+.board > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.board p {
+    margin: 0;
+}
+
+.board span {
+    margin-left: 50px;
+    line-height: 28px;
+}
+
+.boards svg {
+    flex-basis: 40px;
+}
+
+/* END BOARDS CSS STYLING -__________-__________-_______*/
 
 .account {
     margin-top: auto;
