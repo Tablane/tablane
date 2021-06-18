@@ -1,18 +1,23 @@
 import {Component} from 'react'
 import './assets/SideBar.css'
+import {Link} from 'react-router-dom'
 
 class SideBar extends Component {
 
     renderSpaces = () => {
-        return this.props.data.spaces.map(data => {
+        return this.props.data.spaces.map(space => {
             return (
-                <div className="board" key={data.name}>
+                <div className="board" key={space.name}>
                     <div>
                         <i className="fas fa-cloud"> </i>
-                        <p>{data.name}</p>
+                        <p>{space.name}</p>
                     </div>
-                    {data.boards.map(data => {
-                        return <span key={data.name}>{data.name}</span>
+                    {space.boards.map(board => {
+                        return (
+                            <Link to={`/boards/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`} key={board.name}>
+                                <span key={board.name}>{board.name}</span>
+                            </Link>
+                        )
                     })}
                 </div>
             )
@@ -24,7 +29,9 @@ class SideBar extends Component {
             <div className="SideBar">
                 <div className="header">
                     <div className="logo">
-                        <p>ClickUp</p>
+                        <Link to="/">
+                            <p>Task Board</p>
+                        </Link>
                     </div>
                     <div className="icons">
                         <i className="fas fa-cog"> </i>

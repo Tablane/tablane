@@ -5,6 +5,11 @@
     flex-direction: column;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -14,7 +19,7 @@
 }
 
 .header i:first-of-type {
-    padding-right: 5px;
+    margin-right: 15px;
 }
 
 .header i {
@@ -84,8 +89,7 @@
     line-height: 28px;
 }
 
-.boards i,
-.board i {
+.boards i {
     flex-basis: 40px;
 }
 

@@ -3,6 +3,8 @@ import './App.css';
 import Board from './components/Board'
 import SideBar from './components/SideBar'
 import TopMenu from './components/TopMenu'
+import Home from './components/Home'
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 class App extends Component {
     constructor(props) {
@@ -493,11 +495,17 @@ class App extends Component {
         return (
             this.state.loading
                 ? <p>loading...</p>
-                : <div className="App">
-                    <SideBar data={this.state.data}/>
-                    <TopMenu/>
-                    <Board tasks={this.state.data.spaces[2].boards[2].tasks}/>
-                </div>
+                :
+                <Router>
+                    <div className="App">
+                        <SideBar data={this.state.data}/>
+                        <TopMenu/>
+                        <Switch>
+                            <Route exact path="/boards/:space/:board" component={(match) => <Board tasks={this.state.data} match={match}/>} />
+                            <Route path="/" component={Home} />
+                        </Switch>
+                    </div>
+                </Router>
         );
     }
 }
