@@ -56,6 +56,7 @@ class SideBar extends Component {
                 </div>
                 <div className="account">
                     <p>account stuff</p>
+                    <button onClick={() => this.props.changeToken('')}>logout</button>
                 </div>
             </div>
         );

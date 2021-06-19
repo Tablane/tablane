@@ -1,0 +1,36 @@
+.Auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.Auth .form {
+    text-align: center;
+    width: 480px;
+    height: 400px;
+    box-shadow: 0 25px 75px rgb(16 30 54 / 25%);
+    border-radius: 7px;
+}
+
+.Auth .form > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 50px 20px;
+}
+
+.Auth .form > div > div {
+    width: 80%;
+    margin-top: 15px;
+}
+
+.Auth .form button {
+    width: 80%;
+    margin-top: 30px;
+}
+
+.Auth a {
+    color: #4573ce;
+}

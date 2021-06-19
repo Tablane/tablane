@@ -4,12 +4,13 @@ import Board from './components/Board'
 import SideBar from './components/SideBar'
 import TopMenu from './components/TopMenu'
 import Home from './components/Home'
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import Auth from './components/Auth'
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {loading: true, data: []}
+        this.state = {loading: true, token: sessionStorage.getItem('token'), data: []}
     }
 
     componentDidMount() {
@@ -488,24 +489,33 @@ class App extends Component {
                     ]
                 }
             })
-        }, 0)
+        }, 500)
+    }
+
+    changeToken = (x) => {
+        sessionStorage.setItem('token', x);
+        this.setState({
+            token: x
+        })
     }
 
     render() {
+
         return (
-            this.state.loading
-                ? <p>loading...</p>
-                :
-                <Router>
-                    <div className="App">
-                        <SideBar data={this.state.data}/>
-                        <TopMenu/>
-                        <Switch>
-                            <Route exact path="/boards/:space/:board" component={(match) => <Board tasks={this.state.data} match={match}/>} />
-                            <Route path="/" component={Home} />
-                        </Switch>
-                    </div>
-                </Router>
+            this.state.loading ? <p>loading</p> :
+                !this.state.token || false ? <Auth changeToken={this.changeToken}/> :
+                    <Router>
+                        <div className="App">
+                            <SideBar data={this.state.data} changeToken={this.changeToken}/>
+                            <TopMenu/>
+                            <Switch>
+                                <Route exact path="/boards/:space/:board"
+                                       component={(match) => <Board tasks={this.state.data} match={match}/>}/>
+                                <Route exact path="/" component={Home}/>
+                                <Route path="/" component={() => <Redirect to="/" />}/>
+                            </Switch>
+                        </div>
+                    </Router>
         );
     }
 }
