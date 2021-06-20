@@ -32,7 +32,7 @@ class Login extends Component {
                     password: this.state.password,
                 },
                 withCredentials: true,
-                url: "http://localhost:3001/register",
+                url: "http://localhost:3001/api/user/register",
             }).then((res) => {
                 if (res.data === "User Created") resolve(res.data)
                 else reject(res.data)
@@ -47,7 +47,7 @@ class Login extends Component {
                 toast('Successfully registered.')
             })
             .catch(x => {
-                toast('error...')
+                toast(x)
                 this.setState({ loading: false })
             })
     }

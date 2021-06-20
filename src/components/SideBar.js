@@ -61,7 +61,7 @@ class SideBar extends Component {
                         axios({
                             method: "GET",
                             withCredentials: true,
-                            url: "http://localhost:3001/logout",
+                            url: "http://localhost:3001/api/user/logout",
                         }).then((res) => {
                             this.props.changeLoggedIn(false)
                         })

@@ -7,6 +7,8 @@ import Home from './components/Home'
 import Auth from './components/Auth'
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import axios from "axios";
+import {toast} from "react-hot-toast";
+import {CircularProgress} from "@material-ui/core";
 
 class App extends Component {
     constructor(props) {
@@ -28,7 +30,7 @@ class App extends Component {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: 'http://localhost:3001/user'
+            url: 'http://localhost:3001/api/user/user'
         }).then(res => {
             this.setState({
                 loading: false,
@@ -513,20 +515,19 @@ class App extends Component {
                     ]
                 }
             })
-        })
-    }
-
-    changeToken = (x) => {
-        sessionStorage.setItem('token', x);
-        this.setState({
-            token: x
+        }).catch(err => {
+            toast(err.toString())
+            this.setState({
+                loading: false,
+                loggedIn: false
+            })
         })
     }
 
     render() {
 
         return (
-            this.state.loading ? <p>loading</p> :
+            this.state.loading ? <div className="loading"><CircularProgress /></div> :
                 !this.state.loggedIn || false ? <Auth changeLoggedIn={this.changeLoggedIn}/> :
                     <Router>
                         <div className="App">

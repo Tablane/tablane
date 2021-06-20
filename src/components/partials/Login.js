@@ -32,11 +32,14 @@ class Login extends Component {
                     password: this.state.password,
                 },
                 withCredentials: true,
-                url: "http://localhost:3001/login",
+                url: "http://localhost:3001/api/user/login",
             }).then((res) => {
-                if (res.data === "logged in") resolve(res.data)
+                if (res.data === "Successfully logged in") resolve(res.data)
                 else reject(res.data)
-            }).catch(err => console.log(err))
+            }).catch(err => {
+                toast(err.toString())
+                this.setState({ loading: false })
+            })
         })
     }
 
@@ -45,10 +48,11 @@ class Login extends Component {
         this.loginUser()
             .then(x => {
                 this.props.changeLoggedIn(true)
-                toast('Successfully logged in.')
+                console.log(x)
+                toast(x)
             })
             .catch(x => {
-                toast('Username or password is wrong.')
+                toast(x)
                 this.setState({ loading: false })
             })
     }
