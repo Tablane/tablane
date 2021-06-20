@@ -21,16 +21,21 @@
     padding: 50px 50px 20px;
 }
 
-.Auth .form > div > div {
+.Auth .form .inputs > div {
     width: 80%;
     margin-top: 15px;
 }
 
 .Auth .form button {
     width: 80%;
-    margin-top: 30px;
 }
 
 .Auth a {
     color: #4573ce;
+}
+
+.Auth .progressWrapper {
+    margin-top: 30px;
+    width: 100%;
+    position: relative;
 }

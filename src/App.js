@@ -6,17 +6,33 @@ import TopMenu from './components/TopMenu'
 import Home from './components/Home'
 import Auth from './components/Auth'
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import axios from "axios";
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {loading: true, token: sessionStorage.getItem('token'), data: []}
+        this.state = {
+            loading: true,
+            loggedIn: false,
+            data: []
+        }
+    }
+
+    changeLoggedIn = (loggedIn) => {
+        this.setState({
+            loggedIn
+        })
     }
 
     componentDidMount() {
-        setTimeout(() => {
+        axios({
+            method: 'GET',
+            withCredentials: true,
+            url: 'http://localhost:3001/user'
+        }).then(res => {
             this.setState({
                 loading: false,
+                loggedIn: res.data,
                 data: {
                     spaces: [
                         {
@@ -485,11 +501,19 @@ class App extends Component {
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            name: 'test space',
+                            boards: [
+                                {
+                                    name: 'test board'
+                                }
+                            ]
                         }
                     ]
                 }
             })
-        }, 500)
+        })
     }
 
     changeToken = (x) => {
@@ -503,10 +527,10 @@ class App extends Component {
 
         return (
             this.state.loading ? <p>loading</p> :
-                !this.state.token || false ? <Auth changeToken={this.changeToken}/> :
+                !this.state.loggedIn || false ? <Auth changeLoggedIn={this.changeLoggedIn}/> :
                     <Router>
                         <div className="App">
-                            <SideBar data={this.state.data} changeToken={this.changeToken}/>
+                            <SideBar data={this.state.data} changeLoggedIn={this.changeLoggedIn}/>
                             <TopMenu/>
                             <Switch>
                                 <Route exact path="/boards/:space/:board"

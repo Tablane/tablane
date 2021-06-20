@@ -1,0 +1,9 @@
+.buttonProgress {
+    /*color: green[500];*/
+    color: green;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+}

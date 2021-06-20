@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import './assets/SideBar.css'
 import {Link} from 'react-router-dom'
+import axios from "axios";
 
 class SideBar extends Component {
 
@@ -56,7 +57,15 @@ class SideBar extends Component {
                 </div>
                 <div className="account">
                     <p>account stuff</p>
-                    <button onClick={() => this.props.changeToken('')}>logout</button>
+                    <button onClick={() => {
+                        axios({
+                            method: "GET",
+                            withCredentials: true,
+                            url: "http://localhost:3001/logout",
+                        }).then((res) => {
+                            this.props.changeLoggedIn(false)
+                        })
+                    }}>logout</button>
                 </div>
             </div>
         );

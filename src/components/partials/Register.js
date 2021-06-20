@@ -2,11 +2,16 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import {Component} from "react";
+import axios from "axios";
+import {toast} from "react-hot-toast";
+import {CircularProgress} from "@material-ui/core";
+import './assets/Login.css'
 
-class Register extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             username: '',
             password: ''
         }
@@ -18,24 +23,65 @@ class Register extends Component {
         })
     }
 
+    registerUser = async () => {
+        return new Promise((resolve, reject) => {
+            axios({
+                method: "POST",
+                data: {
+                    username: this.state.username,
+                    password: this.state.password,
+                },
+                withCredentials: true,
+                url: "http://localhost:3001/register",
+            }).then((res) => {
+                if (res.data === "User Created") resolve(res.data)
+                else reject(res.data)
+            }).catch(err => console.log(err))
+        })
+    }
+
+    handleSubmit = () => {
+        this.setState({ loading: true })
+        this.registerUser()
+            .then(x => {
+                toast('Successfully registered.')
+            })
+            .catch(x => {
+                toast('error...')
+                this.setState({ loading: false })
+            })
+    }
+
     render() {
         return (
             <div className="form">
                 <div>
-                    <TextField
-                        id="username"
-                        name="username"
-                        label="Username"
-                        onChange={this.handleChange}
-                        required/>
-                    <TextField
-                        id="password"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        onChange={this.handleChange}
-                        required/>
-                    <Button variant="contained" color="primary">Register</Button>
+                    <div className="inputs">
+                        <TextField
+                            id="username"
+                            name="username"
+                            label="Username"
+                            value={this.state.username}
+                            onChange={this.handleChange}
+                            required/>
+                        <TextField
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                            required/>
+                    </div>
+                    <div className="progressWrapper">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            disabled={this.state.loading}>Register</Button>
+                        {this.state.loading && <CircularProgress size={24} className="buttonProgress" />}
+                    </div>
                 </div>
                 <p>or <Link to="/login">login</Link></p>
             </div>
@@ -43,4 +89,4 @@ class Register extends Component {
     }
 }
 
-export default Register
+export default Login

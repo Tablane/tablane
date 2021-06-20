@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Route, Redirect, Switch} from "react-router-dom";
 import Login from './partials/Login';
 import Register from './partials/Register';
 import './assets/Auth.css'
@@ -10,9 +10,11 @@ class Auth extends Component {
         return (
             <Router>
                 <div className="Auth">
-                    <Route exact path="/login" component={() => <Login changeToken={this.props.changeToken} />}/>
-                    <Route exact path="/register" component={Register}/>
-                    <Route path="/" component={() => <Redirect to="/login"/>}/>
+                    <Switch>
+                        <Route exact path="/login" component={() => <Login changeLoggedIn={this.props.changeLoggedIn} />}/>
+                        <Route exact path="/register" component={Register}/>
+                        <Route path="/" component={() => <Redirect to="/login"/>}/>
+                    </Switch>
                 </div>
             </Router>
         );
