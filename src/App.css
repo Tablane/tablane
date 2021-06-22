@@ -8,6 +8,7 @@
             "nav top"
             "nav content";
     overflow: hidden;
+    user-select: none;
 }
 
 .loading {

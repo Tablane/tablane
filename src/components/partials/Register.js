@@ -34,7 +34,7 @@ class Login extends Component {
                 withCredentials: true,
                 url: "http://localhost:3001/api/user/register",
             }).then((res) => {
-                if (res.data === "User Created") resolve(res.data)
+                if (res.data === "Successfully registered") resolve(res.data)
                 else reject(res.data)
             }).catch(err => console.log(err))
         })
@@ -44,7 +44,8 @@ class Login extends Component {
         this.setState({ loading: true })
         this.registerUser()
             .then(x => {
-                toast('Successfully registered.')
+                toast(x)
+                this.props.changeLoggedIn(true)
             })
             .catch(x => {
                 toast(x)
@@ -56,32 +57,34 @@ class Login extends Component {
         return (
             <div className="form">
                 <div>
-                    <div className="inputs">
-                        <TextField
-                            id="username"
-                            name="username"
-                            label="Username"
-                            value={this.state.username}
-                            onChange={this.handleChange}
-                            required/>
-                        <TextField
-                            id="password"
-                            name="password"
-                            label="Password"
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            required/>
-                    </div>
-                    <div className="progressWrapper">
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleSubmit}
-                            disabled={this.state.loading}>Register</Button>
-                        {this.state.loading && <CircularProgress size={24} className="buttonProgress" />}
-                    </div>
+                    <form action="">
+                        <div className="inputs">
+                            <TextField
+                                id="username"
+                                name="username"
+                                label="Username"
+                                value={this.state.username}
+                                onChange={this.handleChange}
+                                required/>
+                            <TextField
+                                id="password"
+                                name="password"
+                                label="Password"
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                required/>
+                        </div>
+                        <div className="progressWrapper">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                onClick={this.handleSubmit}
+                                disabled={this.state.loading}>Register</Button>
+                            {this.state.loading && <CircularProgress size={24} className="buttonProgress" />}
+                        </div>
+                    </form>
                 </div>
                 <p>or <Link to="/login">login</Link></p>
             </div>

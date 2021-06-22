@@ -4,18 +4,24 @@ import TaskGroup from './partials/TaskGroup'
 
 class Board extends Component {
 
-    findTasks = () => {
-        const space = this.props.match.match.params.space.replace('-', ' ')
-        const board = this.props.match.match.params.board.replace('-', ' ')
-        return this.props.tasks.spaces.find(x => x.name === space).boards.find(x => x.name === board).tasks
+    findBoard = () => {
+        // const workspace = this.props.match.params.workspace
+        const space = this.props.match.params.space.replace('-', ' ')
+        const board = this.props.match.params.board.replace('-', ' ')
+        return this.props.tasks.spaces.find(x => x.name === space).boards.find(x => x.name === board)
     }
 
     render() {
+        const board = this.findBoard()
         return (
             <div className="Board">
                 <div className="task-group">
-                    {this.findTasks().map(tasks => {
-                        return <TaskGroup key={tasks.name} tasks={tasks}/>
+                    {board.taskGroups.map(taskGroup => {
+                        return <TaskGroup
+                            getData={this.props.getData}
+                            key={taskGroup.name}
+                            taskGroup={taskGroup}
+                            attributes={board.attributes}/>
                     })}
                 </div>
             </div>

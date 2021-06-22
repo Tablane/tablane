@@ -8,19 +8,18 @@ class TaskGroup extends Component {
             <div className="task">
                 <div className="title">
                     <div>
-                        <p>{this.props.tasks.name}</p>
-                        <p>{this.props.tasks.task.length} TASKS</p>
+                        <p>{this.props.taskGroup.name}</p>
+                        <p>{this.props.taskGroup.tasks.length} TASKS</p>
                     </div>
                     <div className="attributes">
-                        <p>Due Date</p>
-                        <p>Priority</p>
-                        <p>Status</p>
-                        <p>Developed</p>
+                        {Object.keys(this.props.attributes).map((x) => {
+                            return <p key={x}>{x}</p>
+                        })}
                     </div>
                 </div>
                 <div className="tasks">
-                    {this.props.tasks.task.map(task => {
-                        return <Task key={task.name} name={task.name} />
+                    {this.props.taskGroup.tasks.map(task => {
+                        return <Task getData={this.props.getData} key={task.name} task={task} attributes={this.props.attributes} />
                     })}
                 </div>
                 <div className="new-task">

@@ -1,0 +1,82 @@
+.popover {
+    width: 410px;
+    height: 406px;
+    display: flex;
+    flex-direction: column;
+}
+
+.popover > div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.popover > div:first-of-type .workspaces {
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popover > div:first-of-type .workspaces > div,
+.popover > div:first-of-type .workspace-settings div > div.circle,
+.popover > div:first-of-type .user-settings div > div.circle {
+    color: white;
+    font-size: 0.8em;
+    cursor: pointer;
+    background-color: rgb(64, 188, 134);
+    border-radius: 50%;
+    line-height: 32px;
+    margin: 5px 0;
+    text-align: center;
+    width: 32px;
+    height: 32px;
+}
+
+.popover > div:first-of-type .workspace-settings > div:first-of-type,
+.popover > div:first-of-type .user-settings > div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.popover > div:first-of-type .workspace-settings > div:first-of-type p,
+.popover > div:first-of-type .user-settings > div:first-of-type p {
+    margin-left: 10px;
+}
+
+.popover > div:first-of-type .workspace-settings,
+.popover > div:first-of-type .user-settings {
+    border-left: 1px solid #e9ebf0;
+    margin-top: 10px;
+    width: 185px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popover > div:first-of-type .workspace-settings .buttons,
+.popover > div:first-of-type .user-settings .buttons {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.popover > div:first-of-type .workspace-settings .buttons button,
+.popover > div:first-of-type .user-settings .buttons button {
+    margin: 8px 0;
+    font-size: 0.9em;
+    cursor: pointer;
+    background-color: white;
+    outline: none;
+    border: none;
+    padding: 5px 10px;
+}
+
+.popover > div:nth-of-type(2) {
+    border-top: 1px solid #e9ebf0;
+    height: 40px;
+}

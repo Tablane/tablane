@@ -12,7 +12,7 @@ class Auth extends Component {
                 <div className="Auth">
                     <Switch>
                         <Route exact path="/login" component={() => <Login changeLoggedIn={this.props.changeLoggedIn} />}/>
-                        <Route exact path="/register" component={Register}/>
+                        <Route exact path="/register" component={() => <Register changeLoggedIn={this.props.changeLoggedIn} /> }/>
                         <Route path="/" component={() => <Redirect to="/login"/>}/>
                     </Switch>
                 </div>

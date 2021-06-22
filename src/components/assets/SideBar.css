@@ -96,5 +96,13 @@ a {
 /* END BOARDS CSS STYLING -__________-__________-_______*/
 
 .account {
-    margin-top: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0 0 15px 15px;
+}
+
+.account > div > button {
+    min-width: 0;
 }

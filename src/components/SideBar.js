@@ -1,9 +1,15 @@
-import {Component} from 'react'
+import React, {Component} from 'react'
 import './assets/SideBar.css'
 import {Link} from 'react-router-dom'
-import axios from "axios";
+import AccountPopOver from "./partials/AccountPopOver";
 
 class SideBar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            spaces: null
+        }
+    }
 
     renderSpaces = () => {
         return this.props.data.spaces.map(space => {
@@ -15,7 +21,8 @@ class SideBar extends Component {
                     </div>
                     {space.boards.map(board => {
                         return (
-                            <Link to={`/boards/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`} key={board.name}>
+                            <Link to={`/boards/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
+                                  key={board.name}>
                                 <span key={board.name}>{board.name}</span>
                             </Link>
                         )
@@ -56,16 +63,7 @@ class SideBar extends Component {
 
                 </div>
                 <div className="account">
-                    <p>account stuff</p>
-                    <button onClick={() => {
-                        axios({
-                            method: "GET",
-                            withCredentials: true,
-                            url: "http://localhost:3001/api/user/logout",
-                        }).then((res) => {
-                            this.props.changeLoggedIn(false)
-                        })
-                    }}>logout</button>
+                    <AccountPopOver changeLoggedIn={this.props.changeLoggedIn}/>
                 </div>
             </div>
         );
