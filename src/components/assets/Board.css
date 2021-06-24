@@ -1,0 +1,9 @@
+.Board {
+    grid-area: content;
+    background-color: #eee;
+    overflow: auto;
+}
+
+.task-group {
+    padding: 25px;
+}

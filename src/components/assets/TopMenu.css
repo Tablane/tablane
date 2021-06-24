@@ -1,0 +1,69 @@
+.TopMenu {
+    grid-area: top;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 15px;
+}
+
+.details {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 32px;
+}
+
+.details .pic {
+    border-radius: 5px;
+    background-color: #ebebeb;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.details .pic > div {
+    border-radius: 50%;
+    border: 2px solid #343434;
+    width: 12px;
+    height: 12px;
+    /*width: 50%;*/
+    /*height: 50%;*/
+}
+
+.details .info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.details h1 {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.details span {
+    font-size: 11px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.TopMenu button.share {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.TopMenu .share p {
+    padding-left: 5px;
+    margin: 7px 0;
+}

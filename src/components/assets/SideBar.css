@@ -1,0 +1,108 @@
+.SideBar {
+    grid-area: nav;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    height: 62px;
+}
+
+.header i:first-of-type {
+    margin-right: 15px;
+}
+
+.header i {
+    cursor: pointer;
+}
+
+.header > div {
+    display: inline-block;
+}
+
+.boards {
+    margin-top: 25px;
+    padding: 15px 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.boards label {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.boards .new-btn {
+    padding-top: 15px;
+}
+
+.boards button {
+    outline: none;
+    border: none;
+    background-color: #f3f4f7;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.boards button i,
+.board button i {
+    width: 12px;
+    height: 12px;
+    padding-right: 5px;
+}
+
+/*BOARDS CSS STYLING -______________-__________-_______*/
+
+.board {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+
+.board > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.board p {
+    margin: 0;
+}
+
+.board span {
+    margin-left: 50px;
+    line-height: 28px;
+}
+
+.boards i {
+    flex-basis: 40px;
+}
+
+/* END BOARDS CSS STYLING -__________-__________-_______*/
+
+.account {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0 0 15px 15px;
+}
+
+.account > div > button {
+    min-width: 0;
+}
