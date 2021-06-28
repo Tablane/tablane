@@ -6,6 +6,7 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 import {CircularProgress} from "@material-ui/core";
 import './assets/Login.css'
+import {connect} from "react-redux";
 
 class Login extends Component {
     constructor(props) {
@@ -34,27 +35,29 @@ class Login extends Component {
                 withCredentials: true,
                 url: "http://localhost:3001/api/user/login",
             }).then((res) => {
-                if (res.data === "Successfully logged in") resolve(res.data)
+                if (res.data.status) resolve(res.data.msg)
                 else reject(res.data)
             }).catch(err => {
                 toast(err.toString())
-                this.setState({ loading: false })
+                this.setState({loading: false})
             })
         })
     }
 
     handleSubmit = () => {
-        this.setState({ loading: true })
+        this.setState({loading: true})
         this.loginUser()
             .then(x => {
-                console.log(x)
-                console.log('logged in')
-                this.props.changeLoggedIn(true)
                 toast(x)
+                this.props.dispatch({type: 'changeLoggedIn', payload: true})
+                if (this.props.redirectUrl) {
+                    this.props.history.push(this.props.redirectUrl)
+                    this.props.dispatch({type: 'setData', payload: ['redirectUrl', null]})
+                }
             })
             .catch(x => {
                 toast(x)
-                this.setState({ loading: false })
+                this.setState({loading: false})
             })
     }
 
@@ -87,7 +90,7 @@ class Login extends Component {
                                 color="primary"
                                 onClick={this.handleSubmit}
                                 disabled={this.state.loading}>Login</Button>
-                            {this.state.loading && <CircularProgress size={24} className="buttonProgress" />}
+                            {this.state.loading && <CircularProgress size={24} className="buttonProgress"/>}
                         </div>
                     </form>
                 </div>
@@ -97,4 +100,9 @@ class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) => ({
+    isLoggedIn: state.isLoggedIn,
+    redirectUrl: state.redirectUrl
+})
+
+export default connect(mapStateToProps)(Login)

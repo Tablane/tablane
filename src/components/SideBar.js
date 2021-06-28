@@ -2,17 +2,12 @@ import React, {Component} from 'react'
 import './assets/SideBar.css'
 import {Link} from 'react-router-dom'
 import AccountPopOver from "./partials/AccountPopOver";
+import {connect} from "react-redux";
 
 class SideBar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            spaces: null
-        }
-    }
 
     renderSpaces = () => {
-        return this.props.data.spaces.map(space => {
+        return this.props.workspaces.spaces.map(space => {
             return (
                 <div className="board" key={space.name}>
                     <div>
@@ -21,7 +16,7 @@ class SideBar extends Component {
                     </div>
                     {space.boards.map(board => {
                         return (
-                            <Link to={`/boards/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
+                            <Link to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
                                   key={board.name}>
                                 <span key={board.name}>{board.name}</span>
                             </Link>
@@ -63,11 +58,16 @@ class SideBar extends Component {
 
                 </div>
                 <div className="account">
-                    <AccountPopOver changeLoggedIn={this.props.changeLoggedIn}/>
+                    <AccountPopOver />
                 </div>
             </div>
         );
     }
 }
 
-export default SideBar
+const mapStateToProps = (state) => ({
+    workspaces: state.workspaces,
+    isLoggedIn: state.isLoggedIn
+})
+
+export default connect(mapStateToProps)(SideBar)

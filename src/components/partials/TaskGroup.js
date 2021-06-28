@@ -19,7 +19,12 @@ class TaskGroup extends Component {
                 </div>
                 <div className="tasks">
                     {this.props.taskGroup.tasks.map(task => {
-                        return <Task getData={this.props.getData} key={task.name} task={task} attributes={this.props.attributes} />
+                        return <Task
+                            key={task.name}
+                            getData={this.props.getData}
+                            task={task}
+                            taskGroupId={this.props.taskGroup._id}
+                            attributes={this.props.attributes} />
                     })}
                 </div>
                 <div className="new-task">

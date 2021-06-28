@@ -2,6 +2,7 @@ import {Component} from 'react'
 import './assets/Task.css'
 import {Popover} from "@material-ui/core";
 import axios from "axios";
+import {connect} from "react-redux";
 
 class Task extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class Task extends Component {
     }
 
     handleClose = () => {
-        this.setState({anchor: null })
+        this.setState({anchor: null})
     }
 
     render() {
@@ -53,7 +54,6 @@ class Task extends Component {
                                         key={x}
                                         onClick={e => {
                                             let data = {
-                                                id: this.props.task._id,
                                                 property: this.state.currentOption,
                                                 value: this.state.options.indexOf(e.currentTarget.textContent)
                                             }
@@ -61,11 +61,11 @@ class Task extends Component {
                                                 method: 'PATCH',
                                                 data,
                                                 withCredentials: true,
-                                                url: `http://localhost:3001/api/task/${this.props.task._id}`
+                                                url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
                                             }).then(res => {
-                                                console.log('getting new data')
                                                 this.props.getData()
                                             })
+                                            this.handleClose()
                                         }}>{x}</div>
                                 })}
                             </div>
@@ -81,4 +81,8 @@ class Task extends Component {
     }
 }
 
-export default Task
+const mapStateToProps = (state) => ({
+    board: state.board
+})
+
+export default connect(mapStateToProps)(Task)

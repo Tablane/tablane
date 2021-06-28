@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import './assets/TopMenu.css'
+import {connect} from "react-redux";
 
 class TopMenu extends Component {
     render() {
@@ -10,7 +11,7 @@ class TopMenu extends Component {
                         <div> </div>
                     </div>
                     <div className="info">
-                        <h1>Everything</h1>
+                        <h1>{this.props.board ? this.props.board.name : 'Everything'}</h1>
                         <span>Add details</span>
                     </div>
                 </div>
@@ -25,4 +26,8 @@ class TopMenu extends Component {
     }
 }
 
-export default TopMenu
+const mapStateToProps = (state) => ({
+    board: state.board
+})
+
+export default connect(mapStateToProps)(TopMenu)

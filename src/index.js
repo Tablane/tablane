@@ -4,11 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Toaster} from "react-hot-toast";
+import {createStore} from "redux";
+import {Provider} from "react-redux";
+import reducer from "./reducer";
+import {devToolsEnhancer} from "redux-devtools-extension";
+
+const store = createStore(reducer, devToolsEnhancer())
 
 ReactDOM.render(
     <React.StrictMode>
-        <App/>
-        <Toaster/>
+        <Provider store={store}>
+            <App/>
+            <Toaster/>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import './assets/AccountPopOver.css'
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import {connect} from "react-redux";
 
 class AccountPopOver extends Component {
     constructor(props) {
@@ -70,15 +71,17 @@ class AccountPopOver extends Component {
                                     <button>placeholder</button>
                                     <button>placeholder</button>
                                     <button onClick={() => {
+                                        this.props.dispatch({type: 'changeLoggedIn'})
                                         axios({
                                             method: "GET",
                                             withCredentials: true,
                                             url: "http://localhost:3001/api/user/logout",
                                         }).then((res) => {
-                                            toast(res.data.toString())
-                                            this.props.changeLoggedIn(false)
+                                            toast(res.data)
+                                        }).catch(x => {
+                                            toast(x)
                                         })
-                                    }} >logout</button>
+                                    }}>logout</button>
                                 </div>
                             </div>
                         </div>
@@ -92,4 +95,9 @@ class AccountPopOver extends Component {
     }
 }
 
-export default AccountPopOver
+const mapStateToProps = (state) => ({
+    workspaces: state.workspaces,
+    isLoggedIn: state.isLoggedIn
+})
+
+export default connect(mapStateToProps)(AccountPopOver)

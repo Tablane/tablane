@@ -4,6 +4,10 @@
     overflow: auto;
 }
 
+.loading-placeholder {
+    height: 4px;
+}
+
 .task-group {
     padding: 25px;
 }
