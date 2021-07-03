@@ -11,3 +11,26 @@
 .task-group {
     padding: 25px;
 }
+
+.add-task-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 25px;
+}
+
+.add-task-group button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.3);
+    margin: 0 15px;
+}
+
+.add-task-group div {
+    height: 1px;
+    flex-grow: 1;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+

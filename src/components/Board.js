@@ -53,10 +53,16 @@ class Board extends Component {
                             {this.props.board.taskGroups.map(taskGroup => {
                                 return <TaskGroup
                                     getData={this.getData}
+                                    boardId={this.props.board._id}
                                     key={taskGroup.name}
                                     taskGroup={taskGroup}
                                     attributes={this.props.board.attributes}/>
                             })}
+                        </div>
+                        <div className="add-task-group">
+                            <div> </div>
+                            <button>ADD NEW TASKGROUP</button>
+                            <div> </div>
                         </div>
                     </div>
                 }

@@ -63,3 +63,28 @@
     margin: 0 0 0 15px;
     font-size: 0.8em;
 }
+
+.task .new-task input {
+    height: 30px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.task .new-task button {
+    background-color: #4169E1;
+    border: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    height: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    width: 55px;
+    border-radius: 2px;
+    margin: 0 15px;
+    transition: 5s;
+}

@@ -61,22 +61,6 @@
     cursor: pointer;
 }
 
-.task-popover .options > div:nth-of-type(1) {
-    background-color: rgb(4, 169, 244)
-}
-
-.task-popover .options > div:nth-of-type(2) {
-    background-color: rgb(129, 177, 255);
-}
-
-.task-popover .options > div:nth-of-type(3) {
-    background-color: rgb(46, 205, 111);
-}
-
-.task-popover .options > div:nth-of-type(4) {
-    background-color: rgb(255, 120, 0);
-}
-
 .task-popover .edit {
     padding: 8px 0;
     display: flex;

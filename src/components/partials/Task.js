@@ -9,7 +9,7 @@ class Task extends Component {
         super(props);
         this.state = {
             anchor: null,
-            options: ['error'],
+            options: [{name: 'error', color: 'red'}],
             currentOption: null,
         }
     }
@@ -18,22 +18,45 @@ class Task extends Component {
         this.setState({anchor: null})
     }
 
+    handleClick = (e, key) => {
+        this.setState({
+            anchor: e.currentTarget,
+            options: this.props.attributes.find(x => x.name === key.name).labels,
+            currentOption: this.props.attributes.find(x => x.name === key.name).name
+        })
+    }
+
+    handleChange = (value) => {
+        axios({
+            method: 'PATCH',
+            data: {
+                property: this.state.currentOption,
+                value: value
+            },
+            withCredentials: true,
+            url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
+        }).then(res => {
+            this.props.getData()
+        })
+        this.handleClose()
+    }
+
     render() {
         return (
             <div className="Task">
                 <p>{this.props.task.name}</p>
                 <div>
-                    {Object.entries(this.props.task.options).map(([key, val]) => {
+                    {this.props.task.options.map(option => {
+                        const color = option.value === -1 ? 'rgb(196,196,196)' : this.props.attributes.find(attribute => attribute.name === option.name).labels[option.value].color
+
                         return <div
-                            key={key}
-                            onClick={e => {
-                                this.setState({
-                                    anchor: e.currentTarget,
-                                    options: this.props.attributes[key],
-                                    currentOption: key
-                                })
-                            }}>{this.props.attributes[key][val]}</div>
+                            key={option.name}
+                            onClick={(e) => this.handleClick(e, option)}
+                            style={{backgroundColor: color}}>
+                            {option.value === -1 ? '' : this.props.attributes.find(attribute => attribute.name === option.name).labels[option.value].name}
+                        </div>
                     })}
+
                     <Popover
                         open={Boolean(this.state.anchor)}
                         anchorEl={this.state.anchor}
@@ -51,23 +74,16 @@ class Task extends Component {
                             <div className="options">
                                 {this.state.options.map(x => {
                                     return <div
-                                        key={x}
+                                        key={x.name}
+                                        style={{backgroundColor: x.color}}
                                         onClick={e => {
-                                            let data = {
-                                                property: this.state.currentOption,
-                                                value: this.state.options.indexOf(e.currentTarget.textContent)
-                                            }
-                                            axios({
-                                                method: 'PATCH',
-                                                data,
-                                                withCredentials: true,
-                                                url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
-                                            }).then(res => {
-                                                this.props.getData()
-                                            })
-                                            this.handleClose()
-                                        }}>{x}</div>
+                                            this.handleChange(this.state.options.indexOf(this.state.options.find(x => x.name === e.currentTarget.textContent)))
+                                        }}>{x.name}</div>
                                 })}
+                                <div
+                                    key="none"
+                                    style={{backgroundColor: 'rgb(181, 188, 194)'}}
+                                    onClick={() => this.handleChange(-1)}> </div>
                             </div>
                             <div className="edit">
                                 <i className="fas fa-pen"> </i>
