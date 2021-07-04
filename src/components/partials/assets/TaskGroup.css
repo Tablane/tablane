@@ -45,6 +45,7 @@
 .task .title div > p.task-amount {
     font-size: 0.8em;
     margin-bottom: 0;
+    padding-bottom: 3px;
 }
 
 .task .title .attributes > p {
@@ -53,6 +54,14 @@
     text-align: center;
     width: 120px;
     margin-bottom: 0;
+}
+
+.task .title .attributes > p i {
+    color: rgba(0,0,0,0.6);
+}
+
+.task .title .attributes > p:last-of-type {
+    width: 40px;
 }
 
 .task .title > div {

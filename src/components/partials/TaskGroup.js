@@ -67,6 +67,7 @@ class TaskGroup extends Component {
                     </div>
                     <div className="attributes">
                         {this.props.attributes.map(x => <p key={x.name}>{x.name}</p>)}
+                        <p><i className="fas fa-plus-circle"> </i></p>
                     </div>
                 </div>
                 <div className="tasks">

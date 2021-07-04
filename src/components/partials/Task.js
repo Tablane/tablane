@@ -41,6 +41,16 @@ class Task extends Component {
         this.handleClose()
     }
 
+    handleDelete = async () => {
+        axios({
+            method: 'DELETE',
+            withCredentials: true,
+            url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
+        }).then(res => {
+            this.props.getData()
+        })
+    }
+
     render() {
         return (
             <div className="Task">
@@ -56,6 +66,10 @@ class Task extends Component {
                             {option.value === -1 ? '' : this.props.attributes.find(attribute => attribute.name === option.name).labels[option.value].name}
                         </div>
                     })}
+
+                    <div onClick={this.handleDelete}>
+                        <i className="fas fa-trash-alt"> </i>
+                    </div>
 
                     <Popover
                         open={Boolean(this.state.anchor)}
@@ -83,7 +97,7 @@ class Task extends Component {
                                 <div
                                     key="none"
                                     style={{backgroundColor: 'rgb(181, 188, 194)'}}
-                                    onClick={() => this.handleChange(-1)}> </div>
+                                    onClick={() => this.handleChange(-1)}></div>
                             </div>
                             <div className="edit">
                                 <i className="fas fa-pen"> </i>

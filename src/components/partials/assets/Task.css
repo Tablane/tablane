@@ -34,6 +34,19 @@
 }
 
 .Task > div > div:last-of-type {
+    width: 40px;
+}
+
+.Task > div > div:last-of-type i {
+    color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.Task > div > div:last-of-type:hover i {
+    display: inline;
+}
+
+.Task > div > div:last-of-type {
     border-right: none;
 }
 
