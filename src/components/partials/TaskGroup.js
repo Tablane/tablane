@@ -42,13 +42,28 @@ class TaskGroup extends Component {
         })
     }
 
+    handleDelete = async () => {
+        await axios({
+            method: 'DELETE',
+            withCredentials: true,
+            url: `http://localhost:3001/api/taskgroup/${this.props.boardId}/${this.props.taskGroup._id}`
+        }).then(res => {
+            this.props.getData()
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
     render() {
         return (
             <div className="task">
                 <div className="title">
                     <div>
-                        <p>{this.props.taskGroup.name}</p>
-                        <p>{this.props.taskGroup.tasks.length} TASKS</p>
+                        <div className="taskGroup-title">
+                            <p>{this.props.taskGroup.name}</p>
+                            <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
+                        </div>
+                        <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
                     </div>
                     <div className="attributes">
                         {this.props.attributes.map(x => <p key={x.name}>{x.name}</p>)}

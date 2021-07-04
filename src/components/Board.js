@@ -2,14 +2,22 @@ import {Component} from 'react'
 import './assets/Board.css'
 import TaskGroup from './partials/TaskGroup'
 import {connect} from "react-redux";
-import {LinearProgress} from "@material-ui/core";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    LinearProgress,
+    TextField
+} from "@material-ui/core";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import Button from "@material-ui/core/Button";
 
 class Board extends Component {
     constructor(props) {
         super(props);
-        this.state = {loading: false}
+        this.state = {name: '', loading: false, dialogOpen: false}
     }
 
 
@@ -33,13 +41,35 @@ class Board extends Component {
         this.setState({loading: false})
     }
 
+    handleNewTaskgroup = async () => {
+        this.setState({dialogOpen: false})
+        await axios({
+            method: 'POST',
+            withCredentials: true,
+            data: {
+                name: this.state.name
+            },
+            url: `http://localhost:3001/api/taskgroup/${this.findBoardId()}`
+        }).then(res => {
+            this.getData()
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
     componentDidMount() {
         this.getData()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevProps.match.url === this.props.match.url) return
+        if (prevProps.match.url === this.props.match.url) return
         this.getData()
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     render() {
@@ -61,11 +91,38 @@ class Board extends Component {
                         </div>
                         <div className="add-task-group">
                             <div> </div>
-                            <button>ADD NEW TASKGROUP</button>
+                            <button onClick={() => this.setState({dialogOpen: true})}>ADD NEW TASKGROUP</button>
                             <div> </div>
                         </div>
                     </div>
                 }
+                <Dialog
+                    open={this.state.dialogOpen}
+                    onClose={() => this.setState({dialogOpen: false})}
+                    aria-labelledby="form-dialog-title"
+                    fullWidth={true}>
+                    <DialogTitle id="form-dialog-title">Add new taskgroup</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            name="name"
+                            onChange={this.handleChange}
+                            label="Taskgroup Name"
+                            type="text"
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleNewTaskgroup} color="primary">
+                            Create
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }

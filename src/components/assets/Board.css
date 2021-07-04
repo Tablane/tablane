@@ -21,11 +21,13 @@
 }
 
 .add-task-group button {
+    cursor: pointer;
     outline: none;
     border: none;
     background-color: transparent;
     color: rgba(0, 0, 0, 0.3);
     margin: 0 15px;
+    padding: 5px 5px;
 }
 
 .add-task-group div {

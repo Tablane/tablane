@@ -8,15 +8,31 @@
     justify-content: space-between;
 }
 
-.task .title div:first-of-type > p:first-of-type {
+.task .title .taskGroup-title {
     background-color: #579BFC;
+    border-radius: 3px 3px 0 0;
     color: white;
     padding: 4px 8px;
-    border-radius: 3px 3px 0 0;
     font-size: 0.8em;
     text-transform: uppercase;
     margin-right: 15px;
-    margin-bottom: 0;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+}
+
+.task .title .taskGroup-title p {
+    margin: 0;
+}
+
+.task .title .taskGroup-title i {
+    font-size: 0.7rem;
+    margin-left: 10px;
+    display: none;
+}
+
+.task .title .taskGroup-title:hover i {
+    display: inline;
 }
 
 .task .title div,
@@ -26,7 +42,7 @@
     align-items: center;
 }
 
-.task .title div > p:nth-of-type(2) {
+.task .title div > p.task-amount {
     font-size: 0.8em;
     margin-bottom: 0;
 }
