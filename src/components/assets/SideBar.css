@@ -20,6 +20,12 @@ a {
 
 .header i:first-of-type {
     margin-right: 15px;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.SideBar:hover .header i:first-of-type {
+    opacity: 1;
 }
 
 .header i {
@@ -32,33 +38,49 @@ a {
 
 .boards {
     margin-top: 25px;
-    padding: 15px 15px;
+    /*padding: 15px 15px;*/
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.boards label {
+.boards .section-name {
+    cursor: pointer;
+    padding: 0 20px;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boards .section-name:hover {
+    background-color: #F8F9F9;
+}
+
+.boards .section-name label {
     font-weight: 600;
     text-transform: uppercase;
     font-size: 14px;
 }
 
 .boards .new-btn {
-    padding-top: 15px;
+    margin: 5px 20px;
 }
 
-.boards button {
-    outline: none;
-    border: none;
-    background-color: #f3f4f7;
+.boards .new-btn button {
+    background-color: #F3F4F7;
     width: 100%;
     text-transform: uppercase;
-    padding: 5px 10px;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: 600;
+    border: none;
+    height: 24px;
+    border-radius: 2px;
 }
 
-.boards button i,
-.board button i {
+.boards .new-btn button:hover {
+    background-color: #E4E4E4;
+}
+
+.boards button i {
     width: 12px;
     height: 12px;
     padding-right: 5px;
@@ -66,31 +88,109 @@ a {
 
 /*BOARDS CSS STYLING -______________-__________-_______*/
 
-.board {
+.spaces .space .space-title {
     display: flex;
-    flex-direction: column;
-    margin-top: 15px;
+    align-items: center;
+    height: 32px;
+    padding-right: 20px;
 }
 
+.spaces .space .space-title:hover {
+    background-color: #F4F5F7;
+}
 
-.board > div {
+.spaces .space .space-title > div:first-of-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    opacity: 0;
+    font-size: 0.8rem;
+    transform: rotate(90deg);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.boards:hover .space .space-title > div:first-of-type {
+    opacity: 1;
+}
+
+.spaces .space .space-title > div:nth-of-type(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.space .space-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #4169E1;
+    margin-right: 10px;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.space .space-title div:nth-of-type(3) {
+    margin-left: auto;
+    font-size: 0.8rem;
+}
+
+.space .space-title div:nth-of-type(3) i {
+    cursor: pointer;
+    opacity: 0;
+}
+
+.space:hover .space-title div:nth-of-type(3) i {
+    opacity: 1;
+}
+
+.space .space-title div:nth-of-type(3) i:nth-of-type(2) {
+    margin-left: 8px;
+    color: #e54365;
+}
+
+.space .space-boards > a {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-bottom: 5px;
+    height: 32px;
+    padding-left: 35px;
 }
 
-.board p {
-    margin: 0;
+.space .space-boards > a:hover {
+    background-color: #F4F5F7;
 }
 
-.board span {
-    margin-left: 50px;
-    line-height: 28px;
+.space .space-boards > a > div:first-of-type {
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin-right: 10px;
 }
 
-.boards i {
-    flex-basis: 40px;
+.space .space-boards > a > i {
+    margin-left: auto;
+    margin-right: 20px;
+    color: #e54365;
+    font-size: 0.8rem;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.space .space-boards > a:hover > i {
+    opacity: 1;
+}
+
+.space .space-boards .active-board {
+    background-color: #F4F5F7;
+    border-left: 4px solid #4169E1;
+    padding-left: 31px;
 }
 
 /* END BOARDS CSS STYLING -__________-__________-_______*/

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import './assets/SideBar.css'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./partials/AccountPopOver";
 import {connect} from "react-redux";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
@@ -15,19 +15,32 @@ class SideBar extends Component {
     renderSpaces = () => {
         return this.props.workspaces.spaces.map(space => {
             return (
-                <div className="board" key={space.name}>
-                    <div>
-                        <i className="fas fa-cloud"> </i>
-                        <p>{space.name}</p>
+                <div className="space" key={space.name}>
+                    <div className="space-title">
+                        <div><i className="fas fa-caret-right"> </i></div>
+                        <div>
+                            <div className="space-icon">{space.name.charAt(0)}</div>
+                            <p>{space.name}</p>
+                        </div>
+                        <div>
+                            <i className="fas fa-plus"> </i>
+                            <i className="fas fa-trash-alt"> </i>
+                        </div>
                     </div>
-                    {space.boards.map(board => {
-                        return (
-                            <Link to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
-                                  key={board.name}>
-                                <span key={board.name}>{board.name}</span>
-                            </Link>
-                        )
-                    })}
+                    <div className="space-boards">
+                        {space.boards.map(board => {
+                            return (
+                                <NavLink
+                                    to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
+                                    activeClassName="active-board"
+                                    key={board.name}>
+                                    <div> </div>
+                                    <p>{board.name}</p>
+                                    <i className="fas fa-trash-alt"> </i>
+                                </NavLink>
+                            )
+                        })}
+                    </div>
                 </div>
             )
         })
@@ -48,30 +61,39 @@ class SideBar extends Component {
                     </div>
                 </div>
                 <div className="boards">
-                    <label>Spaces</label>
+                    <div className="section-name">
+                        <label>Spaces</label>
+                        <i className="fas fa-angle-down"> </i>
+                    </div>
                     <div className="new-btn">
                         <button><i className="fas fa-plus"> </i>New Space</button>
                     </div>
 
-                    <div className="board">
-                        <div>
-                            <i className="fas fa-cloud"> </i>
-                            <p>Everything</p>
+                    <div className="spaces">
+                        <div className="space">
+                            <div className="space-title">
+                                <div> </div>
+                                <div>
+                                    <div className="space-icon"><i className="fas fa-th-large"> </i></div>
+                                    <p>Everything</p>
+                                </div>
+                            </div>
                         </div>
+
+                        {this.renderSpaces()}
                     </div>
-
-                    {this.renderSpaces()}
-
                 </div>
+
                 <div className="account">
                     <AccountPopOver />
                 </div>
+
                 <Dialog
                     open={this.state.dialogOpen}
                     onClose={() => this.setState({dialogOpen: false})}
                     aria-labelledby="form-dialog-title"
                     fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new taskgroup</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add new task group</DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
@@ -79,7 +101,7 @@ class SideBar extends Component {
                             id="name"
                             name="name"
                             onChange={this.handleChange}
-                            label="Taskgroup Name"
+                            label="task group Name"
                             type="text"
                             fullWidth
                         />
