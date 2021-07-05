@@ -11,7 +11,7 @@ import {toast} from "react-hot-toast";
 
 class Panel extends Component {
 
-    componentDidMount() {
+    getData = async () => {
         axios({
             method: 'GET',
             withCredentials: true,
@@ -24,6 +24,10 @@ class Panel extends Component {
         })
     }
 
+    componentDidMount() {
+        this.getData()
+    }
+
     render() {
         this.props.dispatch({type: 'workspaces', payload: null})
         const { url, path } = this.props.match;
@@ -32,7 +36,7 @@ class Panel extends Component {
                 ? <div className="loading"><CircularProgress/></div>
                 : <Router>
                     <div className="App">
-                        <SideBar url={url} />
+                        <SideBar url={url} getData={this.getData} />
                         <TopMenu updateData={this.updateData}/>
                         <div className="Board">
                             <Switch>

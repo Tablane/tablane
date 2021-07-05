@@ -16,6 +16,7 @@ a {
     align-items: center;
     padding: 0 15px;
     height: 62px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 .header i:first-of-type {
@@ -34,12 +35,6 @@ a {
 
 .header > div {
     display: inline-block;
-}
-
-.boards {
-    margin-top: 25px;
-    /*padding: 15px 15px;*/
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .boards .section-name {
@@ -88,6 +83,18 @@ a {
 
 /*BOARDS CSS STYLING -______________-__________-_______*/
 
+.spaces {
+    transition: max-height 0.2s;
+    opacity: 1;
+    overflow: hidden;
+}
+
+.spaces.space-closed {
+    opacity: 0;
+    height: 0;
+    line-height: 1px;
+}
+
 .spaces .space .space-title {
     display: flex;
     align-items: center;
@@ -106,8 +113,6 @@ a {
     width: 20px;
     opacity: 0;
     font-size: 0.8rem;
-    transform: rotate(90deg);
-    transition: transform 0.2s;
     cursor: pointer;
 }
 
@@ -196,11 +201,12 @@ a {
 /* END BOARDS CSS STYLING -__________-__________-_______*/
 
 .account {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    margin: 0 0 15px 15px;
+    margin-top: auto;
+    padding: 15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .account > div > button {

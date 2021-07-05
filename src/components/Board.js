@@ -41,7 +41,7 @@ class Board extends Component {
         this.setState({loading: false})
     }
 
-    handleNewTaskgroup = async () => {
+    handleNewTaskGroup = async () => {
         this.setState({dialogOpen: false})
         await axios({
             method: 'POST',
@@ -101,7 +101,7 @@ class Board extends Component {
                     onClose={() => this.setState({dialogOpen: false})}
                     aria-labelledby="form-dialog-title"
                     fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new taskgroup</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add new TaskGroup</DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
@@ -109,7 +109,7 @@ class Board extends Component {
                             id="name"
                             name="name"
                             onChange={this.handleChange}
-                            label="Taskgroup Name"
+                            label="TaskGroup Name"
                             type="text"
                             fullWidth
                         />
@@ -118,7 +118,7 @@ class Board extends Component {
                         <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleNewTaskgroup} color="primary">
+                        <Button onClick={this.handleNewTaskGroup} color="primary">
                             Create
                         </Button>
                     </DialogActions>
