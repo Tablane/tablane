@@ -15,7 +15,9 @@ class SideBar extends Component {
             newBoardDialogOpen: false,
             newSpaceDialogOpen: false,
             spacesOpen: true,
-            name: ''}
+            name: '',
+            spaceClosed: []
+        }
     }
 
     handleSpaceDelete = async (spaceId) => {
@@ -82,13 +84,25 @@ class SideBar extends Component {
         })
     }
 
+    toggleClosed = (x) => {
+        const newSpaceClosed = this.state.spaceClosed
+        const xIndex = newSpaceClosed.indexOf(x)
+
+        if (xIndex !== -1) newSpaceClosed.splice(xIndex, 1)
+        else newSpaceClosed.push(x)
+
+        this.setState({spaceClosed: newSpaceClosed})
+    }
+
     renderSpaces = () => {
         return this.props.workspaces.spaces.map(space => {
             return (
                 <div className="space" key={space.name}>
                     <div className="space-title">
-                        <div><i className="fas fa-caret-right"> </i></div>
                         <div>
+                            <i className={`fas fa-caret-right ${this.state.spaceClosed.includes(space._id) ? '' : 'open'}`}> </i>
+                        </div>
+                        <div onClick={() => this.toggleClosed(space._id)}>
                             <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
                             <p>{space.name}</p>
                         </div>
@@ -97,7 +111,7 @@ class SideBar extends Component {
                             <i onClick={() => this.handleSpaceDelete(space._id)} className="fas fa-trash-alt"> </i>
                         </div>
                     </div>
-                    <div className="space-boards">
+                    <div className={`space-boards ${this.state.spaceClosed.includes(space._id) ? 'closed' : ''}`}>
                         {space.boards.map(board => {
                             return (
                                 <NavLink

@@ -111,16 +111,25 @@ a {
     justify-content: center;
     align-items: center;
     width: 20px;
+    transition: transform 0.2s;
     opacity: 0;
     font-size: 0.8rem;
-    cursor: pointer;
 }
 
 .boards:hover .space .space-title > div:first-of-type {
     opacity: 1;
 }
 
+.space .space-title > div:first-of-type i {
+    transition: transform 0.2s;
+}
+
+.space .space-title > div:first-of-type i.open {
+    transform: rotate(90deg);
+}
+
 .spaces .space .space-title > div:nth-of-type(2) {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,6 +166,12 @@ a {
 .space .space-title div:nth-of-type(3) i:nth-of-type(2) {
     margin-left: 8px;
     color: #e54365;
+}
+
+.space .space-boards.closed {
+    opacity: 0;
+    height: 0;
+    display: none;
 }
 
 .space .space-boards > a {
