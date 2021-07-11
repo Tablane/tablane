@@ -67,11 +67,77 @@
 }
 
 .task-popover .options > div {
-    line-height: 32px;
     width: 108px;
     height: 32px;
     margin-bottom: 8px;
     cursor: pointer;
+    transition: width 0.2s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.task-popover .options > div.editing {
+    cursor: auto;
+}
+
+.task-popover .options > div > div {
+    width: 108px;
+    height: 32px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: width 0.2s;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-popover .options > div.editing > div {
+    cursor: auto;
+}
+
+.task-popover .options > div.editing > div:first-of-type {
+    width: 16px;
+    border-radius: 2px 0 0 2px;
+}
+
+.task-popover .options > div.editing > div:nth-of-type(2) {
+    border-radius: 0 2px 2px 0;
+    background-color: #F5F6F8;
+}
+
+.task-popover .options > div.editing > div:nth-of-type(2) input {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    outline: none;
+}
+
+.task-popover .options > div.new-label {
+    justify-content: center;
+    height: 32px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border: dashed 1px #c4c4c4;
+}
+
+.task-popover .colors  {
+    display: flex;
+    background-color: #F5F6F8;
+    flex-wrap: wrap;
+    padding: 8px 16px;
+}
+
+.task-popover .colors > div {
+    cursor: pointer;
+    margin: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
 }
 
 .task-popover .edit {
@@ -82,8 +148,13 @@
     align-items: center;
     height: 31px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
+.task-popover .edit:hover {
+    background-color: #0073ea;
+    color: white;
+}
 
 .task-popover .edit i {
     margin-right: 10px;
