@@ -63,13 +63,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 16px 16px 8px;
+    padding-bottom: 8px;
 }
 
 .task-popover .options > div {
-    width: 108px;
+    width: 140px;
     height: 32px;
-    margin-bottom: 8px;
+    margin-top: 8px;
     cursor: pointer;
     transition: width 0.2s;
     display: flex;
@@ -84,7 +84,6 @@
 .task-popover .options > div > div {
     width: 108px;
     height: 32px;
-    margin-bottom: 8px;
     cursor: pointer;
     transition: width 0.2s;
     display: flex;
@@ -117,9 +116,28 @@
     outline: none;
 }
 
+.task-popover .options > div > i:first-of-type,
+.task-popover .options > div > i:last-of-type {
+    opacity: 0;
+    min-width: 16px;
+    width: 16px;
+}
+
+.task-popover .options > div.editing > i:first-of-type,
+.task-popover .options > div.editing > i:last-of-type {
+    opacity: 1;
+    min-width: 16px;
+    width: 16px;
+}
+
+.task-popover .options > div.default {
+    width: 108px;
+}
+
 .task-popover .options > div.new-label {
     justify-content: center;
     height: 32px;
+    width: 108px;
     margin-bottom: 8px;
     cursor: pointer;
     border: dashed 1px #c4c4c4;

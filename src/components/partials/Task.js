@@ -146,9 +146,9 @@ class Task extends Component {
                                         key={index}
                                         onClick={e => {
                                             if (!this.state.editing)
-                                                this.handleChange(this.state.options.indexOf(this.state.options.find(x => x.name === e.currentTarget.textContent)))
+                                                this.handleChange(index)
                                         }}>
-                                        {this.state.editing ? <i className="fas fa-grip-vertical"> </i> : null}
+                                        <i className="fas fa-grip-vertical"> </i>
                                         <div style={{backgroundColor: x.color}}>
                                             {this.state.editing ? <i className="fas fa-tint"> </i> : x.name}
                                         </div>
@@ -160,14 +160,13 @@ class Task extends Component {
                                                     type="text"/>
                                             </div>
                                             : ''}
-                                        {this.state.editing ?
-                                            <i
-                                                onClick={() => this.handleEditDelete(index)}
-                                                className="fas fa-times-circle"> </i> : null}
+                                        <i
+                                            onClick={() => this.handleEditDelete(index)}
+                                            className="fas fa-times-circle"> </i>
                                     </div>
                                 })}
                                 <div
-                                    className={this.state.editing ? 'editing' : ''}
+                                    className={`${this.state.editing ? 'editing' : ''} default`}
                                     key="none"
                                     style={{backgroundColor: 'rgb(181, 188, 194)'}}
                                     onClick={() => this.handleChange(-1)}> </div>

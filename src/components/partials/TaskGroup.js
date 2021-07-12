@@ -72,6 +72,18 @@ class TaskGroup extends Component {
         })
     }
 
+    handleAttributeDelete = async (attributeId) => {
+        await axios({
+            method: 'DELETE',
+            withCredentials: true,
+            url: `http://localhost:3001/api/attribute/${this.props.boardId}/${attributeId}`
+        }).then(res => {
+            this.props.getData()
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
     render() {
         return (
             <div className="task">
@@ -84,10 +96,17 @@ class TaskGroup extends Component {
                         <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
                     </div>
                     <div className="attributes">
-                        {this.props.attributes.map(x => <p key={x.name}>{x.name}</p>)}
-                        <p><i
-                            onClick={() => this.setState({dialogOpen: true})}
-                            className="fas fa-plus-circle"> </i></p>
+                        {this.props.attributes.map(x => {
+                            return (<div className="attribute">
+                                <p key={x.name}>{x.name}</p>
+                                <i className="fas fa-trash-alt" onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                            </div>)
+                        })}
+                        <div className="attribute">
+                            <p><i
+                                onClick={() => this.setState({dialogOpen: true})}
+                                className="fas fa-plus-circle"> </i></p>
+                        </div>
                     </div>
                 </div>
                 <div className="tasks">
