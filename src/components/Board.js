@@ -84,7 +84,7 @@ class Board extends Component {
                                 return <TaskGroup
                                     getData={this.getData}
                                     boardId={this.props.board._id}
-                                    key={taskGroup.name}
+                                    key={taskGroup._id}
                                     taskGroup={taskGroup}
                                     attributes={this.props.board.attributes}/>
                             })}

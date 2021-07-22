@@ -10,6 +10,7 @@
     "@types/react-router": "^5.1.15",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
+    "bson": "^4.4.1",
     "dotenv": "^8.2.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",

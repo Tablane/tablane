@@ -97,8 +97,8 @@ class TaskGroup extends Component {
                     </div>
                     <div className="attributes">
                         {this.props.attributes.map(x => {
-                            return (<div className="attribute">
-                                <p key={x.name}>{x.name}</p>
+                            return (<div className="attribute" key={x.name}>
+                                <p>{x.name}</p>
                                 <i className="fas fa-trash-alt" onClick={() => this.handleAttributeDelete(x._id)}> </i>
                             </div>)
                         })}
