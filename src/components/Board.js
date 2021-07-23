@@ -2,6 +2,7 @@ import {Component} from 'react'
 import './assets/Board.css'
 import TaskGroup from './partials/TaskGroup'
 import {connect} from "react-redux";
+import {DragDropContext} from "react-beautiful-dnd";
 import {
     Dialog,
     DialogActions,
@@ -57,6 +58,31 @@ class Board extends Component {
         })
     }
 
+    onDragStart = () => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'pointer'
+    }
+
+    handleDragEnd = async (result) => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'auto'
+        if (result.destination === null ||
+            (result.destination.index === result.source.index
+            && result.destination.droppableId === result.source.droppableId)) return
+        await axios({
+            method: 'PATCH',
+            withCredentials: true,
+            data: {
+                result
+            },
+            url: `http://localhost:3001/api/task/${this.findBoardId()}`
+        }).then(res => {
+            this.getData()
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
     componentDidMount() {
         this.getData()
     }
@@ -80,14 +106,16 @@ class Board extends Component {
                     : <div>
                         {this.state.loading ? <LinearProgress/> : <div className="loading-placeholder"> </div>}
                         <div className="task-group">
-                            {this.props.board.taskGroups.map(taskGroup => {
-                                return <TaskGroup
-                                    getData={this.getData}
-                                    boardId={this.props.board._id}
-                                    key={taskGroup._id}
-                                    taskGroup={taskGroup}
-                                    attributes={this.props.board.attributes}/>
-                            })}
+                            <DragDropContext onDragEnd={this.handleDragEnd} onDragStart={this.onDragStart}>
+                                {this.props.board.taskGroups.map(taskGroup => {
+                                    return <TaskGroup
+                                        getData={this.getData}
+                                        boardId={this.props.board._id}
+                                        key={taskGroup._id}
+                                        taskGroup={taskGroup}
+                                        attributes={this.props.board.attributes}/>
+                                })}
+                            </DragDropContext>
                         </div>
                         <div className="add-task-group">
                             <div> </div>

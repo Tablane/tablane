@@ -14,7 +14,7 @@ const store = createStore(reducer, devToolsEnhancer())
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <App/>
+            <App />
             <Toaster/>
         </Provider>
     </React.StrictMode>,

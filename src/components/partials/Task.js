@@ -3,6 +3,7 @@ import './assets/Task.css'
 import axios from "axios";
 import {connect} from "react-redux";
 import TaskPopover from "./TaskPopover";
+import {Draggable} from "react-beautiful-dnd";
 
 class Task extends Component {
     constructor(props) {
@@ -36,43 +37,47 @@ class Task extends Component {
 
     render() {
         return (
-            <div className="Task">
-                <p>{this.props.task.name}</p>
-                <div>
-                    {this.props.attributes.map(attribute => {
-                        let taskOption = this.props.task.options.find(x => x.name === attribute.name)
-                        let label
+            <Draggable draggableId={this.props.task._id} index={this.props.index}>
+                {(provided) => (
+                    <div className="Task" {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
+                        <p>{this.props.task.name}</p>
+                        <div>
+                            {this.props.attributes.map(attribute => {
+                                let taskOption = this.props.task.options.find(x => x.name === attribute.name)
+                                let label
 
-                        if (taskOption) {
-                            label = attribute.labels.find(x => x._id === taskOption.value)
-                        } else label = {color: 'rgb(196,196,196)', name: ''}
+                                if (taskOption) {
+                                    label = attribute.labels.find(x => x._id === taskOption.value)
+                                } else label = {color: 'rgb(196,196,196)', name: ''}
 
-                        if (!label) label = {color: 'rgb(196,196,196)', name: ''}
+                                if (!label) label = {color: 'rgb(196,196,196)', name: ''}
 
-                        return (
-                            <Fragment key={attribute.name} >
-                                <div
-                                    onClick={(e) => this.handleClick(e, attribute)}
-                                    style={{backgroundColor: label.color}}>
-                                    {label.name}
-                                </div>
-                                {attribute._id.toString() === this.state.activeOption && (
-                                    <TaskPopover
-                                    attribute={attribute}
-                                    anchor={this.state.anchor}
-                                    task={this.props.task}
-                                    getData={this.props.getData}
-                                    taskGroupId={this.props.taskGroupId}
-                                    handleClose={this.handleClose}/>)}
-                            </Fragment>
-                        )
-                    })}
+                                return (
+                                    <Fragment key={attribute.name} >
+                                        <div
+                                            onClick={(e) => this.handleClick(e, attribute)}
+                                            style={{backgroundColor: label.color}}>
+                                            {label.name}
+                                        </div>
+                                        {attribute._id.toString() === this.state.activeOption && (
+                                            <TaskPopover
+                                                attribute={attribute}
+                                                anchor={this.state.anchor}
+                                                task={this.props.task}
+                                                getData={this.props.getData}
+                                                taskGroupId={this.props.taskGroupId}
+                                                handleClose={this.handleClose}/>)}
+                                    </Fragment>
+                                )
+                            })}
 
-                    <div onClick={this.handleDelete}>
-                        <i className="fas fa-trash-alt"> </i>
+                            <div onClick={this.handleDelete}>
+                                <i className="fas fa-trash-alt"> </i>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )}
+            </Draggable>
         );
     }
 }

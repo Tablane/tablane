@@ -57,7 +57,8 @@ class TaskPopover extends Component {
     }
 
     // add new label while editing
-    addNewLabel = (color = '#C4C4C4') => {
+    addNewLabel = (color) => {
+        if (typeof color !== "string") color = '#C4C4C4'
         let newCurrentLabels = this.state.currentLabels
         const attribute = { name: '', color: color, _id: ObjectID() }
         newCurrentLabels.push(attribute)

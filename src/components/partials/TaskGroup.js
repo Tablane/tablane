@@ -5,6 +5,7 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import {Droppable} from "react-beautiful-dnd";
 
 class TaskGroup extends Component {
     constructor(props) {
@@ -109,16 +110,24 @@ class TaskGroup extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="tasks">
-                    {this.props.taskGroup.tasks.map(task => {
-                        return <Task
-                            key={task._id}
-                            getData={this.props.getData}
-                            task={task}
-                            taskGroupId={this.props.taskGroup._id}
-                            attributes={this.props.attributes} />
-                    })}
-                </div>
+                <Droppable droppableId={this.props.taskGroup._id}>
+                    {(provided) => (
+                        <div className="tasks" ref={provided.innerRef} {...provided.droppableProps}>
+                            {this.props.taskGroup.tasks.map((task, i) => {
+                                return (
+                                    <Task
+                                        key={task._id}
+                                        getData={this.props.getData}
+                                        task={task}
+                                        index={i}
+                                        taskGroupId={this.props.taskGroup._id}
+                                        attributes={this.props.attributes}/>
+                                )
+                            })}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
                 <form onSubmit={this.addTask}>
                     <div className="new-task">
                         <input
