@@ -14,9 +14,9 @@ class SideBar extends Component {
         this.state = {
             newBoardDialogOpen: false,
             newSpaceDialogOpen: false,
-            spacesOpen: true,
+            spacesOpen: JSON.parse(localStorage.getItem('spacesOpen')) !== null ? JSON.parse(localStorage.getItem('spacesOpen')) : true,
             name: '',
-            spaceClosed: []
+            spaceClosed: JSON.parse(localStorage.getItem('spaceClosed')) || []
         }
     }
 
@@ -91,7 +91,16 @@ class SideBar extends Component {
         if (xIndex !== -1) newSpaceClosed.splice(xIndex, 1)
         else newSpaceClosed.push(x)
 
-        this.setState({spaceClosed: newSpaceClosed})
+        this.setState({spaceClosed: newSpaceClosed}, this.syncSpaceClosed)
+    }
+
+    syncSpaceClosed = () => {
+        localStorage.setItem('spaceClosed', JSON.stringify(this.state.spaceClosed))
+    }
+
+    toggleSpaces = () => {
+        localStorage.setItem('spacesOpen', JSON.stringify(!this.state.spacesOpen))
+        this.setState(st => ({spacesOpen: !st.spacesOpen}))
     }
 
     renderSpaces = () => {
@@ -148,7 +157,7 @@ class SideBar extends Component {
                     </div>
                 </div>
                 <div className="boards">
-                    <div onClick={() => this.setState(st => ({spacesOpen: !st.spacesOpen}))} className="section-name">
+                    <div onClick={this.toggleSpaces} className="section-name">
                         <label>Spaces</label>
                         <i style={{transition: 'transform 0.2s', transform: this.state.spacesOpen ? 'rotate(360deg)' : 'rotate(270deg)'}} className="fas fa-angle-down"> </i>
                     </div>
