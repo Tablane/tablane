@@ -4,6 +4,7 @@ import axios from "axios";
 import {connect} from "react-redux";
 import {ObjectID} from "bson";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import AnimateHeight from "react-animate-height";
 
 class TaskPopover extends Component {
     constructor(props) {
@@ -60,6 +61,10 @@ class TaskPopover extends Component {
     // add new label while editing
     addNewLabel = (color) => {
         if (typeof color !== "string") color = '#C4C4C4'
+        if (this.state.hoverColor) {
+            color = this.state.hoverColor
+            this.setState({hoverColor: null})
+        }
         let newCurrentLabels = this.state.currentLabels
         const attribute = { name: '', color: color, _id: ObjectID() }
         newCurrentLabels.push(attribute)
@@ -100,7 +105,7 @@ class TaskPopover extends Component {
 
     // handle sorting
     handleSort = (x) => {
-        if (x.destination === undefined) return
+        if (!x.destination) return
         const newLabels = this.state.currentLabels
         const [label] = newLabels.splice(x.source.index, 1)
         newLabels.splice(x.destination.index, 0, label)
@@ -143,7 +148,8 @@ class TaskPopover extends Component {
 
                                                         <i className="fas fa-grip-vertical"> </i>
                                                         <div style={{backgroundColor: x.color}}>
-                                                            {this.state.editing ? <i className="fas fa-tint"> </i> : x.name}
+                                                            {this.state.editing ?
+                                                                <i className="fas fa-tint"> </i> : x.name}
                                                         </div>
                                                         {this.state.editing ?
                                                             <div>
@@ -178,15 +184,20 @@ class TaskPopover extends Component {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    {this.state.editing
-                        ? <div className="colors">
+
+                    <AnimateHeight
+                        duration={200}
+                        height={this.state.editing ? 'auto' : 0}
+                    >
+                        <div className="colors">
                             {colors.map(x => <div
                                 key={x}
                                 onMouseEnter={() => this.setState({hoverColor: x})}
                                 onClick={() => this.addNewLabel(x)}
                                 style={{backgroundColor: x}}> </div>)}
                         </div>
-                        : ''}
+                    </AnimateHeight>
+
                     <div className="edit" onClick={this.toggleEdit}>
                         {this.state.editing ? '' : <i className="fas fa-pen"> </i>}
                         <p>{this.state.editing ? 'Apply' : 'Edit Labels'}</p>

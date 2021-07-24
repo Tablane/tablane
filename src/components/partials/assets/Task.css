@@ -75,7 +75,6 @@
     height: 32px;
     margin-top: 8px;
     cursor: pointer;
-    transition: width 0.2s;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -127,11 +126,12 @@
     width: 16px;
 }
 
-.task-popover .options > div.editing > i:first-of-type,
-.task-popover .options > div.editing > i:last-of-type {
+.task-popover .options > div > div > i {
+    opacity: 0;
+}
+
+.task-popover .options > div.editing:hover i {
     opacity: 1;
-    min-width: 16px;
-    width: 16px;
 }
 
 .task-popover .options > div.default {
