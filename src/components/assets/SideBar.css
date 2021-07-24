@@ -10,13 +10,17 @@ a {
     color: black;
 }
 
+.SideBar p {
+    margin: 0
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 15px;
-    height: 62px;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    height: 61px;
+    min-height: 61px;
 }
 
 .header i:first-of-type {
@@ -44,6 +48,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .boards .section-name:hover {
@@ -82,18 +87,6 @@ a {
 }
 
 /*BOARDS CSS STYLING -______________-__________-_______*/
-
-.spaces {
-    transition: max-height 0.2s;
-    opacity: 1;
-    overflow: hidden;
-}
-
-.spaces.space-closed {
-    opacity: 0;
-    height: 0;
-    line-height: 1px;
-}
 
 .spaces .space .space-title {
     display: flex;
@@ -168,13 +161,7 @@ a {
     color: #e54365;
 }
 
-.space .space-boards.closed {
-    opacity: 0;
-    height: 0;
-    display: none;
-}
-
-.space .space-boards > a {
+.space .space-boards > div > a {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -182,11 +169,11 @@ a {
     padding-left: 35px;
 }
 
-.space .space-boards > a:hover {
+.space .space-boards > div > a:hover {
     background-color: #F4F5F7;
 }
 
-.space .space-boards > a > div:first-of-type {
+.space .space-boards > div > a > div:first-of-type {
     height: 5px;
     width: 5px;
     border-radius: 50%;
@@ -194,7 +181,7 @@ a {
     margin-right: 10px;
 }
 
-.space .space-boards > a > i {
+.space .space-boards > div > a > i {
     margin-left: auto;
     margin-right: 20px;
     color: #e54365;
@@ -203,7 +190,7 @@ a {
     cursor: pointer;
 }
 
-.space .space-boards > a:hover > i {
+.space .space-boards > div > a:hover > i {
     opacity: 1;
 }
 
@@ -211,6 +198,10 @@ a {
     background-color: #F4F5F7;
     border-left: 4px solid #4169E1;
     padding-left: 31px;
+}
+
+.space:last-of-type {
+    margin-bottom: 5px;
 }
 
 /* END BOARDS CSS STYLING -__________-__________-_______*/

@@ -7,6 +7,7 @@ import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mat
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import AnimateHeight from "react-animate-height";
 
 class SideBar extends Component {
     constructor(props) {
@@ -120,7 +121,12 @@ class SideBar extends Component {
                             <i onClick={() => this.handleSpaceDelete(space._id)} className="fas fa-trash-alt"> </i>
                         </div>
                     </div>
-                    <div className={`space-boards ${this.state.spaceClosed.includes(space._id) ? 'closed' : ''}`}>
+
+                    <AnimateHeight
+                        className="space-boards"
+                        duration={ 200 }
+                        height={ this.state.spaceClosed.includes(space._id) ? 0 : 'auto' }
+                    >
                         {space.boards.map(board => {
                             return (
                                 <NavLink
@@ -136,7 +142,7 @@ class SideBar extends Component {
                                 </NavLink>
                             )
                         })}
-                    </div>
+                    </AnimateHeight>
                 </div>
             )
         })
@@ -162,13 +168,19 @@ class SideBar extends Component {
                         <i style={{transition: 'transform 0.2s', transform: this.state.spacesOpen ? 'rotate(360deg)' : 'rotate(270deg)'}} className="fas fa-angle-down"> </i>
                     </div>
 
-                    <div className={`spaces ${this.state.spacesOpen ? '' : 'space-closed'}`}>
+                    <AnimateHeight
+                        className="spaces"
+                        duration={200}
+                        height={this.state.spacesOpen ? 'auto' : 0}
+                    >
                         <div className="new-btn">
-                            <button onClick={() => this.setState({newSpaceDialogOpen: true})}><i className="fas fa-plus"> </i>New Space</button>
+                            <button onClick={() => this.setState({newSpaceDialogOpen: true})}><i
+                                className="fas fa-plus"> </i>New Space
+                            </button>
                         </div>
                         <div className="space">
                             <div className="space-title">
-                                <div> </div>
+                                <div></div>
                                 <div>
                                     <div className="space-icon"><i className="fas fa-th-large"> </i></div>
                                     <p>Everything</p>
@@ -177,7 +189,7 @@ class SideBar extends Component {
                         </div>
 
                         {this.renderSpaces()}
-                    </div>
+                    </AnimateHeight>
                 </div>
 
                 <div className="boards">
