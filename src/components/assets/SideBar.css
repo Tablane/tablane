@@ -97,6 +97,7 @@ a {
 /*BOARDS CSS STYLING -______________-__________-_______*/
 
 .spaces .space .space-title {
+    cursor: pointer;
     display: flex;
     align-items: center;
     height: 32px;
@@ -169,7 +170,8 @@ a {
     color: #e54365;
 }
 
-.space .space-boards > div > a {
+.space .space-boards > div > div > a {
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -177,11 +179,11 @@ a {
     padding-left: 35px;
 }
 
-.space .space-boards > div > a:hover {
+.space .space-boards > div > div > a:hover {
     background-color: #F4F5F7;
 }
 
-.space .space-boards > div > a > div:first-of-type {
+.space .space-boards > div > div > a > div:first-of-type {
     height: 5px;
     width: 5px;
     border-radius: 50%;
@@ -189,7 +191,7 @@ a {
     margin-right: 10px;
 }
 
-.space .space-boards > div > a > i {
+.space .space-boards > div > div > a > i {
     margin-left: auto;
     margin-right: 20px;
     color: #e54365;
@@ -198,7 +200,7 @@ a {
     cursor: pointer;
 }
 
-.space .space-boards > div > a:hover > i {
+.space .space-boards > div > div > a:hover > i {
     opacity: 1;
 }
 

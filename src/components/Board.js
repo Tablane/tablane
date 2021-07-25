@@ -83,7 +83,6 @@ class Board extends Component {
                 toast(err.toString())
             })
         } else if (result.type === "taskgroup") {
-            console.log(result)
             await axios({
                 method: 'PATCH',
                 withCredentials: true,
@@ -91,6 +90,19 @@ class Board extends Component {
                     result
                 },
                 url: `http://localhost:3001/api/taskgroup/${this.findBoardId()}`
+            }).then(res => {
+                this.getData()
+            }).catch(err => {
+                toast(err.toString())
+            })
+        } else if (result.type === "attribute") {
+            await axios({
+                method: 'PATCH',
+                withCredentials: true,
+                data: {
+                    result
+                },
+                url: `http://localhost:3001/api/attribute/${this.findBoardId()}`
             }).then(res => {
                 this.getData()
             }).catch(err => {

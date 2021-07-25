@@ -3,10 +3,13 @@
 }
 
 .task .title {
-    cursor: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.task .title p {
+    margin: 0;
 }
 
 .task .title .taskGroup-title {
@@ -23,7 +26,6 @@
 }
 
 .task .title > div > p {
-    margin-bottom: 4px;
     text-transform: uppercase;
     font-size: 0.8rem;
     text-align: center;
@@ -57,18 +59,21 @@
 }
 
 .task .title .attributes > div {
+    cursor: auto;
     text-transform: uppercase;
     font-size: 0.8rem;
     text-align: center;
-    width: 120px;
+    width: 121px;
 }
 
-.task .title .attributes > div > p {
-    margin-bottom: 0;
+.task .title .attribute > i {
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: 5px;
 }
 
-.task .title .attribute > p i {
-    color: rgba(0,0,0,0.6);
+.task .title .attribute:hover > i:last-of-type {
+    opacity: 1;
 }
 
 .task .title .attributes > div:last-of-type {
@@ -76,6 +81,7 @@
 }
 
 .task .title > div {
+    cursor: auto;
     display: flex;
     flex-direction: row;
 }

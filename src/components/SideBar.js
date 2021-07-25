@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import AnimateHeight from "react-animate-height";
+import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 
 class SideBar extends Component {
     constructor(props) {
@@ -104,48 +105,104 @@ class SideBar extends Component {
         this.setState(st => ({spacesOpen: !st.spacesOpen}))
     }
 
-    renderSpaces = () => {
-        return this.props.workspaces.spaces.map(space => {
-            return (
-                <div className="space" key={space.name}>
-                    <div className="space-title">
-                        <div>
-                            <i className={`fas fa-caret-right ${this.state.spaceClosed.includes(space._id) ? '' : 'open'}`}> </i>
-                        </div>
-                        <div onClick={() => this.toggleClosed(space._id)}>
-                            <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
-                            <p>{space.name}</p>
-                        </div>
-                        <div>
-                            <i onClick={() => this.setState({newBoardDialogOpen: true, currentSpace: space._id})} className="fas fa-plus"> </i>
-                            <i onClick={() => this.handleSpaceDelete(space._id)} className="fas fa-trash-alt"> </i>
-                        </div>
-                    </div>
+    handleDragStart = () => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'pointer'
+    }
 
-                    <AnimateHeight
-                        className="space-boards"
-                        duration={ 200 }
-                        height={ this.state.spaceClosed.includes(space._id) ? 0 : 'auto' }
-                    >
-                        {space.boards.map(board => {
-                            return (
-                                <NavLink
-                                    to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
-                                    activeClassName="active-board"
-                                    key={board.name}>
-                                    <div> </div>
-                                    <p>{board.name}</p>
-                                    <i onClick={(e) => {
-                                        e.preventDefault()
-                                        this.handleBoardDelete(space._id, board._id)
-                                    }} className="fas fa-trash-alt"> </i>
-                                </NavLink>
-                            )
-                        })}
-                    </AnimateHeight>
-                </div>
+    handleDragEnd = async (result) => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'auto'
+        if (result.destination === null ||
+            (result.destination.index === result.source.index
+                && result.destination.droppableId === result.source.droppableId)) return
+        if (result.type === "board") {
+            await axios({
+                method: 'PATCH',
+                withCredentials: true,
+                data: {
+                    result
+                },
+                url: `http://localhost:3001/api/board/${this.props.workspaces._id}`
+            }).then(res => {
+                this.props.getData()
+            }).catch(err => {
+                toast(err.toString())
+            })
+        } else if (result.type === "space") {
+            await axios({
+                method: 'PATCH',
+                withCredentials: true,
+                data: {
+                    result
+                },
+                url: `http://localhost:3001/api/space/${this.props.workspaces._id}`
+            }).then(res => {
+                this.props.getData()
+            }).catch(err => {
+                toast(err.toString())
+            })
+        }
+    }
+
+    renderSpaces = () => {
+        return this.props.workspaces.spaces.map((space, i) => (
+                <Draggable draggableId={space._id} key={space._id} index={i}>
+                    {(provided) => (
+                        <div className="space" {...provided.draggableProps} ref={provided.innerRef}>
+                            <div className="space-title" {...provided.dragHandleProps}>
+                                <div>
+                                    <i className={`fas fa-caret-right ${this.state.spaceClosed.includes(space._id) ? '' : 'open'}`}> </i>
+                                </div>
+                                <div onClick={() => this.toggleClosed(space._id)}>
+                                    <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
+                                    <p>{space.name}</p>
+                                </div>
+                                <div>
+                                    <i onClick={() => this.setState({newBoardDialogOpen: true, currentSpace: space._id})}
+                                       className="fas fa-plus"> </i>
+                                    <i onClick={() => this.handleSpaceDelete(space._id)} className="fas fa-trash-alt"> </i>
+                                </div>
+                            </div>
+
+                            <AnimateHeight
+                                className="space-boards"
+                                duration={200}
+                                height={this.state.spaceClosed.includes(space._id) ? 0 : 'auto'}>
+                                <Droppable droppableId={space._id} type="board">
+                                    {(provided) => (
+                                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                                            {space.boards.map((board, i) => {
+                                                return (
+                                                    <Draggable key={board._id} draggableId={board._id} index={i}>
+                                                        {(provided) => (
+                                                            <NavLink
+                                                                {...provided.draggableProps}
+                                                                ref={provided.innerRef}
+                                                                {...provided.dragHandleProps}
+                                                                to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
+                                                                activeClassName="active-board">
+                                                                <div> </div>
+                                                                <p>{board.name}</p>
+                                                                <i onClick={(e) => {
+                                                                    e.preventDefault()
+                                                                    this.handleBoardDelete(space._id, board._id)
+                                                                }} className="fas fa-trash-alt"> </i>
+                                                            </NavLink>
+                                                        )}
+                                                    </Draggable>
+                                                )
+                                            })}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </AnimateHeight>
+                        </div>
+                    )}
+                </Draggable>
             )
-        })
+        )
     }
 
     render() {
@@ -188,7 +245,16 @@ class SideBar extends Component {
                             </div>
                         </div>
 
-                        {this.renderSpaces()}
+                        <DragDropContext onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+                            <Droppable droppableId="spaces" type="space">
+                                {(provided) => (
+                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                        {this.renderSpaces()}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </AnimateHeight>
                 </div>
 
@@ -197,7 +263,6 @@ class SideBar extends Component {
                         <label>Something else</label>
                         <i className="fas fa-angle-down"> </i>
                     </div>
-
                 </div>
 
                 <div className="account">

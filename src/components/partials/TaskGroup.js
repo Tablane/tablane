@@ -90,27 +90,51 @@ class TaskGroup extends Component {
             <Draggable draggableId={this.props.taskGroup._id} index={this.props.index}>
                 {(provided) => (
                     <div className="task" {...provided.draggableProps} ref={provided.innerRef}>
-                        <div className="title" {...provided.dragHandleProps}>
-                            <div>
+                        <div className="title">
+                            <div {...provided.dragHandleProps}>
                                 <div className="taskGroup-title">
                                     <p>{this.props.taskGroup.name}</p>
                                     <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
                                 </div>
                                 <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
                             </div>
-                            <div className="attributes">
-                                {this.props.attributes.map(x => {
-                                    return (<div className="attribute" key={x.name}>
-                                        <p>{x.name}</p>
-                                        <i className="fas fa-trash-alt" onClick={() => this.handleAttributeDelete(x._id)}> </i>
-                                    </div>)
-                                })}
-                                <div className="attribute">
-                                    <p><i
-                                        onClick={() => this.setState({dialogOpen: true})}
-                                        className="fas fa-plus-circle"> </i></p>
-                                </div>
-                            </div>
+                            <Droppable
+                                droppableId={this.props.taskGroup._id + 'attribute'}
+                                direction="horizontal"
+                                type="attribute">
+                                {(provided) => (
+                                    <div className="attributes" {...provided.droppableProps} ref={provided.innerRef}>
+                                        {this.props.attributes.map((x, i) => {
+                                            return (
+                                                <Draggable
+                                                    draggableId={this.props.taskGroup._id + x._id}
+                                                    index={i}
+                                                    key={this.props.taskGroup._id + x._id}>
+                                                    {(provided) => (
+                                                        <div
+                                                            className="attribute"
+                                                            ref={provided.innerRef}
+                                                            {...provided.dragHandleProps}
+                                                            {...provided.draggableProps}>
+                                                            <i className="fas fa-trash-alt"
+                                                               onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                                                            <p>{x.name}</p>
+                                                            <i className="fas fa-trash-alt"
+                                                               onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        })}
+                                        {provided.placeholder}
+                                        <div className="attribute">
+                                            <p><i
+                                                onClick={() => this.setState({dialogOpen: true})}
+                                                className="fas fa-plus-circle"> </i></p>
+                                        </div>
+                                    </div>
+                                )}
+                            </Droppable>
                         </div>
                         <Droppable droppableId={this.props.taskGroup._id} type="task">
                             {(provided) => (
