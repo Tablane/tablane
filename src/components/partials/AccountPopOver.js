@@ -22,6 +22,19 @@ class AccountPopOver extends Component {
         this.setState({ anchor: null});
     }
 
+    logout = () => {
+        this.props.dispatch({type: 'changeLoggedIn'})
+        axios({
+            method: "GET",
+            withCredentials: true,
+            url: "http://localhost:3001/api/user/logout",
+        }).then((res) => {
+            toast(res.data)
+        }).catch(x => {
+            toast(x)
+        })
+    }
+
     render() {
         return (
             <div>
@@ -41,52 +54,52 @@ class AccountPopOver extends Component {
                         horizontal: 'left',
                     }}>
                     <div className="popover">
-                        <div className="">
+                        <div>
                             <div className="workspaces">
                                 <div>P</div>
                                 <div>A</div>
-                                <div>+</div>
+                                <div><i className="fas fa-plus"> </i></div>
                             </div>
                             <div className="workspace-settings">
                                 <div>
-                                    <div className="circle">P</div>
-                                    <p>producers</p>
+                                    <div className="circle">W</div>
+                                    <p>Workspace</p>
                                 </div>
                                 <div className="buttons">
-                                    <button>settings</button>
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
+                                    <button>Settings</button>
+                                    <button>Import/Export</button>
+                                    <button>Teams</button>
+                                    <button>Spaces</button>
+                                    <button>Integrations</button>
+                                    <button>Trash</button>
+                                    <button>Security & Permissions</button>
                                 </div>
                             </div>
                             <div className="user-settings">
                                 <div>
-                                    <div className="circle">AP</div>
-                                    <p>app producer</p>
+                                    <div className="circle">FN</div>
+                                    <p>Full Name</p>
                                 </div>
                                 <div className="buttons">
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
-                                    <button>placeholder</button>
-                                    <button onClick={() => {
-                                        this.props.dispatch({type: 'changeLoggedIn'})
-                                        axios({
-                                            method: "GET",
-                                            withCredentials: true,
-                                            url: "http://localhost:3001/api/user/logout",
-                                        }).then((res) => {
-                                            toast(res.data)
-                                        }).catch(x => {
-                                            toast(x)
-                                        })
-                                    }}>logout</button>
+                                    <button>My Settings</button>
+                                    <button>Notifications</button>
+                                    <button>Layout size & style</button>
+                                    <button>Apps</button>
+                                    <button>Rewards</button>
+                                    <button onClick={this.logout}>Log out</button>
                                 </div>
                             </div>
                         </div>
                         <div className="download">
-                            <p>Download APPS</p>
+                            <div>
+                                <p>Download Apps</p>
+                            </div>
+                            <div>
+                                <i className="fab fa-apple"> </i>
+                                <i className="fab fa-android"> </i>
+                                <i className="fas fa-desktop"> </i>
+                                <i className="fab fa-chrome"> </i>
+                            </div>
                         </div>
                     </div>
                 </Popover>

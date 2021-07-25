@@ -1,8 +1,12 @@
 .popover {
     width: 410px;
-    height: 406px;
+    height: 360px;
     display: flex;
     flex-direction: column;
+}
+
+.popover p {
+    margin: 0;
 }
 
 .popover > div:first-of-type {
@@ -11,72 +15,99 @@
     flex-grow: 1;
 }
 
-.popover > div:first-of-type .workspaces {
+.popover > div .workspaces {
     width: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 40px;
+    padding: 5px 0;
 }
 
-.popover > div:first-of-type .workspaces > div,
-.popover > div:first-of-type .workspace-settings div > div.circle,
-.popover > div:first-of-type .user-settings div > div.circle {
+.popover > div .workspaces > div {
+    margin-bottom: 6px;
+}
+
+.popover > div .workspaces > div:last-of-type {
+    margin-bottom: 0;
+    font-size: 8px;
+    color: #333333;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='%23333' stroke-width='1' stroke-dasharray='3' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 100px;
+}
+
+.popover > div .workspaces > div,
+.popover > div .workspace-settings div > div.circle,
+.popover > div .user-settings div > div.circle {
     color: white;
+    font-weight: 700;
     font-size: 0.8em;
     cursor: pointer;
-    background-color: rgb(64, 188, 134);
+    background-color: rgb(83, 108, 254);
     border-radius: 50%;
-    line-height: 32px;
-    margin: 5px 0;
+    line-height: 26px;
     text-align: center;
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
 }
 
-.popover > div:first-of-type .workspace-settings > div:first-of-type,
-.popover > div:first-of-type .user-settings > div:first-of-type {
+.popover .workspace-settings > div:first-of-type,
+.popover .user-settings > div:first-of-type {
+    margin-bottom: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
 }
 
-.popover > div:first-of-type .workspace-settings > div:first-of-type p,
-.popover > div:first-of-type .user-settings > div:first-of-type p {
+.popover > div > div > div > p {
     margin-left: 10px;
+    font-weight: 600;
+    font-size: 12px;
 }
 
-.popover > div:first-of-type .workspace-settings,
-.popover > div:first-of-type .user-settings {
+.popover .workspace-settings,
+.popover .user-settings {
+    padding: 15px 20px;
     border-left: 1px solid #e9ebf0;
-    margin-top: 10px;
     width: 185px;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-.popover > div:first-of-type .workspace-settings .buttons,
-.popover > div:first-of-type .user-settings .buttons {
-    margin-top: 15px;
+.popover div.buttons {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
 }
 
-.popover > div:first-of-type .workspace-settings .buttons button,
-.popover > div:first-of-type .user-settings .buttons button {
-    margin: 8px 0;
-    font-size: 0.9em;
+div.buttons button {
+    text-align: left;
+    width: 100%;
+    font-size: 13px;
+    height: 30px;
+    padding: 9px 0;
     cursor: pointer;
     background-color: white;
     outline: none;
     border: none;
-    padding: 5px 10px;
 }
 
 .popover > div:nth-of-type(2) {
     border-top: 1px solid #e9ebf0;
-    height: 40px;
+    height: 39px;
+    line-height: 39px;
+    padding: 0 16px;
+    background-color: #fafbfc;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+}
+
+.popover > div:nth-of-type(2) i {
+    width: 28px;
+    text-align: center;
 }
