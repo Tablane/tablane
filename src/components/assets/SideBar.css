@@ -1,8 +1,15 @@
 .SideBar {
-    grid-area: nav;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    transition: transform .2s ease-in-out;
+    position: absolute;
+    width: 280px;
+    height: 100%;
+}
+
+.SideBar.closed {
+    transform: translateX(-280px);
 }
 
 a {

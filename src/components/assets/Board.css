@@ -1,5 +1,5 @@
 .Board {
-    grid-area: content;
+    flex-grow: 1;
     background-color: #eee;
     overflow: auto;
 }

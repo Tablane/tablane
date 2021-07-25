@@ -150,7 +150,7 @@ class SideBar extends Component {
 
     render() {
         return (
-            <div className="SideBar">
+            <div className={`SideBar ${this.props.sideBarClosed ? 'closed' : ''}`}>
                 <div className="header">
                     <div className="logo">
                         <Link to="/">
@@ -159,7 +159,7 @@ class SideBar extends Component {
                     </div>
                     <div className="icons">
                         <i className="fas fa-cog"> </i>
-                        <i className="fas fa-angle-double-left"> </i>
+                        <i className="fas fa-angle-double-left" onClick={this.props.toggleSideBar}> </i>
                     </div>
                 </div>
                 <div className="boards">

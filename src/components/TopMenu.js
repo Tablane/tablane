@@ -7,6 +7,9 @@ class TopMenu extends Component {
         return (
             <div className="TopMenu">
                 <div className="details">
+                    {this.props.sideBarClosed && (
+                        <i onClick={this.props.toggleSideBar} className="fas fa-angle-double-right"> </i>
+                    )}
                     <div className="pic">
                         <div> </div>
                     </div>

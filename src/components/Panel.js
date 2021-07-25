@@ -10,6 +10,14 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 
 class Panel extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            sideBarClosed: localStorage.getItem('sideBarClosed') === null
+                ? false
+                : JSON.parse(localStorage.getItem('sideBarClosed'))
+        }
+    }
 
     getData = async () => {
         axios({
@@ -28,6 +36,14 @@ class Panel extends Component {
         this.getData()
     }
 
+    toggleSideBar = () => {
+        this.setState(st => ({
+            sideBarClosed: !st.sideBarClosed
+        }), () => {
+            localStorage.setItem('sideBarClosed', JSON.stringify(this.state.sideBarClosed))
+        })
+    }
+
     render() {
         this.props.dispatch({type: 'workspaces', payload: null})
         const { url, path } = this.props.match;
@@ -35,15 +51,24 @@ class Panel extends Component {
             !this.props.workspaces
                 ? <div className="loading"><CircularProgress/></div>
                 : <Router>
-                    <div className="App">
-                        <SideBar url={url} getData={this.getData} />
-                        <TopMenu updateData={this.updateData}/>
-                        <div className="Board">
-                            <Switch>
-                                <Route exact path={`${path}/:space/:board`} component={Board}/>
-                                <Route exact path={url} component={Home}/>
-                                <Route path="/" component={() => <Redirect to={url}/>}/>
-                            </Switch>
+                    <div className={`App ${this.state.sideBarClosed ? 'sidebar-closed' : ''}`}>
+                        <SideBar
+                            url={url}
+                            getData={this.getData}
+                            toggleSideBar={this.toggleSideBar}
+                            sideBarClosed={this.state.sideBarClosed} />
+                        <div style={{marginLeft: !this.state.sideBarClosed ? '280px' : ''}}>
+                            <TopMenu
+                                updateData={this.updateData}
+                                toggleSideBar={this.toggleSideBar}
+                                sideBarClosed={this.state.sideBarClosed} />
+                            <div className="Board">
+                                <Switch>
+                                    <Route exact path={`${path}/:space/:board`} component={Board}/>
+                                    <Route exact path={url} component={Home}/>
+                                    <Route path="/" component={() => <Redirect to={url}/>}/>
+                                </Switch>
+                            </div>
                         </div>
                     </div>
                 </Router>

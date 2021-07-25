@@ -1,14 +1,18 @@
 .App {
-    flex-direction: row;
     height: 100vh;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    grid-template-rows: 62px 1fr;
-    grid-template-areas:
-            "nav top"
-            "nav content";
+    display: flex;
     overflow: hidden;
     user-select: none;
+}
+
+.App > div:last-of-type {
+    flex-grow: 1;
+    transition: margin-left 0.2s ease-in-out;
+}
+
+.App > div {
+    display: flex;
+    flex-direction: column;
 }
 
 .loading {
