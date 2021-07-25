@@ -37,7 +37,7 @@ class Task extends Component {
 
     render() {
         return (
-            <Draggable draggableId={this.props.task._id} index={this.props.index}>
+            <Draggable draggableId={this.props.task._id} index={this.props.index} type="task">
                 {(provided) => (
                     <div className="Task" {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
                         <p>{this.props.task.name}</p>
@@ -53,7 +53,7 @@ class Task extends Component {
                                 if (!label) label = {color: 'rgb(196,196,196)', name: ''}
 
                                 return (
-                                    <Fragment key={attribute.name} >
+                                    <Fragment key={attribute._id} >
                                         <div
                                             onClick={(e) => this.handleClick(e, attribute)}
                                             style={{backgroundColor: label.color}}>

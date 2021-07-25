@@ -2,7 +2,7 @@ import {Component} from 'react'
 import './assets/Board.css'
 import TaskGroup from './partials/TaskGroup'
 import {connect} from "react-redux";
-import {DragDropContext} from "react-beautiful-dnd";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {
     Dialog,
     DialogActions,
@@ -68,19 +68,35 @@ class Board extends Component {
         body.style.cursor = 'auto'
         if (result.destination === null ||
             (result.destination.index === result.source.index
-            && result.destination.droppableId === result.source.droppableId)) return
-        await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            data: {
-                result
-            },
-            url: `http://localhost:3001/api/task/${this.findBoardId()}`
-        }).then(res => {
-            this.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+                && result.destination.droppableId === result.source.droppableId)) return
+        if (result.type === "task") {
+            await axios({
+                method: 'PATCH',
+                withCredentials: true,
+                data: {
+                    result
+                },
+                url: `http://localhost:3001/api/task/${this.findBoardId()}`
+            }).then(res => {
+                this.getData()
+            }).catch(err => {
+                toast(err.toString())
+            })
+        } else if (result.type === "taskgroup") {
+            console.log(result)
+            await axios({
+                method: 'PATCH',
+                withCredentials: true,
+                data: {
+                    result
+                },
+                url: `http://localhost:3001/api/taskgroup/${this.findBoardId()}`
+            }).then(res => {
+                this.getData()
+            }).catch(err => {
+                toast(err.toString())
+            })
+        }
     }
 
     componentDidMount() {
@@ -105,18 +121,24 @@ class Board extends Component {
                     ? <LinearProgress/>
                     : <div>
                         {this.state.loading ? <LinearProgress/> : <div className="loading-placeholder"> </div>}
-                        <div className="task-group">
-                            <DragDropContext onDragEnd={this.handleDragEnd} onDragStart={this.onDragStart}>
-                                {this.props.board.taskGroups.map(taskGroup => {
-                                    return <TaskGroup
-                                        getData={this.getData}
-                                        boardId={this.props.board._id}
-                                        key={taskGroup._id}
-                                        taskGroup={taskGroup}
-                                        attributes={this.props.board.attributes}/>
-                                })}
-                            </DragDropContext>
-                        </div>
+                        <DragDropContext onDragEnd={this.handleDragEnd} onDragStart={this.onDragStart}>
+                            <Droppable droppableId="taskgroups" type="taskgroup">
+                                {(provided) => (
+                                    <div className="task-group" {...provided.droppableProps} ref={provided.innerRef}>
+                                        {this.props.board.taskGroups.map((taskGroup, i) => {
+                                            return <TaskGroup
+                                                getData={this.getData}
+                                                boardId={this.props.board._id}
+                                                key={taskGroup._id}
+                                                taskGroup={taskGroup}
+                                                index={i}
+                                                attributes={this.props.board.attributes}/>
+                                        })}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                         <div className="add-task-group">
                             <div> </div>
                             <button onClick={() => this.setState({dialogOpen: true})}>ADD NEW TASKGROUP</button>

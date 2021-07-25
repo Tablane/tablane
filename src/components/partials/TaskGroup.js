@@ -5,7 +5,7 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {Droppable} from "react-beautiful-dnd";
+import {Draggable, Droppable} from "react-beautiful-dnd";
 
 class TaskGroup extends Component {
     constructor(props) {
@@ -87,88 +87,92 @@ class TaskGroup extends Component {
 
     render() {
         return (
-            <div className="task">
-                <div className="title">
-                    <div>
-                        <div className="taskGroup-title">
-                            <p>{this.props.taskGroup.name}</p>
-                            <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
+            <Draggable draggableId={this.props.taskGroup._id} index={this.props.index}>
+                {(provided) => (
+                    <div className="task" {...provided.draggableProps} ref={provided.innerRef}>
+                        <div className="title" {...provided.dragHandleProps}>
+                            <div>
+                                <div className="taskGroup-title">
+                                    <p>{this.props.taskGroup.name}</p>
+                                    <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
+                                </div>
+                                <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
+                            </div>
+                            <div className="attributes">
+                                {this.props.attributes.map(x => {
+                                    return (<div className="attribute" key={x.name}>
+                                        <p>{x.name}</p>
+                                        <i className="fas fa-trash-alt" onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                                    </div>)
+                                })}
+                                <div className="attribute">
+                                    <p><i
+                                        onClick={() => this.setState({dialogOpen: true})}
+                                        className="fas fa-plus-circle"> </i></p>
+                                </div>
+                            </div>
                         </div>
-                        <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
-                    </div>
-                    <div className="attributes">
-                        {this.props.attributes.map(x => {
-                            return (<div className="attribute" key={x.name}>
-                                <p>{x.name}</p>
-                                <i className="fas fa-trash-alt" onClick={() => this.handleAttributeDelete(x._id)}> </i>
-                            </div>)
-                        })}
-                        <div className="attribute">
-                            <p><i
-                                onClick={() => this.setState({dialogOpen: true})}
-                                className="fas fa-plus-circle"> </i></p>
-                        </div>
-                    </div>
-                </div>
-                <Droppable droppableId={this.props.taskGroup._id}>
-                    {(provided) => (
-                        <div className="tasks" ref={provided.innerRef} {...provided.droppableProps}>
-                            {this.props.taskGroup.tasks.map((task, i) => {
-                                return (
-                                    <Task
-                                        key={task._id}
-                                        getData={this.props.getData}
-                                        task={task}
-                                        index={i}
-                                        taskGroupId={this.props.taskGroup._id}
-                                        attributes={this.props.attributes}/>
-                                )
-                            })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                <form onSubmit={this.addTask}>
-                    <div className="new-task">
-                        <input
-                            type="text"
-                            placeholder="+ New Task"
-                            value={this.state.newTask}
-                            name="newTask"
-                            onChange={this.handleChange} />
-                        {this.state.newTask ? <button>SAVE</button> : null}
-                    </div>
-                </form>
+                        <Droppable droppableId={this.props.taskGroup._id} type="task">
+                            {(provided) => (
+                                <div className="tasks" ref={provided.innerRef} {...provided.droppableProps}>
+                                    {this.props.taskGroup.tasks.map((task, i) => {
+                                        return (
+                                            <Task
+                                                key={task._id}
+                                                getData={this.props.getData}
+                                                task={task}
+                                                index={i}
+                                                taskGroupId={this.props.taskGroup._id}
+                                                attributes={this.props.attributes}/>
+                                        )
+                                    })}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                        <form onSubmit={this.addTask}>
+                            <div className="new-task">
+                                <input
+                                    type="text"
+                                    placeholder="+ New Task"
+                                    value={this.state.newTask}
+                                    name="newTask"
+                                    onChange={this.handleChange} />
+                                {this.state.newTask ? <button>SAVE</button> : null}
+                            </div>
+                        </form>
 
 
-                <Dialog
-                    open={this.state.dialogOpen}
-                    onClose={() => this.setState({dialogOpen: false})}
-                    aria-labelledby="form-dialog-title"
-                    fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new Status</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            onChange={this.handleChange}
-                            label="Status name"
-                            type="text"
-                            fullWidth
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleNewStatus} color="primary">
-                            Create
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+                        <Dialog
+                            open={this.state.dialogOpen}
+                            onClose={() => this.setState({dialogOpen: false})}
+                            aria-labelledby="form-dialog-title"
+                            fullWidth={true}>
+                            <DialogTitle id="form-dialog-title">Add new Status</DialogTitle>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    name="name"
+                                    onChange={this.handleChange}
+                                    label="Status name"
+                                    type="text"
+                                    fullWidth
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={this.handleNewStatus} color="primary">
+                                    Create
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                )}
+            </Draggable>
         );
     }
 }

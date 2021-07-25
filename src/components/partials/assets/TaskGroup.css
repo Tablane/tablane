@@ -1,8 +1,9 @@
 .task {
-
+    margin-bottom: 25px;
 }
 
 .task .title {
+    cursor: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -87,11 +88,11 @@
 
 .task .new-task {
     border: 2px solid white;
+    background-color: #eee;
     border-radius: 0 0 2px 2px;
     height: 26px;
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
 }
 
 .task .new-task p {
