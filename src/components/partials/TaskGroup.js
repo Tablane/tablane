@@ -12,8 +12,14 @@ class TaskGroup extends Component {
         super(props);
         this.state = {
             newTask: '',
+
+            // new dialog
             dialogOpen: false,
-            name: ''
+            name: '',
+
+            // name edit
+            editing: false,
+            editingName: this.props.taskGroup.name
         }
     }
 
@@ -85,6 +91,33 @@ class TaskGroup extends Component {
         })
     }
 
+    updateName = async (e) => {
+        console.log(e)
+        e.preventDefault()
+        await axios({
+            method: 'PATCH',
+            withCredentials: true,
+            url: `http://localhost:3001/api/taskGroup/${this.props.boardId}/${this.props.taskGroup._id}`,
+            data: {
+                name: this.state.editingName
+            }
+        }).then(res => {
+            this.props.getData()
+            this.setState(st => ({
+                editing: !st.editing,
+            }))
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
+    toggleNameEdit = () => {
+        this.setState(st => ({
+            editing: !st.editing,
+            editingName: this.props.taskGroup.name
+        }))
+    }
+
     render() {
         return (
             <Draggable draggableId={this.props.taskGroup._id} index={this.props.index}>
@@ -92,10 +125,25 @@ class TaskGroup extends Component {
                     <div className="task" {...provided.draggableProps} ref={provided.innerRef}>
                         <div className="title">
                             <div {...provided.dragHandleProps}>
-                                <div className="taskGroup-title">
-                                    <p>{this.props.taskGroup.name}</p>
-                                    <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
-                                </div>
+                                {this.state.editing ? (
+                                    <div className="taskGroup-title editing">
+                                        <form onSubmit={this.updateName}>
+                                            <input
+                                                type="text"
+                                                name="editingName"
+                                                value={this.state.editingName}
+                                                onChange={this.handleChange}/>
+                                            <div>
+                                                <i onClick={this.toggleNameEdit} className="fas fa-times"> </i>
+                                                <i onClick={this.updateName} className="fas fa-check"> </i>
+                                            </div>
+                                        </form>
+                                    </div>) : (
+                                    <div className="taskGroup-title">
+                                        <p>{this.props.taskGroup.name}</p>
+                                        <i className="fas fa-pen" onClick={this.toggleNameEdit}> </i>
+                                        <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
+                                    </div>)}
                                 <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
                             </div>
                             <Droppable

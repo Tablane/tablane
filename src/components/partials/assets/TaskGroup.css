@@ -25,19 +25,46 @@
     align-items: center;
 }
 
+.task .title .taskGroup-title.editing {
+    border: 1px solid #579BFC;
+    background-color: white;
+    padding: 1px 8px;
+    width: 200px;
+    height: 21px;
+}
+
+.task .title .taskGroup-title.editing form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task .title input {
+    max-width: 160px;
+    outline: none;
+    border: none;
+}
+
+.task .title .taskGroup-title.editing i:first-of-type {
+    color: #fd7171;
+    display: block;
+}
+
+.task .title .taskGroup-title.editing i:last-of-type {
+    color: #77d257;
+    display: block;
+}
+
 .task .title > div > p {
     text-transform: uppercase;
     font-size: 0.8rem;
     text-align: center;
 }
 
-.task .title .taskGroup-title p {
-    margin: 0;
-}
-
 .task .title .taskGroup-title i {
-    font-size: 0.7rem;
+    cursor: pointer;
     margin-left: 10px;
+    font-size: 0.7rem;
     display: none;
 }
 
