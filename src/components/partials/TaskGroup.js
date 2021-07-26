@@ -101,7 +101,7 @@ class TaskGroup extends Component {
                             <Droppable
                                 droppableId={this.props.taskGroup._id + 'attribute'}
                                 direction="horizontal"
-                                type="attribute">
+                                type={`attribute ${this.props.taskGroup._id}`}>
                                 {(provided) => (
                                     <div className="attributes" {...provided.droppableProps} ref={provided.innerRef}>
                                         {this.props.attributes.map((x, i) => {
@@ -116,8 +116,7 @@ class TaskGroup extends Component {
                                                             ref={provided.innerRef}
                                                             {...provided.dragHandleProps}
                                                             {...provided.draggableProps}>
-                                                            <i className="fas fa-trash-alt"
-                                                               onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                                                            <i className="fas fa-trash-alt"> </i>
                                                             <p>{x.name}</p>
                                                             <i className="fas fa-trash-alt"
                                                                onClick={() => this.handleAttributeDelete(x._id)}> </i>

@@ -170,6 +170,10 @@ a {
     color: #e54365;
 }
 
+.space .space-boards > div > div {
+    min-height: 0.1px;
+}
+
 .space .space-boards > div > div > a {
     cursor: pointer;
     display: flex;

@@ -95,7 +95,7 @@ class Board extends Component {
             }).catch(err => {
                 toast(err.toString())
             })
-        } else if (result.type === "attribute") {
+        } else if (/^attribute /gm.test(result.type)) {
             await axios({
                 method: 'PATCH',
                 withCredentials: true,
