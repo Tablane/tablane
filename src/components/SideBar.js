@@ -3,7 +3,7 @@ import './assets/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./partials/AccountPopOver";
 import {connect} from "react-redux";
-import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {toast} from "react-hot-toast";
@@ -18,31 +18,54 @@ class SideBar extends Component {
             newSpaceDialogOpen: false,
             spacesOpen: JSON.parse(localStorage.getItem('spacesOpen')) !== null ? JSON.parse(localStorage.getItem('spacesOpen')) : true,
             name: '',
-            spaceClosed: JSON.parse(localStorage.getItem('spaceClosed')) || []
+            spaceClosed: JSON.parse(localStorage.getItem('spaceClosed')) || [],
+
+            // handle delete dialogs
+            deleteBoardDialogOpen: false,
+            deleteSpaceDialogOpen: false,
+            deleteBoard: '',
+            deleteSpace: '',
         }
     }
 
-    handleSpaceDelete = async (spaceId) => {
+    handleSpaceDeleteClick = (spaceId = '') => {
+        this.setState(st => ({
+            deleteSpaceDialogOpen: !st.deleteSpaceDialogOpen,
+            deleteSpace: spaceId
+        }))
+    }
+
+    handleSpaceDelete = async () => {
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/space/${this.props.workspaces._id}/${spaceId}`
+            url: `http://localhost:3001/api/space/${this.props.workspaces._id}/${this.state.deleteSpace}`
         }).then(res => {
             this.props.getData()
-            this.setState({newSpaceDialogOpen: false})
+            this.setState({deleteSpaceDialogOpen: false})
         }).catch(err => {
             toast(err.toString())
         })
     }
 
-    handleBoardDelete = async (spaceId, boardId) => {
+    handleBoardDeleteClick = (spaceId = '', boardId = '') => {
+        this.setState(st => ({
+            deleteBoardDialogOpen: !st.deleteBoardDialogOpen,
+            deleteBoard: boardId,
+            deleteSpace: spaceId,
+        }))
+    }
+
+    handleBoardDelete = async () => {
+        const {workspaces} = this.props
+        const {deleteSpace, deleteBoard} = this.state
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/board/${this.props.workspaces._id}/${spaceId}/${boardId}`
+            url: `http://localhost:3001/api/board/${workspaces._id}/${deleteSpace}/${deleteBoard}`
         }).then(res => {
             this.props.getData()
-            this.setState({newBoardDialogOpen: false})
+            this.setState({deleteBoardDialogOpen: false})
         }).catch(err => {
             toast(err.toString())
         })
@@ -161,7 +184,7 @@ class SideBar extends Component {
                                 <div>
                                     <i onClick={() => this.setState({newBoardDialogOpen: true, currentSpace: space._id})}
                                        className="fas fa-plus"> </i>
-                                    <i onClick={() => this.handleSpaceDelete(space._id)} className="fas fa-trash-alt"> </i>
+                                    <i onClick={() => this.handleSpaceDeleteClick(space._id)} className="fas fa-trash-alt"> </i>
                                 </div>
                             </div>
 
@@ -186,7 +209,7 @@ class SideBar extends Component {
                                                                 <p>{board.name}</p>
                                                                 <i onClick={(e) => {
                                                                     e.preventDefault()
-                                                                    this.handleBoardDelete(space._id, board._id)
+                                                                    this.handleBoardDeleteClick(space._id, board._id)
                                                                 }} className="fas fa-trash-alt"> </i>
                                                             </NavLink>
                                                         )}
@@ -269,6 +292,7 @@ class SideBar extends Component {
                     <AccountPopOver />
                 </div>
 
+                {/* create board dialog*/}
                 <Dialog
                     open={this.state.newBoardDialogOpen}
                     onClose={() => this.setState({dialogOpen: false})}
@@ -297,6 +321,7 @@ class SideBar extends Component {
                     </DialogActions>
                 </Dialog>
 
+                {/* create space dialog*/}
                 <Dialog
                     open={this.state.newSpaceDialogOpen}
                     onClose={() => this.setState({dialogOpen: false})}
@@ -321,6 +346,52 @@ class SideBar extends Component {
                         </Button>
                         <Button onClick={this.handleNewSpace} color="primary">
                             Create
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/* delete board dialog*/}
+                <Dialog
+                    open={this.state.deleteBoardDialogOpen}
+                    onClose={this.handleBoardDeleteClick}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Remove Board?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            All tasks within this Board will be deleted.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleBoardDeleteClick} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleBoardDelete} color="primary" variant="contained">
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/*delete space dialog*/}
+                <Dialog
+                    open={this.state.deleteSpaceDialogOpen}
+                    onClose={this.handleSpaceDeleteClick}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Remove Space?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            All boards and tasks within this Space will be deleted.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleSpaceDeleteClick} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleSpaceDelete} color="primary" variant="contained">
+                            Delete
                         </Button>
                     </DialogActions>
                 </Dialog>

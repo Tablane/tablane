@@ -3,7 +3,7 @@ import './assets/TaskGroup.css'
 import Task from './Task'
 import axios from "axios";
 import {toast} from "react-hot-toast";
-import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Draggable, Droppable} from "react-beautiful-dnd";
 
@@ -19,7 +19,10 @@ class TaskGroup extends Component {
 
             // name edit
             editing: false,
-            editingName: this.props.taskGroup.name
+            editingName: this.props.taskGroup.name,
+
+            // delete confirmation
+            deleteDialogOpen: false,
         }
     }
 
@@ -65,6 +68,10 @@ class TaskGroup extends Component {
         }).catch(err => {
             toast(err.toString())
         })
+    }
+
+    handleDeleteClick = () => {
+        this.setState(st => ({deleteDialogOpen: !st.deleteDialogOpen}))
     }
 
     handleDelete = async () => {
@@ -142,7 +149,7 @@ class TaskGroup extends Component {
                                     <div className="taskGroup-title">
                                         <p>{this.props.taskGroup.name}</p>
                                         <i className="fas fa-pen" onClick={this.toggleNameEdit}> </i>
-                                        <i onClick={this.handleDelete} className="fas fa-trash-alt"> </i>
+                                        <i onClick={this.handleDeleteClick} className="fas fa-trash-alt"> </i>
                                     </div>)}
                                 <p className="task-amount">{this.props.taskGroup.tasks.length} TASKS</p>
                             </div>
@@ -238,6 +245,28 @@ class TaskGroup extends Component {
                                 </Button>
                                 <Button onClick={this.handleNewStatus} color="primary">
                                     Create
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+
+                        <Dialog
+                            open={this.state.deleteDialogOpen}
+                            onClose={this.handleDeleteClick}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{`Delete ${this.props.taskGroup.name} group?`}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    All tasks within this Group will be deleted.
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleDeleteClick} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={this.handleDelete} color="primary" variant="contained">
+                                    Delete
                                 </Button>
                             </DialogActions>
                         </Dialog>
