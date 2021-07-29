@@ -8,6 +8,10 @@
     border-bottom: 1px solid white;
 }
 
+.Task:hover {
+    background-color: #fafbfc
+}
+
 .Task[data-rbd-drag-handle-context-id] {
     cursor: auto;
 }

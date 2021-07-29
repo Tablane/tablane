@@ -1,0 +1,55 @@
+.AttributePopover {
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+.AttributePopover .content {
+    font-size: 14px;
+    width: 180px;
+    padding-bottom: 8px;
+}
+
+.AttributePopover .content > div:hover {
+    background-color: #fafbfc;
+}
+
+.AttributePopover p,
+.AttributePopover i {
+    cursor: pointer;
+}
+
+.AttributePopover .content .name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgb(250,251,252);
+    padding: 0 15px;
+    height: 31px;
+    border-bottom: 1px solid #e9ebf0;
+    margin-bottom: 8px;
+}
+
+.AttributePopover .content .name input {
+    outline: none;
+    max-width: 120px;
+    background-color: transparent;
+    border: none;
+}
+
+.AttributePopover .content .delete {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 16px;
+    padding: 8px 15px;
+    color: rgb(253, 113, 175);
+}
+
+.AttributePopover .content .delete p {
+    margin: 0;
+}
+
+.AttributePopover .content .delete i {
+    margin-right: 10px;
+}

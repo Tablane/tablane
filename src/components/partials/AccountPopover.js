@@ -1,12 +1,12 @@
 import {Component} from 'react'
 import {Popover} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import './assets/AccountPopOver.css'
+import './assets/AccountPopover.css'
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {connect} from "react-redux";
 
-class AccountPopOver extends Component {
+class AccountPopover extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -113,4 +113,4 @@ const mapStateToProps = (state) => ({
     isLoggedIn: state.isLoggedIn
 })
 
-export default connect(mapStateToProps)(AccountPopOver)
+export default connect(mapStateToProps)(AccountPopover)

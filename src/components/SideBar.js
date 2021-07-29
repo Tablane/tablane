@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './assets/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
-import AccountPopOver from "./partials/AccountPopOver";
+import AccountPopOver from "./partials/AccountPopover";
 import {connect} from "react-redux";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";

@@ -6,6 +6,7 @@ import {toast} from "react-hot-toast";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Draggable, Droppable} from "react-beautiful-dnd";
+import AttributePopover from "./AttributePopover";
 
 class TaskGroup extends Component {
     constructor(props) {
@@ -23,6 +24,10 @@ class TaskGroup extends Component {
 
             // delete confirmation
             deleteDialogOpen: false,
+
+            // attribute popover
+            popoverOpen: false,
+            popoverId: '',
         }
     }
 
@@ -70,6 +75,13 @@ class TaskGroup extends Component {
         })
     }
 
+    handleAttributePopover = (e, id = null) => {
+        this.setState(st => ({
+            popoverId: id ? id : st.popoverId,
+            popoverOpen: e ? e.target.parentNode : null
+        }))
+    }
+
     handleDeleteClick = () => {
         this.setState(st => ({deleteDialogOpen: !st.deleteDialogOpen}))
     }
@@ -79,18 +91,6 @@ class TaskGroup extends Component {
             method: 'DELETE',
             withCredentials: true,
             url: `http://localhost:3001/api/taskgroup/${this.props.boardId}/${this.props.taskGroup._id}`
-        }).then(res => {
-            this.props.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
-    }
-
-    handleAttributeDelete = async (attributeId) => {
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `http://localhost:3001/api/attribute/${this.props.boardId}/${attributeId}`
         }).then(res => {
             this.props.getData()
         }).catch(err => {
@@ -171,10 +171,10 @@ class TaskGroup extends Component {
                                                             ref={provided.innerRef}
                                                             {...provided.dragHandleProps}
                                                             {...provided.draggableProps}>
-                                                            <i className="fas fa-trash-alt"> </i>
+                                                            <i className="fas fa-caret-down"> </i>
                                                             <p>{x.name}</p>
-                                                            <i className="fas fa-trash-alt"
-                                                               onClick={() => this.handleAttributeDelete(x._id)}> </i>
+                                                            <i className="fas fa-caret-down"
+                                                               onClick={e => this.handleAttributePopover(e, x)}> </i>
                                                         </div>
                                                     )}
                                                 </Draggable>
@@ -270,6 +270,13 @@ class TaskGroup extends Component {
                                 </Button>
                             </DialogActions>
                         </Dialog>
+
+                        <AttributePopover
+                            getData={this.props.getData}
+                            boardId={this.props.boardId}
+                            open={this.state.popoverOpen}
+                            close={this.handleAttributePopover}
+                            attr={this.state.popoverId} />
                     </div>
                 )}
             </Draggable>

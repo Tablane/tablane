@@ -45,21 +45,19 @@ class Task extends Component {
     render() {
         return (
             <>
-                <Draggable draggableId={this.props.task._id} index={this.props.index} type="task">
+                <Draggable draggableId={this.props.task._id} index={this.props.index} type="task" >
                     {(provided) => (
                         <div className="Task" {...provided.draggableProps}
                              ref={provided.innerRef} {...provided.dragHandleProps}>
                             <p>{this.props.task.name}</p>
                             <div>
                                 {this.props.attributes.map(attribute => {
-                                    let taskOption = this.props.task.options.find(x => x.name === attribute.name)
+                                    let taskOption = this.props.task.options.find(x => x.column === attribute._id)
                                     let label
 
                                     if (taskOption) {
                                         label = attribute.labels.find(x => x._id === taskOption.value)
                                     } else label = {color: 'rgb(196,196,196)', name: ''}
-
-                                    if (!label) label = {color: 'rgb(196,196,196)', name: ''}
 
                                     return (
                                         <Fragment key={attribute._id}>

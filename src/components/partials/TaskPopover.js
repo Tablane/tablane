@@ -75,15 +75,16 @@ class TaskPopover extends Component {
 
     // change label to id
     handleLabelChange = (id) => {
+        const {board, taskGroupId, task} = this.props
         if (this.state.editing) return
         axios({
             method: 'PATCH',
             data: {
-                property: this.props.attribute.name,
+                column: this.props.attribute._id,
                 value: id._id
             },
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
+            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
             this.props.getData()
         })
@@ -92,11 +93,12 @@ class TaskPopover extends Component {
 
     // change label to none
     handleLabelClear = () => {
+        const {board, taskGroupId, task, attribute} = this.props
         if (this.state.editing) return
         axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}/${this.props.attribute._id}`
+            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
         }).then(() => {
             this.props.getData()
         })
