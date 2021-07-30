@@ -42,6 +42,61 @@ class Task extends Component {
         })
     }
 
+    handleTextEdit = async (e) => {
+        const {board, taskGroupId, task} = this.props
+        axios({
+            method: 'PATCH',
+            data: {
+                column: e.target.name,
+                value: e.target.value,
+                type: 'text'
+            },
+            withCredentials: true,
+            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
+        }).then(() => {
+            this.props.getData()
+        })
+    }
+
+    getStatusLabel = (attribute) => {
+        let taskOption = this.props.task.options.find(x => x.column === attribute._id)
+        let label
+
+        if (taskOption) {
+            label = attribute.labels.find(x => x._id === taskOption.value)
+        } else label = {color: 'rgb(196,196,196)', name: ''}
+
+        if (!label) label = {color: 'rgb(196,196,196)', name: ''}
+
+        return (
+            <Fragment key={attribute._id}>
+                <div
+                    onClick={(e) => this.handleClick(e, attribute)}
+                    style={{backgroundColor: label.color}}>
+                    {label.name}
+                </div>
+                {attribute._id.toString() === this.state.activeOption && (
+                    <TaskPopover
+                        attribute={attribute}
+                        anchor={this.state.anchor}
+                        task={this.props.task}
+                        getData={this.props.getData}
+                        taskGroupId={this.props.taskGroupId}
+                        handleClose={this.handleClose}/>)}
+            </Fragment>
+        )
+    }
+
+    getTextLabel = (attribute) => {
+        let taskOption = this.props.task.options.find(x => x.column === attribute._id)
+        if (!taskOption) taskOption = { value: '' }
+        return (
+            <div style={{backgroundColor: 'transparent'}} key={attribute._id}>
+                <input type="text" name={attribute._id} onBlur={this.handleTextEdit} defaultValue={taskOption.value}/>
+            </div>
+        )
+    }
+
     render() {
         return (
             <>
@@ -52,29 +107,15 @@ class Task extends Component {
                             <p>{this.props.task.name}</p>
                             <div>
                                 {this.props.attributes.map(attribute => {
-                                    let taskOption = this.props.task.options.find(x => x.column === attribute._id)
-                                    let label
 
-                                    if (taskOption) {
-                                        label = attribute.labels.find(x => x._id === taskOption.value)
-                                    } else label = {color: 'rgb(196,196,196)', name: ''}
+                                    if (attribute.type === "status") return this.getStatusLabel(attribute)
+                                    if (attribute.type === "text") return this.getTextLabel(attribute)
 
+                                    // if (1+1===2) return this.getStatusLabel(attribute)
                                     return (
-                                        <Fragment key={attribute._id}>
-                                            <div
-                                                onClick={(e) => this.handleClick(e, attribute)}
-                                                style={{backgroundColor: label.color}}>
-                                                {label.name}
-                                            </div>
-                                            {attribute._id.toString() === this.state.activeOption && (
-                                                <TaskPopover
-                                                    attribute={attribute}
-                                                    anchor={this.state.anchor}
-                                                    task={this.props.task}
-                                                    getData={this.props.getData}
-                                                    taskGroupId={this.props.taskGroupId}
-                                                    handleClose={this.handleClose}/>)}
-                                        </Fragment>
+                                        <div style={{backgroundColor: 'crimson'}} key={Math.random()}>
+                                            ERROR
+                                        </div>
                                     )
                                 })}
 

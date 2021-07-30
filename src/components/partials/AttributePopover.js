@@ -57,7 +57,7 @@ function AttributePopover(props) {
         <div>
             <Popover
                 className="AttributePopover"
-                open={props.open}
+                open={Boolean(props.open)}
                 anchorEl={props.open}
                 onClose={handleClose}
                 anchorOrigin={{

@@ -81,7 +81,8 @@ class TaskPopover extends Component {
             method: 'PATCH',
             data: {
                 column: this.props.attribute._id,
-                value: id._id
+                value: id._id,
+                type: 'status'
             },
             withCredentials: true,
             url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`

@@ -3,20 +3,17 @@ import './assets/TaskGroup.css'
 import Task from './Task'
 import axios from "axios";
 import {toast} from "react-hot-toast";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Draggable, Droppable} from "react-beautiful-dnd";
 import AttributePopover from "./AttributePopover";
+import AddAttributePopover from "./AddAttributePopover";
 
 class TaskGroup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             newTask: '',
-
-            // new dialog
-            dialogOpen: false,
-            name: '',
 
             // name edit
             editing: false,
@@ -28,31 +25,21 @@ class TaskGroup extends Component {
             // attribute popover
             popoverOpen: false,
             popoverId: '',
-        }
-    }
 
-    handleNewStatus = async () => {
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            url: `http://localhost:3001/api/attribute/${this.props.boardId}`,
-            data: {
-                name: this.state.name
-            }
-        }).then(res => {
-            this.props.getData()
-            this.setState({
-                name: '',
-                dialogOpen: false
-            })
-        }).catch(err => {
-            toast(err.toString())
-        })
+            // add new attribute popover
+            newAttributeOpen: false,
+        }
     }
 
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
+        })
+    }
+
+    handleAddNewAttribute = (e = false) => {
+        this.setState({
+            newAttributeOpen: e ? e.target.parentNode.parentNode : false
         })
     }
 
@@ -183,7 +170,7 @@ class TaskGroup extends Component {
                                         {provided.placeholder}
                                         <div className="attribute">
                                             <p><i
-                                                onClick={() => this.setState({dialogOpen: true})}
+                                                onClick={this.handleAddNewAttribute}
                                                 className="fas fa-plus-circle"> </i></p>
                                         </div>
                                     </div>
@@ -220,35 +207,6 @@ class TaskGroup extends Component {
                             </div>
                         </form>
 
-
-                        <Dialog
-                            open={this.state.dialogOpen}
-                            onClose={() => this.setState({dialogOpen: false})}
-                            aria-labelledby="form-dialog-title"
-                            fullWidth={true}>
-                            <DialogTitle id="form-dialog-title">Add new Status</DialogTitle>
-                            <DialogContent>
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="name"
-                                    name="name"
-                                    onChange={this.handleChange}
-                                    label="Status name"
-                                    type="text"
-                                    fullWidth
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={this.handleNewStatus} color="primary">
-                                    Create
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-
                         <Dialog
                             open={this.state.deleteDialogOpen}
                             onClose={this.handleDeleteClick}
@@ -277,6 +235,12 @@ class TaskGroup extends Component {
                             open={this.state.popoverOpen}
                             close={this.handleAttributePopover}
                             attr={this.state.popoverId} />
+
+                        <AddAttributePopover
+                            getData={this.props.getData}
+                            boardId={this.props.boardId}
+                            anchor={this.state.newAttributeOpen}
+                            close={this.handleAddNewAttribute} />
                     </div>
                 )}
             </Draggable>

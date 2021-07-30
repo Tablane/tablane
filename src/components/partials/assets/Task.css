@@ -39,6 +39,19 @@
     line-height: 36px;
     text-align: center;
     width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Task > div > div > input {
+    text-align: center;
+    font-size: 13px;
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    padding: 0 3px;
 }
 
 .Task > div > div:last-of-type {

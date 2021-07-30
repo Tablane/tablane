@@ -1,0 +1,51 @@
+.AddAttributePopover {
+    margin-top: 10px;
+}
+
+.AddAttributePopover p {
+    margin: 0;
+}
+
+.AddAttributePopover .content {
+    display: flex;
+    flex-direction: column;
+    width: 314px;
+    height: 160px;
+    padding: 16px 16px 0;
+}
+
+.AddAttributePopover .content > div {
+    padding: 8px;
+    height: 125px;
+}
+
+.AddAttributePopover .content > div > p:first-of-type {
+    padding-left: 8px;
+    margin-bottom: 8px;
+}
+
+.AddAttributePopover .content > div > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.AddAttributePopover .content > div > div > div {
+    width: 100%;
+}
+
+.AddAttributePopover .content > div > div > div > div {
+    padding: 6px 8px;
+    margin-right: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.AddAttributePopover .content > div > div > div > div:hover {
+    background-color: #e6e9ef;
+}
+
+.AddAttributePopover .content > div > div > div > div > i {
+    margin-right: 8px;
+}

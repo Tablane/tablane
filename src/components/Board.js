@@ -23,8 +23,8 @@ class Board extends Component {
 
 
     findBoardId = () => {
-        const space = this.props.match.params.space.replace('-', ' ')
-        const board = this.props.match.params.board.replace('-', ' ')
+        const space = this.props.match.params.space.replaceAll('-', ' ')
+        const board = this.props.match.params.board.replaceAll('-', ' ')
         return this.props.workspaces.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
     }
 

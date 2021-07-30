@@ -203,7 +203,7 @@ class SideBar extends Component {
                                                                 {...provided.draggableProps}
                                                                 ref={provided.innerRef}
                                                                 {...provided.dragHandleProps}
-                                                                to={`/${this.props.url.replaceAll('/', '')}/${space.name.replace(' ', '-')}/${board.name.replace(' ', '-')}`}
+                                                                to={`/${this.props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
                                                                 activeClassName="active-board">
                                                                 <div> </div>
                                                                 <p>{board.name}</p>
