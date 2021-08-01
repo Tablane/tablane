@@ -35,6 +35,11 @@ class AccountPopover extends Component {
         })
     }
 
+    changeWorkspace = (id) => {
+        this.props.history.push(`/${id}`)
+        this.handleClose()
+    }
+
     render() {
         return (
             <div>
@@ -56,8 +61,13 @@ class AccountPopover extends Component {
                     <div className="popover">
                         <div>
                             <div className="workspaces">
-                                <div>P</div>
-                                <div>A</div>
+                                {this.props.isLoggedIn && this.props.isLoggedIn.workspaces.map(x => {
+                                    return (
+                                        <div onClick={() => this.changeWorkspace(x.id)} key={x._id}>
+                                            {x.name.toUpperCase().charAt(0)}
+                                        </div>
+                                    )
+                                })}
                                 <div><i className="fas fa-plus"> </i></div>
                             </div>
                             <div className="workspace-settings">

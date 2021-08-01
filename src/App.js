@@ -7,6 +7,7 @@ import {CircularProgress} from "@material-ui/core";
 import {connect} from "react-redux";
 import Panel from "./components/Panel";
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import WorkspaceSelector from "./components/partials/WorkspaceSelector";
 
 class App extends Component {
     constructor(props) {
@@ -34,18 +35,18 @@ class App extends Component {
         })
     }
 
-    redirectToWorkSpace = (routeProps) => {
-        axios({
-            method: 'GET',
-            withCredentials: true,
-            url: 'http://localhost:3001/api/user/workspace'
-        }).then(res => {
-            routeProps.history.push(`/${res.data[0].id}`)
-        }).catch(err => {
-            toast(err.toString())
-        })
-        return <div className="loading"><CircularProgress/></div>
-    }
+    // redirectToWorkSpace = (routeProps) => {
+    //     axios({
+    //         method: 'GET',
+    //         withCredentials: true,
+    //         url: 'http://localhost:3001/api/user/workspace'
+    //     }).then(res => {
+    //         routeProps.history.push(`/${res.data[0].id}`)
+    //     }).catch(err => {
+    //         toast(err.toString())
+    //     })
+    //     return <div className="loading"><CircularProgress/></div>
+    // }
 
     render() {
         return (
@@ -53,9 +54,11 @@ class App extends Component {
                 !this.props.isLoggedIn ? <Auth/> :
                     <Router>
                         <Switch>
-                            <Route exact path={['/login', '/register']} render={routeProps => this.redirectToWorkSpace(routeProps)} />
+                            <Route exact path={['/login', '/register']} render={({history}) => history.push('/')} />
                             <Route path="/:workspace" component={Panel}/>
-                            <Route path="/" render={routeProps => this.redirectToWorkSpace(routeProps)}/>
+                            <Route path="/" render={({history}) => (
+                                <WorkspaceSelector history={history} workspaces={this.props.isLoggedIn.workspaces} />
+                            )}/>
                         </Switch>
                     </Router>
         );

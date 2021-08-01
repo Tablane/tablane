@@ -48,8 +48,9 @@ class Login extends Component {
         this.setState({loading: true})
         this.loginUser()
             .then(x => {
-                toast(x)
-                this.props.dispatch({type: 'changeLoggedIn', payload: true})
+                console.log(x)
+                toast(x[0])
+                this.props.dispatch({type: 'changeLoggedIn', payload: x[1]})
                 if (this.props.redirectUrl) {
                     this.props.history.push(this.props.redirectUrl)
                     this.props.dispatch({type: 'setData', payload: ['redirectUrl', null]})

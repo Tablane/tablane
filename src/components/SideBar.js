@@ -233,7 +233,7 @@ class SideBar extends Component {
             <div className={`SideBar ${this.props.sideBarClosed ? 'closed' : ''}`}>
                 <div className="header">
                     <div className="logo">
-                        <Link to="/">
+                        <Link to={this.props.url}>
                             <p>Task Board</p>
                         </Link>
                     </div>
@@ -289,7 +289,7 @@ class SideBar extends Component {
                 </div>
 
                 <div className="account">
-                    <AccountPopOver />
+                    <AccountPopOver history={this.props.history} />
                 </div>
 
                 {/* create board dialog*/}

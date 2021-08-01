@@ -8,14 +8,17 @@ import {createStore} from "redux";
 import {Provider} from "react-redux";
 import reducer from "./reducer";
 import {devToolsEnhancer} from "redux-devtools-extension";
+import {BrowserRouter} from "react-router-dom";
 
 const store = createStore(reducer, devToolsEnhancer())
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <App />
-            <Toaster/>
+            <BrowserRouter>
+                <App/>
+                <Toaster/>
+            </BrowserRouter>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root')

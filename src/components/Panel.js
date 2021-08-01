@@ -36,6 +36,10 @@ class Panel extends Component {
         this.getData()
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.match.url !== this.props.match.url) this.getData()
+    }
+
     toggleSideBar = () => {
         this.setState(st => ({
             sideBarClosed: !st.sideBarClosed
@@ -45,7 +49,6 @@ class Panel extends Component {
     }
 
     render() {
-        this.props.dispatch({type: 'workspaces', payload: null})
         const { url, path } = this.props.match;
         return (
             !this.props.workspaces
@@ -53,6 +56,7 @@ class Panel extends Component {
                 : <Router>
                     <div className={`App ${this.state.sideBarClosed ? 'sidebar-closed' : ''}`}>
                         <SideBar
+                            history={this.props.history}
                             url={url}
                             getData={this.getData}
                             toggleSideBar={this.toggleSideBar}
@@ -66,7 +70,7 @@ class Panel extends Component {
                                 <Switch>
                                     <Route exact path={`${path}/:space/:board`} component={Board}/>
                                     <Route exact path={url} component={Home}/>
-                                    <Route path="/" component={() => <Redirect to={url}/>}/>
+                                    <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
                                 </Switch>
                             </div>
                         </div>
