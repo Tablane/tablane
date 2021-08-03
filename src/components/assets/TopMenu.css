@@ -65,8 +65,14 @@
     justify-content: center;
     align-items: center;
     background-color: white;
+    transition: background-color 0.2s;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
+    cursor: pointer;
+}
+
+.TopMenu button.share:hover {
+    background-color: #fafbfc;
 }
 
 .TopMenu .share p {

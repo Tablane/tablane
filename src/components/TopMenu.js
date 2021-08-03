@@ -1,8 +1,22 @@
 import {Component} from 'react'
 import './assets/TopMenu.css'
 import {connect} from "react-redux";
+import ShareDialog from "./partials/ShareDialog";
 
 class TopMenu extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            shareDialogOpen: false
+        }
+    }
+
+    toggleShareDialog = () => {
+        this.setState(st => ({
+            shareDialogOpen: !st.shareDialogOpen
+        }))
+    }
+
     render() {
         return (
             <div className="TopMenu">
@@ -19,11 +33,18 @@ class TopMenu extends Component {
                     </div>
                 </div>
                 <div>
-                    <button className="share">
+                    <button className="share" onClick={this.toggleShareDialog}>
                         <i className="fas fa-share-alt"> </i>
                         <p>Share</p>
                     </button>
                 </div>
+
+                {this.props.board && (
+                    <ShareDialog
+                        board={this.props.board}
+                        open={this.state.shareDialogOpen}
+                        handleClose={this.toggleShareDialog} />
+                )}
             </div>
         );
     }

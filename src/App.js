@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import Panel from "./components/Panel";
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import WorkspaceSelector from "./components/partials/WorkspaceSelector";
+import SharedBoard from "./components/partials/SharedBoard";
 
 class App extends Component {
     constructor(props) {
@@ -55,6 +56,7 @@ class App extends Component {
                     <Router>
                         <Switch>
                             <Route exact path={['/login', '/register']} render={({history}) => history.push('/')} />
+                            <Route path="/share/:boardId" component={SharedBoard} />
                             <Route path="/:workspace" component={Panel}/>
                             <Route path="/" render={({history}) => (
                                 <WorkspaceSelector history={history} workspaces={this.props.isLoggedIn.workspaces} />
