@@ -60,6 +60,7 @@
 }
 
 .TopMenu button.share {
+    outline: none;
     display: flex;
     flex-direction: row;
     justify-content: center;

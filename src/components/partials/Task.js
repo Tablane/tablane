@@ -2,10 +2,9 @@ import {Component, Fragment} from 'react'
 import './assets/Task.css'
 import axios from "axios";
 import {connect} from "react-redux";
-import TaskPopover from "./TaskPopover";
+import TaskColumnPopover from "./TaskColumnPopover";
 import {Draggable} from "react-beautiful-dnd";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import TaskPopover from "./TaskPopover";
 
 class Task extends Component {
     constructor(props) {
@@ -13,33 +12,34 @@ class Task extends Component {
         this.state = {
             anchor: null,
             activeOption: '',
-            deleteDialogOpen: false,
+            columnDialogOpen: false,
+            moreDialogOpen: false,
+
+            // taskName editing
+            taskEditing: false,
+            taskName: this.props.task.name
         }
     }
 
     handleClose = () => {
-        this.setState({anchor: null})
+        this.setState({anchor: null, moreDialogOpen: false, columnDialogOpen: false})
     }
 
     handleClick = (e, key) => {
-        this.setState({
-            anchor: e.currentTarget,
+        const anchor = e.currentTarget
+        this.setState(st => ({
+            anchor,
             activeOption: key._id,
-        })
+            columnDialogOpen: !st.columnDialogOpen
+        }))
     }
 
-    handleDeleteClick = () => {
-        this.setState(st => ({deleteDialogOpen: !st.deleteDialogOpen}))
-    }
-
-    handleDelete = async () => {
-        axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `http://localhost:3001/api/task/${this.props.board._id}/${this.props.taskGroupId}/${this.props.task._id}`
-        }).then(() => {
-            this.props.getData()
-        })
+    handleMoreClick = (e) => {
+        const anchor = e.currentTarget
+        this.setState(st => ({
+            anchor,
+            moreDialogOpen: !st.moreDialogOpen
+        }))
     }
 
     handleTextEdit = async (e) => {
@@ -76,9 +76,10 @@ class Task extends Component {
                     {label.name}
                 </div>
                 {attribute._id.toString() === this.state.activeOption && (
-                    <TaskPopover
+                    <TaskColumnPopover
                         attribute={attribute}
                         anchor={this.state.anchor}
+                        open={this.state.columnDialogOpen}
                         task={this.props.task}
                         getData={this.props.getData}
                         taskGroupId={this.props.taskGroupId}
@@ -97,21 +98,59 @@ class Task extends Component {
         )
     }
 
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    toggleTaskEdit = () => {
+        this.setState(st => ({
+            taskEditing: !st.taskEditing
+        }))
+    }
+
+    handleTaskEdit = (e) => {
+        e.preventDefault()
+        const {board, taskGroupId, task} = this.props
+        this.toggleTaskEdit()
+        axios({
+            method: 'PATCH',
+            data: {
+                type: 'name',
+                name: this.state.taskName
+            },
+            withCredentials: true,
+            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
+        }).then(() => {
+            this.props.getData()
+        })
+    }
+
     render() {
         return (
             <>
                 <Draggable draggableId={this.props.task._id} index={this.props.index} type="task" >
                     {(provided) => (
-                        <div className="Task" {...provided.draggableProps}
+                        <div className={`Task ${this.state.taskEditing ? 'editing' : ''}`} {...provided.draggableProps}
                              ref={provided.innerRef} {...provided.dragHandleProps}>
-                            <p>{this.props.task.name}</p>
+                            {this.state.taskEditing
+                                ? (
+                                    <form onSubmit={this.handleTaskEdit} onBlur={this.handleTaskEdit}>
+                                        <input type={this.taskName}
+                                               onKeyUp={e => {if (e.key === 'Escape') e.currentTarget.blur()}}
+                                               value={this.state.taskName}
+                                               onChange={this.handleChange}
+                                               name="taskName" autoFocus />
+                                    </form>
+                                )
+                                : <p>{this.props.task.name}</p>}
                             <div>
                                 {this.props.attributes.map(attribute => {
 
                                     if (attribute.type === "status") return this.getStatusLabel(attribute)
                                     if (attribute.type === "text") return this.getTextLabel(attribute)
 
-                                    // if (1+1===2) return this.getStatusLabel(attribute)
                                     return (
                                         <div style={{backgroundColor: 'crimson'}} key={Math.random()}>
                                             ERROR
@@ -119,34 +158,23 @@ class Task extends Component {
                                     )
                                 })}
 
-                                <div onClick={this.handleDeleteClick}>
-                                    <i className="fas fa-trash-alt"> </i>
+                                <div onClick={this.handleMoreClick}>
+                                    <i className="fas fa-ellipsis-h"> </i>
                                 </div>
                             </div>
                         </div>
                     )}
                 </Draggable>
-                <Dialog
-                    open={this.state.deleteDialogOpen}
-                    onClose={this.handleDeleteClick}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Delete this task?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            It will be kept in your Recycle Bin for 30 days.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleDeleteClick} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleDelete} color="primary" variant="contained">
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+
+                {!this.state.taskEditing && <TaskPopover
+                    toggleTaskEdit={this.toggleTaskEdit}
+                    open={this.state.moreDialogOpen}
+                    getData={this.props.getData}
+                    anchor={this.state.anchor}
+                    handleClose={this.handleClose}
+                    board={this.props.board}
+                    taskGroupId={this.props.taskGroupId}
+                    task={this.props.task} />}
             </>
         );
     }
