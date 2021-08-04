@@ -76,22 +76,16 @@ function WorkspaceSelector(props) {
         <div className={classes.container}>
             <p className={classes.title}>My Workspaces</p>
             <div className={classes.workspaces}>
-                <Link to="/9719">
-                    <div className={classes.workspace}>
-                        <div className={classes.avatar}>
-                            <p>T</p>
+                {props.workspaces.map(x => (
+                    <Link to={`/${x.id}`}>
+                        <div className={classes.workspace}>
+                            <div className={classes.avatar}>
+                                <p>{x.name.charAt(0).toUpperCase()}</p>
+                            </div>
+                            <p>{x.name}</p>
                         </div>
-                        <p>Test Workspace</p>
-                    </div>
-                </Link>
-                <Link to="/9720">
-                    <div className={classes.workspace}>
-                        <div className={classes.avatar}>
-                            <p>E</p>
-                        </div>
-                        <p>est workspace</p>
-                    </div>
-                </Link>
+                    </Link>
+                ))}
                 <div className={classes.newWorkspace}>
                     <div className={classes.newAvatar}>
                         <p><i className="fas fa-plus"> </i></p>

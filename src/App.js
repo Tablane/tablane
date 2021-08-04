@@ -36,33 +36,20 @@ class App extends Component {
         })
     }
 
-    // redirectToWorkSpace = (routeProps) => {
-    //     axios({
-    //         method: 'GET',
-    //         withCredentials: true,
-    //         url: 'http://localhost:3001/api/user/workspace'
-    //     }).then(res => {
-    //         routeProps.history.push(`/${res.data[0].id}`)
-    //     }).catch(err => {
-    //         toast(err.toString())
-    //     })
-    //     return <div className="loading"><CircularProgress/></div>
-    // }
-
     render() {
+        if (this.state.loading) return <div className="loading"><CircularProgress/></div>
         return (
-            this.state.loading ? <div className="loading"><CircularProgress/></div> :
-                !this.props.isLoggedIn ? <Auth/> :
-                    <Router>
-                        <Switch>
-                            <Route exact path={['/login', '/register']} render={({history}) => history.push('/')} />
-                            <Route path="/share/:boardId" component={SharedBoard} />
-                            <Route path="/:workspace" component={Panel}/>
-                            <Route path="/" render={({history}) => (
-                                <WorkspaceSelector history={history} workspaces={this.props.isLoggedIn.workspaces} />
-                            )}/>
-                        </Switch>
-                    </Router>
+            <Router>
+                <Switch>
+                    <Route path="/share/:boardId" component={SharedBoard}/>
+                    {!this.props.isLoggedIn && <Route path="/" component={Auth}/>}
+                    <Route exact path={['/login', '/register']} render={({history}) => history.push('/')}/>
+                    <Route path="/:workspace" component={Panel}/>
+                    <Route path="/" render={({history}) => (
+                        <WorkspaceSelector history={history} workspaces={this.props.isLoggedIn.workspaces}/>
+                    )}/>
+                </Switch>
+            </Router>
         );
     }
 }

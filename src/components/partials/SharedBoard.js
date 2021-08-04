@@ -102,7 +102,7 @@ function SharedBoard(props) {
         <div className={classes.forbidden}>
             <div>
                 <p>This page is currently unavailable</p>
-                <p>To create your own public tasks or views, use <span>create an account</span> for free!</p>
+                <p>To create your own public tasks or views, <span>create an account</span> for free!</p>
             </div>
         </div>
     )
