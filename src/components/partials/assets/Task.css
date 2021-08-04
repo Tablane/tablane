@@ -139,11 +139,13 @@
 
 .task-popover .options > div.editing > div {
     cursor: auto;
+    transition: background-color .2s;
 }
 
 .task-popover .options > div.editing > div:first-of-type {
     width: 16px;
     border-radius: 2px 0 0 2px;
+    cursor: pointer;
 }
 
 .task-popover .options > div.editing > div:nth-of-type(2) {
@@ -187,6 +189,7 @@
     margin-bottom: 8px;
     cursor: pointer;
     border: dashed 1px #c4c4c4;
+    transition: background-color 0.2s;
 }
 
 .task-popover .colors  {
@@ -198,7 +201,15 @@
 
 .task-popover .colors > div {
     cursor: pointer;
-    margin: 4px;
+    padding: 4px;
+    width: 18px;
+    height: 18px;
+    /*border-radius: 50%;*/
+}
+
+.task-popover .colors > div > div {
+    /*cursor: pointer;*/
+    /*margin: 4px;*/
     width: 18px;
     height: 18px;
     border-radius: 50%;

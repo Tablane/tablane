@@ -11,6 +11,7 @@ class TaskColumnPopover extends Component {
         super(props);
         this.state = {
             editing: false,
+            editingLabel: -1,
             currentLabels: this.props.attribute.labels,
             hoverColor: null
         }
@@ -30,11 +31,11 @@ class TaskColumnPopover extends Component {
                 this.props.getData()
             })
         }
-        this.setState(st => ({editing: !st.editing}))
+        this.setState(st => ({editing: !st.editing, editingLabel: -1}))
     }
 
     handleClose = () => {
-        this.setState({editing: false})
+        this.setState({editing: false, editingLabel: -1})
         this.props.handleClose()
     }
 
@@ -60,17 +61,25 @@ class TaskColumnPopover extends Component {
 
     // add new label while editing
     addNewLabel = (color) => {
-        if (typeof color !== "string") color = '#C4C4C4'
-        if (this.state.hoverColor) {
-            color = this.state.hoverColor
-            this.setState({hoverColor: null})
+        if (this.state.editingLabel === -1) {
+            if (typeof color !== "string") color = '#C4C4C4'
+            if (this.state.hoverColor) {
+                color = this.state.hoverColor
+                this.setState({hoverColor: null})
+            }
+            let newCurrentLabels = this.state.currentLabels
+            const attribute = { name: '', color: color, _id: ObjectID() }
+            newCurrentLabels.push(attribute)
+            this.setState({
+                currentLabels: newCurrentLabels
+            })
+        } else {
+            const newCurrentLabels = this.state.currentLabels
+            newCurrentLabels[this.state.editingLabel].color = color
+            this.setState({
+                currentLabels: newCurrentLabels
+            })
         }
-        let newCurrentLabels = this.state.currentLabels
-        const attribute = { name: '', color: color, _id: ObjectID() }
-        newCurrentLabels.push(attribute)
-        this.setState({
-            currentLabels: newCurrentLabels
-        })
     }
 
     // change label to id
@@ -114,11 +123,17 @@ class TaskColumnPopover extends Component {
         newLabels.splice(x.destination.index, 0, label)
     }
 
+    editEditingLabel = (i) => {
+        if (!this.state.editing) return
+        this.setState(st => ({ editingLabel: i === st.editingLabel ? -1 : i }))
+    }
+
     render() {
         let colors = ["rgb(255, 90, 196)", "rgb(255, 21, 138)", "rgb(226, 68, 92)", "rgb(187, 51, 84)", "rgb(127, 83, 71)", "rgb(255, 100, 46)", "rgb(253, 171, 61)", "rgb(255, 203, 0)", "rgb(202, 182, 65)", "rgb(156, 211, 38)", "rgb(0, 200, 117)", "rgb(3, 127, 76)", "rgb(0, 134, 192)", "rgb(87, 155, 252)", "rgb(102, 204, 255)", "rgb(162, 93, 220)", "rgb(120, 75, 209)", "rgb(128, 128, 128)", "rgb(51, 51, 51)", "rgb(255, 117, 117)", "rgb(250, 161, 241)", "rgb(255, 173, 173)", "rgb(126, 59, 138)", "rgb(154, 173, 189)", "rgb(104, 161, 189)", "rgb(34, 80, 145)", "rgb(78, 204, 198)", "rgb(85, 89, 223)", "rgb(64, 22, 148)", "rgb(86, 62, 62)", "rgb(189, 168, 249)", "rgb(43, 118, 229)", "rgb(169, 190, 232)", "rgb(217, 116, 176)", "rgb(157, 153, 185)", "rgb(173, 150, 122)", "rgb(161, 227, 246)", "rgb(189, 129, 110)", "rgb(23, 90, 99)"]
         this.props.attribute.labels.forEach(x => {
             colors.splice(colors.indexOf(x.color), 1)
         })
+
         return (
             <Popover
                 open={this.props.open}
@@ -139,6 +154,9 @@ class TaskColumnPopover extends Component {
                             {(provided) => (
                                 <div className="options" {...provided.droppableProps} ref={provided.innerRef}>
                                     {this.state.currentLabels.map((x, i) => {
+                                        const backgroundColor = this.state.editing && this.state.editingLabel === i
+                                            ? this.state.hoverColor === null ? x.color : this.state.hoverColor
+                                            : x.color
                                         return (
                                             <Draggable draggableId={x._id.toString()} key={x._id} index={i} isDragDisabled={!this.state.editing}>
                                                 {(provided) => (
@@ -150,9 +168,12 @@ class TaskColumnPopover extends Component {
                                                         onClick={() => this.handleLabelChange(x)}>
 
                                                         <i className="fas fa-grip-vertical"> </i>
-                                                        <div style={{backgroundColor: x.color}}>
-                                                            {this.state.editing ?
-                                                                <i className="fas fa-tint"> </i> : x.name}
+                                                        <div
+                                                            style={{backgroundColor}}
+                                                            onClick={() => this.editEditingLabel(i)}>
+                                                            {this.state.editing ? (
+                                                                    <i className="fas fa-tint"> </i>
+                                                                ) : x.name}
                                                         </div>
                                                         {this.state.editing ?
                                                             <div>
@@ -180,7 +201,7 @@ class TaskColumnPopover extends Component {
                                         ? <div
                                             className="new-label"
                                             key="new-label"
-                                            style={{backgroundColor: this.state.hoverColor}}
+                                            style={{backgroundColor: this.state.editingLabel === -1 ? this.state.hoverColor : null}}
                                             onClick={this.addNewLabel}>New label</div>
                                         : ''}
                                 </div>
@@ -193,11 +214,14 @@ class TaskColumnPopover extends Component {
                         height={this.state.editing ? 'auto' : 0}
                     >
                         <div className="colors">
-                            {colors.map(x => <div
-                                key={x}
-                                onMouseEnter={() => this.setState({hoverColor: x})}
-                                onClick={() => this.addNewLabel(x)}
-                                style={{backgroundColor: x}}> </div>)}
+                            {colors.map(x => (
+                                <div key={x}
+                                     onMouseEnter={() => this.setState({hoverColor: x})}
+                                     onMouseLeave={() => this.setState({hoverColor: null})}
+                                     onClick={() => this.addNewLabel(x)} >
+                                    <div style={{backgroundColor: x}}> </div>
+                                </div>
+                            ))}
                         </div>
                     </AnimateHeight>
 
