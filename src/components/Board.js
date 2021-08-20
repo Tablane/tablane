@@ -147,15 +147,15 @@ class Board extends Component {
                                                 attributes={this.props.board.attributes}/>
                                         })}
                                         {provided.placeholder}
+                                        <div className="add-task-group">
+                                            <div> </div>
+                                            <button onClick={() => this.setState({dialogOpen: true})}>ADD NEW TASKGROUP</button>
+                                            <div> </div>
+                                        </div>
                                     </div>
                                 )}
                             </Droppable>
                         </DragDropContext>
-                        <div className="add-task-group">
-                            <div> </div>
-                            <button onClick={() => this.setState({dialogOpen: true})}>ADD NEW TASKGROUP</button>
-                            <div> </div>
-                        </div>
                     </div>
                 }
                 <Dialog

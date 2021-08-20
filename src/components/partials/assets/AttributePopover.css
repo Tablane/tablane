@@ -13,11 +13,6 @@
     background-color: #fafbfc;
 }
 
-.AttributePopover p,
-.AttributePopover i {
-    cursor: pointer;
-}
-
 .AttributePopover .content .name {
     display: flex;
     justify-content: space-between;
@@ -38,6 +33,7 @@
 }
 
 .AttributePopover .content .delete {
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;

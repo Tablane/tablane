@@ -17,6 +17,7 @@ const useStyles = makeStyles({
         }
     },
     workspace: {
+        cursor: 'pointer',
         display: 'inline-block',
         width: '160px',
         height: '204px',
@@ -41,11 +42,16 @@ const useStyles = makeStyles({
         }
     },
     newWorkspace: {
+        cursor: 'pointer',
         display: 'inline-block',
         width: '160px',
         height: '204px',
         margin: '0 70px 50px 0',
         textAlign: 'center',
+        '&:hover > div': {
+            backgroundColor: 'rgb(83, 108, 254)',
+            color: 'white',
+        }
     },
     newAvatar: {
         width: '160px',
@@ -58,10 +64,6 @@ const useStyles = makeStyles({
         color: '#4169e1',
         '& p': {
             margin: 0,
-        },
-        '&:hover': {
-            backgroundColor: 'rgb(83, 108, 254)',
-            color: 'white',
         }
     },
     newText: {
