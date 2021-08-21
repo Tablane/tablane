@@ -3,22 +3,19 @@ import './assets/Board.css'
 import TaskGroup from './partials/TaskGroup'
 import {connect} from "react-redux";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    LinearProgress,
-    TextField
-} from "@material-ui/core";
+import {LinearProgress} from "@material-ui/core";
 import axios from "axios";
 import {toast} from "react-hot-toast";
-import Button from "@material-ui/core/Button";
+import NewTaskGroup from "./partials/NewTaskGroup";
 
 class Board extends Component {
     constructor(props) {
         super(props);
-        this.state = {name: '', loading: false, dialogOpen: false}
+        this.state = {
+            name: '',
+            loading: false,
+            newTaskGroupShown: false
+        }
     }
 
 
@@ -42,20 +39,8 @@ class Board extends Component {
         this.setState({loading: false})
     }
 
-    handleNewTaskGroup = async () => {
-        this.setState({dialogOpen: false})
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                name: this.state.name
-            },
-            url: `http://localhost:3001/api/taskgroup/${this.findBoardId()}`
-        }).then(res => {
-            this.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+    toggleNewTaskGroup = () => {
+        this.setState(st => ({newTaskGroupShown: !st.newTaskGroupShown}))
     }
 
     onDragStart = () => {
@@ -146,10 +131,18 @@ class Board extends Component {
                                                 index={i}
                                                 attributes={this.props.board.attributes}/>
                                         })}
+                                        {this.state.newTaskGroupShown && (
+                                            <NewTaskGroup
+                                                attributes={this.props.board.attributes}
+                                                index={this.props.board.taskGroups.length}
+                                                toggleNewTaskGroup={this.toggleNewTaskGroup}
+                                                getData={this.getData}
+                                                boardId={this.findBoardId()}/>
+                                        )}
                                         {provided.placeholder}
                                         <div className="add-task-group">
                                             <div> </div>
-                                            <button onClick={() => this.setState({dialogOpen: true})}>ADD NEW TASKGROUP</button>
+                                            <button onClick={this.toggleNewTaskGroup}>ADD NEW TASKGROUP</button>
                                             <div> </div>
                                         </div>
                                     </div>
@@ -158,33 +151,6 @@ class Board extends Component {
                         </DragDropContext>
                     </div>
                 }
-                <Dialog
-                    open={this.state.dialogOpen}
-                    onClose={() => this.setState({dialogOpen: false})}
-                    aria-labelledby="form-dialog-title"
-                    fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new TaskGroup</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            onChange={this.handleChange}
-                            label="TaskGroup Name"
-                            type="text"
-                            fullWidth
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.setState({dialogOpen: false})} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleNewTaskGroup} color="primary">
-                            Create
-                        </Button>
-                    </DialogActions>
-                </Dialog>
             </div>
         );
     }

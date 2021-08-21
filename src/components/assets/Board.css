@@ -17,7 +17,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 0 25px;
+    padding: 0 10%;
 }
 
 .add-task-group button {
@@ -27,7 +27,7 @@
     background-color: transparent;
     color: rgba(0, 0, 0, 0.3);
     margin: 0 15px;
-    padding: 5px 5px;
+    padding: 5px 2%;
 }
 
 .add-task-group div {
