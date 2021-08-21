@@ -86,7 +86,6 @@ class TaskGroup extends Component {
     }
 
     updateName = async (e) => {
-        console.log(e)
         e.preventDefault()
         await axios({
             method: 'PATCH',
@@ -121,12 +120,14 @@ class TaskGroup extends Component {
                             <div {...provided.dragHandleProps}>
                                 {this.state.editing ? (
                                     <div className="taskGroup-title editing">
-                                        <form onSubmit={this.updateName}>
+                                        <form onSubmit={this.updateName} onBlur={this.updateName}>
                                             <input
+                                                onKeyUp={e => {if (e.key === 'Escape') e.currentTarget.blur()}}
                                                 type="text"
                                                 name="editingName"
                                                 value={this.state.editingName}
-                                                onChange={this.handleChange}/>
+                                                onChange={this.handleChange}
+                                                autoFocus/>
                                             <div>
                                                 <i onClick={this.toggleNameEdit} className="fas fa-times"> </i>
                                                 <i onClick={this.updateName} className="fas fa-check"> </i>
