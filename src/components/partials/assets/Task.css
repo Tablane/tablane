@@ -139,7 +139,7 @@
 
 .task-popover .options > div.editing > div {
     cursor: auto;
-    transition: background-color .2s;
+    transition: background-color .2s, width 0.2s;
 }
 
 .task-popover .options > div.editing > div:first-of-type {
