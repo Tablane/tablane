@@ -3,71 +3,58 @@ import './assets/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./partials/AccountPopover";
 import {connect} from "react-redux";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import AnimateHeight from "react-animate-height";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import BoardPopover from "./partials/BoardPopover";
 
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            newBoardDialogOpen: false,
             newSpaceDialogOpen: false,
             spacesOpen: JSON.parse(localStorage.getItem('spacesOpen')) !== null ? JSON.parse(localStorage.getItem('spacesOpen')) : true,
-            name: '',
             spaceClosed: JSON.parse(localStorage.getItem('spaceClosed')) || [],
+            name: '',
 
-            // handle delete dialogs
-            deleteBoardDialogOpen: false,
-            deleteSpaceDialogOpen: false,
-            deleteBoard: '',
-            deleteSpace: '',
+            // popover dialogs
+            popoverAnchor: null,
+            popoverSpace: '',
+            popoverBoard: '',
+
+            // new board
+            newBoardSpace: '',
+            newBoardName: '',
+
+            // editing
+            editingBoard: '',
+
+            editingBoardName: '',
         }
     }
 
-    handleSpaceDeleteClick = (spaceId = '') => {
-        this.setState(st => ({
-            deleteSpaceDialogOpen: !st.deleteSpaceDialogOpen,
-            deleteSpace: spaceId
-        }))
-    }
-
-    handleSpaceDelete = async () => {
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `http://localhost:3001/api/space/${this.props.workspaces._id}/${this.state.deleteSpace}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({deleteSpaceDialogOpen: false})
-        }).catch(err => {
-            toast(err.toString())
+    boardClick = (space, board, e) => {
+        e.preventDefault()
+        this.setState({
+            popoverAnchor: e.currentTarget,
+            popoverSpace: space,
+            popoverBoard: board,
         })
     }
 
-    handleBoardDeleteClick = (spaceId = '', boardId = '') => {
-        this.setState(st => ({
-            deleteBoardDialogOpen: !st.deleteBoardDialogOpen,
-            deleteBoard: boardId,
-            deleteSpace: spaceId,
-        }))
+    boardPopoverClose = () => {
+        this.setState({
+            popoverAnchor: null,
+        })
     }
 
-    handleBoardDelete = async () => {
-        const {workspaces} = this.props
-        const {deleteSpace, deleteBoard} = this.state
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `http://localhost:3001/api/board/${workspaces._id}/${deleteSpace}/${deleteBoard}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({deleteBoardDialogOpen: false})
-        }).catch(err => {
-            toast(err.toString())
+    handleNewBoardClick = (space) => {
+        this.setState({
+            newBoardSpace: space._id,
+            newBoardName: '',
         })
     }
 
@@ -88,16 +75,21 @@ class SideBar extends Component {
     }
 
     handleNewBoard = async () => {
+        if (this.state.newBoardName === '') {
+            this.setState({ newBoardSpace: '' })
+            return
+        }
+
         await axios({
             method: 'POST',
             withCredentials: true,
             data: {
-                name: this.state.name
+                name: this.state.newBoardName
             },
-            url: `http://localhost:3001/api/board/${this.props.workspaces._id}/${this.state.currentSpace}`
+            url: `http://localhost:3001/api/board/${this.props.workspaces._id}/${this.state.newBoardSpace}`
         }).then(res => {
             this.props.getData()
-            this.setState({newBoardDialogOpen: false})
+            this.setState({ newBoardSpace: '' })
         }).catch(err => {
             toast(err.toString())
         })
@@ -106,6 +98,30 @@ class SideBar extends Component {
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
+        })
+    }
+
+    handleBoardEditClick = (workspace, space, board) => {
+        this.setState({
+            editingBoard: board._id
+        })
+    }
+
+    handleBoardEdit = async (e) => {
+        if (this.state.editingBoardName === '') return this.setState({editingBoard: ''})
+
+        await axios({
+            method: 'PATCH',
+            withCredentials: true,
+            data: {
+                name: this.state.editingBoardName
+            },
+            url: `http://localhost:3001/api/board/${this.state.editingBoard}`
+        }).then(res => {
+            this.props.getData()
+            this.setState({editingBoard: ''})
+        }).catch(err => {
+            toast(err.toString())
         })
     }
 
@@ -146,7 +162,7 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/board/${this.props.workspaces._id}`
+                url: `http://localhost:3001/api/board/drag/${this.props.workspaces._id}`
             }).then(res => {
                 this.props.getData()
             }).catch(err => {
@@ -159,7 +175,7 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/space/${this.props.workspaces._id}`
+                url: `http://localhost:3001/api/space/drag/${this.props.workspaces._id}`
             }).then(res => {
                 this.props.getData()
             }).catch(err => {
@@ -182,9 +198,9 @@ class SideBar extends Component {
                                     <p>{space.name}</p>
                                 </div>
                                 <div>
-                                    <i onClick={() => this.setState({newBoardDialogOpen: true, currentSpace: space._id})}
+                                    <i className="fas fa-ellipsis-h"> </i>
+                                    <i onClick={() => this.handleNewBoardClick(space)}
                                        className="fas fa-plus"> </i>
-                                    <i onClick={() => this.handleSpaceDeleteClick(space._id)} className="fas fa-trash-alt"> </i>
                                 </div>
                             </div>
 
@@ -206,17 +222,37 @@ class SideBar extends Component {
                                                                 to={`/${this.props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
                                                                 activeClassName="active-board">
                                                                 <div> </div>
-                                                                <p>{board.name}</p>
-                                                                <i onClick={(e) => {
-                                                                    e.preventDefault()
-                                                                    this.handleBoardDeleteClick(space._id, board._id)
-                                                                }} className="fas fa-trash-alt"> </i>
+                                                                {board._id === this.state.editingBoard ?
+                                                                    (
+                                                                        <input type="text"
+                                                                               defaultValue={board.name}
+                                                                               onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                                                               onBlur={this.handleBoardEdit}
+                                                                               onChange={this.handleChange}
+                                                                               name="editingBoardName"
+                                                                               autoFocus />
+                                                                    ) : (
+                                                                        <p>{board.name}</p>
+                                                                    )}
+                                                                <i className="fas fa-ellipsis-h" onClick={e => this.boardClick(space, board, e)}> </i>
                                                             </NavLink>
                                                         )}
                                                     </Draggable>
                                                 )
                                             })}
                                             {provided.placeholder}
+                                            {this.state.newBoardSpace === space._id && (
+                                                <div>
+                                                    <div> </div>
+                                                    <input type="text"
+                                                           onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                                           onBlur={this.handleNewBoard}
+                                                           onChange={this.handleChange}
+                                                           name="newBoardName"
+                                                           autoFocus />
+                                                    <i className="fas fa-ellipsis-h"> </i>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </Droppable>
@@ -292,35 +328,6 @@ class SideBar extends Component {
                     <AccountPopOver history={this.props.history} />
                 </div>
 
-                {/* create board dialog*/}
-                <Dialog
-                    open={this.state.newBoardDialogOpen}
-                    onClose={() => this.setState({dialogOpen: false})}
-                    aria-labelledby="form-dialog-title"
-                    fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new Board</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            onChange={this.handleChange}
-                            label="board name"
-                            type="text"
-                            fullWidth
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.setState({newBoardDialogOpen: false})} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleNewBoard} color="primary">
-                            Create
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
                 {/* create space dialog*/}
                 <Dialog
                     open={this.state.newSpaceDialogOpen}
@@ -350,51 +357,17 @@ class SideBar extends Component {
                     </DialogActions>
                 </Dialog>
 
-                {/* delete board dialog*/}
-                <Dialog
-                    open={this.state.deleteBoardDialogOpen}
-                    onClose={this.handleBoardDeleteClick}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Remove Board?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            All tasks within this Board will be deleted.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleBoardDeleteClick} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleBoardDelete} color="primary" variant="contained">
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                {this.state.editingBoard === '' && (
+                    <BoardPopover
+                        handleEditClick={this.handleBoardEditClick}
+                        anchor={this.state.popoverAnchor}
+                        workspace={this.props.workspaces}
+                        space={this.state.popoverSpace}
+                        board={this.state.popoverBoard}
+                        getData={this.props.getData}
+                        handleClose={this.boardPopoverClose} />
+                )}
 
-                {/*delete space dialog*/}
-                <Dialog
-                    open={this.state.deleteSpaceDialogOpen}
-                    onClose={this.handleSpaceDeleteClick}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Remove Space?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            All boards and tasks within this Space will be deleted.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleSpaceDeleteClick} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleSpaceDelete} color="primary" variant="contained">
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
             </div>
         );
     }

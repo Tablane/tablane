@@ -79,7 +79,7 @@ function WorkspaceSelector(props) {
             <p className={classes.title}>My Workspaces</p>
             <div className={classes.workspaces}>
                 {props.workspaces.map(x => (
-                    <Link to={`/${x.id}`}>
+                    <Link to={`/${x.id}`} key={x._id} >
                         <div className={classes.workspace}>
                             <div className={classes.avatar}>
                                 <p>{x.name.charAt(0).toUpperCase()}</p>

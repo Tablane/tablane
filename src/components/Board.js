@@ -18,7 +18,6 @@ class Board extends Component {
         }
     }
 
-
     findBoardId = () => {
         const space = this.props.match.params.space.replaceAll('-', ' ')
         const board = this.props.match.params.board.replaceAll('-', ' ')
