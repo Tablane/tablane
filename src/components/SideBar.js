@@ -10,6 +10,7 @@ import {toast} from "react-hot-toast";
 import AnimateHeight from "react-animate-height";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import BoardPopover from "./partials/BoardPopover";
+import SpacePopover from "./partials/SpacePopover";
 
 class SideBar extends Component {
     constructor(props) {
@@ -21,7 +22,8 @@ class SideBar extends Component {
             name: '',
 
             // popover dialogs
-            popoverAnchor: null,
+            boardPopoverAnchor: null,
+            spacePopoverAnchor: null,
             popoverSpace: '',
             popoverBoard: '',
 
@@ -31,23 +33,39 @@ class SideBar extends Component {
 
             // editing
             editingBoard: '',
+            editingSpace: '',
 
             editingBoardName: '',
+            editingSpaceName: '',
         }
     }
 
     boardClick = (space, board, e) => {
         e.preventDefault()
         this.setState({
-            popoverAnchor: e.currentTarget,
+            boardPopoverAnchor: e.currentTarget,
             popoverSpace: space,
             popoverBoard: board,
         })
     }
 
+    spaceClick = (space, e) => {
+        e.preventDefault()
+        this.setState({
+            spacePopoverAnchor: e.currentTarget,
+            popoverSpace: space,
+        })
+    }
+
     boardPopoverClose = () => {
         this.setState({
-            popoverAnchor: null,
+            boardPopoverAnchor: null,
+        })
+    }
+
+    spacePopoverClose = () => {
+        this.setState({
+            spacePopoverAnchor: null,
         })
     }
 
@@ -107,6 +125,12 @@ class SideBar extends Component {
         })
     }
 
+    handleSpaceEditClick = (workspace, space) => {
+        this.setState({
+            editingSpace: space._id
+        })
+    }
+
     handleBoardEdit = async (e) => {
         if (this.state.editingBoardName === '') return this.setState({editingBoard: ''})
 
@@ -125,7 +149,27 @@ class SideBar extends Component {
         })
     }
 
+    handleSpaceEdit = async (e) => {
+        if (this.state.editingSpaceName === '') return this.setState({editingSpace: ''})
+
+        await axios({
+            method: 'PATCH',
+            withCredentials: true,
+            data: {
+                name: this.state.editingSpaceName
+            },
+            url: `http://localhost:3001/api/space/${this.props.workspaces._id}/${this.state.editingSpace}`
+        }).then(res => {
+            this.props.getData()
+            this.setState({editingSpace: ''})
+        }).catch(err => {
+            toast(err.toString())
+        })
+    }
+
     toggleClosed = (x) => {
+        if (this.state.editingSpace === x) return
+
         const newSpaceClosed = this.state.spaceClosed
         const xIndex = newSpaceClosed.indexOf(x)
 
@@ -195,10 +239,22 @@ class SideBar extends Component {
                                 </div>
                                 <div onClick={() => this.toggleClosed(space._id)}>
                                     <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
-                                    <p>{space.name}</p>
+                                    {space._id === this.state.editingSpace ?
+                                        (
+                                            <input type="text"
+                                                   className='space'
+                                                   defaultValue={space.name}
+                                                   onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                                   onBlur={this.handleSpaceEdit}
+                                                   onChange={this.handleChange}
+                                                   name="editingSpaceName"
+                                                   autoFocus />
+                                        ) : (
+                                            <p>{space.name}</p>
+                                        )}
                                 </div>
                                 <div>
-                                    <i className="fas fa-ellipsis-h"> </i>
+                                    <i className="fas fa-ellipsis-h" onClick={e => this.spaceClick(space, e)}> </i>
                                     <i onClick={() => this.handleNewBoardClick(space)}
                                        className="fas fa-plus"> </i>
                                 </div>
@@ -225,6 +281,7 @@ class SideBar extends Component {
                                                                 {board._id === this.state.editingBoard ?
                                                                     (
                                                                         <input type="text"
+                                                                               className='board'
                                                                                defaultValue={board.name}
                                                                                onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
                                                                                onBlur={this.handleBoardEdit}
@@ -245,6 +302,7 @@ class SideBar extends Component {
                                                 <div>
                                                     <div> </div>
                                                     <input type="text"
+                                                           className='board'
                                                            onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
                                                            onBlur={this.handleNewBoard}
                                                            onChange={this.handleChange}
@@ -360,12 +418,22 @@ class SideBar extends Component {
                 {this.state.editingBoard === '' && (
                     <BoardPopover
                         handleEditClick={this.handleBoardEditClick}
-                        anchor={this.state.popoverAnchor}
+                        anchor={this.state.boardPopoverAnchor}
                         workspace={this.props.workspaces}
                         space={this.state.popoverSpace}
                         board={this.state.popoverBoard}
                         getData={this.props.getData}
                         handleClose={this.boardPopoverClose} />
+                )}
+
+                {this.state.editingSpace === '' && (
+                    <SpacePopover
+                        handleEditClick={this.handleSpaceEditClick}
+                        anchor={this.state.spacePopoverAnchor}
+                        workspace={this.props.workspaces}
+                        space={this.state.popoverSpace}
+                        getData={this.props.getData}
+                        handleClose={this.spacePopoverClose} />
                 )}
 
             </div>

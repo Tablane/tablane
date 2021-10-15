@@ -12,9 +12,6 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 
 const useStyles = makeStyles((theme) => ({
-    typography: {
-        padding: theme.spacing(2),
-    },
     popover: {
         display: "flex",
         justifyContent: "space-between",
@@ -104,7 +101,7 @@ function BoardPopover(props) {
             {/* delete board dialog*/}
             <Dialog
                 open={deleting}
-                onClose={() => setDeleting(false)}
+                onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

@@ -131,6 +131,7 @@ a {
 }
 
 .spaces .space .space-title > div:nth-of-type(2) {
+    height: 100%;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -222,6 +223,10 @@ a {
     outline: none;
     border-radius: 3px;
     border: 1px solid #4169E1;
+}
+
+.SideBar input.space {
+    max-width: 150px;
 }
 
 .space .space-boards .active-board {
