@@ -9,7 +9,7 @@ import Integrations from "./partials/settings/workspace/Integrations";
 import Users from "./partials/settings/workspace/Users";
 import Permissions from "./partials/settings/workspace/Permissions";
 import {connect} from "react-redux";
-import {useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import WorkspaceContext from "../context/WorkspaceContext";
 
@@ -81,7 +81,7 @@ function Settings(props) {
     const classes = useStyles();
     const [workspace, setWorkspace] = useState(null)
 
-    const getData = () => {
+    const getData = useCallback(() => {
         axios({
             method: 'GET',
             withCredentials: true,
@@ -91,11 +91,11 @@ function Settings(props) {
         }).catch(err => {
             console.log(err)
         })
-    }
+    }, [props.match.params.workspace])
 
     useEffect(() => {
         getData()
-    }, []);
+    }, [getData]);
 
     const providerValue = useMemo(() => ({workspace, getData}), [workspace, getData])
 
