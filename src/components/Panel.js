@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import SideBar from "./SideBar";
 import TopMenu from "./TopMenu";
 import Board from "./Board";
@@ -53,29 +53,27 @@ class Panel extends Component {
         return (
             !this.props.workspaces
                 ? <div className="loading"><CircularProgress/></div>
-                : <Router>
-                    <div className={`App ${this.state.sideBarClosed ? 'sidebar-closed' : ''}`}>
-                        <SideBar
-                            history={this.props.history}
-                            url={url}
-                            getData={this.getData}
+                : <div className={`App ${this.state.sideBarClosed ? 'sidebar-closed' : ''}`}>
+                    <SideBar
+                        history={this.props.history}
+                        url={url}
+                        getData={this.getData}
+                        toggleSideBar={this.toggleSideBar}
+                        sideBarClosed={this.state.sideBarClosed} />
+                    <div style={{marginLeft: !this.state.sideBarClosed ? '280px' : ''}}>
+                        <TopMenu
+                            updateData={this.updateData}
                             toggleSideBar={this.toggleSideBar}
                             sideBarClosed={this.state.sideBarClosed} />
-                        <div style={{marginLeft: !this.state.sideBarClosed ? '280px' : ''}}>
-                            <TopMenu
-                                updateData={this.updateData}
-                                toggleSideBar={this.toggleSideBar}
-                                sideBarClosed={this.state.sideBarClosed} />
-                            <div className="Board">
-                                <Switch>
-                                    <Route exact path={`${path}/:space/:board`} component={Board}/>
-                                    <Route exact path={url} component={Home}/>
-                                    <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
-                                </Switch>
-                            </div>
+                        <div className="Board">
+                            <Switch>
+                                <Route exact path={`${path}/:space/:board`} component={Board}/>
+                                <Route exact path={url} component={Home}/>
+                                <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
+                            </Switch>
                         </div>
                     </div>
-                </Router>
+                </div>
         );
     }
 }

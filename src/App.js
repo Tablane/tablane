@@ -6,9 +6,10 @@ import {toast} from "react-hot-toast";
 import {CircularProgress} from "@material-ui/core";
 import {connect} from "react-redux";
 import Panel from "./components/Panel";
-import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import WorkspaceSelector from "./components/partials/WorkspaceSelector";
 import SharedBoard from "./components/partials/SharedBoard";
+import Settings from "./components/Settings";
 
 class App extends Component {
     constructor(props) {
@@ -44,6 +45,7 @@ class App extends Component {
                     <Route path="/share/:boardId" component={SharedBoard}/>
                     {!this.props.isLoggedIn && <Route path="/" component={Auth}/>}
                     <Route exact path={['/login', '/register']} render={({history}) => history.push('/')}/>
+                    <Route path="/settings/:workspace" component={Settings}/>
                     <Route path="/:workspace" component={Panel}/>
                     <Route path="/" render={({history}) => (
                         <WorkspaceSelector history={history} workspaces={this.props.isLoggedIn.workspaces}/>

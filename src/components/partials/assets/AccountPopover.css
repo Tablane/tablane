@@ -82,7 +82,15 @@
     justify-content: flex-start;
 }
 
-div.buttons button {
+div.buttons button,
+div.buttons a {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
     text-align: left;
     width: 100%;
     font-size: 13px;

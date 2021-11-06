@@ -5,6 +5,7 @@ import './assets/AccountPopover.css'
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 class AccountPopover extends Component {
     constructor(props) {
@@ -41,6 +42,7 @@ class AccountPopover extends Component {
     }
 
     render() {
+        const workspaceId = this.props.workspaces.id
         return (
             <div>
                 <Button style={{ borderRadius: 50, width: 30, height: 30 }} variant="contained" color="primary" onClick={this.handleClick}>
@@ -76,13 +78,13 @@ class AccountPopover extends Component {
                                     <p>Workspace</p>
                                 </div>
                                 <div className="buttons">
-                                    <button>Settings</button>
-                                    <button>Import/Export</button>
-                                    <button>Teams</button>
-                                    <button>Spaces</button>
-                                    <button>Integrations</button>
-                                    <button>Trash</button>
-                                    <button>Security & Permissions</button>
+                                    <Link to={`/settings/${workspaceId}/general`}>Settings</Link>
+                                    <Link to={`/settings/${workspaceId}/import`}>Import/Export</Link>
+                                    <Link to={`/settings/${workspaceId}/users`}>People</Link>
+                                    <Link to={`/settings/${workspaceId}/apps`}>Apps</Link>
+                                    <Link to={`/settings/${workspaceId}/integrations`}>Integrations</Link>
+                                    <Link to={`/settings/${workspaceId}/trash`}>Trash</Link>
+                                    <Link to={`/settings/${workspaceId}/permissions`}>Security & Permissions</Link>
                                 </div>
                             </div>
                             <div className="user-settings">
@@ -91,11 +93,9 @@ class AccountPopover extends Component {
                                     <p>Full Name</p>
                                 </div>
                                 <div className="buttons">
-                                    <button>My Settings</button>
-                                    <button>Notifications</button>
-                                    <button>Layout size & style</button>
-                                    <button>Apps</button>
-                                    <button>Rewards</button>
+                                    <Link to={`/settings/user/profile`}>My Settings</Link>
+                                    <Link to={`/settings/user/notifications`}>Notifications</Link>
+                                    <Link to={`/settings/user/apps`}>Apps</Link>
                                     <button onClick={this.logout}>Log out</button>
                                 </div>
                             </div>

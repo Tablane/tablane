@@ -332,7 +332,7 @@ class SideBar extends Component {
                         </Link>
                     </div>
                     <div className="icons">
-                        <i className="fas fa-cog"> </i>
+                        <Link to={`/settings/${this.props.workspaces.id}/general`}><i className="fas fa-cog"> </i></Link>
                         <i className="fas fa-angle-double-left" onClick={this.props.toggleSideBar}> </i>
                     </div>
                 </div>
