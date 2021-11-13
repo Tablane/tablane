@@ -19,7 +19,7 @@ function AddAttributePopover(props) {
         await axios({
             method: 'POST',
             withCredentials: true,
-            url: `http://localhost:3001/api/attribute/${props.boardId}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}`,
             data: {
                 type
             }

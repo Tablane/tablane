@@ -48,7 +48,7 @@ function SpacePopover(props) {
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/space/${workspace._id}/${space._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}/${space._id}`
         }).then(res => {
             props.getData()
             setDeleting(false)

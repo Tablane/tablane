@@ -47,7 +47,7 @@ function TaskPopover(props) {
         axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${props.board._id}/${props.taskGroupId}/${props.task._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${props.board._id}/${props.taskGroupId}/${props.task._id}`
         }).then(() => {
             props.getData()
         })

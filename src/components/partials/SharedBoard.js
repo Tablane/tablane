@@ -56,7 +56,7 @@ function SharedBoard(props) {
         await axios({
             method: 'GET',
             withCredentials: true,
-            url: `http://localhost:3001/api/board/share/${props.match.params.boardId}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.match.params.boardId}`
         }).then(res => {
             setBoard(res.data)
         }).catch(() => {

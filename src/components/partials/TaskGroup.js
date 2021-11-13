@@ -48,7 +48,7 @@ class TaskGroup extends Component {
         await axios({
             method: 'POST',
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${this.props.boardId}/${this.props.taskGroup._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${this.props.boardId}/${this.props.taskGroup._id}`,
             data: {
                 name: this.state.newTask
             }
@@ -77,7 +77,7 @@ class TaskGroup extends Component {
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/taskgroup/${this.props.boardId}/${this.props.taskGroup._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${this.props.boardId}/${this.props.taskGroup._id}`
         }).then(res => {
             this.props.getData()
         }).catch(err => {
@@ -90,7 +90,7 @@ class TaskGroup extends Component {
         await axios({
             method: 'PATCH',
             withCredentials: true,
-            url: `http://localhost:3001/api/taskGroup/${this.props.boardId}/${this.props.taskGroup._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskGroup/${this.props.boardId}/${this.props.taskGroup._id}`,
             data: {
                 name: this.state.editingName
             }

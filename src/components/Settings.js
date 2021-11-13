@@ -85,7 +85,7 @@ function Settings(props) {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: `http://localhost:3001/api/workspace/${props.match.params.workspace}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${props.match.params.workspace}`
         }).then(res => {
             setWorkspace(res.data)
         }).catch(err => {

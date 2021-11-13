@@ -28,7 +28,7 @@ class AccountPopover extends Component {
         axios({
             method: "GET",
             withCredentials: true,
-            url: "http://localhost:3001/api/user/logout",
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/logout`,
         }).then((res) => {
             toast(res.data)
         }).catch(x => {

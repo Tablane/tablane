@@ -223,7 +223,7 @@ function Users(props) {
                 email: email,
                 role: role
             },
-            url: `http://localhost:3001/api/workspace/user/${workspace._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}`,
         }).then((res) => {
             toast('User invited')
             getData()

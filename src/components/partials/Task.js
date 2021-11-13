@@ -52,7 +52,7 @@ class Task extends Component {
                 type: 'text'
             },
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
             this.props.getData()
         })
@@ -121,7 +121,7 @@ class Task extends Component {
                 name: this.state.taskName
             },
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
             this.props.getData()
         })

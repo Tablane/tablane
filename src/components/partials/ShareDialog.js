@@ -62,13 +62,13 @@ function ShareDialog(props) {
     const classes = useStyles();
     const [check, setCheck] = useState(props.board.sharing)
     const [link, setLink] = useState(props.board.sharing
-        ? `http://localhost:3000/share/${props.board._id}`
+        ? `${process.env.REACT_APP_BACKEND_HOST}/share/${props.board._id}`
         : 'Loading...')
 
     useEffect(() => {
         setCheck(props.board.sharing)
         setLink(props.board.sharing
-            ? `http://localhost:3000/share/${props.board._id}`
+            ? `${process.env.REACT_APP_BACKEND_HOST}/share/${props.board._id}`
             : 'Loading...')
     }, [props.board])
 
@@ -81,9 +81,9 @@ function ShareDialog(props) {
                     share: x
                 },
                 withCredentials: true,
-                url: `http://localhost:3001/api/board/share/${props.board._id}`,
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
             }).then(res => {
-                setLink(`http://localhost:3000/share/${res.data.boardId}`)
+                setLink(`${process.env.REACT_APP_BACKEND_HOST}/share/${res.data.boardId}`)
             }).catch(err => {
                 console.log(err)
             })
@@ -95,7 +95,7 @@ function ShareDialog(props) {
                     share: x
                 },
                 withCredentials: true,
-                url: `http://localhost:3001/api/board/share/${props.board._id}`,
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
             }).catch(err => {
                 console.log(err)
             })

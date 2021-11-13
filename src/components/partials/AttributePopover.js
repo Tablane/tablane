@@ -24,7 +24,7 @@ function AttributePopover(props) {
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/attribute/${props.boardId}/${props.attr._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}/${props.attr._id}`
         }).then(res => {
             props.getData()
         }).catch(err => {
@@ -37,7 +37,7 @@ function AttributePopover(props) {
         await axios({
             method: 'PATCH',
             withCredentials: true,
-            url: `http://localhost:3001/api/attribute/${props.boardId}/${props.attr._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}/${props.attr._id}`,
             data: {
                 name
             }

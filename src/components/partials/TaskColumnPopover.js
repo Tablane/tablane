@@ -26,7 +26,7 @@ class TaskColumnPopover extends Component {
                     labels: this.state.currentLabels
                 },
                 withCredentials: true,
-                url: `http://localhost:3001/api/attribute/${this.props.board._id}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${this.props.board._id}`
             }).then(() => {
                 this.props.getData()
             })
@@ -94,7 +94,7 @@ class TaskColumnPopover extends Component {
                 type: 'status'
             },
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
             this.props.getData()
         })
@@ -108,7 +108,7 @@ class TaskColumnPopover extends Component {
         axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
         }).then(() => {
             this.props.getData()
         })

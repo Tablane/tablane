@@ -32,7 +32,7 @@ class Login extends Component {
                     password: this.state.password,
                 },
                 withCredentials: true,
-                url: "http://localhost:3001/api/user/register",
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/register`,
             }).then((res) => {
                 if (res.data === "Successfully registered") resolve(res.data)
                 else reject(res.data)

@@ -55,7 +55,7 @@ function UserPopup(props) {
         axios({
             method: "DELETE",
             withCredentials: true,
-            url: `http://localhost:3001/api/workspace/user/${workspace._id}/${props.member.user._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}/${props.member.user._id}`,
         }).then((res) => {
             toast('User removed')
             getData()

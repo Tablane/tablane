@@ -28,7 +28,7 @@ class NewTaskGroup extends Component {
             data: {
                 name: this.state.editingName
             },
-            url: `http://localhost:3001/api/taskgroup/${this.props.boardId}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${this.props.boardId}`
         }).then(() => {
             this.props.getData()
             this.props.toggleNewTaskGroup()

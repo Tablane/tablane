@@ -23,7 +23,7 @@ class Panel extends Component {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: `http://localhost:3001/api/workspace${this.props.match.url}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace${this.props.match.url}`
         }).then(res => {
             this.props.dispatch({type: 'setData', payload: ['workspaces', res.data]})
         }).catch(err => {

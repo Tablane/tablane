@@ -80,7 +80,7 @@ function General(props) {
         axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/workspace/${workspace._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
         }).then(res => {
             // setWorkspace(res.data)
         }).catch(err => {
@@ -96,7 +96,7 @@ function General(props) {
             data: {
                 name: name
             },
-            url: `http://localhost:3001/api/workspace/${workspace._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
         }).then(res => {
             getData()
             setSaving(false)

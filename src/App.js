@@ -23,7 +23,7 @@ class App extends Component {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: 'http://localhost:3001/api/user/user'
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/user`
         }).then(res => {
             this.props.dispatch({type: 'changeLoggedIn', payload: res.data})
             this.setState({

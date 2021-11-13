@@ -43,7 +43,7 @@ function BoardPopover(props) {
         await axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `http://localhost:3001/api/board/${workspace._id}/${space._id}/${board._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${workspace._id}/${space._id}/${board._id}`
         }).then(res => {
             props.getData()
             setDeleting(false)

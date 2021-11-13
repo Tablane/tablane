@@ -29,7 +29,7 @@ class Board extends Component {
         await axios({
             method: 'GET',
             withCredentials: true,
-            url: `http://localhost:3001/api/board/${this.findBoardId()}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.findBoardId()}`
         }).then(res => {
             this.props.dispatch({type: 'setData', payload: ['board', res.data]})
         }).catch(err => {
@@ -60,7 +60,7 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/task/${this.findBoardId()}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${this.findBoardId()}`
             }).then(res => {
                 this.getData()
             }).catch(err => {
@@ -73,7 +73,7 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/taskgroup/${this.findBoardId()}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${this.findBoardId()}`
             }).then(res => {
                 this.getData()
             }).catch(err => {
@@ -86,7 +86,7 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/attribute/${this.findBoardId()}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${this.findBoardId()}`
             }).then(res => {
                 this.getData()
             }).catch(err => {

@@ -33,7 +33,7 @@ class Login extends Component {
                     password: this.state.password,
                 },
                 withCredentials: true,
-                url: "http://localhost:3001/api/user/login",
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/login`,
             }).then((res) => {
                 if (res.data.status) resolve(res.data.msg)
                 else reject(res.data)

@@ -83,7 +83,7 @@ class SideBar extends Component {
             data: {
                 name: this.state.name
             },
-            url: `http://localhost:3001/api/space/${this.props.workspaces._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${this.props.workspaces._id}`
         }).then(res => {
             this.props.getData()
             this.setState({newSpaceDialogOpen: false})
@@ -104,7 +104,7 @@ class SideBar extends Component {
             data: {
                 name: this.state.newBoardName
             },
-            url: `http://localhost:3001/api/board/${this.props.workspaces._id}/${this.state.newBoardSpace}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.props.workspaces._id}/${this.state.newBoardSpace}`
         }).then(res => {
             this.props.getData()
             this.setState({ newBoardSpace: '' })
@@ -140,7 +140,7 @@ class SideBar extends Component {
             data: {
                 name: this.state.editingBoardName
             },
-            url: `http://localhost:3001/api/board/${this.state.editingBoard}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.state.editingBoard}`
         }).then(res => {
             this.props.getData()
             this.setState({editingBoard: ''})
@@ -158,7 +158,7 @@ class SideBar extends Component {
             data: {
                 name: this.state.editingSpaceName
             },
-            url: `http://localhost:3001/api/space/${this.props.workspaces._id}/${this.state.editingSpace}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${this.props.workspaces._id}/${this.state.editingSpace}`
         }).then(res => {
             this.props.getData()
             this.setState({editingSpace: ''})
@@ -206,7 +206,7 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/board/drag/${this.props.workspaces._id}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/drag/${this.props.workspaces._id}`
             }).then(res => {
                 this.props.getData()
             }).catch(err => {
@@ -219,7 +219,7 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `http://localhost:3001/api/space/drag/${this.props.workspaces._id}`
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/drag/${this.props.workspaces._id}`
             }).then(res => {
                 this.props.getData()
             }).catch(err => {
