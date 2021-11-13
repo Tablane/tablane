@@ -25,11 +25,15 @@ const useStyles = makeStyles({
             margin: '0 auto 30px',
         },
         '& input': {
+            height: '34px',
+            boxSizing: 'border-box',
+            appearance: 'none',
             flexGrow: 1,
             outline: 'none',
             border: '1px solid hsla(0,0%,59%,.6)',
             padding: '0 15px',
             borderRadius: '2px 0 0 2px',
+            marginRight: '0',
             '&:focus': {
                 border: '1px solid #999',
             }
@@ -61,6 +65,7 @@ const useStyles = makeStyles({
             }
         },
         '& button': {
+            marginLeft: '0',
             cursor: 'pointer',
             outline: 'none',
             border: '1px solid #4169E1',
