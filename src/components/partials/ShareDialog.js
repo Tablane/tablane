@@ -42,6 +42,7 @@ const useStyles = makeStyles({
             }
         },
         '& input': {
+            appearance: 'none',
             marginTop: '18px',
             border: '1px solid #e9ebf0',
             backgroundColor: '#fff',
@@ -62,49 +63,38 @@ function ShareDialog(props) {
     const classes = useStyles();
     const [check, setCheck] = useState(props.board.sharing)
     const [link, setLink] = useState(props.board.sharing
-        ? `${process.env.REACT_APP_BACKEND_HOST}/share/${props.board._id}`
+        ? `${window.location.origin}/share/${props.board._id}`
         : 'Loading...')
 
     useEffect(() => {
         setCheck(props.board.sharing)
         setLink(props.board.sharing
-            ? `${process.env.REACT_APP_BACKEND_HOST}/share/${props.board._id}`
+            ? `${window.location.origin}/share/${props.board._id}`
             : 'Loading...')
     }, [props.board])
 
     const toggleShare = (e, x) => {
         setCheck(x)
-        if (x) {
-            axios({
-                method: 'PATCH',
-                data: {
-                    share: x
-                },
-                withCredentials: true,
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
-            }).then(res => {
-                setLink(`${process.env.REACT_APP_BACKEND_HOST}/share/${res.data.boardId}`)
-            }).catch(err => {
-                console.log(err)
-            })
-        } else {
-            setLink('Loading...')
-            axios({
-                method: 'PATCH',
-                data: {
-                    share: x
-                },
-                withCredentials: true,
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
-            }).catch(err => {
-                console.log(err)
-            })
-        }
+        if (x) setLink('Loading...')
+        axios({
+            method: 'PATCH',
+            data: {
+                share: x
+            },
+            withCredentials: true,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
+        }).then(res => {
+            if (x) setLink(`${window.location.origin}/share/${res.data.boardId}`)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     const copy = e => {
-        toast('Copied!')
-        navigator.clipboard.writeText(e.target.value)
+        if (window.isSecureContext) {
+            toast('Copied!')
+            navigator.clipboard.writeText(e.target.value)
+        }
     }
 
     return (
