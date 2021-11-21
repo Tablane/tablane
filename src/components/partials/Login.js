@@ -1,108 +1,123 @@
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import {Component} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {CircularProgress} from "@material-ui/core";
 import './assets/Login.css'
-import {connect} from "react-redux";
+import useInputState from "../../hooks/useInputState";
+import UserContext from "../../context/UserContext";
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            username: '',
-            password: ''
-        }
-    }
+function Login(props) {
+    const [loading, setLoading] = useState(false)
+    const {setUser} = useContext(UserContext)
+    const [validate, setValidate] = useState(false)
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
+    const [username, changeUsername] = useInputState()
+    const [password, changePassword] = useInputState()
 
-    loginUser = async () => {
+    const [errors, setErrors] = useState({})
+
+    const loginUser = async () => {
         return new Promise((resolve, reject) => {
             axios({
                 method: "POST",
                 data: {
-                    username: this.state.username,
-                    password: this.state.password,
+                    username: username,
+                    password: password,
                 },
                 withCredentials: true,
                 url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/login`,
             }).then((res) => {
-                if (res.data.status) resolve(res.data.msg)
+                if (res.data.success) resolve(res.data.user)
                 else reject(res.data)
             }).catch(err => {
                 toast(err.toString())
-                this.setState({loading: false})
+                setLoading(false)
             })
         })
     }
 
-    handleSubmit = () => {
-        this.setState({loading: true})
-        this.loginUser()
-            .then(x => {
-                toast(x[0])
-                this.props.dispatch({type: 'changeLoggedIn', payload: x[1]})
-                if (this.props.redirectUrl) {
-                    this.props.history.push(this.props.redirectUrl)
-                    this.props.dispatch({type: 'setData', payload: ['redirectUrl', null]})
-                }
-            })
-            .catch(x => {
-                toast(x)
-                this.setState({loading: false})
-            })
+    const validateInput = useCallback(() => {
+        let errors = {}
+
+        if (username === '') errors.username = 'This field is required'
+        else if (username.length < 3)
+            errors.username = 'Username must be longer than 3 characters'
+
+        // if (email === "") errors.email = "This field is required"
+        // else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))
+        //     errors.email = 'Email is invalid'
+
+        if (password === '') errors.password = 'This field is required'
+        else if (password.length < 3)
+            errors.password = 'Password must be longer than 3 characters'
+
+        setErrors(errors)
+        return Object.keys(errors).length === 0;
+    }, [username, password])
+
+    useEffect(() => {
+        if (validate) validateInput()
+    }, [username, password, validate, validateInput])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setValidate(true)
+        if (validateInput()) {
+            setLoading(true)
+            loginUser()
+                .then(user => {
+                    toast('Successfully logged in')
+                    setUser(user)
+                })
+                .catch(x => {
+                    x.error.map(x => toast(x))
+                    setLoading(false)
+                })
+        }
     }
 
-    render() {
-        return (
-            <div className="form">
-                <div>
-                    <form action="">
-                        <div className="inputs">
-                            <TextField
-                                id="username"
-                                name="username"
-                                label="Username"
-                                value={this.state.username}
-                                onChange={this.handleChange}
-                                required/>
-                            <TextField
-                                id="password"
-                                name="password"
-                                label="Password"
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                required/>
-                        </div>
-                        <div className="progressWrapper">
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                onClick={this.handleSubmit}
-                                disabled={this.state.loading}>Login</Button>
-                            {this.state.loading && <CircularProgress size={24} className="buttonProgress"/>}
-                        </div>
-                    </form>
-                </div>
-                <p>or <Link to="/register">sign up</Link></p>
+    return (
+        <div className="form">
+            <div>
+                <form action="" onSubmit={handleSubmit} noValidate>
+                    <div className="inputs">
+                        <TextField
+                            id="username"
+                            name="username"
+                            label="Username"
+                            value={username}
+                            onChange={changeUsername}
+                            error={Boolean(errors.username)}
+                            helperText={errors.username}
+                            required/>
+                        <TextField
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={changePassword}
+                            error={Boolean(errors.password)}
+                            helperText={errors.password}
+                            required/>
+                    </div>
+                    <div className="progressWrapper">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            disabled={loading}>Login</Button>
+                        {loading && <CircularProgress size={24} className="buttonProgress"/>}
+                    </div>
+                </form>
             </div>
-        );
-    }
+            <p>or <Link to="/register">sign up</Link></p>
+        </div>
+    );
+
 }
 
-const mapStateToProps = (state) => ({
-    isLoggedIn: state.isLoggedIn,
-    redirectUrl: state.redirectUrl
-})
-
-export default connect(mapStateToProps)(Login)
+export default Login
