@@ -8,9 +8,12 @@
 .Auth .form {
     text-align: center;
     width: 480px;
-    height: 400px;
     box-shadow: 0 25px 75px rgb(16 30 54 / 25%);
     border-radius: 7px;
+}
+
+.Auth .form > div > form {
+    width: 100%;
 }
 
 .Auth .form > div {
@@ -21,9 +24,13 @@
     padding: 50px 50px 20px;
 }
 
+.Auth .form > p {
+    margin-bottom: 35px;
+}
+
 .Auth .form .inputs > div {
     width: 80%;
-    margin-top: 15px;
+    margin: 15px 0;
 }
 
 .Auth .form button {

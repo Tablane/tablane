@@ -32,7 +32,7 @@ function Login(props) {
                 withCredentials: true,
                 url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/register`,
             }).then((res) => {
-                if (res.data.success) resolve(res.data)
+                if (res.data.success) resolve(res.data.user)
                 else reject(res.data)
             }).catch(err => console.log(err))
         })
@@ -67,12 +67,12 @@ function Login(props) {
         if (validateInput()) {
             setLoading(true)
             registerUser()
-                .then(x => {
-                    toast(x.msg)
-                    setUser()
+                .then(user => {
+                    toast('Successfully registered')
+                    setUser(user)
                 })
                 .catch(x => {
-                    toast(x)
+                    x.error.map(x => toast(x))
                     setLoading(false)
                 })
         }

@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import {useContext, useState} from 'react'
 import {Popover} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import './assets/AccountPopover.css'
@@ -6,25 +6,22 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
-class AccountPopover extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            anchor: null
-        }
+function AccountPopover(props) {
+    const [anchor, setAnchor] = useState(null)
+    const {user, setUser} = useContext(UserContext)
+
+    const handleClick = e => {
+        setAnchor(e.currentTarget)
     }
 
-    handleClick = (e) => {
-        this.setState({ anchor: e.currentTarget})
+    const handleClose = () => {
+        setAnchor(null)
     }
 
-    handleClose = () => {
-        this.setState({ anchor: null});
-    }
-
-    logout = () => {
-        this.props.dispatch({type: 'changeLoggedIn'})
+    const logout = () => {
+        setUser(null)
         axios({
             method: "GET",
             withCredentials: true,
@@ -36,22 +33,21 @@ class AccountPopover extends Component {
         })
     }
 
-    changeWorkspace = (id) => {
-        this.props.history.push(`/${id}`)
-        this.handleClose()
+    const changeWorkspace = (id) => {
+        props.history.push(`/${id}`)
+        handleClose()
     }
 
-    render() {
-        const workspaceId = this.props.workspaces.id
+        const workspaceId = props.workspaces.id
         return (
             <div>
-                <Button style={{ borderRadius: 50, width: 30, height: 30 }} variant="contained" color="primary" onClick={this.handleClick}>
+                <Button style={{ borderRadius: 50, width: 30, height: 30 }} variant="contained" color="primary" onClick={handleClick}>
                     O
                 </Button>
                 <Popover
-                    open={Boolean(this.state.anchor)}
-                    anchorEl={this.state.anchor}
-                    onClose={this.handleClose}
+                    open={Boolean(anchor)}
+                    anchorEl={anchor}
+                    onClose={handleClose}
                     anchorOrigin={{
                         vertical: 'center',
                         horizontal: 'center',
@@ -63,9 +59,9 @@ class AccountPopover extends Component {
                     <div className="popover">
                         <div>
                             <div className="workspaces">
-                                {this.props.isLoggedIn && this.props.isLoggedIn.workspaces.map(x => {
+                                {user && user.workspaces.map(x => {
                                     return (
-                                        <div onClick={() => this.changeWorkspace(x.id)} key={x._id}>
+                                        <div onClick={() => changeWorkspace(x.id)} key={x._id}>
                                             {x.name.toUpperCase().charAt(0)}
                                         </div>
                                     )
@@ -89,14 +85,14 @@ class AccountPopover extends Component {
                             </div>
                             <div className="user-settings">
                                 <div>
-                                    <div className="circle">FN</div>
-                                    <p>Full Name</p>
+                                    <div className="circle">{user.username.charAt(0).toUpperCase()}</div>
+                                    <p>{user.username}</p>
                                 </div>
                                 <div className="buttons">
                                     <Link to={`/settings/user/profile`}>My Settings</Link>
                                     <Link to={`/settings/user/notifications`}>Notifications</Link>
                                     <Link to={`/settings/user/apps`}>Apps</Link>
-                                    <button onClick={this.logout}>Log out</button>
+                                    <button onClick={logout}>Log out</button>
                                 </div>
                             </div>
                         </div>
@@ -115,12 +111,10 @@ class AccountPopover extends Component {
                 </Popover>
             </div>
         )
-    }
 }
 
 const mapStateToProps = (state) => ({
     workspaces: state.workspaces,
-    isLoggedIn: state.isLoggedIn
 })
 
 export default connect(mapStateToProps)(AccountPopover)

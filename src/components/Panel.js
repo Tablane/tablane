@@ -1,4 +1,4 @@
-import {Component} from "react";
+import {useCallback, useEffect} from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import SideBar from "./SideBar";
 import TopMenu from "./TopMenu";
@@ -8,74 +8,58 @@ import {CircularProgress} from "@material-ui/core";
 import {connect} from "react-redux";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import useLocalStorageState from "../hooks/useLocalStorageState";
 
-class Panel extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            sideBarClosed: localStorage.getItem('sideBarClosed') === null
-                ? false
-                : JSON.parse(localStorage.getItem('sideBarClosed'))
-        }
-    }
+function Panel(props) {
+    const [sidebarOpen, setSidebarOpen] = useLocalStorageState('sidebarOpen', true)
 
-    getData = async () => {
+    const getData = useCallback(async() => {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace${this.props.match.url}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace${props.match.url}`
         }).then(res => {
-            this.props.dispatch({type: 'setData', payload: ['workspaces', res.data]})
+            props.dispatch({type: 'setData', payload: ['workspaces', res.data]})
         }).catch(err => {
-            this.props.history.push('/')
+            props.history.push('/')
             toast(err.toString())
         })
+    }, [props])
+
+    useEffect(() => {
+        getData()
+    }, [getData])
+
+    const toggleSideBar = () => {
+        setSidebarOpen(!sidebarOpen)
     }
 
-    componentDidMount() {
-        this.getData()
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.match.url !== this.props.match.url) this.getData()
-    }
-
-    toggleSideBar = () => {
-        this.setState(st => ({
-            sideBarClosed: !st.sideBarClosed
-        }), () => {
-            localStorage.setItem('sideBarClosed', JSON.stringify(this.state.sideBarClosed))
-        })
-    }
-
-    render() {
-        const { url, path } = this.props.match;
-        return (
-            !this.props.workspaces
-                ? <div className="loading"><CircularProgress/></div>
-                : <div className={`App ${this.state.sideBarClosed ? 'sidebar-closed' : ''}`}>
-                    <SideBar
-                        history={this.props.history}
-                        url={url}
-                        getData={this.getData}
-                        toggleSideBar={this.toggleSideBar}
-                        sideBarClosed={this.state.sideBarClosed} />
-                    <div style={{marginLeft: !this.state.sideBarClosed ? '280px' : ''}}>
-                        <TopMenu
-                            updateData={this.updateData}
-                            toggleSideBar={this.toggleSideBar}
-                            sideBarClosed={this.state.sideBarClosed} />
-                        <div className="Board">
-                            <Switch>
-                                <Route exact path={`${path}/:space/:board`} component={Board}/>
-                                <Route exact path={url} component={Home}/>
-                                <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
-                            </Switch>
-                        </div>
+    const {url, path} = props.match;
+    return (
+        !props.workspaces
+            ? <div className="loading"><CircularProgress/></div>
+            : <div className={`App ${!sidebarOpen ? 'sidebar-closed' : ''}`}>
+                <SideBar
+                    history={props.history}
+                    url={url}
+                    getData={getData}
+                    toggleSideBar={toggleSideBar}
+                    sideBarClosed={!sidebarOpen}/>
+                <div style={{marginLeft: sidebarOpen ? '280px' : ''}}>
+                    <TopMenu
+                        toggleSideBar={toggleSideBar}
+                        sideBarClosed={!sidebarOpen}/>
+                    <div className="Board">
+                        <Switch>
+                            <Route exact path={`${path}/:space/:board`} component={Board}/>
+                            <Route exact path={url} component={Home}/>
+                            <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
+                        </Switch>
                     </div>
                 </div>
-        );
-    }
+            </div>
+    );
+
 }
 
 const mapStateToProps = (state) => ({
