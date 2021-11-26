@@ -4,22 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Toaster} from "react-hot-toast";
-import {createStore} from "redux";
-import {Provider} from "react-redux";
-import reducer from "./reducer";
-import {devToolsEnhancer} from "redux-devtools-extension";
 import {BrowserRouter} from "react-router-dom";
-
-const store = createStore(reducer, devToolsEnhancer())
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App/>
-                <Toaster/>
-            </BrowserRouter>
-        </Provider>
+        <BrowserRouter>
+            <App/>
+            <Toaster/>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

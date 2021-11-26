@@ -8,7 +8,6 @@ import Trash from "./partials/settings/workspace/Trash";
 import Integrations from "./partials/settings/workspace/Integrations";
 import Users from "./partials/settings/workspace/Users";
 import Permissions from "./partials/settings/workspace/Permissions";
-import {connect} from "react-redux";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import WorkspaceContext from "../context/WorkspaceContext";
@@ -137,8 +136,4 @@ function Settings(props) {
     );
 }
 
-const mapStateToProps = (state) => ({
-    workspaces: state.workspaces
-})
-
-export default connect(mapStateToProps)(Settings);
+export default Settings
