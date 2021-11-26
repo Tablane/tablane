@@ -11,9 +11,9 @@ import Button from "@material-ui/core/Button";
 import useInputState from "../../../../hooks/useInputState";
 import {toast} from "react-hot-toast";
 import {useContext, useState} from "react";
-import useDialogState from "../../../../hooks/useDialogState";
 import axios from "axios";
 import WorkspaceContext from "../../../../context/WorkspaceContext";
+import useToggleState from "../../../../hooks/useToggleState";
 
 const useStyles = makeStyles({
     container: {
@@ -71,7 +71,7 @@ const useStyles = makeStyles({
 function General(props) {
     const classes = useStyles();
     const {workspace, getData} = useContext(WorkspaceContext)
-    const [deleting, setDeleting] = useDialogState(false)
+    const [deleting, setDeleting] = useToggleState(false)
     const [name, changeName] = useInputState(workspace.name)
     const nameEdited = name !== workspace.name
     const [saving, setSaving] = useState(false)

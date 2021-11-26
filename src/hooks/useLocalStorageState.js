@@ -8,7 +8,7 @@ function useLocalStorageState(key, initialVal = '') {
 
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(state))
-    }, [state, key])
+    }, [state, key, state.length])
 
     return [state, setState]
 }

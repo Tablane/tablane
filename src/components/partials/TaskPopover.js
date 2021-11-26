@@ -8,9 +8,10 @@ import {
     Popover
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import BoardContext from "../../context/BoardContext";
 
 const useStyles = makeStyles({
     container: {
@@ -32,12 +33,12 @@ const useStyles = makeStyles({
 })
 
 function TaskPopover(props) {
+    const {board, getData} = useContext(BoardContext)
     const classes = useStyles()
     const [deleteDialog, setDeleteDialog] = useState(false)
 
-
     // delete dialog
-    const handleDeleteClick = () => {
+    const handleDeleteClose = () => {
         props.handleClose()
         setDeleteDialog(!deleteDialog)
     }
@@ -47,9 +48,9 @@ function TaskPopover(props) {
         axios({
             method: 'DELETE',
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${props.board._id}/${props.taskGroupId}/${props.task._id}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${props.taskGroupId}/${props.task._id}`
         }).then(() => {
-            props.getData()
+            getData()
         })
     }
 
@@ -84,13 +85,13 @@ function TaskPopover(props) {
                 <div className={classes.container}>
                     <i className="fas fa-hashtag" onClick={copyTaskId}> </i>
                     <i className="fas fa-pen" onClick={editTask}> </i>
-                    <i className="far fa-trash-alt" onClick={handleDeleteClick}> </i>
+                    <i className="far fa-trash-alt" onClick={handleDeleteClose}> </i>
                 </div>
             </Popover>
 
             <Dialog
                 open={deleteDialog}
-                onClose={handleDeleteClick}
+                onClose={handleDeleteClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -101,7 +102,7 @@ function TaskPopover(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDeleteClick} color="primary">
+                    <Button onClick={handleDeleteClose} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={handleDelete} color="primary" variant="contained">

@@ -81,7 +81,7 @@ function Settings(props) {
     const classes = useStyles();
     const [workspace, setWorkspace] = useState(null)
 
-    const getData = useCallback(() => {
+    const getData = useCallback(async() => {
         axios({
             method: 'GET',
             withCredentials: true,

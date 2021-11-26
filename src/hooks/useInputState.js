@@ -8,10 +8,10 @@ function useInputState(initialVal = '') {
     }
 
     const reset = () => {
-        setState('')
+        setState(initialVal)
     }
 
-    return [state, handleChange, reset]
+    return [state, handleChange, reset, setState]
 }
 
 export default useInputState

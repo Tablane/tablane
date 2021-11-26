@@ -1,8 +1,7 @@
-import React, {Component} from 'react'
+import React, {useContext, useState} from 'react'
 import './assets/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./partials/AccountPopover";
-import {connect} from "react-redux";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
@@ -11,90 +10,84 @@ import AnimateHeight from "react-animate-height";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import BoardPopover from "./partials/BoardPopover";
 import SpacePopover from "./partials/SpacePopover";
+import WorkspaceContext from "../context/WorkspaceContext";
+import useLocalStorageState from "../hooks/useLocalStorageState";
+import useInputState from "../hooks/useInputState";
+import useToggleState from "../hooks/useToggleState";
 
-class SideBar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            newSpaceDialogOpen: false,
-            spacesOpen: JSON.parse(localStorage.getItem('spacesOpen')) !== null ? JSON.parse(localStorage.getItem('spacesOpen')) : true,
-            spaceClosed: JSON.parse(localStorage.getItem('spaceClosed')) || [],
-            name: '',
+function SideBar(props) {
+    // new space dialog
+    const [newSpaceDialogOpen, changeNewSpaceDialogOpen, resetNewSpaceDialogOpen] = useToggleState(false)
+    const [newSpaceName, changeNewSpaceName] = useInputState('')
 
-            // popover dialogs
-            boardPopoverAnchor: null,
-            spacePopoverAnchor: null,
-            popoverSpace: '',
-            popoverBoard: '',
+    // localstorage space opened state
+    const [spaceTabOpen, setSpaceTabOpen] = useLocalStorageState('spaceTabOpen', true)
+    const [spacesClosed, setSpacesClosed] = useLocalStorageState('spacesClosed', [])
 
-            // new board
-            newBoardSpace: '',
-            newBoardName: '',
+    // popover dialogs
+    const [boardPopoverAnchor, setBoardPopoverAnchor] = useState(null)
+    const [spacePopoverAnchor, setSpacePopoverAnchor] = useState(null)
+    const [popoverSpace, setPopoverSpace] = useState('')
+    const [popoverBoard, setPopoverBoard] = useState('')
 
-            // editing
-            editingBoard: '',
-            editingSpace: '',
+    // new board
+    const [newBoardSpace, , resetNewBoardSpace, setNewBoardSpace] = useInputState('')
+    const [newBoardName, changeNewBoardName, resetNewBoardName] = useInputState('')
 
-            editingBoardName: '',
-            editingSpaceName: '',
-        }
-    }
+    // editing
+    const [editingBoard, setEditingBoard] = useState('')
+    const [editingSpace, setEditingSpace] = useState('')
+    const [editingBoardName, changeEditingBoardName] = useInputState('')
+    const [editingSpaceName, changeEditingSpaceName] = useInputState('')
 
-    boardClick = (space, board, e) => {
+    // workspace
+    const {workspace, getData} = useContext(WorkspaceContext)
+
+    const boardClick = (space, board, e) => {
         e.preventDefault()
-        this.setState({
-            boardPopoverAnchor: e.currentTarget,
-            popoverSpace: space,
-            popoverBoard: board,
-        })
+        setBoardPopoverAnchor(e.currentTarget)
+        setPopoverSpace(space)
+        setPopoverBoard(board)
     }
 
-    spaceClick = (space, e) => {
+    const spaceClick = (space, e) => {
         e.preventDefault()
-        this.setState({
-            spacePopoverAnchor: e.currentTarget,
-            popoverSpace: space,
-        })
+        setSpacePopoverAnchor(e.currentTarget)
+        setPopoverSpace(space)
     }
 
-    boardPopoverClose = () => {
-        this.setState({
-            boardPopoverAnchor: null,
-        })
+    const boardPopoverClose = () => {
+        setBoardPopoverAnchor(null)
     }
 
-    spacePopoverClose = () => {
-        this.setState({
-            spacePopoverAnchor: null,
-        })
+    const spacePopoverClose = () => {
+        setSpacePopoverAnchor(null)
     }
 
-    handleNewBoardClick = (space) => {
-        this.setState({
-            newBoardSpace: space._id,
-            newBoardName: '',
-        })
+    const handleNewBoardClick = (space) => {
+        setNewBoardSpace(space._id)
+        resetNewBoardName()
     }
 
-    handleNewSpace = async () => {
+    const handleNewSpace = async () => {
         await axios({
             method: 'POST',
             withCredentials: true,
             data: {
-                name: this.state.name
+                name: newSpaceName
             },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${this.props.workspaces._id}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({newSpaceDialogOpen: false})
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}`
+        }).then(() => {
+            getData()
+            resetNewSpaceDialogOpen()
         }).catch(err => {
             toast(err.toString())
         })
     }
 
-    handleNewBoard = async () => {
-        if (this.state.newBoardName === '') {
-            this.setState({ newBoardSpace: '' })
+    const handleNewBoard = async () => {
+        if (newBoardName === '') {
+            resetNewBoardSpace()
             return
         }
 
@@ -102,98 +95,83 @@ class SideBar extends Component {
             method: 'POST',
             withCredentials: true,
             data: {
-                name: this.state.newBoardName
+                name: newBoardName
             },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.props.workspaces._id}/${this.state.newBoardSpace}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({ newBoardSpace: '' })
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${workspace._id}/${newBoardSpace}`
+        }).then(() => {
+            getData()
+            resetNewBoardSpace()
         }).catch(err => {
             toast(err.toString())
         })
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    const handleBoardEditClick = (workspace, space, board) => {
+        setEditingBoard(board._id)
     }
 
-    handleBoardEditClick = (workspace, space, board) => {
-        this.setState({
-            editingBoard: board._id
-        })
+    const handleSpaceEditClick = (workspace, space) => {
+        setEditingSpace(space._id)
     }
 
-    handleSpaceEditClick = (workspace, space) => {
-        this.setState({
-            editingSpace: space._id
-        })
-    }
-
-    handleBoardEdit = async (e) => {
-        if (this.state.editingBoardName === '') return this.setState({editingBoard: ''})
+    const handleBoardEdit = async () => {
+        if (editingBoardName === '') return setEditingBoard('')
 
         await axios({
             method: 'PATCH',
             withCredentials: true,
             data: {
-                name: this.state.editingBoardName
+                name: editingBoardName
             },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.state.editingBoard}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({editingBoard: ''})
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${editingBoard}`
+        }).then(() => {
+            getData()
+            setEditingBoard('')
         }).catch(err => {
             toast(err.toString())
         })
     }
 
-    handleSpaceEdit = async (e) => {
-        if (this.state.editingSpaceName === '') return this.setState({editingSpace: ''})
+    const handleSpaceEdit = async () => {
+        if (editingSpaceName === '') return setEditingSpace('')
 
         await axios({
             method: 'PATCH',
             withCredentials: true,
             data: {
-                name: this.state.editingSpaceName
+                name: editingSpaceName
             },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${this.props.workspaces._id}/${this.state.editingSpace}`
-        }).then(res => {
-            this.props.getData()
-            this.setState({editingSpace: ''})
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}/${editingSpace}`
+        }).then(() => {
+            getData()
+            setEditingSpace('')
         }).catch(err => {
             toast(err.toString())
         })
     }
 
-    toggleClosed = (x) => {
-        if (this.state.editingSpace === x) return
+    const toggleClosed = (x) => {
+        if (editingSpace === x) return
 
-        const newSpaceClosed = this.state.spaceClosed
-        const xIndex = newSpaceClosed.indexOf(x)
+        const newSpacesClosed = spacesClosed
+        const xIndex = newSpacesClosed.indexOf(x)
 
-        if (xIndex !== -1) newSpaceClosed.splice(xIndex, 1)
-        else newSpaceClosed.push(x)
+        if (xIndex !== -1) newSpacesClosed.splice(xIndex, 1)
+        else newSpacesClosed.push(x)
 
-        this.setState({spaceClosed: newSpaceClosed}, this.syncSpaceClosed)
+        setSpacesClosed([...newSpacesClosed])
     }
 
-    syncSpaceClosed = () => {
-        localStorage.setItem('spaceClosed', JSON.stringify(this.state.spaceClosed))
+    const toggleSpaces = () => {
+        setSpaceTabOpen(!spaceTabOpen)
     }
 
-    toggleSpaces = () => {
-        localStorage.setItem('spacesOpen', JSON.stringify(!this.state.spacesOpen))
-        this.setState(st => ({spacesOpen: !st.spacesOpen}))
-    }
-
-    handleDragStart = () => {
+    const handleDragStart = () => {
         const [body] = document.getElementsByTagName('body')
         body.style.cursor = 'pointer'
     }
 
-    handleDragEnd = async (result) => {
+    const handleDragEnd = async (result) => {
         const [body] = document.getElementsByTagName('body')
         body.style.cursor = 'auto'
         if (result.destination === null ||
@@ -206,9 +184,9 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/drag/${this.props.workspaces._id}`
-            }).then(res => {
-                this.props.getData()
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/drag/${workspace._id}`
+            }).then(() => {
+                getData()
             }).catch(err => {
                 toast(err.toString())
             })
@@ -219,231 +197,224 @@ class SideBar extends Component {
                 data: {
                     result
                 },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/drag/${this.props.workspaces._id}`
-            }).then(res => {
-                this.props.getData()
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/drag/${workspace._id}`
+            }).then(() => {
+                getData()
             }).catch(err => {
                 toast(err.toString())
             })
         }
     }
 
-    renderSpaces = () => {
-        return this.props.workspaces.spaces.map((space, i) => (
-                <Draggable draggableId={space._id} key={space._id} index={i}>
-                    {(provided) => (
-                        <div className="space" {...provided.draggableProps} ref={provided.innerRef}>
-                            <div className="space-title" {...provided.dragHandleProps}>
-                                <div>
-                                    <i className={`fas fa-caret-right ${this.state.spaceClosed.includes(space._id) ? '' : 'open'}`}> </i>
-                                </div>
-                                <div onClick={() => this.toggleClosed(space._id)}>
-                                    <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
-                                    {space._id === this.state.editingSpace ?
-                                        (
-                                            <input type="text"
-                                                   className='space'
-                                                   defaultValue={space.name}
-                                                   onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                                   onBlur={this.handleSpaceEdit}
-                                                   onChange={this.handleChange}
-                                                   name="editingSpaceName"
-                                                   autoFocus />
-                                        ) : (
-                                            <p>{space.name}</p>
-                                        )}
-                                </div>
-                                <div>
-                                    <i className="fas fa-ellipsis-h" onClick={e => this.spaceClick(space, e)}> </i>
-                                    <i onClick={() => this.handleNewBoardClick(space)}
-                                       className="fas fa-plus"> </i>
-                                </div>
+    const renderSpaces = () => workspace.spaces.map((space, i) => (
+            <Draggable draggableId={space._id} key={space._id} index={i}>
+                {(provided) => (
+                    <div className="space" {...provided.draggableProps} ref={provided.innerRef}>
+                        <div className="space-title" {...provided.dragHandleProps}>
+                            <div>
+                                <i className={`fas fa-caret-right ${spacesClosed.includes(space._id) ? '' : 'open'}`}> </i>
                             </div>
-
-                            <AnimateHeight
-                                className="space-boards"
-                                duration={200}
-                                height={this.state.spaceClosed.includes(space._id) ? 0 : 'auto'}>
-                                <Droppable droppableId={space._id} type="board">
-                                    {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                                            {space.boards.map((board, i) => {
-                                                return (
-                                                    <Draggable key={board._id} draggableId={board._id} index={i}>
-                                                        {(provided) => (
-                                                            <NavLink
-                                                                {...provided.draggableProps}
-                                                                ref={provided.innerRef}
-                                                                {...provided.dragHandleProps}
-                                                                to={`/${this.props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
-                                                                activeClassName="active-board">
-                                                                <div> </div>
-                                                                {board._id === this.state.editingBoard ?
-                                                                    (
-                                                                        <input type="text"
-                                                                               className='board'
-                                                                               defaultValue={board.name}
-                                                                               onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                                                               onBlur={this.handleBoardEdit}
-                                                                               onChange={this.handleChange}
-                                                                               name="editingBoardName"
-                                                                               autoFocus />
-                                                                    ) : (
-                                                                        <p>{board.name}</p>
-                                                                    )}
-                                                                <i className="fas fa-ellipsis-h" onClick={e => this.boardClick(space, board, e)}> </i>
-                                                            </NavLink>
-                                                        )}
-                                                    </Draggable>
-                                                )
-                                            })}
-                                            {provided.placeholder}
-                                            {this.state.newBoardSpace === space._id && (
-                                                <div>
-                                                    <div> </div>
-                                                    <input type="text"
-                                                           className='board'
-                                                           onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                                           onBlur={this.handleNewBoard}
-                                                           onChange={this.handleChange}
-                                                           name="newBoardName"
-                                                           autoFocus />
-                                                    <i className="fas fa-ellipsis-h"> </i>
-                                                </div>
-                                            )}
-                                        </div>
+                            <div onClick={() => toggleClosed(space._id)}>
+                                <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
+                                {space._id === editingSpace ?
+                                    (
+                                        <input type="text"
+                                               className='space'
+                                               defaultValue={space.name}
+                                               onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                               onBlur={handleSpaceEdit}
+                                               onChange={changeEditingSpaceName}
+                                               name="editingSpaceName"
+                                               autoFocus />
+                                    ) : (
+                                        <p>{space.name}</p>
                                     )}
-                                </Droppable>
-                            </AnimateHeight>
-                        </div>
-                    )}
-                </Draggable>
-            )
-        )
-    }
-
-    render() {
-        return (
-            <div className={`SideBar ${this.props.sideBarClosed ? 'closed' : ''}`}>
-                <div className="header">
-                    <div className="logo">
-                        <Link to={this.props.url}>
-                            <p>Task Board</p>
-                        </Link>
-                    </div>
-                    <div className="icons">
-                        <Link to={`/settings/${this.props.workspaces.id}/general`}><i className="fas fa-cog"> </i></Link>
-                        <i className="fas fa-angle-double-left" onClick={this.props.toggleSideBar}> </i>
-                    </div>
-                </div>
-                <div className="boards">
-                    <div onClick={this.toggleSpaces} className="section-name">
-                        <label>Spaces</label>
-                        <i style={{transition: 'transform 0.2s', transform: this.state.spacesOpen ? 'rotate(360deg)' : 'rotate(270deg)'}} className="fas fa-angle-down"> </i>
-                    </div>
-
-                    <AnimateHeight
-                        className="spaces"
-                        duration={200}
-                        height={this.state.spacesOpen ? 'auto' : 0}
-                    >
-                        <div className="new-btn">
-                            <button onClick={() => this.setState({newSpaceDialogOpen: true})}><i
-                                className="fas fa-plus"> </i>New Space
-                            </button>
-                        </div>
-                        <div className="space">
-                            <div className="space-title">
-                                <div></div>
-                                <div>
-                                    <div className="space-icon"><i className="fas fa-th-large"> </i></div>
-                                    <p>Everything</p>
-                                </div>
+                            </div>
+                            <div>
+                                <i className="fas fa-ellipsis-h" onClick={e => spaceClick(space, e)}> </i>
+                                <i onClick={() => handleNewBoardClick(space)}
+                                   className="fas fa-plus"> </i>
                             </div>
                         </div>
 
-                        <DragDropContext onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
-                            <Droppable droppableId="spaces" type="space">
+                        <AnimateHeight
+                            className="space-boards"
+                            duration={200}
+                            height={spacesClosed.includes(space._id) ? 0 : 'auto'}>
+                            <Droppable droppableId={space._id} type="board">
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                                        {this.renderSpaces()}
+                                        {space.boards.map((board, i) => {
+                                            return (
+                                                <Draggable key={board._id} draggableId={board._id} index={i}>
+                                                    {(provided) => (
+                                                        <NavLink
+                                                            {...provided.draggableProps}
+                                                            ref={provided.innerRef}
+                                                            {...provided.dragHandleProps}
+                                                            to={`/${props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
+                                                            activeClassName="active-board">
+                                                            <div> </div>
+                                                            {board._id === editingBoard ?
+                                                                (
+                                                                    <input type="text"
+                                                                           className='board'
+                                                                           defaultValue={board.name}
+                                                                           onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                                                           onBlur={handleBoardEdit}
+                                                                           onChange={changeEditingBoardName}
+                                                                           name="editingBoardName"
+                                                                           autoFocus />
+                                                                ) : (
+                                                                    <p>{board.name}</p>
+                                                                )}
+                                                            <i className="fas fa-ellipsis-h" onClick={e => boardClick(space, board, e)}> </i>
+                                                        </NavLink>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        })}
                                         {provided.placeholder}
+                                        {newBoardSpace === space._id && (
+                                            <div>
+                                                <div> </div>
+                                                <input type="text"
+                                                       className='board'
+                                                       onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
+                                                       onBlur={handleNewBoard}
+                                                       onChange={changeNewBoardName}
+                                                       name="newBoardName"
+                                                       autoFocus />
+                                                <i className="fas fa-ellipsis-h"> </i>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </Droppable>
-                        </DragDropContext>
-                    </AnimateHeight>
-                </div>
-
-                <div className="boards">
-                    <div className="section-name">
-                        <label>Something else</label>
-                        <i className="fas fa-angle-down"> </i>
+                        </AnimateHeight>
                     </div>
-                </div>
-
-                <div className="account">
-                    <AccountPopOver history={this.props.history} />
-                </div>
-
-                {/* create space dialog*/}
-                <Dialog
-                    open={this.state.newSpaceDialogOpen}
-                    onClose={() => this.setState({dialogOpen: false})}
-                    aria-labelledby="form-dialog-title"
-                    fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add new Space</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            onChange={this.handleChange}
-                            label="Space name"
-                            type="text"
-                            fullWidth
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.setState({newSpaceDialogOpen: false})} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleNewSpace} color="primary">
-                            Create
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
-                {this.state.editingBoard === '' && (
-                    <BoardPopover
-                        handleEditClick={this.handleBoardEditClick}
-                        anchor={this.state.boardPopoverAnchor}
-                        workspace={this.props.workspaces}
-                        space={this.state.popoverSpace}
-                        board={this.state.popoverBoard}
-                        getData={this.props.getData}
-                        handleClose={this.boardPopoverClose} />
                 )}
+            </Draggable>
+        )
+    )
 
-                {this.state.editingSpace === '' && (
-                    <SpacePopover
-                        handleEditClick={this.handleSpaceEditClick}
-                        anchor={this.state.spacePopoverAnchor}
-                        workspace={this.props.workspaces}
-                        space={this.state.popoverSpace}
-                        getData={this.props.getData}
-                        handleClose={this.spacePopoverClose} />
-                )}
-
+    if (!workspace) return <></>
+    return (
+        <div className={`SideBar ${props.sideBarClosed ? 'closed' : ''}`}>
+            <div className="header">
+                <div className="logo">
+                    <Link to={props.url}>
+                        <p>Task Board</p>
+                    </Link>
+                </div>
+                <div className="icons">
+                    <Link to={`/settings/${workspace.id}/general`}><i className="fas fa-cog"> </i></Link>
+                    <i className="fas fa-angle-double-left" onClick={props.toggleSideBar}> </i>
+                </div>
             </div>
-        );
-    }
+            <div className="boards">
+                <div onClick={toggleSpaces} className="section-name">
+                    <label>Spaces</label>
+                    <i style={{transition: 'transform 0.2s', transform: spaceTabOpen ? 'rotate(360deg)' : 'rotate(270deg)'}} className="fas fa-angle-down"> </i>
+                </div>
+
+                <AnimateHeight
+                    className="spaces"
+                    duration={200}
+                    height={spaceTabOpen ? 'auto' : 0}
+                >
+                    <div className="new-btn">
+                        <button onClick={changeNewSpaceDialogOpen}><i
+                            className="fas fa-plus"> </i>New Space
+                        </button>
+                    </div>
+                    <div className="space">
+                        <div className="space-title">
+                            <div> </div>
+                            <div>
+                                <div className="space-icon"><i className="fas fa-th-large"> </i></div>
+                                <p>Everything</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+                        <Droppable droppableId="spaces" type="space">
+                            {(provided) => (
+                                <div {...provided.droppableProps} ref={provided.innerRef}>
+                                    {renderSpaces()}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </AnimateHeight>
+            </div>
+
+            <div className="boards">
+                <div className="section-name">
+                    <label>Something else</label>
+                    <i className="fas fa-angle-down"> </i>
+                </div>
+            </div>
+
+            <div className="account">
+                <AccountPopOver history={props.history} />
+            </div>
+
+            {/* create space dialog*/}
+            <Dialog
+                open={newSpaceDialogOpen}
+                onClose={changeNewSpaceDialogOpen}
+                aria-labelledby="form-dialog-title"
+                fullWidth={true}>
+                <DialogTitle id="form-dialog-title">Add new Space</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        name="name"
+                        value={newSpaceName}
+                        onChange={changeNewSpaceName}
+                        label="Space name"
+                        type="text"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={changeNewSpaceDialogOpen} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleNewSpace} color="primary">
+                        Create
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {editingBoard === '' && (
+                <BoardPopover
+                    handleEditClick={handleBoardEditClick}
+                    anchor={boardPopoverAnchor}
+                    workspace={workspace}
+                    space={popoverSpace}
+                    board={popoverBoard}
+                    getData={getData}
+                    handleClose={boardPopoverClose} />
+            )}
+
+            {editingSpace === '' && (
+                <SpacePopover
+                    handleEditClick={handleSpaceEditClick}
+                    anchor={spacePopoverAnchor}
+                    workspace={workspace}
+                    space={popoverSpace}
+                    getData={getData}
+                    handleClose={spacePopoverClose} />
+            )}
+
+        </div>
+    );
 }
 
-const mapStateToProps = (state) => ({
-    workspaces: state.workspaces,
-    isLoggedIn: state.isLoggedIn
-})
-
-export default connect(mapStateToProps)(SideBar)
+export default SideBar

@@ -1,53 +1,50 @@
-import {Component} from 'react'
+import {useCallback, useContext, useEffect, useMemo, useState} from 'react'
 import './assets/Board.css'
 import TaskGroup from './partials/TaskGroup'
-import {connect} from "react-redux";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import NewTaskGroup from "./partials/NewTaskGroup";
+import WorkspaceContext from "../context/WorkspaceContext";
+import useToggleState from "../hooks/useToggleState";
+import BoardContext from "../context/BoardContext";
 
-class Board extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            loading: false,
-            newTaskGroupShown: false
-        }
+function Board(props) {
+    const {workspace} = useContext(WorkspaceContext)
+
+    const [board, setBoard] = useState('')
+    const [loading, , , setLoading] = useToggleState(true)
+    const [newTaskGroupShown, toggleNewTaskGroupShown] = useToggleState(false)
+
+    const findBoardId = () => {
+        const space = props.match.params.space.replaceAll('-', ' ')
+        const board = props.match.params.board.replaceAll('-', ' ')
+        return workspace.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
     }
 
-    findBoardId = () => {
-        const space = this.props.match.params.space.replaceAll('-', ' ')
-        const board = this.props.match.params.board.replaceAll('-', ' ')
-        return this.props.workspaces.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
-    }
+    const boardId = findBoardId()
 
-    getData = async () => {
-        this.setState({loading: true})
+    const getData = useCallback(async () => {
+        setLoading(true)
         await axios({
             method: 'GET',
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${this.findBoardId()}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${boardId}`
         }).then(res => {
-            this.props.dispatch({type: 'setData', payload: ['board', res.data]})
+            setBoard(res.data)
         }).catch(err => {
             toast(err.toString())
         })
-        this.setState({loading: false})
-    }
+        setLoading(false)
+    }, [boardId, setLoading])
 
-    toggleNewTaskGroup = () => {
-        this.setState(st => ({newTaskGroupShown: !st.newTaskGroupShown}))
-    }
-
-    onDragStart = () => {
+    const onDragStart = () => {
         const [body] = document.getElementsByTagName('body')
         body.style.cursor = 'pointer'
     }
 
-    handleDragEnd = async (result) => {
+    const handleDragEnd = async (result) => {
         const [body] = document.getElementsByTagName('body')
         body.style.cursor = 'auto'
         if (result.destination === null ||
@@ -60,9 +57,9 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${this.findBoardId()}`
-            }).then(res => {
-                this.getData()
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}`
+            }).then(() => {
+                getData()
             }).catch(err => {
                 toast(err.toString())
             })
@@ -73,9 +70,9 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${this.findBoardId()}`
-            }).then(res => {
-                this.getData()
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${board._id}`
+            }).then(() => {
+                getData()
             }).catch(err => {
                 toast(err.toString())
             })
@@ -86,62 +83,50 @@ class Board extends Component {
                 data: {
                     result
                 },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${this.findBoardId()}`
-            }).then(res => {
-                this.getData()
+                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${board._id}`
+            }).then(() => {
+                getData()
             }).catch(err => {
                 toast(err.toString())
             })
         }
     }
 
-    componentDidMount() {
-        this.getData()
-    }
+    useEffect(() => {
+        getData()
+    }, [board._id, getData])
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.match.url === this.props.match.url) return
-        this.getData()
-    }
+    const providerValue = useMemo(() => ({board, getData}), [board, getData])
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
-
-    render() {
-        return (
+    return (
+        <BoardContext.Provider value={providerValue}>
             <div>
-                {!this.props.board
+                {!board
                     ? <LinearProgress/>
                     : <div>
-                        {this.state.loading ? <LinearProgress/> : <div className="loading-placeholder"> </div>}
-                        <DragDropContext onDragEnd={this.handleDragEnd} onDragStart={this.onDragStart}>
+                        {loading ? <LinearProgress/> : <div className="loading-placeholder"> </div>}
+                        <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
                             <Droppable droppableId="taskgroups" type="taskgroup">
                                 {(provided) => (
                                     <div className="task-group" {...provided.droppableProps} ref={provided.innerRef}>
-                                        {this.props.board.taskGroups.map((taskGroup, i) => {
+                                        {board.taskGroups.map((taskGroup, i) => {
                                             return <TaskGroup
-                                                getData={this.getData}
-                                                boardId={this.props.board._id}
                                                 key={taskGroup._id}
                                                 taskGroup={taskGroup}
-                                                index={i}
-                                                attributes={this.props.board.attributes}/>
+                                                index={i} />
                                         })}
-                                        {this.state.newTaskGroupShown && (
+                                        {newTaskGroupShown && (
                                             <NewTaskGroup
-                                                attributes={this.props.board.attributes}
-                                                index={this.props.board.taskGroups.length}
-                                                toggleNewTaskGroup={this.toggleNewTaskGroup}
-                                                getData={this.getData}
-                                                boardId={this.findBoardId()}/>
+                                                attributes={board.attributes}
+                                                index={board.taskGroups.length}
+                                                toggleNewTaskGroup={toggleNewTaskGroupShown}
+                                                getData={getData}
+                                                boardId={board._id}/>
                                         )}
                                         {provided.placeholder}
                                         <div className="add-task-group">
                                             <div> </div>
-                                            <button onClick={this.toggleNewTaskGroup}>ADD NEW TASKGROUP</button>
+                                            <button onClick={toggleNewTaskGroupShown}>ADD NEW TASKGROUP</button>
                                             <div> </div>
                                         </div>
                                     </div>
@@ -151,15 +136,8 @@ class Board extends Component {
                     </div>
                 }
             </div>
-        );
-    }
-
+        </BoardContext.Provider>
+    );
 }
 
-const mapStateToProps = (state) => ({
-        workspaces: state.workspaces,
-        board: state.board
-    }
-)
-
-export default connect(mapStateToProps)(Board)
+export default Board

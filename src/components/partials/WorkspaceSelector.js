@@ -1,5 +1,17 @@
-import {makeStyles} from "@material-ui/core";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    makeStyles,
+    TextField
+} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import useInputState from "../../hooks/useInputState";
+import axios from "axios";
+import {toast} from "react-hot-toast";
+import useToggleState from "../../hooks/useToggleState";
 
 const useStyles = makeStyles({
     container: {
@@ -74,28 +86,73 @@ const useStyles = makeStyles({
 
 function WorkspaceSelector(props) {
     const classes = useStyles()
+    const [name, changeName, resetName] = useInputState()
+    const [dialogOpen, toggleDialogOpen] = useToggleState(false)
+
+    const handleCreate = () => {
+        axios({
+            method: 'POST',
+            withCredentials: true,
+            data: {
+                name: name
+            },
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/`
+        }).then(res => {
+            toast('Workspace has been successfully created')
+            props.history.push(`/${res.data.id}`)
+        })
+        resetName()
+    }
+
     return (
-        <div className={classes.container}>
-            <p className={classes.title}>My Workspaces</p>
-            <div className={classes.workspaces}>
-                {props.workspaces.map(x => (
-                    <Link to={`/${x.id}`} key={x._id} >
-                        <div className={classes.workspace}>
-                            <div className={classes.avatar}>
-                                <p>{x.name.charAt(0).toUpperCase()}</p>
+        <>
+            <div className={classes.container}>
+                <p className={classes.title}>My Workspaces</p>
+                <div className={classes.workspaces}>
+                    {props.workspaces.map(x => (
+                        <Link to={`/${x.id}`} key={x._id}>
+                            <div className={classes.workspace}>
+                                <div className={classes.avatar}>
+                                    <p>{x.name.charAt(0).toUpperCase()}</p>
+                                </div>
+                                <p>{x.name}</p>
                             </div>
-                            <p>{x.name}</p>
+                        </Link>
+                    ))}
+                    <div className={classes.newWorkspace} onClick={toggleDialogOpen}>
+                        <div className={classes.newAvatar}>
+                            <p><i className="fas fa-plus"> </i></p>
                         </div>
-                    </Link>
-                ))}
-                <div className={classes.newWorkspace}>
-                    <div className={classes.newAvatar}>
-                        <p><i className="fas fa-plus"> </i></p>
+                        <p className={classes.newText}>Add new</p>
                     </div>
-                    <p className={classes.newText}>Add new</p>
                 </div>
             </div>
-        </div>
+
+            <Dialog
+                open={dialogOpen}
+                fullWidth={true}
+                maxWidth={'sm'}
+                onClose={toggleDialogOpen}>
+                <DialogTitle>Create a new Workspace</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        value={name}
+                        onChange={changeName}
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Workspace Name"
+                        type="name"
+                        fullWidth
+                        variant="standard"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={toggleDialogOpen}>Cancel</Button>
+                    <Button onClick={handleCreate} color="primary" variant="contained">Create</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     )
 }
 

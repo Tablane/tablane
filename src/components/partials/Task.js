@@ -1,49 +1,41 @@
-import {Component, Fragment} from 'react'
+import {Fragment, useContext, useState} from 'react'
 import './assets/Task.css'
 import axios from "axios";
-import {connect} from "react-redux";
 import TaskColumnPopover from "./TaskColumnPopover";
 import {Draggable} from "react-beautiful-dnd";
 import TaskPopover from "./TaskPopover";
+import useInputState from "../../hooks/useInputState";
+import BoardContext from "../../context/BoardContext";
 
-class Task extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            anchor: null,
-            activeOption: '',
-            columnDialogOpen: false,
-            moreDialogOpen: false,
+function Task(props) {
+    const {board, getData} = useContext(BoardContext)
+    const [anchor, setAnchor] = useState(null)
+    const [activeOption, setActiveOption] = useState('')
+    const [columnDialogOpen, setColumnDialogOpen] = useState(false)
+    const [moreDialogOpen, setMoreDialogOpen] = useState(false)
 
-            // taskName editing
-            taskEditing: false,
-            taskName: this.props.task.name
-        }
+    const [taskEditing, setTaskEditing] = useState(false)
+    const [taskName, changeTaskName] = useInputState(props.task.name)
+
+    const handleClose = () => {
+        setAnchor(null)
+        setMoreDialogOpen(false)
+        setColumnDialogOpen(false)
     }
 
-    handleClose = () => {
-        this.setState({anchor: null, moreDialogOpen: false, columnDialogOpen: false})
+    const handleClick = (e, key) => {
+        setAnchor(e.currentTarget)
+        setActiveOption(key._id)
+        setColumnDialogOpen(!columnDialogOpen)
     }
 
-    handleClick = (e, key) => {
-        const anchor = e.currentTarget
-        this.setState(st => ({
-            anchor,
-            activeOption: key._id,
-            columnDialogOpen: !st.columnDialogOpen
-        }))
+    const handleMoreClick = (e) => {
+        setAnchor(e.currentTarget)
+        setMoreDialogOpen(!moreDialogOpen)
     }
 
-    handleMoreClick = (e) => {
-        const anchor = e.currentTarget
-        this.setState(st => ({
-            anchor,
-            moreDialogOpen: !st.moreDialogOpen
-        }))
-    }
-
-    handleTextEdit = async (e) => {
-        const {board, taskGroupId, task} = this.props
+    const handleTextEdit = async (e) => {
+        const {taskGroupId, task} = props
         axios({
             method: 'PATCH',
             data: {
@@ -54,12 +46,12 @@ class Task extends Component {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
-            this.props.getData()
+            getData()
         })
     }
 
-    getStatusLabel = (attribute) => {
-        let taskOption = this.props.task.options.find(x => x.column === attribute._id)
+    const getStatusLabel = (attribute) => {
+        let taskOption = props.task.options.find(x => x.column === attribute._id)
         let label
 
         if (taskOption) {
@@ -71,117 +63,102 @@ class Task extends Component {
         return (
             <Fragment key={attribute._id}>
                 <div
-                    onClick={(e) => this.handleClick(e, attribute)}
+                    onClick={(e) => handleClick(e, attribute)}
                     style={{backgroundColor: label.color}}>
                     {label.name}
                 </div>
-                {attribute._id.toString() === this.state.activeOption && (
+                {attribute._id.toString() === activeOption && (
                     <TaskColumnPopover
                         attribute={attribute}
-                        anchor={this.state.anchor}
-                        open={this.state.columnDialogOpen}
-                        task={this.props.task}
-                        getData={this.props.getData}
-                        taskGroupId={this.props.taskGroupId}
-                        handleClose={this.handleClose}/>)}
+                        anchor={anchor}
+                        open={columnDialogOpen}
+                        task={props.task}
+                        taskGroupId={props.taskGroupId}
+                        handleClose={handleClose}/>)}
             </Fragment>
         )
     }
 
-    getTextLabel = (attribute) => {
-        let taskOption = this.props.task.options.find(x => x.column === attribute._id)
+    const getTextLabel = (attribute) => {
+        let taskOption = props.task.options.find(x => x.column === attribute._id)
         if (!taskOption) taskOption = { value: '' }
         return (
             <div style={{backgroundColor: 'transparent'}} key={attribute._id}>
-                <input type="text" name={attribute._id} onBlur={this.handleTextEdit} defaultValue={taskOption.value}/>
+                <input type="text" name={attribute._id} onBlur={handleTextEdit} defaultValue={taskOption.value}/>
             </div>
         )
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    const toggleTaskEdit = () => {
+        setTaskEditing(!taskEditing)
     }
 
-    toggleTaskEdit = () => {
-        this.setState(st => ({
-            taskEditing: !st.taskEditing
-        }))
-    }
-
-    handleTaskEdit = (e) => {
+    const handleTaskEdit = (e) => {
         e.preventDefault()
-        const {board, taskGroupId, task} = this.props
-        this.toggleTaskEdit()
+        const {taskGroupId, task} = props
+        toggleTaskEdit()
         axios({
             method: 'PATCH',
             data: {
                 type: 'name',
-                name: this.state.taskName
+                name: taskName
             },
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
-            this.props.getData()
+            getData()
         })
     }
 
-    render() {
-        return (
-            <>
-                <Draggable draggableId={this.props.task._id} index={this.props.index} type="task" >
-                    {(provided) => (
-                        <div className={`Task ${this.state.taskEditing ? 'editing' : ''}`} {...provided.draggableProps}
-                             ref={provided.innerRef} {...provided.dragHandleProps}>
-                            {this.state.taskEditing
-                                ? (
-                                    <form onSubmit={this.handleTaskEdit} onBlur={this.handleTaskEdit}>
-                                        <input type={this.taskName}
-                                               onKeyUp={e => {if (e.key === 'Escape') e.currentTarget.blur()}}
-                                               value={this.state.taskName}
-                                               onChange={this.handleChange}
-                                               name="taskName" autoFocus />
-                                    </form>
+    return (
+        <>
+            <Draggable draggableId={props.task._id} index={props.index} type="task">
+                {(provided) => (
+                    <div className={`Task ${taskEditing ? 'editing' : ''}`} {...provided.draggableProps}
+                         ref={provided.innerRef} {...provided.dragHandleProps}>
+                        {taskEditing
+                            ? (
+                                <form onSubmit={handleTaskEdit} onBlur={handleTaskEdit}>
+                                    <input type={taskName}
+                                           onKeyUp={e => {
+                                               if (e.key === 'Escape') e.currentTarget.blur()
+                                           }}
+                                           value={taskName}
+                                           onChange={changeTaskName}
+                                           name="taskName" autoFocus/>
+                                </form>
+                            )
+                            : <p>{props.task.name}</p>}
+                        <div>
+                            {board.attributes.map(attribute => {
+
+                                if (attribute.type === "status") return getStatusLabel(attribute)
+                                if (attribute.type === "text") return getTextLabel(attribute)
+
+                                return (
+                                    <div style={{backgroundColor: 'crimson'}} key={Math.random()}>
+                                        ERROR
+                                    </div>
                                 )
-                                : <p>{this.props.task.name}</p>}
-                            <div>
-                                {this.props.attributes.map(attribute => {
+                            })}
 
-                                    if (attribute.type === "status") return this.getStatusLabel(attribute)
-                                    if (attribute.type === "text") return this.getTextLabel(attribute)
-
-                                    return (
-                                        <div style={{backgroundColor: 'crimson'}} key={Math.random()}>
-                                            ERROR
-                                        </div>
-                                    )
-                                })}
-
-                                <div onClick={this.handleMoreClick}>
-                                    <i className="fas fa-ellipsis-h"> </i>
-                                </div>
+                            <div onClick={handleMoreClick}>
+                                <i className="fas fa-ellipsis-h"> </i>
                             </div>
                         </div>
-                    )}
-                </Draggable>
+                    </div>
+                )}
+            </Draggable>
 
-                {!this.state.taskEditing && <TaskPopover
-                    toggleTaskEdit={this.toggleTaskEdit}
-                    open={this.state.moreDialogOpen}
-                    getData={this.props.getData}
-                    anchor={this.state.anchor}
-                    handleClose={this.handleClose}
-                    board={this.props.board}
-                    taskGroupId={this.props.taskGroupId}
-                    task={this.props.task} />}
-            </>
-        );
-    }
+            {!taskEditing && <TaskPopover
+                toggleTaskEdit={toggleTaskEdit}
+                open={moreDialogOpen}
+                anchor={anchor}
+                handleClose={handleClose}
+                taskGroupId={props.taskGroupId}
+                task={props.task}/>}
+        </>
+    );
 }
 
-const mapStateToProps = (state) => ({
-    board: state.board
-})
-
-export default connect(mapStateToProps)(Task)
+export default Task
