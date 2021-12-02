@@ -10,6 +10,7 @@ import WorkspaceSelector from "./components/partials/WorkspaceSelector";
 import SharedBoard from "./components/partials/SharedBoard";
 import Settings from "./components/Settings";
 import UserContext from "./context/UserContext";
+import ContextProvider from "./ContextProvider";
 
 function App(props) {
     const [loading, setLoading] = useState(true)
@@ -29,23 +30,25 @@ function App(props) {
         })
     }, [])
 
-    const providerValue = useMemo(() => ({user, setUser}), [user, setUser])
+    const userProviderValue = useMemo(() => ({user, setUser}), [user, setUser])
 
     if (loading) return <div className="loading"><CircularProgress/></div>
     return (
-        <UserContext.Provider value={providerValue}>
-            <Router>
-                <Switch>
-                    <Route path="/share/:boardId" component={SharedBoard}/>
-                    {!user && <Route path="/" component={Auth}/>}
-                    <Route exact path={['/login', '/register']} render={({history}) => history.push('/')}/>
-                    <Route path="/settings/:workspace" component={Settings}/>
-                    <Route path="/:workspace" component={Panel}/>
-                    <Route path="/" render={({history}) => (
-                        <WorkspaceSelector history={history} workspaces={user.workspaces}/>
-                    )}/>
-                </Switch>
-            </Router>
+        <UserContext.Provider value={userProviderValue}>
+            <ContextProvider>
+                <Router>
+                    <Switch>
+                        <Route path="/share/:boardId" component={SharedBoard}/>
+                        {!user && <Route path="/" component={Auth}/>}
+                        <Route exact path={['/login', '/register']} render={({history}) => history.push('/')}/>
+                        <Route path="/settings/:workspace" component={Settings}/>
+                        <Route path="/:workspace" component={Panel}/>
+                        <Route path="/" render={({history}) => (
+                            <WorkspaceSelector history={history} workspaces={user.workspaces}/>
+                        )}/>
+                    </Switch>
+                </Router>
+            </ContextProvider>
         </UserContext.Provider>
     );
 }

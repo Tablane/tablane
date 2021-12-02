@@ -7,7 +7,7 @@ import AnimateHeight from "react-animate-height";
 import BoardContext from "../../context/BoardContext";
 
 function TaskColumnPopover(props) {
-    const {board, getData} = useContext(BoardContext)
+    const {board, getBoardData} = useContext(BoardContext)
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -27,7 +27,7 @@ function TaskColumnPopover(props) {
                 withCredentials: true,
                 url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${board._id}`
             }).then(() => {
-                getData()
+                getBoardData()
             })
         }
         setLabelsEditing(!labelsEditing)
@@ -91,7 +91,7 @@ function TaskColumnPopover(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         })
         handleClose()
     }
@@ -105,7 +105,7 @@ function TaskColumnPopover(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         })
         handleClose()
     }

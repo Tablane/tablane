@@ -8,7 +8,7 @@ import useInputState from "../../hooks/useInputState";
 import BoardContext from "../../context/BoardContext";
 
 function Task(props) {
-    const {board, getData} = useContext(BoardContext)
+    const {board, getBoardData} = useContext(BoardContext)
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -46,7 +46,7 @@ function Task(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         })
     }
 
@@ -106,7 +106,7 @@ function Task(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         })
     }
 

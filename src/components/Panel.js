@@ -14,7 +14,7 @@ function Panel(props) {
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState('sidebarOpen', true)
     const [workspace, setWorkspace] = useState(null)
 
-    const getData = useCallback(async() => {
+    const getWorkspaceData = useCallback(async() => {
         axios({
             method: 'GET',
             withCredentials: true,
@@ -28,14 +28,14 @@ function Panel(props) {
     }, [props.match.params.workspace, props.history])
 
     useEffect(() => {
-        getData()
-    }, [getData])
+        getWorkspaceData()
+    }, [getWorkspaceData])
 
     const toggleSideBar = () => {
         setSidebarOpen(!sidebarOpen)
     }
 
-    const providerValue = useMemo(() => ({workspace, getData}), [workspace, getData])
+    const providerValue = useMemo(() => ({workspace, getData: getWorkspaceData}), [workspace, getWorkspaceData])
 
     const {url, path} = props.match;
     return (
@@ -46,7 +46,7 @@ function Panel(props) {
                     <SideBar
                         history={props.history}
                         url={url}
-                        getData={getData}
+                        getData={getWorkspaceData}
                         toggleSideBar={toggleSideBar}
                         sideBarClosed={!sidebarOpen}/>
                     <div style={{marginLeft: sidebarOpen ? '280px' : ''}}>

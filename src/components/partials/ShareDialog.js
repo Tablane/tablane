@@ -1,7 +1,8 @@
 import {Dialog, DialogContent, DialogTitle, makeStyles, Switch} from "@material-ui/core";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 import axios from "axios";
+import BoardContext from "../../context/BoardContext";
 
 const useStyles = makeStyles({
     content: {
@@ -61,17 +62,18 @@ const useStyles = makeStyles({
 
 function ShareDialog(props) {
     const classes = useStyles();
-    const [check, setCheck] = useState(props.board.sharing)
-    const [link, setLink] = useState(props.board.sharing
-        ? `${window.location.origin}/share/${props.board._id}`
+    const {board} = useContext(BoardContext)
+    const [check, setCheck] = useState(board.sharing)
+    const [link, setLink] = useState(board.sharing
+        ? `${window.location.origin}/share/${board._id}`
         : 'Loading...')
 
     useEffect(() => {
-        setCheck(props.board.sharing)
-        setLink(props.board.sharing
-            ? `${window.location.origin}/share/${props.board._id}`
+        setCheck(board.sharing)
+        setLink(board.sharing
+            ? `${window.location.origin}/share/${board._id}`
             : 'Loading...')
-    }, [props.board])
+    }, [board])
 
     const toggleShare = (e, x) => {
         setCheck(x)
@@ -82,7 +84,7 @@ function ShareDialog(props) {
                 share: x
             },
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.board._id}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${board._id}`,
         }).then(res => {
             if (x) setLink(`${window.location.origin}/share/${res.data.boardId}`)
         }).catch(err => {

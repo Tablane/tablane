@@ -13,7 +13,7 @@ import BoardContext from "../../context/BoardContext";
 import useToggleState from "../../hooks/useToggleState";
 
 function TaskGroup(props) {
-    const {board, getData} = useContext(BoardContext)
+    const {board, getBoardData} = useContext(BoardContext)
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
@@ -46,7 +46,7 @@ function TaskGroup(props) {
                 name: newTaskName
             }
         }).then(() => {
-            getData()
+            getBoardData()
             resetNewTaskName()
         }).catch(err => {
             toast(err.toString())
@@ -64,7 +64,7 @@ function TaskGroup(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${board._id}/${props.taskGroup._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         }).catch(err => {
             toast(err.toString())
         })
@@ -80,7 +80,7 @@ function TaskGroup(props) {
                 name: editingName
             }
         }).then(() => {
-            getData()
+            getBoardData()
             toggleEditing()
         }).catch(err => {
             toast(err.toString())
@@ -212,13 +212,13 @@ function TaskGroup(props) {
                     </Dialog>
 
                     <AttributePopover
-                        getData={getData}
+                        getData={getBoardData}
                         boardId={board._id}
                         open={popoverOpen}
                         close={handleAttributePopover}
                         attr={popoverId}/>
                     <AddAttributePopover
-                        getData={getData}
+                        getData={getBoardData}
                         boardId={board._id}
                         anchor={newAttributeOpen}
                         close={handleAddNewAttribute}/>

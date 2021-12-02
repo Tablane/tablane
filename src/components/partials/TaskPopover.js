@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 })
 
 function TaskPopover(props) {
-    const {board, getData} = useContext(BoardContext)
+    const {board, getBoardData} = useContext(BoardContext)
     const classes = useStyles()
     const [deleteDialog, setDeleteDialog] = useState(false)
 
@@ -50,7 +50,7 @@ function TaskPopover(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${props.taskGroupId}/${props.task._id}`
         }).then(() => {
-            getData()
+            getBoardData()
         })
     }
 
