@@ -43,7 +43,7 @@ function AccountPopover(props) {
     return (
         <div>
             <Button style={{ borderRadius: 50, width: 30, height: 30 }} variant="contained" color="primary" onClick={handleClick}>
-                O
+                {user.username.charAt(0).toUpperCase()}
             </Button>
             <Popover
                 open={Boolean(anchor)}
@@ -71,8 +71,8 @@ function AccountPopover(props) {
                         </div>
                         <div className="workspace-settings">
                             <div>
-                                <div className="circle">W</div>
-                                <p>Workspace</p>
+                                <div className="circle">{workspace.name.charAt(0)}</div>
+                                <p>{workspace.name}</p>
                             </div>
                             <div className="buttons">
                                 <Link to={`/settings/${workspaceId}/general`}>Settings</Link>
