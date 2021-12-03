@@ -16,7 +16,11 @@ function App(props) {
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
 
-    useEffect(() => {
+    useEffect( () => {
+        getUserData()
+    }, [])
+
+    const getUserData = async () => {
         axios({
             method: 'GET',
             withCredentials: true,
@@ -28,7 +32,7 @@ function App(props) {
             toast(err.toString())
             setLoading(false)
         })
-    }, [])
+    }
 
     const userProviderValue = useMemo(() => ({user, setUser}), [user, setUser])
 
