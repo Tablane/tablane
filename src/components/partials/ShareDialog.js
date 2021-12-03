@@ -88,7 +88,8 @@ function ShareDialog(props) {
         }).then(res => {
             if (x) setLink(`${window.location.origin}/share/${res.data.boardId}`)
         }).catch(err => {
-            console.log(err)
+            setCheck(!x)
+            toast(err.toString())
         })
     }
 
