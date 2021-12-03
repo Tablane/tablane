@@ -31,7 +31,7 @@ a {
     min-height: 61px;
 }
 
-.header a i:first-of-type {
+.header a i.fa-cog {
     margin-right: 15px;
     opacity: 0;
     transition: opacity .2s;

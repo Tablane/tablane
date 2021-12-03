@@ -308,7 +308,9 @@ function SideBar(props) {
                     </Link>
                 </div>
                 <div className="icons">
-                    <Link to={`/settings/${workspace.id}/general`}><i className="fas fa-cog"> </i></Link>
+                    {workspace.members
+                        ? <Link to={`/settings/${workspace.id}/general`}><i className="fas fa-cog"> </i></Link>
+                        : null}
                     <i className="fas fa-angle-double-left" onClick={props.toggleSideBar}> </i>
                 </div>
             </div>
