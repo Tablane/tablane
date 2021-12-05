@@ -49,7 +49,7 @@ function Panel(props) {
                         getData={getWorkspaceData}
                         toggleSideBar={toggleSideBar}
                         sideBarClosed={!sidebarOpen}/>
-                    <div style={{marginLeft: sidebarOpen ? '280px' : ''}}>
+                    <div className={`PanelContent ${sidebarOpen ? 'hidden' : ''}`}>
                         <TopMenu
                             toggleSideBar={toggleSideBar}
                             sideBarClosed={!sidebarOpen}/>

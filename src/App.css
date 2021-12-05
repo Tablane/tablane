@@ -7,7 +7,7 @@
 
 .App > div:last-of-type {
     flex-grow: 1;
-    transition: margin-left 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .App > div {

@@ -7,11 +7,33 @@
     width: 280px;
     height: 100%;
     overflow: auto;
+    box-sizing: border-box;
 }
 
 .SideBar.closed {
     transform: translateX(-280px);
 }
+
+/* hide content next to the sidebar */
+.PanelContent.hidden {
+    margin-left: 280px;
+}
+
+@media (max-width: 576px) {
+    .SideBar {
+        width: 100%;
+    }
+    .SideBar.closed {
+        transform: translateX(-100%);
+    }
+    .PanelContent {
+        margin-left: 0;
+    }
+    .PanelContent.hidden {
+        transform: translateX(100%);
+    }
+}
+
 
 a {
     text-decoration: none;
