@@ -100,6 +100,9 @@ function WorkspaceSelector(props) {
         }).then(res => {
             toast('Workspace has been successfully created')
             props.history.push(`/${res.data.id}`)
+        }).catch(err => {
+            console.log(err)
+            toast('Please enable third-party cookies')
         })
         resetName()
     }
