@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "bson": "^4.4.1",
+    "concurrently": "^7.1.0",
     "dotenv": "^8.2.0",
     "react": "^17.0.2",
     "react-animate-height": "^2.0.23",
@@ -25,6 +26,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "dev": "concurrently \"npm start\" \"npm run dev --prefix ../task-board-backend/\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
