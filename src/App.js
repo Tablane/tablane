@@ -35,7 +35,7 @@ function App(props) {
         })
     }
 
-    const userProviderValue = useMemo(() => ({user, setUser}), [user, setUser])
+    const userProviderValue = useMemo(() => ({user, setUser, getUserData}), [user, setUser])
 
     if (loading) return <div className="loading"><CircularProgress/></div>
     return (

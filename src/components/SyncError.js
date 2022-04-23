@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import React, {useContext, useEffect, useState} from "react";
 import SyncErrorContext from "../context/SyncErrorContext";
 import {green} from "@material-ui/core/colors";
-import axios from "axios";
+import BoardContext from "../context/BoardContext";
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -30,12 +30,9 @@ const useStyles = makeStyles((theme) => ({
 function SyncError() {
     const classes = useStyles()
     const {syncError, setSyncError} = useContext(SyncErrorContext)
+    const {getBoardData} = useContext(BoardContext)
     const [trying, setTrying] = useState(false)
     const [secondsLeft, setSecondsLeft] = useState(10)
-
-    const handleClose = () => {
-        console.log('trying to close')
-    }
 
     useEffect(() => {
         if (!syncError) return
@@ -51,11 +48,7 @@ function SyncError() {
     const handleTry = () => {
         setTrying(true)
 
-        axios({
-            method: 'GET',
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/user`,
-            withCredentials: true
-        }).then(() => {
+        getBoardData.then(() => {
             setSyncError(false)
             setTrying(false)
             setSecondsLeft(10)
@@ -68,7 +61,6 @@ function SyncError() {
     return (
         <Dialog
             open={syncError}
-            onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
