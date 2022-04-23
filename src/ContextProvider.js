@@ -28,7 +28,7 @@ function ContextProvider(props) {
         getBoardData()
     }, [])
 
-    const boardProviderValue = useMemo(() => ({board, getBoardData}), [board, getBoardData])
+    const boardProviderValue = useMemo(() => ({board, setBoard, getBoardData}), [board, getBoardData])
 
     return (
         <BoardContext.Provider value={boardProviderValue}>

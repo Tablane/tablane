@@ -5,9 +5,10 @@ import {ObjectID} from "bson";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import AnimateHeight from "react-animate-height";
 import BoardContext from "../../context/BoardContext";
+import _ from 'lodash'
 
 function TaskColumnPopover(props) {
-    const {board, getBoardData} = useContext(BoardContext)
+    const { board, setBoard, getBoardData } = useContext(BoardContext)
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -79,7 +80,18 @@ function TaskColumnPopover(props) {
 
     // change label to id
     const handleLabelChange = (id) => {
-        const {taskGroupId, task} = props
+        const { taskGroupId, task } = props
+
+        const newBoard = _.cloneDeep(board);
+        const options = newBoard.taskGroups
+            .find(x => x._id.toString() === taskGroupId).tasks
+            .find(x => x._id.toString() === task._id).options
+        const option = options.find(x => x.column.toString() === props.attribute._id)
+
+        if (option) option.value = id._id
+        else options.push({ column: props.attribute._id, value: id._id })
+        setBoard(newBoard)
+
         if (labelsEditing) return
         axios({
             method: 'PATCH',
@@ -90,15 +102,15 @@ function TaskColumnPopover(props) {
             },
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
-        }).then(() => {
-            getBoardData()
+        }).catch(() => {
+            console.log('Client out of sync')
         })
         handleClose()
     }
 
     // change label to none
     const handleLabelClear = () => {
-        const {taskGroupId, task, attribute} = props
+        const { taskGroupId, task, attribute } = props
         if (labelsEditing) return
         axios({
             method: 'DELETE',
@@ -164,7 +176,7 @@ function TaskColumnPopover(props) {
 
                                                     <i className="fas fa-grip-vertical"> </i>
                                                     <div
-                                                        style={{backgroundColor}}
+                                                        style={{ backgroundColor }}
                                                         onClick={() => editEditingLabel(i)}>
                                                         {labelsEditing ? (
                                                             <i className="fas fa-tint"> </i>
@@ -190,13 +202,13 @@ function TaskColumnPopover(props) {
                                 <div
                                     className={`${labelsEditing ? 'editing' : ''} default`}
                                     key="none"
-                                    style={{backgroundColor: 'rgb(181, 188, 194)'}}
-                                    onClick={handleLabelClear}> </div>
+                                    style={{ backgroundColor: 'rgb(181, 188, 194)' }}
+                                    onClick={handleLabelClear}></div>
                                 {labelsEditing
                                     ? <div
                                         className="new-label"
                                         key="new-label"
-                                        style={{backgroundColor: colorEditingLabel === -1 ? hoverColor : null}}
+                                        style={{ backgroundColor: colorEditingLabel === -1 ? hoverColor : null }}
                                         onClick={addNewLabel}>New label</div>
                                     : ''}
                             </div>
@@ -214,7 +226,7 @@ function TaskColumnPopover(props) {
                                  onMouseEnter={() => setHoverColor(x)}
                                  onMouseLeave={() => setHoverColor(null)}
                                  onClick={() => addNewLabel(x)}>
-                                <div style={{backgroundColor: x}}> </div>
+                                <div style={{ backgroundColor: x }}></div>
                             </div>
                         ))}
                     </div>
