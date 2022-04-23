@@ -3,10 +3,12 @@ import './App.css';
 import BoardContext from "./context/BoardContext";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import SyncErrorContext from "./context/SyncErrorContext";
 
 function ContextProvider(props) {
     const [boardId, setBoardId] = useState(null)
     const [board, setBoard] = useState(null)
+    const [syncError, setSyncError] = useState(false)
 
     const getBoardData = useCallback(async (newBoardId) => {
         const checkedBoard = newBoardId ? newBoardId : boardId
@@ -28,11 +30,14 @@ function ContextProvider(props) {
         getBoardData()
     }, [])
 
-    const boardProviderValue = useMemo(() => ({board, setBoard, getBoardData}), [board, getBoardData])
+    const boardProviderValue = useMemo(() => ({ board, setBoard, getBoardData }), [board, getBoardData])
+    const syncErrorProviderValue = useMemo(() => ({ syncError, setSyncError }), [syncError, setSyncError])
 
     return (
         <BoardContext.Provider value={boardProviderValue}>
-            {props.children}
+            <SyncErrorContext.Provider value={syncErrorProviderValue}>
+                {props.children}
+            </SyncErrorContext.Provider>
         </BoardContext.Provider>
     );
 }

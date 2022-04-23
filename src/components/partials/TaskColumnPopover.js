@@ -6,9 +6,11 @@ import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import AnimateHeight from "react-animate-height";
 import BoardContext from "../../context/BoardContext";
 import _ from 'lodash'
+import SyncErrorContext from "../../context/SyncErrorContext";
 
 function TaskColumnPopover(props) {
     const { board, setBoard, getBoardData } = useContext(BoardContext)
+    const { setSyncError } = useContext(SyncErrorContext)
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -103,7 +105,7 @@ function TaskColumnPopover(props) {
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
         }).catch(() => {
-            console.log('Client out of sync')
+            setSyncError(true)
         })
         handleClose()
     }

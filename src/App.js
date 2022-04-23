@@ -11,6 +11,7 @@ import SharedBoard from "./components/partials/SharedBoard";
 import Settings from "./components/Settings";
 import UserContext from "./context/UserContext";
 import ContextProvider from "./ContextProvider";
+import SyncError from "./components/SyncError";
 
 function App(props) {
     const [loading, setLoading] = useState(true)
@@ -52,6 +53,7 @@ function App(props) {
                         )}/>
                     </Switch>
                 </Router>
+                <SyncError />
             </ContextProvider>
         </UserContext.Provider>
     );
