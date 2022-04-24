@@ -83,6 +83,7 @@ function TaskColumnPopover(props) {
     // change label to id
     const handleLabelChange = (id) => {
         const { taskGroupId, task } = props
+        if (labelsEditing) return
 
         const newBoard = _.cloneDeep(board);
         const options = newBoard.taskGroups
@@ -91,10 +92,9 @@ function TaskColumnPopover(props) {
         const option = options.find(x => x.column.toString() === props.attribute._id)
 
         if (option) option.value = id._id
-        else options.push({ column: props.attribute._id, value: id._id })
+        else options.push({ column: props.attribute._id, value: id._id, _id: ObjectID() })
         setBoard(newBoard)
 
-        if (labelsEditing) return
         axios({
             method: 'PATCH',
             data: {
@@ -114,12 +114,21 @@ function TaskColumnPopover(props) {
     const handleLabelClear = () => {
         const { taskGroupId, task, attribute } = props
         if (labelsEditing) return
+
+        const newBoard = _.cloneDeep(board)
+        const options = newBoard.taskGroups
+            .find(x => x._id.toString() === taskGroupId).tasks
+            .find(x => x._id.toString() === task._id).options
+        const optionIndex = options.indexOf(options.find(x => x._id.toString() === attribute._id))
+        options.splice(optionIndex, 1)
+        setBoard(newBoard)
+
         axios({
             method: 'DELETE',
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
-        }).then(() => {
-            getBoardData()
+        }).catch(() => {
+            setSyncError(true)
         })
         handleClose()
     }
