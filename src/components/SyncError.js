@@ -11,6 +11,7 @@ import React, {useContext, useEffect, useState} from "react";
 import SyncErrorContext from "../context/SyncErrorContext";
 import {green} from "@material-ui/core/colors";
 import BoardContext from "../context/BoardContext";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -48,7 +49,12 @@ function SyncError() {
     const handleTry = () => {
         setTrying(true)
 
-        getBoardData.then(() => {
+        axios({
+            method: 'GET',
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/user`,
+            withCredentials: true
+        }).then(() => {
+            getBoardData()
             setSyncError(false)
             setTrying(false)
             setSecondsLeft(10)
