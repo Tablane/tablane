@@ -90,7 +90,8 @@ function Task(props) {
     }
 
     const toggleTaskEdit = () => {
-        setTaskEditing(!taskEditing)
+        document.activeElement.blur()
+        setTimeout(() => setTaskEditing(!taskEditing), 0)
     }
 
     const handleTaskEdit = (e) => {
