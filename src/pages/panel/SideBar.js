@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react'
-import '../../components/assets/SideBar.css'
+import '../../styles/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./sideBar/AccountPopover";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";

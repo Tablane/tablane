@@ -1,5 +1,5 @@
 import {Fragment, useContext, useState} from 'react'
-import '../../../../components/assets/Task.css'
+import '../../../../styles/Task.css'
 import axios from "axios";
 import TaskColumnPopover from "./task/TaskColumnPopover";
 import {Draggable} from "react-beautiful-dnd";

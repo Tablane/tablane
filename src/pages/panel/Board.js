@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect} from 'react'
-import '../../components/assets/Board.css'
+import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";

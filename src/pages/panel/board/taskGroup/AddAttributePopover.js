@@ -1,4 +1,4 @@
-import '../../../../components/assets/AddAttributePopover.css'
+import '../../../../styles/AddAttributePopover.css'
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {Popover} from "@material-ui/core";

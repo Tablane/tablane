@@ -2,7 +2,7 @@ import {Component} from 'react'
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from './auth/Login';
 import Register from './auth/Register';
-import '../components/assets/Auth.css'
+import '../styles/Auth.css'
 
 class Auth extends Component {
 

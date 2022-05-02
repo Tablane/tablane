@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {CircularProgress} from "@material-ui/core";
-import '../../components/assets/Login.css'
+import '../../styles/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";

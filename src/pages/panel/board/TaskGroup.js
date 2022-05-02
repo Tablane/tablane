@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react'
-import '../../../components/assets/TaskGroup.css'
+import '../../../styles/TaskGroup.css'
 import Task from './taskGroup/Task'
 import axios from "axios";
 import {toast} from "react-hot-toast";

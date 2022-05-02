@@ -4,7 +4,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {toast} from "react-hot-toast";
-import '../../../../components/assets/AttributePopover.css'
+import '../../../../styles/AttributePopover.css'
 
 function AttributePopover(props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import '../../../components/assets/TaskGroup.css'
+import '../../../styles/TaskGroup.css'
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {Draggable, Droppable} from "react-beautiful-dnd";

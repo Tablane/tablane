@@ -1,5 +1,5 @@
 import {useContext} from 'react'
-import '../../components/assets/TopMenu.css'
+import '../../styles/TopMenu.css'
 import ShareDialog from "./topMenu/ShareDialog";
 import BoardContext from "../../modules/context/BoardContext";
 import useToggleState from "../../modules/hooks/useToggleState";
