@@ -1,17 +1,17 @@
 import {useEffect, useMemo, useState} from 'react'
 import './App.css';
-import Auth from './components/Auth'
+import Auth from './pages/Auth'
 import axios from "axios";
 import {toast} from "react-hot-toast";
 import {CircularProgress} from "@material-ui/core";
-import Panel from "./components/Panel";
+import Panel from "./pages/Panel";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import WorkspaceSelector from "./components/partials/WorkspaceSelector";
-import SharedBoard from "./components/partials/SharedBoard";
-import Settings from "./components/Settings";
-import UserContext from "./context/UserContext";
+import WorkspaceSelector from "./pages/WorkspaceSelector";
+import SharedBoard from "./pages/SharedBoard";
+import Settings from "./pages/Settings";
+import UserContext from "./modules/context/UserContext";
 import ContextProvider from "./ContextProvider";
-import SyncError from "./components/SyncError";
+import SyncError from "./pages/SyncError";
 
 function App(props) {
     const [loading, setLoading] = useState(true)
@@ -45,15 +45,15 @@ function App(props) {
                     <Switch>
                         <Route path="/share/:boardId" component={SharedBoard}/>
                         {!user && <Route path="/" component={Auth}/>}
-                        <Route exact path={['/login', '/register']} render={({history}) => history.push('/')}/>
+                        <Route exact path={['/login', '/register']} render={({ history }) => history.push('/')}/>
                         <Route path="/settings/:workspace" component={Settings}/>
                         <Route path="/:workspace" component={Panel}/>
-                        <Route path="/" render={({history}) => (
+                        <Route path="/" render={({ history }) => (
                             <WorkspaceSelector history={history} workspaces={user.workspaces}/>
                         )}/>
                     </Switch>
                 </Router>
-                <SyncError />
+                <SyncError/>
             </ContextProvider>
         </UserContext.Provider>
     );

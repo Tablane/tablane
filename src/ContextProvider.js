@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import './App.css';
-import BoardContext from "./context/BoardContext";
+import BoardContext from "./modules/context/BoardContext";
 import axios from "axios";
 import {toast} from "react-hot-toast";
-import SyncErrorContext from "./context/SyncErrorContext";
+import SyncErrorContext from "./modules/context/SyncErrorContext";
 
 function ContextProvider(props) {
     const [boardId, setBoardId] = useState(null)
