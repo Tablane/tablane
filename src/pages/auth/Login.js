@@ -1,45 +1,25 @@
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import {useCallback, useContext, useEffect, useState} from "react";
-import axios from "axios";
-import {toast} from "react-hot-toast";
+import {useCallback, useEffect, useState} from "react";
 import {CircularProgress} from "@material-ui/core";
 import '../../components/assets/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {actionCreator} from "../../modules/state/index";
 import {bindActionCreators} from "redux";
-import UserContext from "../../modules/context/UserContext";
 
-function Login(props) {
-    const [loading, setLoading] = useState(false)
+function Login() {
     const [validate, setValidate] = useState(false)
-    const {setUser} = useContext(UserContext)
+
+    const submitting = useSelector(state => state.account.submitting)
+    const dispatch = useDispatch()
+    const {userLogin} = bindActionCreators(actionCreator, dispatch)
+
     const [username, changeUsername] = useInputState()
     const [password, changePassword] = useInputState()
 
     const [errors, setErrors] = useState({})
-
-    const loginUser = async () => {
-        return new Promise((resolve, reject) => {
-            axios({
-                method: "POST",
-                data: {
-                    username: username,
-                    password: password,
-                },
-                withCredentials: true,
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/login`,
-            }).then((res) => {
-                if (res.data.success) resolve(res.data.user)
-                else reject(res.data)
-            }).catch(err => {
-                toast(err.toString())
-                setLoading(false)
-            })
-        })
-    }
 
     const validateInput = useCallback(() => {
         let errors = {}
@@ -47,10 +27,6 @@ function Login(props) {
         if (username === '') errors.username = 'This field is required'
         else if (username.length < 3)
             errors.username = 'Username must be longer than 3 characters'
-
-        // if (email === "") errors.email = "This field is required"
-        // else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))
-        //     errors.email = 'Email is invalid'
 
         if (password === '') errors.password = 'This field is required'
         else if (password.length < 3)
@@ -68,16 +44,7 @@ function Login(props) {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
-            setLoading(true)
-            loginUser()
-                .then(user => {
-                    toast('Successfully logged in')
-                    setUser(user)
-                })
-                .catch(x => {
-                    x.error.map(x => toast(x))
-                    setLoading(false)
-                })
+            userLogin({username, password})
         }
     }
 
@@ -111,8 +78,8 @@ function Login(props) {
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={loading}>Login</Button>
-                        {loading && <CircularProgress size={24} className="buttonProgress"/>}
+                            disabled={submitting}>Login</Button>
+                        {submitting && <CircularProgress size={24} className="buttonProgress"/>}
                     </div>
                 </form>
             </div>

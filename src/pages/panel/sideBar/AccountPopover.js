@@ -4,14 +4,17 @@ import Button from "@material-ui/core/Button";
 import '../../../components/assets/AccountPopover.css'
 import {Link} from "react-router-dom";
 import WorkspaceContext from "../../../modules/context/WorkspaceContext";
-import UserContext from "../../../modules/context/UserContext";
-import {toast} from "react-hot-toast";
-import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreator} from "./../../../modules/state/index";
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)
     const {workspace} = useContext(WorkspaceContext)
-    const {user, setUser} = useContext(UserContext)
+
+    const user = useSelector(state => state.account.user)
+    const dispatch = useDispatch()
+    const {userLogout} = bindActionCreators(actionCreator, dispatch)
 
     const handleClick = e => {
         setAnchor(e.currentTarget)
@@ -19,19 +22,6 @@ function AccountPopover(props) {
 
     const handleClose = () => {
         setAnchor(null)
-    }
-
-    const logout = () => {
-        setUser(null)
-        axios({
-            method: "GET",
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/logout`,
-        }).then((res) => {
-            toast(res.data)
-        }).catch(x => {
-            toast(x)
-        })
     }
 
     const changeWorkspace = (id) => {
@@ -93,7 +83,7 @@ function AccountPopover(props) {
                                 <Link to={`/settings/user/profile`}>My Settings</Link>
                                 <Link to={`/settings/user/notifications`}>Notifications</Link>
                                 <Link to={`/settings/user/apps`}>Apps</Link>
-                                <button onClick={logout}>Log out</button>
+                                <button onClick={userLogout}>Log out</button>
                             </div>
                         </div>
                     </div>

@@ -1,17 +1,19 @@
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import {useCallback, useContext, useEffect, useState} from "react";
-import axios from "axios";
-import {toast} from "react-hot-toast";
+import {useCallback, useEffect, useState} from "react";
 import {CircularProgress} from "@material-ui/core";
 import '../../components/assets/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
-import UserContext from "../../modules/context/UserContext";
+import {useDispatch, useSelector} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreator} from "../../modules/state/index";
 
-function Login(props) {
-    const [loading, setLoading] = useState()
-    const {setUser} = useContext(UserContext)
+function Login() {
+    const submitting = useSelector(state => state.account.submitting)
+    const dispatch = useDispatch()
+    const { userRegister } = bindActionCreators(actionCreator, dispatch)
+
     const [validate, setValidate] = useState(false)
 
     const [username, changeUsername] = useInputState()
@@ -19,24 +21,6 @@ function Login(props) {
     const [email, changeEmail] = useInputState()
 
     const [errors, setErrors] = useState({})
-
-    const registerUser = async () => {
-        return new Promise((resolve, reject) => {
-            axios({
-                method: "POST",
-                data: {
-                    username: username,
-                    password: password,
-                    email: email,
-                },
-                withCredentials: true,
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/register`,
-            }).then((res) => {
-                if (res.data.success) resolve(res.data.user)
-                else reject(res.data)
-            }).catch(err => console.log(err))
-        })
-    }
 
     const validateInput = useCallback(() => {
         let errors = {}
@@ -65,16 +49,8 @@ function Login(props) {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
-            setLoading(true)
-            registerUser()
-                .then(user => {
-                    toast('Successfully registered')
-                    setUser(user)
-                })
-                .catch(x => {
-                    x.error.map(x => toast(x))
-                    setLoading(false)
-                })
+            console.log('test')
+            userRegister({ username, password, email })
         }
     }
 
@@ -117,8 +93,8 @@ function Login(props) {
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={loading}>Register</Button>
-                        {loading && <CircularProgress size={24} className="buttonProgress" />}
+                            disabled={submitting}>Register</Button>
+                        {submitting && <CircularProgress size={24} className="buttonProgress"/>}
                     </div>
                 </form>
             </div>
