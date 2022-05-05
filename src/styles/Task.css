@@ -135,6 +135,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .task-popover .options > div.editing > div {
@@ -151,6 +153,7 @@
 .task-popover .options > div.editing > div:nth-of-type(2) {
     border-radius: 0 2px 2px 0;
     background-color: #F5F6F8;
+    width: 92px;
 }
 
 .task-popover .options > div.editing > div:nth-of-type(2) input {
