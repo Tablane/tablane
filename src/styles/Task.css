@@ -116,7 +116,6 @@
     width: 140px;
     height: 32px;
     margin-top: 8px;
-    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -182,6 +181,7 @@
 }
 
 .task-popover .options > div.default {
+    cursor: pointer;
     width: 108px;
 }
 
