@@ -5,16 +5,14 @@ import '../../../styles/AccountPopover.css'
 import {Link} from "react-router-dom";
 import WorkspaceContext from "../../../modules/context/WorkspaceContext";
 import {useDispatch, useSelector} from "react-redux";
-import {bindActionCreators} from "redux";
-import actionCreators from "../../../modules/state/actionCreators";
+import {logoutUser} from "../../../modules/state/reducers/userReducer";
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)
     const {workspace} = useContext(WorkspaceContext)
 
-    const user = useSelector(state => state.account.user)
+    const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
-    const {userLogout} = bindActionCreators(actionCreators, dispatch)
 
     const handleClick = e => {
         setAnchor(e.currentTarget)
@@ -83,7 +81,7 @@ function AccountPopover(props) {
                                 <Link to={`/settings/user/profile`}>My Settings</Link>
                                 <Link to={`/settings/user/notifications`}>Notifications</Link>
                                 <Link to={`/settings/user/apps`}>Apps</Link>
-                                <button onClick={userLogout}>Log out</button>
+                                <button onClick={() => dispatch(logoutUser())}>Log out</button>
                             </div>
                         </div>
                     </div>

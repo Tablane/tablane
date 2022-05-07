@@ -6,15 +6,13 @@ import {CircularProgress} from "@material-ui/core";
 import '../../styles/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
-import {bindActionCreators} from "redux";
-import actionCreators from "../../modules/state/actionCreators";
+import {loginUser} from "../../modules/state/reducers/userReducer";
 
 function Login() {
     const [validate, setValidate] = useState(false)
 
-    const submitting = useSelector(state => state.account.submitting)
+    const submit = useSelector(state => state.user.submit)
     const dispatch = useDispatch()
-    const {userLogin} = bindActionCreators(actionCreators, dispatch)
 
     const [username, changeUsername] = useInputState()
     const [password, changePassword] = useInputState()
@@ -44,7 +42,7 @@ function Login() {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
-            userLogin({username, password})
+            dispatch(loginUser({ username, password }))
         }
     }
 
@@ -78,8 +76,8 @@ function Login() {
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={submitting}>Login</Button>
-                        {submitting && <CircularProgress size={24} className="buttonProgress"/>}
+                            disabled={submit === 'loading'}>Login</Button>
+                        {submit === 'loading' && <CircularProgress size={24} className="buttonProgress"/>}
                     </div>
                 </form>
             </div>

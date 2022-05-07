@@ -1,12 +1,12 @@
-import {applyMiddleware, createStore} from "redux";
-import reducers from "./reducers";
-import thunk from "redux-thunk";
-import {composeWithDevTools} from "redux-devtools-extension";
+import {configureStore} from "@reduxjs/toolkit";
+import userReducer from "./reducers/userReducer";
+import boardReducer from "./reducers/boardReducer";
 
-export const store = createStore(
-    reducers,
-    {},
-    composeWithDevTools(applyMiddleware(thunk))
-)
+export const store = configureStore({
+    reducer: {
+        user: userReducer,
+        board: boardReducer
+    }
+})
 
 

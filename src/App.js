@@ -10,30 +10,28 @@ import Settings from "./pages/Settings";
 import ContextProvider from "./ContextProvider";
 import SyncError from "./pages/SyncError";
 import {useDispatch, useSelector} from "react-redux";
-import {bindActionCreators} from "redux";
-import actionCreators from "./modules/state/actionCreators";
+import {fetchUser} from "./modules/state/reducers/userReducer";
 
 function App() {
-    const account = useSelector(state => state.account)
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
-    const {getCurrentUser} = bindActionCreators(actionCreators, dispatch)
 
     useEffect(() => {
-        getCurrentUser()
+        dispatch(fetchUser())
     }, [])
 
-    if (account.loading) return <div className="loading"><CircularProgress/></div>
+    if (user.status === 'loading') return <div className="loading"><CircularProgress/></div>
     return (
         <ContextProvider>
             <Router>
                 <Switch>
                     <Route path="/share/:boardId" component={SharedBoard}/>
-                    {!account.user && <Route path="/" component={Auth}/>}
+                    {user.status !== 'succeeded' && <Route path="/" component={Auth}/>}
                     <Route exact path={['/login', '/register']} render={({ history }) => history.push('/')}/>
                     <Route path="/settings/:workspace" component={Settings}/>
                     <Route path="/:workspace" component={Panel}/>
                     <Route path="/" render={({ history }) => (
-                        <WorkspaceSelector history={history} workspaces={account.user.workspaces}/>
+                        <WorkspaceSelector history={history} workspaces={user.user.workspaces}/>
                     )}/>
                 </Switch>
             </Router>

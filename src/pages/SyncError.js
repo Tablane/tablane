@@ -51,7 +51,7 @@ function SyncError() {
 
         axios({
             method: 'GET',
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/user`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user`,
             withCredentials: true
         }).then(() => {
             getBoardData()
