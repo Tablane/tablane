@@ -11,12 +11,12 @@ import ContextProvider from "./ContextProvider";
 import SyncError from "./pages/SyncError";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreator} from "./modules/state/index";
+import actionCreators from "./modules/state/actionCreators";
 
 function App() {
     const account = useSelector(state => state.account)
     const dispatch = useDispatch()
-    const {getCurrentUser} = bindActionCreators(actionCreator, dispatch)
+    const {getCurrentUser} = bindActionCreators(actionCreators, dispatch)
 
     useEffect(() => {
         getCurrentUser()

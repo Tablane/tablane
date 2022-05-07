@@ -7,12 +7,12 @@ import '../../styles/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreator} from "../../modules/state/index";
+import actionCreators from "../../modules/state/actionCreators";
 
 function Login() {
     const submitting = useSelector(state => state.account.submitting)
     const dispatch = useDispatch()
-    const { userRegister } = bindActionCreators(actionCreator, dispatch)
+    const { userRegister } = bindActionCreators(actionCreators, dispatch)
 
     const [validate, setValidate] = useState(false)
 

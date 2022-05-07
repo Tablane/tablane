@@ -6,15 +6,15 @@ import {CircularProgress} from "@material-ui/core";
 import '../../styles/Login.css'
 import useInputState from "../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
-import {actionCreator} from "../../modules/state/index";
 import {bindActionCreators} from "redux";
+import actionCreators from "../../modules/state/actionCreators";
 
 function Login() {
     const [validate, setValidate] = useState(false)
 
     const submitting = useSelector(state => state.account.submitting)
     const dispatch = useDispatch()
-    const {userLogin} = bindActionCreators(actionCreator, dispatch)
+    const {userLogin} = bindActionCreators(actionCreators, dispatch)
 
     const [username, changeUsername] = useInputState()
     const [password, changePassword] = useInputState()

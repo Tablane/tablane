@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import WorkspaceContext from "../../../modules/context/WorkspaceContext";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreator} from "./../../../modules/state/index";
+import actionCreators from "../../../modules/state/actionCreators";
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)
@@ -14,7 +14,7 @@ function AccountPopover(props) {
 
     const user = useSelector(state => state.account.user)
     const dispatch = useDispatch()
-    const {userLogout} = bindActionCreators(actionCreator, dispatch)
+    const {userLogout} = bindActionCreators(actionCreators, dispatch)
 
     const handleClick = e => {
         setAnchor(e.currentTarget)
