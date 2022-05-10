@@ -6,9 +6,13 @@ import {Draggable} from "react-beautiful-dnd";
 import TaskPopover from "./task/TaskPopover";
 import useInputState from "../../../../modules/hooks/useInputState";
 import BoardContext from "../../../../modules/context/BoardContext";
+import {useDispatch, useSelector} from "react-redux";
+import {editTaskName} from "../../../../modules/state/reducers/boardReducer";
 
 function Task(props) {
-    const {board, getBoardData} = useContext(BoardContext)
+    const { board } = useSelector(state => state.board)
+    const { getBoardData } = useContext(BoardContext)
+    const dispatch = useDispatch()
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -98,17 +102,12 @@ function Task(props) {
         e.preventDefault()
         const {taskGroupId, task} = props
         toggleTaskEdit()
-        axios({
-            method: 'PATCH',
-            data: {
-                type: 'name',
-                name: taskName
-            },
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
-        }).then(() => {
-            getBoardData()
-        })
+        dispatch(editTaskName({
+            taskName,
+            boardId: board._id,
+            taskGroupId,
+            taskId: task._id
+        }))
     }
 
     return (

@@ -1,16 +1,17 @@
 import {useContext, useState} from "react";
 import {Popover} from "@material-ui/core";
 import axios from "axios";
-import {ObjectID} from "bson";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import AnimateHeight from "react-animate-height";
 import BoardContext from "../../../../../modules/context/BoardContext";
-import _ from 'lodash'
-import SyncErrorContext from "../../../../../modules/context/SyncErrorContext";
+import {useDispatch, useSelector} from "react-redux";
+import {clearStatusTask, editOptionsTask, editTaskName} from "../../../../../modules/state/reducers/boardReducer";
+import {ObjectId} from "../../../../../utils";
 
 function TaskColumnPopover(props) {
-    const { board, setBoard, getBoardData } = useContext(BoardContext)
-    const { setSyncError } = useContext(SyncErrorContext)
+    const { getBoardData } = useContext(BoardContext)
+    const { board } = useSelector(state => state.board)
+    const dispatch = useDispatch()
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -70,7 +71,7 @@ function TaskColumnPopover(props) {
                 setHoverColor(null)
             }
             let newCurrentLabels = editingLabels
-            const attribute = { name: '', color: color, _id: ObjectID() }
+            const attribute = { name: '', color: color, _id: ObjectId() }
             newCurrentLabels.push(attribute)
             setEditingLabels([...newCurrentLabels])
         } else {
@@ -86,28 +87,14 @@ function TaskColumnPopover(props) {
         const { taskGroupId, task } = props
         if (labelsEditing) return
 
-        const newBoard = _.cloneDeep(board);
-        const options = newBoard.taskGroups
-            .find(x => x._id.toString() === taskGroupId).tasks
-            .find(x => x._id.toString() === task._id).options
-        const option = options.find(x => x.column.toString() === props.attribute._id)
-
-        if (option) option.value = id._id
-        else options.push({ column: props.attribute._id, value: id._id, _id: ObjectID() })
-        setBoard(newBoard)
-
-        axios({
-            method: 'PATCH',
-            data: {
-                column: props.attribute._id,
-                value: id._id,
-                type: 'status'
-            },
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
-        }).catch(() => {
-            setSyncError(true)
-        })
+        dispatch(editOptionsTask({
+            boardId: board._id,
+            taskGroupId,
+            taskId: task._id,
+            column: props.attribute._id,
+            value: id._id,
+            type: 'status'
+        }))
         handleClose()
     }
 
@@ -116,21 +103,12 @@ function TaskColumnPopover(props) {
         const { taskGroupId, task, attribute } = props
         if (labelsEditing) return
 
-        const newBoard = _.cloneDeep(board)
-        const options = newBoard.taskGroups
-            .find(x => x._id.toString() === taskGroupId).tasks
-            .find(x => x._id.toString() === task._id).options
-        const optionIndex = options.indexOf(options.find(x => x._id.toString() === attribute._id))
-        options.splice(optionIndex, 1)
-        setBoard(newBoard)
-
-        axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}/${attribute._id}`
-        }).catch(() => {
-            setSyncError(true)
-        })
+        dispatch(clearStatusTask({
+            boardId: board._id,
+            taskGroupId,
+            taskId: task._id,
+            optionId: attribute._id
+        }))
         handleClose()
     }
 

@@ -8,10 +8,10 @@ import {
     Popover
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {useContext, useState} from "react";
-import axios from "axios";
-import {toast} from "react-hot-toast";
-import BoardContext from "../../../../../modules/context/BoardContext";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTask } from "../../../../../modules/state/reducers/boardReducer";
 
 const useStyles = makeStyles({
     container: {
@@ -33,7 +33,8 @@ const useStyles = makeStyles({
 })
 
 function TaskPopover(props) {
-    const {board, getBoardData} = useContext(BoardContext)
+    const dispatch = useDispatch()
+    const {board} = useSelector(state => state.board)
     const classes = useStyles()
     const [deleteDialog, setDeleteDialog] = useState(false)
 
@@ -45,13 +46,11 @@ function TaskPopover(props) {
 
     const handleDelete = () => {
         setDeleteDialog(false)
-        axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${props.taskGroupId}/${props.task._id}`
-        }).then(() => {
-            getBoardData()
-        })
+        dispatch(deleteTask({
+            boardId: board._id,
+            taskGroupId: props.taskGroupId,
+            taskId: props.task._id
+        }))
     }
 
     // copy task id

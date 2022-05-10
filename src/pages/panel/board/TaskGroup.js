@@ -11,9 +11,14 @@ import AddAttributePopover from "./taskGroup/AddAttributePopover";
 import useInputState from "../../../modules/hooks/useInputState";
 import BoardContext from "../../../modules/context/BoardContext";
 import useToggleState from "../../../modules/hooks/useToggleState";
+import {useDispatch, useSelector} from "react-redux";
+import {addTask} from "../../../modules/state/reducers/boardReducer";
+import {ObjectId} from "../../../utils";
 
 function TaskGroup(props) {
-    const {board, getBoardData} = useContext(BoardContext)
+    const { board } = useSelector(state => state.board)
+    const dispatch = useDispatch()
+    const { getBoardData } = useContext(BoardContext)
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
@@ -36,21 +41,15 @@ function TaskGroup(props) {
         setNewAttributeOpen(e ? e.target.parentNode.parentNode : false)
     }
 
-    const addTask = async (e) => {
+    const handleAddTask = async (e) => {
         e.preventDefault()
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${props.taskGroup._id}`,
-            data: {
-                name: newTaskName
-            }
-        }).then(() => {
-            getBoardData()
-            resetNewTaskName()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        resetNewTaskName()
+        dispatch(addTask({
+            boardId: board._id,
+            taskGroupId: props.taskGroup._id,
+            newTaskName,
+            _id: ObjectId()
+        }))
     }
 
     const handleAttributePopover = (e, id = null) => {
@@ -176,7 +175,7 @@ function TaskGroup(props) {
                             </div>
                         )}
                     </Droppable>
-                    <form onSubmit={addTask}>
+                    <form onSubmit={handleAddTask}>
                         <div className="new-task">
                             <input
                                 type="text"

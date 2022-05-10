@@ -1,11 +1,10 @@
-import {useContext} from 'react'
 import '../../styles/TopMenu.css'
 import ShareDialog from "./topMenu/ShareDialog";
-import BoardContext from "../../modules/context/BoardContext";
 import useToggleState from "../../modules/hooks/useToggleState";
+import { useSelector } from "react-redux";
 
 function TopMenu(props) {
-    const {board} = useContext(BoardContext)
+    const { board } = useSelector(state => state.board)
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
 
     return (

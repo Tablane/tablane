@@ -1,8 +1,8 @@
 import {Dialog, DialogContent, DialogTitle, makeStyles, Switch} from "@material-ui/core";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 import axios from "axios";
-import BoardContext from "../../../modules/context/BoardContext";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles({
     content: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles({
 
 function ShareDialog(props) {
     const classes = useStyles();
-    const {board} = useContext(BoardContext)
+    const {board} = useSelector(state => state.board)
     const [check, setCheck] = useState(board.sharing)
     const [link, setLink] = useState(board.sharing
         ? `${window.location.origin}/share/${board._id}`
