@@ -7,7 +7,7 @@ import TaskPopover from "./task/TaskPopover";
 import useInputState from "../../../../modules/hooks/useInputState";
 import BoardContext from "../../../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
-import {editTaskName} from "../../../../modules/state/reducers/boardReducer";
+import { editOptionsTask, editTaskName } from "../../../../modules/state/reducers/boardReducer";
 
 function Task(props) {
     const { board } = useSelector(state => state.board)
@@ -40,18 +40,14 @@ function Task(props) {
 
     const handleTextEdit = async (e) => {
         const {taskGroupId, task} = props
-        axios({
-            method: 'PATCH',
-            data: {
-                column: e.target.name,
-                value: e.target.value,
-                type: 'text'
-            },
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${board._id}/${taskGroupId}/${task._id}`
-        }).then(() => {
-            getBoardData()
-        })
+        dispatch(editOptionsTask({
+            column: e.target.name,
+            value: e.target.value,
+            type: 'text',
+            boardId: board._id,
+            taskGroupId: taskGroupId,
+            taskId: task._id
+        }))
     }
 
     const getStatusLabel = (attribute) => {
