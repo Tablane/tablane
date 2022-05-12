@@ -1,17 +1,14 @@
-import {Fragment, useContext, useState} from 'react'
+import {Fragment, useState} from 'react'
 import '../../../../styles/Task.css'
-import axios from "axios";
 import TaskColumnPopover from "./task/TaskColumnPopover";
 import {Draggable} from "react-beautiful-dnd";
 import TaskPopover from "./task/TaskPopover";
 import useInputState from "../../../../modules/hooks/useInputState";
-import BoardContext from "../../../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
 import { editOptionsTask, editTaskName } from "../../../../modules/state/reducers/boardReducer";
 
 function Task(props) {
     const { board } = useSelector(state => state.board)
-    const { getBoardData } = useContext(BoardContext)
     const dispatch = useDispatch()
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
