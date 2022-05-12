@@ -1,8 +1,9 @@
 import {Component} from 'react'
 import '../../../styles/TaskGroup.css'
-import axios from "axios";
-import {toast} from "react-hot-toast";
 import {Draggable, Droppable} from "react-beautiful-dnd";
+import { connect } from "react-redux";
+import { addTaskGroup } from "../../../modules/state/reducers/boardReducer";
+import { ObjectId } from "../../../utils";
 
 class NewTaskGroup extends Component {
     constructor(props) {
@@ -22,19 +23,8 @@ class NewTaskGroup extends Component {
     addTaskGroup = async (e) => {
         e.preventDefault()
         if (this.state.editingName === '') return this.removeTaskGroup()
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                name: this.state.editingName
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${this.props.boardId}`
-        }).then(() => {
-            this.props.getData()
-            this.props.toggleNewTaskGroup()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        this.props.toggleNewTaskGroup()
+        this.props.dispatch(addTaskGroup({ _id: ObjectId(), name: this.state.editingName }))
     }
 
     removeTaskGroup = () => {
@@ -105,7 +95,7 @@ class NewTaskGroup extends Component {
                                 </div>
                             )}
                         </Droppable>
-                        <form onSubmit={this.addTask}>
+                        <form onSubmit={e => e.preventDefault()}>
                             <div className="new-task">
                                 <input
                                     type="text"
@@ -122,4 +112,4 @@ class NewTaskGroup extends Component {
     }
 }
 
-export default NewTaskGroup
+export default connect(null)(NewTaskGroup);

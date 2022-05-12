@@ -81,6 +81,48 @@ export const clearStatusTask = createAsyncThunk('board/clearStatusTask', async (
     return response.data
 })
 
+export const addTaskGroup = createAsyncThunk('board/addTaskGroup', async ({ name, _id }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${getState().board.board._id}`,
+        method: 'POST',
+        withCredentials: true,
+        data: {
+            _id,
+            name
+        },
+    })
+    return response.data
+})
+
+export const editTaskGroupName = createAsyncThunk('board/editTaskGroupName', async ({ boardId, taskGroupId, name }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskGroup/${boardId}/${taskGroupId}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { name }
+    })
+    return response.data
+})
+
+export const deleteTaskGroup = createAsyncThunk('board/deleteTaskGroup', async ({ boardId, taskGroupId }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${boardId}/${taskGroupId}`,
+        method: 'DELETE',
+        withCredentials: true
+    })
+    return response.data
+})
+
+export const sortTaskGroup = createAsyncThunk('board/sortTaskGroup', async ({ result }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${getState().board.board._id}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { result }
+    })
+    return response.data
+})
+
 const boardSlice = createSlice({
     name: 'board',
     initialState: { loading: 0 },
@@ -186,6 +228,53 @@ const boardSlice = createSlice({
         }).addCase(clearStatusTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(clearStatusTask.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(addTaskGroup.pending, (state, action) => {
+            const { name, _id } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const taskGroup = { name, tasks: [], _id }
+            state.board.taskGroups.push(taskGroup)
+        }).addCase(addTaskGroup.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(addTaskGroup.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(editTaskGroupName.pending, (state, action) => {
+            const { taskGroupId, name } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            state.board.taskGroups.find(x => x._id.toString() === taskGroupId).name = name
+        }).addCase(editTaskGroupName.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(editTaskGroupName.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(deleteTaskGroup.pending, (state, action) => {
+            const { taskGroupId } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const taskGroup = state.board.taskGroups.find(x => x._id.toString() === taskGroupId)
+            state.board.taskGroups.splice(state.board.taskGroups.indexOf(taskGroup), 1)
+        }).addCase(deleteTaskGroup.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(deleteTaskGroup.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(sortTaskGroup.pending, (state, action) => {
+            const { result } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const [taskgroup] = state.board.taskGroups.splice(result.source.index, 1)
+            state.board.taskGroups.splice(result.destination.index, 0, taskgroup)
+        }).addCase(sortTaskGroup.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(sortTaskGroup.rejected, (state, action) => {
             state.loading = state.loading - 1;
         })
     }

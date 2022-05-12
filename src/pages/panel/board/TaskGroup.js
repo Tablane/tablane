@@ -1,8 +1,6 @@
 import {useContext, useState} from 'react'
 import '../../../styles/TaskGroup.css'
 import Task from './taskGroup/Task'
-import axios from "axios";
-import {toast} from "react-hot-toast";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Draggable, Droppable} from "react-beautiful-dnd";
@@ -12,7 +10,7 @@ import useInputState from "../../../modules/hooks/useInputState";
 import BoardContext from "../../../modules/context/BoardContext";
 import useToggleState from "../../../modules/hooks/useToggleState";
 import {useDispatch, useSelector} from "react-redux";
-import {addTask} from "../../../modules/state/reducers/boardReducer";
+import { addTask, deleteTaskGroup, editTaskGroupName } from "../../../modules/state/reducers/boardReducer";
 import {ObjectId} from "../../../utils";
 
 function TaskGroup(props) {
@@ -58,32 +56,20 @@ function TaskGroup(props) {
     }
 
     const handleDelete = async () => {
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${board._id}/${props.taskGroup._id}`
-        }).then(() => {
-            getBoardData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        dispatch(deleteTaskGroup({
+            boardId: board._id,
+            taskGroupId: props.taskGroup._id,
+        }))
     }
 
     const updateName = async (e) => {
         e.preventDefault()
-        await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskGroup/${board._id}/${props.taskGroup._id}`,
-            data: {
-                name: editingName
-            }
-        }).then(() => {
-            getBoardData()
-            toggleEditing()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        toggleEditing()
+        dispatch(editTaskGroupName({
+            boardId: board._id,
+            taskGroupId: props.taskGroup._id,
+            name: editingName
+        }))
     }
 
     const cancelNameEditing = () => {

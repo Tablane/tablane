@@ -10,7 +10,7 @@ import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useToggleState from "../../modules/hooks/useToggleState";
 import BoardContext from "../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchBoard, sortTask} from "../../modules/state/reducers/boardReducer";
+import {fetchBoard, sortTask, sortTaskGroup} from "../../modules/state/reducers/boardReducer";
 
 function Board(props) {
     const { workspace } = useContext(WorkspaceContext)
@@ -41,18 +41,7 @@ function Board(props) {
         if (result.type === "task") {
             dispatch(sortTask({ result }))
         } else if (result.type === "taskgroup") {
-            await axios({
-                method: 'PATCH',
-                withCredentials: true,
-                data: {
-                    result
-                },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${board._id}`
-            }).then(() => {
-                getBoardData()
-            }).catch(err => {
-                toast(err.toString())
-            })
+            dispatch(sortTaskGroup({ result }))
         } else if (/^attribute /gm.test(result.type)) {
             await axios({
                 method: 'PATCH',
