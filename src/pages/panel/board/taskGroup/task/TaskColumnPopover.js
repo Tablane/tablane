@@ -5,8 +5,9 @@ import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import AnimateHeight from "react-animate-height";
 import BoardContext from "../../../../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
-import {clearStatusTask, editOptionsTask, editTaskName} from "../../../../../modules/state/reducers/boardReducer";
+import {clearStatusTask, editOptionsTask} from "../../../../../modules/state/reducers/boardReducer";
 import {ObjectId} from "../../../../../utils";
+import _ from "lodash";
 
 function TaskColumnPopover(props) {
     const { getBoardData } = useContext(BoardContext)
@@ -70,10 +71,10 @@ function TaskColumnPopover(props) {
                 color = hoverColor
                 setHoverColor(null)
             }
-            let newCurrentLabels = editingLabels
+            let newCurrentLabels = _.cloneDeep(editingLabels)
             const attribute = { name: '', color: color, _id: ObjectId() }
             newCurrentLabels.push(attribute)
-            setEditingLabels([...newCurrentLabels])
+            setEditingLabels(newCurrentLabels)
         } else {
             const newCurrentLabels = editingLabels
             newCurrentLabels[colorEditingLabel].color = color
