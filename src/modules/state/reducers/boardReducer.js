@@ -83,61 +83,62 @@ export const clearStatusTask = createAsyncThunk('board/clearStatusTask', async (
 
 const boardSlice = createSlice({
     name: 'board',
-    initialState: { status: 'loading' },
+    initialState: { loading: 0 },
     reducers: {},
     extraReducers(builder) {
         builder.addCase(fetchBoard.pending, (state, action) => {
-            state.status = 'loading';
+            state.board = null
+            state.loading = state.loading + 1;
         }).addCase(fetchBoard.fulfilled, (state, action) => {
-            state.status = 'succeeded';
             state.board = action.payload
+            state.loading = state.loading - 1;
         }).addCase(fetchBoard.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(addTask.pending, (state, action) => {
             const { taskGroupId, newTaskName, _id } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             const task = { _id, name: newTaskName, options: [] }
             state.board.taskGroups.find(x => x._id.toString() === taskGroupId).tasks.push(task)
         }).addCase(addTask.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(addTask.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(editTaskName.pending, (state, action) => {
             const { taskGroupId, taskId, taskName } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             state.board.taskGroups
                 .find(x => x._id.toString() === taskGroupId).tasks
                 .find(x => x._id.toString() === taskId).name = taskName
         }).addCase(editTaskName.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(editTaskName.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(deleteTask.pending, (state, action) => {
             const { taskGroupId, taskId } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             const taskGroup = state.board.taskGroups.find(x => x._id.toString() === taskGroupId)
             const task = taskGroup.tasks.find(x => x._id.toString() === taskId)
             const taskIndex = taskGroup.tasks.indexOf(task)
             taskGroup.tasks.splice(taskIndex, 1)
         }).addCase(deleteTask.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(deleteTask.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(sortTask.pending, (state, action) => {
             const { result } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             const sourceTaskGroup = state.board.taskGroups.find(x => x._id.toString() === result.source.droppableId)
             const sourceIndex = sourceTaskGroup.tasks.findIndex(x => x._id.toString() === result.draggableId)
             const destinationTaskGroup = state.board.taskGroups.find(x => x._id.toString() === result.destination.droppableId)
@@ -145,15 +146,15 @@ const boardSlice = createSlice({
             const task = sourceTaskGroup.tasks.splice(sourceIndex, 1)
             destinationTaskGroup.tasks.splice(result.destination.index, 0, task[0])
         }).addCase(sortTask.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(sortTask.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(editOptionsTask.pending, (state, action) => {
             const { column, value, type, taskGroupId, taskId } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             const options = state.board.taskGroups
                 .find(x => x._id.toString() === taskGroupId).tasks
                 .find(x => x._id.toString() === taskId).options
@@ -167,15 +168,15 @@ const boardSlice = createSlice({
                 else options.push({ column, value, _id: ObjectId() })
             }
         }).addCase(editOptionsTask.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(editOptionsTask.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
 
 
         }).addCase(clearStatusTask.pending, (state, action) => {
             const { taskGroupId, taskId, optionId } = action.meta.arg
 
-            state.status = 'loading';
+            state.loading = state.loading + 1;
             const options = state.board.taskGroups
                 .find(x => x._id.toString() === taskGroupId).tasks
                 .find(x => x._id.toString() === taskId).options
@@ -183,9 +184,9 @@ const boardSlice = createSlice({
             const optionIndex = options.indexOf(options.find(x => x.column.toString() === optionId))
             if (optionIndex >= 0) options.splice(optionIndex, 1)
         }).addCase(clearStatusTask.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.loading = state.loading - 1;
         }).addCase(clearStatusTask.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = state.loading - 1;
         })
     }
 })

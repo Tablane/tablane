@@ -15,7 +15,7 @@ import {fetchBoard, sortTask} from "../../modules/state/reducers/boardReducer";
 function Board(props) {
     const { workspace } = useContext(WorkspaceContext)
     const { getBoardData } = useContext(BoardContext)
-    const { board, status } = useSelector(state => state.board)
+    const { board, loading } = useSelector(state => state.board)
     const dispatch = useDispatch()
 
     const [newTaskGroupShown, toggleNewTaskGroupShown] = useToggleState(false)
@@ -75,7 +75,7 @@ function Board(props) {
 
     return (
         <div>
-            {status === 'loading' ? <LinearProgress/> : <div className="loading-placeholder"></div>}
+            {loading > 0 ? <LinearProgress/> : <div className="loading-placeholder"></div>}
             {board && (
                 <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
                     <Droppable droppableId="taskgroups" type="taskgroup">
