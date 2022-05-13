@@ -123,6 +123,55 @@ export const sortTaskGroup = createAsyncThunk('board/sortTaskGroup', async ({ re
     return response.data
 })
 
+export const addAttribute = createAsyncThunk('board/addAttribute', async ({ type, _id }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}`,
+        method: 'POST',
+        withCredentials: true,
+        data: { type, _id }
+    })
+    return response.data
+})
+
+export const editAttributeName = createAsyncThunk('board/editAttributeName', async ({ attributeId, name }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}/${attributeId}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { name }
+    })
+    return response.data
+})
+
+export const deleteAttribute = createAsyncThunk('board/deleteAttribute', async ({ attributeId }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}/${attributeId}`,
+        method: 'DELETE',
+        withCredentials: true
+    })
+    return response.data
+})
+
+export const sortAttribute = createAsyncThunk('board/sortAttribute', async ({ result }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { result }
+    })
+    return response.data
+})
+
+export const editAttributeLabels = createAsyncThunk('board/editAttributeLabels', async ({ name, labels }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}`,
+        method: 'PUT',
+        withCredentials: true,
+        data: { name, labels }
+    })
+    return response.data
+})
+
 const boardSlice = createSlice({
     name: 'board',
     initialState: { loading: 0 },
@@ -275,6 +324,83 @@ const boardSlice = createSlice({
         }).addCase(sortTaskGroup.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(sortTaskGroup.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(addAttribute.pending, (state, action) => {
+            const { type, _id } = action.meta.arg
+
+            state.loading = state.loading + 1;
+
+            let name = type.charAt(0).toUpperCase() + type.slice(1)
+            while (state.board.attributes.filter(x => x.name === name).length >= 1) {
+                if (/ \d$/gm.test(name)) {
+                    name = name.substring(0, name.length-1) + ` ${parseInt(name.slice(-1))+1}`
+                } else name = name + ' 1'
+            }
+
+            let attribute = {
+                name,
+                type: type,
+                _id
+            }
+            if (type === 'status') attribute.labels = []
+            state.board.attributes.push(attribute)
+        }).addCase(addAttribute.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(addAttribute.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(editAttributeName.pending, (state, action) => {
+            const { name, attributeId } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            state.board.attributes.find(x => x._id.toString() === attributeId).name = name
+        }).addCase(editAttributeName.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(editAttributeName.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(deleteAttribute.pending, (state, action) => {
+            const { attributeId } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const attributeIndex = state.board.attributes.indexOf(state.board.attributes.find(x => x._id.toString() === attributeId))
+            if (attributeIndex > -1) state.board.attributes.splice(attributeIndex, 1)
+
+            state.board.taskGroups.map(taskGroup => {
+                taskGroup.tasks.map(task => {
+                    task.options = task.options.filter(option => option.column.toString() !== attributeId)
+                })
+            })
+        }).addCase(deleteAttribute.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(deleteAttribute.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(sortAttribute.pending, (state, action) => {
+            const { result } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const [attribute] = state.board.attributes.splice(result.source.index, 1)
+            state.board.attributes.splice(result.destination.index, 0, attribute)
+        }).addCase(sortAttribute.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(sortAttribute.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(editAttributeLabels.pending, (state, action) => {
+            const { name, labels } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            state.board.attributes.find(x => x.name === name).labels = labels
+        }).addCase(editAttributeLabels.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(editAttributeLabels.rejected, (state, action) => {
             state.loading = state.loading - 1;
         })
     }

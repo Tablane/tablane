@@ -1,16 +1,17 @@
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Popover} from "@material-ui/core";
-import axios from "axios";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import AnimateHeight from "react-animate-height";
-import BoardContext from "../../../../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
-import {clearStatusTask, editOptionsTask} from "../../../../../modules/state/reducers/boardReducer";
+import {
+    clearStatusTask,
+    editAttributeLabels,
+    editOptionsTask
+} from "../../../../../modules/state/reducers/boardReducer";
 import {ObjectId} from "../../../../../utils";
 import _ from "lodash";
 
 function TaskColumnPopover(props) {
-    const { getBoardData } = useContext(BoardContext)
     const { board } = useSelector(state => state.board)
     const dispatch = useDispatch()
 
@@ -23,17 +24,7 @@ function TaskColumnPopover(props) {
 
     const toggleEdit = async () => {
         if (labelsEditing) {
-            axios({
-                method: 'PUT',
-                data: {
-                    name: props.attribute.name,
-                    labels: editingLabels
-                },
-                withCredentials: true,
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${board._id}`
-            }).then(() => {
-                getBoardData()
-            })
+            dispatch(editAttributeLabels({ name: props.attribute.name, labels: editingLabels }))
         }
         setLabelsEditing(!labelsEditing)
         setColorEditingLabel(-1)

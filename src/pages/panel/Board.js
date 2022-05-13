@@ -3,14 +3,12 @@ import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";
-import axios from "axios";
-import {toast} from "react-hot-toast";
 import NewTaskGroup from "./board/NewTaskGroup";
 import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useToggleState from "../../modules/hooks/useToggleState";
 import BoardContext from "../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchBoard, sortTask, sortTaskGroup} from "../../modules/state/reducers/boardReducer";
+import { fetchBoard, sortAttribute, sortTask, sortTaskGroup } from "../../modules/state/reducers/boardReducer";
 
 function Board(props) {
     const { workspace } = useContext(WorkspaceContext)
@@ -43,18 +41,7 @@ function Board(props) {
         } else if (result.type === "taskgroup") {
             dispatch(sortTaskGroup({ result }))
         } else if (/^attribute /gm.test(result.type)) {
-            await axios({
-                method: 'PATCH',
-                withCredentials: true,
-                data: {
-                    result
-                },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${board._id}`
-            }).then(() => {
-                getBoardData()
-            }).catch(err => {
-                toast(err.toString())
-            })
+            dispatch(sortAttribute({ result }))
         }
     }
 

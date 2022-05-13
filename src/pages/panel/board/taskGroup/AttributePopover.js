@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import Popover from '@material-ui/core/Popover';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-import {toast} from "react-hot-toast";
 import '../../../../styles/AttributePopover.css'
+import { deleteAttribute, editAttributeName } from "../../../../modules/state/reducers/boardReducer";
+import { useDispatch } from "react-redux";
 
 function AttributePopover(props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [name, setName] = useState(props.attr.name);
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setName(props.attr.name)
@@ -21,31 +22,12 @@ function AttributePopover(props) {
 
     const handleAttributeDelete = async () => {
         setDeleteDialogOpen(!deleteDialogOpen)
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}/${props.attr._id}`
-        }).then(res => {
-            props.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        dispatch(deleteAttribute({ attributeId: props.attr._id }))
     }
 
     const updateName = async () => {
         if (props.attr.name === name) return
-        await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}/${props.attr._id}`,
-            data: {
-                name
-            }
-        }).then(res => {
-            props.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        dispatch(editAttributeName({ attributeId: props.attr._id, name }))
     }
 
     const handleClose = (e) => {

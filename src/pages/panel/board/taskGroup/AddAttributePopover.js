@@ -1,9 +1,12 @@
 import '../../../../styles/AddAttributePopover.css'
-import axios from "axios";
 import {toast} from "react-hot-toast";
 import {Popover} from "@material-ui/core";
+import { ObjectId } from "../../../../utils";
+import { addAttribute } from "../../../../modules/state/reducers/boardReducer";
+import { useDispatch } from "react-redux";
 
 function AddAttributePopover(props) {
+    const dispatch = useDispatch()
 
     const handleClose = () => {
         props.close()
@@ -15,19 +18,10 @@ function AddAttributePopover(props) {
             toast('Coming soon')
             return
         }
-
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${props.boardId}`,
-            data: {
-                type
-            }
-        }).then(() => {
-            props.getData()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        dispatch(addAttribute({
+            type,
+            _id: ObjectId()
+        }))
     }
 
     return (
