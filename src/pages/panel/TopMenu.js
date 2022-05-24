@@ -17,8 +17,7 @@ function TopMenu(props) {
                     <div> </div>
                 </div>
                 <div className="info">
-                    <h1>{props.board ? props.board.name : 'Everything'}</h1>
-                    <span>Add details</span>
+                    <h1>{board?.name || '...'}</h1>
                 </div>
             </div>
             <div>
