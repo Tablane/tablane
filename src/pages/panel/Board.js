@@ -1,18 +1,15 @@
-import {useCallback, useContext, useEffect} from 'react'
+import {useCallback, useEffect} from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";
 import NewTaskGroup from "./board/NewTaskGroup";
-import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useToggleState from "../../modules/hooks/useToggleState";
-import BoardContext from "../../modules/context/BoardContext";
 import {useDispatch, useSelector} from "react-redux";
 import { fetchBoard, sortAttribute, sortTask, sortTaskGroup } from "../../modules/state/reducers/boardReducer";
 
 function Board(props) {
-    const { workspace } = useContext(WorkspaceContext)
-    const { getBoardData } = useContext(BoardContext)
+    const { workspace } = useSelector(state => state.workspace)
     const { board, loading } = useSelector(state => state.board)
     const dispatch = useDispatch()
 
@@ -21,8 +18,8 @@ function Board(props) {
     const findBoardId = useCallback(() => {
         const space = props.match.params.space.replaceAll('-', ' ')
         const board = props.match.params.board.replaceAll('-', ' ')
-        return workspace.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
-    }, [props.match.params.space, props.match.params.board, workspace.spaces])
+        return workspace?.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
+    }, [props.match.params.space, props.match.params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
 
     const onDragStart = () => {
@@ -46,6 +43,7 @@ function Board(props) {
     }
 
     useEffect(() => {
+        if (!boardId) return
         dispatch(fetchBoard(boardId))
     }, [boardId])
 
@@ -68,7 +66,6 @@ function Board(props) {
                                         attributes={board.attributes}
                                         index={board.taskGroups.length}
                                         toggleNewTaskGroup={toggleNewTaskGroupShown}
-                                        getData={getBoardData}
                                         boardId={board._id}/>
                                 )}
                                 {provided.placeholder}

@@ -14,8 +14,12 @@ import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useLocalStorageState from "../../modules/hooks/useLocalStorageState";
 import useInputState from "../../modules/hooks/useInputState";
 import useToggleState from "../../modules/hooks/useToggleState";
+import { useDispatch, useSelector } from "react-redux";
+import { addBoard, editBoardName, sortBoard } from "../../modules/state/reducers/workspaceReducer";
+import { ObjectId } from "../../utils";
 
 function SideBar(props) {
+    const dispatch = useDispatch()
     // new space dialog
     const [newSpaceDialogOpen, changeNewSpaceDialogOpen, resetNewSpaceDialogOpen] = useToggleState(false)
     const [newSpaceName, changeNewSpaceName] = useInputState('')
@@ -41,7 +45,8 @@ function SideBar(props) {
     const [editingSpaceName, changeEditingSpaceName] = useInputState('')
 
     // workspace
-    const {workspace, getData} = useContext(WorkspaceContext)
+    const { getData } = useContext(WorkspaceContext)
+    const { workspace } = useSelector(state => state.workspace)
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
@@ -91,23 +96,13 @@ function SideBar(props) {
             return
         }
 
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                name: newBoardName
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${workspace._id}/${newBoardSpace}`
-        }).then(() => {
-            getData()
-            resetNewBoardSpace()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        resetNewBoardSpace()
+        resetNewBoardName()
+        dispatch(addBoard({ workspaceId: workspace._id, spaceId: newBoardSpace, name: newBoardName, _id: ObjectId() }))
     }
 
     const handleBoardEditClick = (workspace, space, board) => {
-        setEditingBoard(board._id)
+        setEditingBoard({ spaceId: space._id, boardId: board._id })
     }
 
     const handleSpaceEditClick = (workspace, space) => {
@@ -115,21 +110,9 @@ function SideBar(props) {
     }
 
     const handleBoardEdit = async () => {
-        if (editingBoardName === '') return setEditingBoard('')
-
-        await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            data: {
-                name: editingBoardName
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${editingBoard}`
-        }).then(() => {
-            getData()
-            setEditingBoard('')
-        }).catch(err => {
-            toast(err.toString())
-        })
+        if (editingBoardName === '') return
+        dispatch(editBoardName({ ...editingBoard, name: editingBoardName }))
+        setEditingBoard('')
     }
 
     const handleSpaceEdit = async () => {
@@ -178,18 +161,7 @@ function SideBar(props) {
             (result.destination.index === result.source.index
                 && result.destination.droppableId === result.source.droppableId)) return
         if (result.type === "board") {
-            await axios({
-                method: 'PATCH',
-                withCredentials: true,
-                data: {
-                    result
-                },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/drag/${workspace._id}`
-            }).then(() => {
-                getData()
-            }).catch(err => {
-                toast(err.toString())
-            })
+            dispatch(sortBoard({ workspaceId: workspace._id, result }))
         } else if (result.type === "space") {
             await axios({
                 method: 'PATCH',
@@ -255,7 +227,7 @@ function SideBar(props) {
                                                             to={`/${props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
                                                             activeClassName="active-board">
                                                             <div> </div>
-                                                            {board._id === editingBoard ?
+                                                            {board._id === editingBoard.boardId ?
                                                                 (
                                                                     <input type="text"
                                                                            className='board'

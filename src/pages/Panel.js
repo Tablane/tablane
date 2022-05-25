@@ -9,10 +9,13 @@ import axios from "axios";
 import {toast} from "react-hot-toast";
 import useLocalStorageState from "../modules/hooks/useLocalStorageState";
 import WorkspaceContext from "../modules/context/WorkspaceContext";
+import { useDispatch } from "react-redux";
+import { fetchWorkspace } from "../modules/state/reducers/workspaceReducer";
 
 function Panel(props) {
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState('sidebarOpen', true)
     const [workspace, setWorkspace] = useState(null)
+    const dispatch = useDispatch()
 
     const getWorkspaceData = useCallback(async() => {
         axios({
@@ -29,6 +32,7 @@ function Panel(props) {
 
     useEffect(() => {
         getWorkspaceData()
+        dispatch(fetchWorkspace(props.match.params.workspace))
     }, [getWorkspaceData])
 
     const toggleSideBar = () => {

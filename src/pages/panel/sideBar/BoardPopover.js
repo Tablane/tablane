@@ -8,8 +8,9 @@ import {
 } from "@material-ui/core";
 import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
 import {toast} from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { deleteBoard } from "../../../modules/state/reducers/workspaceReducer";
 
 const useStyles = makeStyles((theme) => ({
     popover: {
@@ -34,22 +35,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function BoardPopover(props) {
+    const dispatch = useDispatch()
     const classes = useStyles();
     const [deleting, setDeleting] = useState(false);
 
     const handleBoardDelete = async () => {
         handleClose()
         const {workspace, space, board} = props
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${workspace._id}/${space._id}/${board._id}`
-        }).then(res => {
-            props.getData()
-            setDeleting(false)
-        }).catch(err => {
-            toast(err.toString())
-        })
+        setDeleting(false)
+        dispatch(deleteBoard({ workspaceId: workspace._id, spaceId: space._id, boardId: board._id }))
     }
 
     const deleteDialogOpen = () => {
