@@ -118,6 +118,10 @@ a {
 
 /*BOARDS CSS STYLING -______________-__________-_______*/
 
+.spaces {
+    margin-bottom: 5px;
+}
+
 .spaces .space .space-title {
     cursor: pointer;
     display: flex;
@@ -255,10 +259,6 @@ a {
     background-color: #F4F5F7;
     border-left: 4px solid #4169E1;
     padding-left: 31px;
-}
-
-.space:last-of-type {
-    margin-bottom: 5px;
 }
 
 /* END BOARDS CSS STYLING -__________-__________-_______*/
