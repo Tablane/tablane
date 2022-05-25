@@ -4,8 +4,6 @@ import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./sideBar/AccountPopover";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-import {toast} from "react-hot-toast";
 import AnimateHeight from "react-animate-height";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import BoardPopover from "./sideBar/BoardPopover";
@@ -15,7 +13,14 @@ import useLocalStorageState from "../../modules/hooks/useLocalStorageState";
 import useInputState from "../../modules/hooks/useInputState";
 import useToggleState from "../../modules/hooks/useToggleState";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard, editBoardName, sortBoard } from "../../modules/state/reducers/workspaceReducer";
+import {
+    addBoard,
+    addSpace,
+    editBoardName,
+    editSpaceName,
+    sortBoard,
+    sortSpace
+} from "../../modules/state/reducers/workspaceReducer";
 import { ObjectId } from "../../utils";
 
 function SideBar(props) {
@@ -75,19 +80,12 @@ function SideBar(props) {
     }
 
     const handleNewSpace = async () => {
-        await axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                name: newSpaceName
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}`
-        }).then(() => {
-            getData()
-            resetNewSpaceDialogOpen()
-        }).catch(err => {
-            toast(err.toString())
-        })
+        resetNewSpaceDialogOpen()
+        dispatch(addSpace({
+            workspaceId: workspace._id,
+            _id: ObjectId(),
+            name: newSpaceName
+        }))
     }
 
     const handleNewBoard = async () => {
@@ -118,19 +116,12 @@ function SideBar(props) {
     const handleSpaceEdit = async () => {
         if (editingSpaceName === '') return setEditingSpace('')
 
-        await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            data: {
-                name: editingSpaceName
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}/${editingSpace}`
-        }).then(() => {
-            getData()
-            setEditingSpace('')
-        }).catch(err => {
-            toast(err.toString())
-        })
+        dispatch(editSpaceName({
+            workspaceId: workspace._id,
+            spaceId: editingSpace,
+            name: editingSpaceName
+        }))
+        setEditingSpace('')
     }
 
     const toggleClosed = (x) => {
@@ -163,18 +154,7 @@ function SideBar(props) {
         if (result.type === "board") {
             dispatch(sortBoard({ workspaceId: workspace._id, result }))
         } else if (result.type === "space") {
-            await axios({
-                method: 'PATCH',
-                withCredentials: true,
-                data: {
-                    result
-                },
-                url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/drag/${workspace._id}`
-            }).then(() => {
-                getData()
-            }).catch(err => {
-                toast(err.toString())
-            })
+            dispatch(sortSpace({ workspaceId: workspace._id, result }))
         }
     }
 

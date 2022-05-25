@@ -9,8 +9,9 @@ import {
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import React, {useState} from "react";
-import axios from "axios";
 import {toast} from "react-hot-toast";
+import { deleteSpace } from "../../../modules/state/reducers/workspaceReducer";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     popover: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SpacePopover(props) {
+    const dispatch = useDispatch()
     const classes = useStyles();
     const [deleting, setDeleting] = useState(false);
 
@@ -45,16 +47,9 @@ function SpacePopover(props) {
     const handleSpaceDelete = async () => {
         handleClose()
         const {workspace, space} = props
-        await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspace._id}/${space._id}`
-        }).then(res => {
-            props.getData()
-            setDeleting(false)
-        }).catch(err => {
-            toast(err.toString())
-        })
+
+        dispatch(deleteSpace({ workspaceId: workspace._id, spaceId: space._id }))
+        setDeleting(false)
     }
 
     const handleCopyClick = () => {

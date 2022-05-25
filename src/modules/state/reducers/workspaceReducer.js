@@ -49,7 +49,46 @@ export const sortBoard = createAsyncThunk('board/sortBoard', async ({ workspaceI
     return response.data
 })
 
-const boardSlice = createSlice({
+export const addSpace = createAsyncThunk('board/addSpace', async ({ workspaceId, name, _id }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspaceId}`,
+        method: 'POST',
+        withCredentials: true,
+        data: { name, _id },
+    })
+    return response.data
+})
+
+export const editSpaceName = createAsyncThunk('board/editSpaceName', async ({ workspaceId, spaceId, name }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspaceId}/${spaceId}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { name }
+    })
+    return response.data
+})
+
+export const deleteSpace = createAsyncThunk('board/deleteSpace', async ({ workspaceId, spaceId }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/${workspaceId}/${spaceId}`,
+        method: 'DELETE',
+        withCredentials: true,
+    })
+    return response.data
+})
+
+export const sortSpace = createAsyncThunk('board/sortSpace', async ({ workspaceId, result }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/space/drag/${workspaceId}`,
+        method: 'PATCH',
+        withCredentials: true,
+        data: { result }
+    })
+    return response.data
+})
+
+const workspaceSlice = createSlice({
     name: 'board',
     initialState: { loading: 0 },
     reducers: {},
@@ -117,14 +156,64 @@ const boardSlice = createSlice({
             const [board] = source.boards.splice(result.source.index, 1)
             destination.boards.splice(result.destination.index, 0, board)
 
-
             state.loading = state.loading + 1;
         }).addCase(sortBoard.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(sortBoard.rejected, (state, action) => {
             state.loading = state.loading - 1;
+
+
+        }).addCase(addSpace.pending, (state, action) => {
+            const { name, _id } = action.meta.arg
+            state.loading = state.loading + 1;
+
+            const space = {
+                _id,
+                name,
+                boards: []
+            }
+            state.workspace.spaces.push(space)
+        }).addCase(addSpace.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(addSpace.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(editSpaceName.pending, (state, action) => {
+            const { spaceId, name } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            state.workspace.spaces.find(space => space._id === spaceId).name = name
+        }).addCase(editSpaceName.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(editSpaceName.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(deleteSpace.pending, (state, action) => {
+            const { spaceId } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            state.workspace.spaces = state.workspace.spaces.filter(space => space._id !== spaceId)
+        }).addCase(deleteSpace.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(deleteSpace.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(sortSpace.pending, (state, action) => {
+            const { result } = action.meta.arg
+
+            const [space] = state.workspace.spaces.splice(result.source.index, 1)
+            state.workspace.spaces.splice(result.destination.index, 0, space)
+
+            state.loading = state.loading + 1;
+        }).addCase(sortSpace.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(sortSpace.rejected, (state, action) => {
+            state.loading = state.loading - 1;
         })
     }
 })
 
-export default boardSlice.reducer
+export default workspaceSlice.reducer
