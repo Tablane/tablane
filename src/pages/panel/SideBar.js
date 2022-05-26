@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import '../../styles/SideBar.css'
 import {Link, NavLink} from 'react-router-dom'
 import AccountPopOver from "./sideBar/AccountPopover";
@@ -8,7 +8,6 @@ import AnimateHeight from "react-animate-height";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import BoardPopover from "./sideBar/BoardPopover";
 import SpacePopover from "./sideBar/SpacePopover";
-import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useLocalStorageState from "../../modules/hooks/useLocalStorageState";
 import useInputState from "../../modules/hooks/useInputState";
 import useToggleState from "../../modules/hooks/useToggleState";
@@ -50,7 +49,6 @@ function SideBar(props) {
     const [editingSpaceName, changeEditingSpaceName] = useInputState('')
 
     // workspace
-    const { getData } = useContext(WorkspaceContext)
     const { workspace } = useSelector(state => state.workspace)
 
     const boardClick = (space, board, e) => {
@@ -353,7 +351,6 @@ function SideBar(props) {
                     workspace={workspace}
                     space={popoverSpace}
                     board={popoverBoard}
-                    getData={getData}
                     handleClose={boardPopoverClose} />
             )}
 
@@ -363,7 +360,6 @@ function SideBar(props) {
                     anchor={spacePopoverAnchor}
                     workspace={workspace}
                     space={popoverSpace}
-                    getData={getData}
                     handleClose={spacePopoverClose} />
             )}
 

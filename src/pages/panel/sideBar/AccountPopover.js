@@ -1,15 +1,14 @@
-import {useContext, useState} from 'react'
+import {useState} from 'react'
 import {Popover} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import '../../../styles/AccountPopover.css'
 import {Link} from "react-router-dom";
-import WorkspaceContext from "../../../modules/context/WorkspaceContext";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutUser} from "../../../modules/state/reducers/userReducer";
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)
-    const {workspace} = useContext(WorkspaceContext)
+    const { workspace } = useSelector(state => state.workspace)
 
     const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
