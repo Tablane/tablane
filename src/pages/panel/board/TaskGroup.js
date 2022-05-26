@@ -16,7 +16,6 @@ import {ObjectId} from "../../../utils";
 function TaskGroup(props) {
     const { board } = useSelector(state => state.board)
     const dispatch = useDispatch()
-    const { getBoardData } = useContext(BoardContext)
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
@@ -197,13 +196,11 @@ function TaskGroup(props) {
                     </Dialog>
 
                     <AttributePopover
-                        getData={getBoardData}
                         boardId={board._id}
                         open={popoverOpen}
                         close={handleAttributePopover}
                         attr={popoverId}/>
                     <AddAttributePopover
-                        getData={getBoardData}
                         boardId={board._id}
                         anchor={newAttributeOpen}
                         close={handleAddNewAttribute}/>
