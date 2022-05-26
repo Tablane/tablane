@@ -39,7 +39,7 @@ function TaskColumnPopover(props) {
 
     // handle change of edit state labels
     const handleEditChange = (e, x) => {
-        let newCurrentLabels = editingLabels
+        let newCurrentLabels = _.cloneDeep(editingLabels)
         newCurrentLabels[x].name = e.target.value
         setEditingLabels([...newCurrentLabels])
     }
@@ -47,10 +47,11 @@ function TaskColumnPopover(props) {
     // delete label while editing
     const handleEditDelete = (id) => {
         if (!labelsEditing) return
-        const index = editingLabels.indexOf(editingLabels.find(x => x._id === id))
-        let newCurrentLabels = editingLabels
+        let newCurrentLabels = _.cloneDeep(editingLabels)
 
+        const index = newCurrentLabels.indexOf(newCurrentLabels.find(x => x._id === id))
         newCurrentLabels.splice(index, 1)
+
         setEditingLabels([...newCurrentLabels])
     }
 
@@ -67,7 +68,7 @@ function TaskColumnPopover(props) {
             newCurrentLabels.push(attribute)
             setEditingLabels(newCurrentLabels)
         } else {
-            const newCurrentLabels = editingLabels
+            const newCurrentLabels = _.cloneDeep(editingLabels)
             newCurrentLabels[colorEditingLabel].color = color
             setEditingLabels([...newCurrentLabels])
             setColorEditingLabel(-1)
@@ -107,9 +108,10 @@ function TaskColumnPopover(props) {
     // handle sorting
     const handleSort = (x) => {
         if (!x.destination) return
-        const newLabels = editingLabels
+        const newLabels = _.cloneDeep(editingLabels)
         const [label] = newLabels.splice(x.source.index, 1)
         newLabels.splice(x.destination.index, 0, label)
+        setEditingLabels(newLabels)
     }
 
     const editEditingLabel = (i) => {
