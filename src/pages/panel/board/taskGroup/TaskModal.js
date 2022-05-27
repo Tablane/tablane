@@ -63,12 +63,20 @@ function TaskModal(props) {
     }
 
     const taskHistory = [
-        {type: 'activity', timestamp: 1653635899000, text: 'You created this task'},
-        {type: 'activity', timestamp: 1653634899000, text: 'You changed status from Backlog to In Progress'},
-        {type: 'activity', timestamp: 1653638899000, text: 'You removed watcher: You'},
-        {type: 'activity', timestamp: 1653632899000, text: 'You changed the name from "This is awesome" to "This is awesome, because it\'s workingssss"'},
-        {type: 'comment', author: 'You', timestamp: 1653614899000, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288000, text: 'I have updated the content so that it will work no matter what you do.'}
+        {type: 'activity', timestamp: 1653635899001, text: 'You created this task'},
+        {type: 'activity', timestamp: 1653634899002, text: 'You changed status from Backlog to In Progress'},
+        {type: 'activity', timestamp: 1653638899003, text: 'You removed watcher: You'},
+        {type: 'activity', timestamp: 1653638899004, text: 'You removed watcher: You'},
+        {type: 'activity', timestamp: 1653638899005, text: 'You removed watcher: You'},
+        {type: 'activity', timestamp: 1653632899006, text: 'You changed the name from "This is awesome" to "This is awesome, because it\'s workingssss"'},
+        {type: 'comment', author: 'You', timestamp: 1653614899007, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288008, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288009, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288010, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288011, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288012, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288013, text: 'I have updated the content so that it will work no matter what you do.'},
+        {type: 'comment', author: 'You', timestamp: 1653033288014, text: 'I have updated the content so that it will work no matter what you do.'}
     ]
 
     return (
@@ -95,18 +103,21 @@ function TaskModal(props) {
                         <form onSubmit={handleDescriptionChange} className={styles.description}>
                             <textarea value={description} onChange={changeDescription} onBlur={handleDescriptionChange}/>
                         </form>
+
+                    </div>
+                    <div className={styles.attributeTab}>
                         <div className={styles.historyLog}>
                             {taskHistory.map(log => {
                                 if (log.type === 'activity') {
                                     return (
-                                        <div className={styles.activity}>
+                                        <div className={styles.activity} key={log.timestamp}>
                                             <p>{log.text}</p>
                                             <p className={styles.date}>{getTime(log.timestamp)}</p>
                                         </div>
                                     )
                                 } else if (log.type === 'comment') {
                                     return (
-                                        <div className={styles.comment}>
+                                        <div className={styles.comment} key={log.timestamp}>
                                             <div className={styles.author}>ME</div>
                                             <div className={styles.commentBody}>
                                                 <div className={styles.commentHeader}>
@@ -120,13 +131,10 @@ function TaskModal(props) {
                                 }
                                 return null
                             })}
-                            <div className={styles.commentingBar}>
-
-                            </div>
                         </div>
-                    </div>
-                    <div className={styles.attributeTab}>
-
+                        <div className={styles.commentingBar}>
+                            <input type="text"/>
+                        </div>
                     </div>
                 </div>
             </div>

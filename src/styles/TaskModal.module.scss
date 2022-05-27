@@ -94,14 +94,16 @@
 }
 
 .mainContent {
-    height: 100%;
+    height: 0;
+    flex: 1 0 0;
     display: flex;
     flex-direction: row;
 }
 
 .contentTab {
     flex: 1 1 0;
-    padding: 0 24px 32px 32px;
+    box-sizing: border-box;
+    padding: 0 12px 32px 32px;
 }
 
 .contentTab .name {
@@ -149,12 +151,19 @@
     border: 1px solid #e4e4e4;
 }
 
+.attributeTab {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    padding: 20px 32px 32px 12px;
+    box-sizing: border-box;
+}
+
 .historyLog {
-    border-top: 1px solid #DEDEDE;
-    padding-top: 10px;
-    height: 100%;
+    flex: 1 1 0;
     width: 100%;
     font-size: 13px;
+    overflow: scroll;
 
     p {
         margin: 0
@@ -203,12 +212,36 @@
         padding: 4px 0 0;
         color: #abaeb0;
     }
-
-    .commentingBar {
-
-    }
 }
 
-.attributeTab {
-    flex: 1 1 0;
+.commentingBar {
+    box-sizing: border-box;
+    flex: 0 0 60px;
+    position: relative;
+    width: 100%;
+    border: 1px solid #DEDEDE;
+    border-radius: 3px;
+
+    &::before {
+        border-radius: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 1;
+        top: -15px;
+        left: 0;
+        width: 100%;
+        height: 15px;
+        background-image: linear-gradient(-180deg,transparent 0%,rgba(0,0,0,.03) 100%);
+    }
+
+    input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        border: none;
+        padding: 20px 10px;
+        margin: 0;
+    }
 }
