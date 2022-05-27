@@ -72,6 +72,18 @@ export const editOptionsTask = createAsyncThunk('board/editOptionsTask', async (
     return response.data
 })
 
+export const addTaskComment = createAsyncThunk('board/addTaskComment', async ({ taskGroupId, taskId, text }, { getState }) => {
+    const response = await axios({
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}/${taskGroupId}/${taskId}`,
+        method: 'POST',
+        withCredentials: true,
+        data: {
+            text
+        }
+    })
+    return response.data
+})
+
 export const clearStatusTask = createAsyncThunk('board/clearStatusTask', async ({ boardId, taskGroupId, taskId, optionId }) => {
     const response = await axios({
         url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}/${taskId}/${optionId}`,
@@ -267,6 +279,27 @@ const boardSlice = createSlice({
         }).addCase(editOptionsTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(editOptionsTask.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(addTaskComment.pending, (state, action) => {
+            const { text, author, taskGroupId, taskId } = action.meta.arg
+
+            state.loading = state.loading + 1;
+            const comment = {
+                type: 'comment',
+                author,
+                timestamp: new Date().getTime(),
+                text
+            }
+
+            state.board.taskGroups
+                .find(x => x._id === taskGroupId).tasks
+                .find(task => task._id === taskId).history
+                .push(comment)
+        }).addCase(addTaskComment.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(addTaskComment.rejected, (state, action) => {
             state.loading = state.loading - 1;
 
 

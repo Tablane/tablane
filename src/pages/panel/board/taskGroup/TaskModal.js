@@ -4,17 +4,19 @@ import {useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {toast} from "react-hot-toast";
 import useInputState from "../../../../modules/hooks/useInputState";
-import {editTaskField} from "../../../../modules/state/reducers/boardReducer";
-import {useDispatch} from "react-redux";
+import { addTaskComment, editTaskField } from "../../../../modules/state/reducers/boardReducer";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 function TaskModal(props) {
     const history = useHistory()
     const params = useParams()
+    const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const { task, taskGroupId, boardId } = props
     const [name, changeName] = useInputState(task.name)
     const [description, changeDescription] = useInputState(task.description)
+    const [newComment, changeNewComment, resetNewComment] = useInputState('')
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
@@ -56,28 +58,24 @@ function TaskModal(props) {
         }))
     }
 
+    const handleAddComment = e => {
+        e?.preventDefault()
+        if (newComment === '') return
+        resetNewComment()
+
+        dispatch(addTaskComment({
+            text: newComment,
+            taskGroupId,
+            taskId: task._id,
+            author: user.username
+        }))
+    }
+
     const getTime = (timestamp) => {
         if (moment().diff(timestamp, 'days') > 7 || moment().diff(timestamp, 'days') < -7) {
             return moment(timestamp).zone(4).format('MMMM D, YYYY')
         } else return moment(timestamp).startOf("minute").fromNow()
     }
-
-    const taskHistory = [
-        {type: 'activity', timestamp: 1653635899001, text: 'You created this task'},
-        {type: 'activity', timestamp: 1653634899002, text: 'You changed status from Backlog to In Progress'},
-        {type: 'activity', timestamp: 1653638899003, text: 'You removed watcher: You'},
-        {type: 'activity', timestamp: 1653638899004, text: 'You removed watcher: You'},
-        {type: 'activity', timestamp: 1653638899005, text: 'You removed watcher: You'},
-        {type: 'activity', timestamp: 1653632899006, text: 'You changed the name from "This is awesome" to "This is awesome, because it\'s workingssss"'},
-        {type: 'comment', author: 'You', timestamp: 1653614899007, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288008, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288009, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288010, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288011, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288012, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288013, text: 'I have updated the content so that it will work no matter what you do.'},
-        {type: 'comment', author: 'You', timestamp: 1653033288014, text: 'I have updated the content so that it will work no matter what you do.'}
-    ]
 
     return (
         <div className={styles.root}>
@@ -105,13 +103,14 @@ function TaskModal(props) {
                         </form>
 
                     </div>
+                    <div className={styles.divider}></div>
                     <div className={styles.attributeTab}>
                         <div className={styles.historyLog}>
-                            {taskHistory.map(log => {
+                            {task.history.map(log => {
                                 if (log.type === 'activity') {
                                     return (
                                         <div className={styles.activity} key={log.timestamp}>
-                                            <p>{log.text}</p>
+                                            <p>{log.author} {log.text}</p>
                                             <p className={styles.date}>{getTime(log.timestamp)}</p>
                                         </div>
                                     )
@@ -124,7 +123,7 @@ function TaskModal(props) {
                                                     <p>{log.author} commented</p>
                                                     <p className={styles.date}>{getTime(log.timestamp)}</p>
                                                 </div>
-                                                <div>{log.text}</div>
+                                                <p>{log.text}</p>
                                             </div>
                                         </div>
                                     )
@@ -133,7 +132,9 @@ function TaskModal(props) {
                             })}
                         </div>
                         <div className={styles.commentingBar}>
-                            <input type="text"/>
+                            <form onSubmit={handleAddComment}>
+                                <input type="text" onChange={changeNewComment} value={newComment} />
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -151,7 +151,15 @@
     border: 1px solid #e4e4e4;
 }
 
+.divider {
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 142px;
+}
+
 .attributeTab {
+    width: 0;
     display: flex;
     flex-direction: column;
     flex: 1 1 0;
@@ -166,6 +174,7 @@
     overflow: scroll;
 
     p {
+        word-break: break-all;
         margin: 0
     }
 
