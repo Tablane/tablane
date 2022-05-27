@@ -24,14 +24,14 @@ export const addTask = createAsyncThunk('board/addTask', async ({ boardId, taskG
     return response.data
 })
 
-export const editTaskName = createAsyncThunk('board/editTaskName', async ({ boardId, taskGroupId, taskId, taskName }) => {
+export const editTaskField = createAsyncThunk('board/editTaskName', async ({ boardId, taskGroupId, taskId, type, value }) => {
     const response = await axios({
         url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}/${taskId}`,
         method: 'PATCH',
         withCredentials: true,
         data: {
-            type: 'name',
-            name: taskName
+            type,
+            value
         }
     })
     return response.data
@@ -199,16 +199,22 @@ const boardSlice = createSlice({
             state.loading = state.loading - 1;
 
 
-        }).addCase(editTaskName.pending, (state, action) => {
-            const { taskGroupId, taskId, taskName } = action.meta.arg
+        }).addCase(editTaskField.pending, (state, action) => {
+            const { taskGroupId, taskId, type, value } = action.meta.arg
 
             state.loading = state.loading + 1;
-            state.board.taskGroups
-                .find(x => x._id.toString() === taskGroupId).tasks
-                .find(x => x._id.toString() === taskId).name = taskName
-        }).addCase(editTaskName.fulfilled, (state, action) => {
+            if (type === 'name') {
+                state.board.taskGroups
+                    .find(x => x._id.toString() === taskGroupId).tasks
+                    .find(x => x._id.toString() === taskId).name = value
+            } else if (type === 'description') {
+                state.board.taskGroups
+                    .find(x => x._id.toString() === taskGroupId).tasks
+                    .find(x => x._id.toString() === taskId).description = value
+            }
+        }).addCase(editTaskField.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
-        }).addCase(editTaskName.rejected, (state, action) => {
+        }).addCase(editTaskField.rejected, (state, action) => {
             state.loading = state.loading - 1;
 
 

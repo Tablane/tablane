@@ -5,11 +5,15 @@ import {Draggable} from "react-beautiful-dnd";
 import TaskPopover from "./task/TaskPopover";
 import useInputState from "../../../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
-import { editOptionsTask, editTaskName } from "../../../../modules/state/reducers/boardReducer";
+import { editOptionsTask, editTaskField } from "../../../../modules/state/reducers/boardReducer";
+import {useHistory, useParams} from "react-router-dom";
+import TaskModal from "./TaskModal";
 
 function Task(props) {
     const { board } = useSelector(state => state.board)
     const dispatch = useDispatch()
+    const history = useHistory()
+    const { taskId } = useParams()
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -17,6 +21,11 @@ function Task(props) {
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
+
+    const openTaskModal = () => {
+        if (taskEditing) return
+        history.push(`${history.location.pathname}/${props.task._id}`)
+    }
 
     const handleClose = () => {
         setAnchor(null)
@@ -95,8 +104,9 @@ function Task(props) {
         e.preventDefault()
         const {taskGroupId, task} = props
         toggleTaskEdit()
-        dispatch(editTaskName({
-            taskName,
+        dispatch(editTaskField({
+            type: 'name',
+            value: taskName,
             boardId: board._id,
             taskGroupId,
             taskId: task._id
@@ -107,8 +117,10 @@ function Task(props) {
         <>
             <Draggable draggableId={props.task._id} index={props.index} type="task">
                 {(provided) => (
-                    <div className={`Task ${taskEditing ? 'editing' : ''}`} {...provided.draggableProps}
-                         ref={provided.innerRef} {...provided.dragHandleProps}>
+                    <div
+                        className={`Task ${taskEditing ? 'editing' : ''}`} {...provided.draggableProps}
+                        onClick={openTaskModal}
+                        ref={provided.innerRef} {...provided.dragHandleProps}>
                         {taskEditing
                             ? (
                                 <form onSubmit={handleTaskEdit} onBlur={handleTaskEdit}>
@@ -122,7 +134,7 @@ function Task(props) {
                                 </form>
                             )
                             : <p>{props.task.name}</p>}
-                        <div>
+                        <div onClick={e => e.stopPropagation()}>
                             {board.attributes.map(attribute => {
 
                                 if (attribute.type === "status") return getStatusLabel(attribute)
@@ -150,6 +162,10 @@ function Task(props) {
                 handleClose={handleClose}
                 taskGroupId={props.taskGroupId}
                 task={props.task}/>}
+
+            {taskId === props.task._id && (
+                <TaskModal boardId={board._id} taskGroupId={props.taskGroupId} task={props.task} />
+            )}
         </>
     );
 }

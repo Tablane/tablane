@@ -1,0 +1,214 @@
+.root {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+}
+
+.background {
+    z-index: -1;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 20px;
+    left: 25px;
+    width: calc(100vw - 50px);
+    height: calc(100% - 70px);
+    max-width: 1700px;
+    z-index: 801;
+    background: #fff;
+    border-radius: 12px;
+}
+
+@media (min-width: 1751px) {
+    .modal {
+        left: calc(50vw - 850px);
+    }
+}
+
+.topMenu {
+    padding: 24px 32px 8px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topMenu .taskId {
+    margin: 0;
+    line-height: 32px;
+}
+
+.additionalMenu {
+    display: flex;
+    flex-direction: row;
+}
+
+.additionalMenu > div {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.additionalMenu > div:hover {
+    background-color: #ECEDF0;
+}
+
+.additionalMenu > .watcher {
+    height: 32px;
+    width: 60px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.additionalMenu > .watcher > i {
+    font-size: 1.3em;
+}
+
+.additionalMenu > .watcher > span {
+    margin-left: 5px;
+    line-height: 32px;
+}
+
+.additionalMenu > .close {
+    height: 32px;
+    width: 32px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.additionalMenu > .close:hover > i {
+    transform: rotate(90deg);
+}
+
+.additionalMenu > .close > i {
+    font-size: 1.5em;
+    transition: transform .2s;
+}
+
+.mainContent {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.contentTab {
+    flex: 1 1 0;
+    padding: 0 24px 32px 32px;
+}
+
+.contentTab .name {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+    height: 75px;
+}
+
+.contentTab .name input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    font-size: 26px;
+    border-radius: 4px;
+}
+
+.contentTab .name:hover input {
+    border: 1px solid #e4e4e4;
+}
+
+.contentTab .description {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+    height: 250px;
+}
+
+.contentTab .description textarea {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    font-size: 14px;
+    resize: none;
+    border-radius: 4px;
+}
+
+.contentTab .description:hover textarea {
+    border: 1px solid #e4e4e4;
+}
+
+.historyLog {
+    border-top: 1px solid #DEDEDE;
+    padding-top: 10px;
+    height: 100%;
+    width: 100%;
+    font-size: 13px;
+
+    p {
+        margin: 0
+    }
+
+    .activity {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .comment {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .author {
+            width: 42px;
+            flex-shrink: 0;
+        }
+
+        .commentBody {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            border: 1px solid #DEDEDE;
+            padding: 10px 16px;
+
+            .commentHeader {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .date {
+        font-size: 11px;
+        font-weight: 400;
+        flex-shrink: 0;
+        margin: 0 0 0 10px;
+        padding: 4px 0 0;
+        color: #abaeb0;
+    }
+
+    .commentingBar {
+
+    }
+}
+
+.attributeTab {
+    flex: 1 1 0;
+}

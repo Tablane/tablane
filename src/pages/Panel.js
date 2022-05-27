@@ -59,7 +59,7 @@ function Panel(props) {
                             sideBarClosed={!sidebarOpen}/>
                         <div className="Board">
                             <Switch>
-                                <Route exact path={`${path}/:space/:board`} component={Board}/>
+                                <Route exact path={`${path}/:space/:board/:taskId?`} component={Board}/>
                                 <Route exact path={url} component={Home}/>
                                 <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
                             </Switch>
