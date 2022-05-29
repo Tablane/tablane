@@ -46,6 +46,8 @@ function Task(props) {
 
     const handleTextEdit = async (e) => {
         const {taskGroupId, task} = props
+        if (task.options.find(option => option.column === e.target.name).value === e.target.value) return
+
         dispatch(editOptionsTask({
             column: e.target.name,
             value: e.target.value,
