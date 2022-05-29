@@ -171,7 +171,7 @@
     flex: 1 1 0;
     width: 100%;
     font-size: 13px;
-    overflow: scroll;
+    overflow-y: auto;
 
     p {
         word-break: break-all;
