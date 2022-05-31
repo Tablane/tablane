@@ -173,6 +173,10 @@
     box-sizing: border-box;
     padding: 0 32px;
 
+    > div:first-child {
+        margin-top: 20px;
+    }
+
     p {
         word-break: break-all;
         margin: 0
