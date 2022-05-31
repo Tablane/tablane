@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react'
+import {useState} from 'react'
 import '../../../styles/TaskGroup.css'
 import Task from './taskGroup/Task'
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
@@ -7,7 +7,6 @@ import {Draggable, Droppable} from "react-beautiful-dnd";
 import AttributePopover from "./taskGroup/AttributePopover";
 import AddAttributePopover from "./taskGroup/AddAttributePopover";
 import useInputState from "../../../modules/hooks/useInputState";
-import BoardContext from "../../../modules/context/BoardContext";
 import useToggleState from "../../../modules/hooks/useToggleState";
 import {useDispatch, useSelector} from "react-redux";
 import { addTask, deleteTaskGroup, editTaskGroupName } from "../../../modules/state/reducers/boardReducer";
@@ -15,6 +14,7 @@ import {ObjectId} from "../../../utils";
 
 function TaskGroup(props) {
     const { board } = useSelector(state => state.board)
+    const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     // new task input
@@ -42,6 +42,7 @@ function TaskGroup(props) {
         e.preventDefault()
         resetNewTaskName()
         dispatch(addTask({
+            author: user.username,
             boardId: board._id,
             taskGroupId: props.taskGroup._id,
             newTaskName,

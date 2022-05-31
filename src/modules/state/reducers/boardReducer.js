@@ -200,10 +200,22 @@ const boardSlice = createSlice({
 
 
         }).addCase(addTask.pending, (state, action) => {
-            const { taskGroupId, newTaskName, _id } = action.meta.arg
+            const { taskGroupId, newTaskName, _id, author } = action.meta.arg
 
             state.loading = state.loading + 1;
-            const task = { _id, name: newTaskName, options: [] }
+            const task = {
+                _id,
+                name: newTaskName,
+                options: [],
+                history: [
+                    {
+                        type: 'activity',
+                        author,
+                        text: 'created this task',
+                        timestamp: new Date().getTime()
+                    }
+                ]
+            }
             state.board.taskGroups.find(x => x._id.toString() === taskGroupId).tasks.push(task)
         }).addCase(addTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
