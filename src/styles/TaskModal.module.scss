@@ -198,6 +198,19 @@
         .author {
             width: 42px;
             flex-shrink: 0;
+            margin-top: 10px;
+
+            > div {
+                background-color: rgb(65, 105, 225);
+                border-radius: 50px;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 11px;
+                color: white;
+            }
         }
 
         .commentBody {

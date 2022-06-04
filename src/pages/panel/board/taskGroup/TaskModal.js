@@ -117,7 +117,9 @@ function TaskModal(props) {
                                 } else if (log.type === 'comment') {
                                     return (
                                         <div className={styles.comment} key={log.timestamp}>
-                                            <div className={styles.author}>ME</div>
+                                            <div className={styles.author}>
+                                                <div>{log.author.substring(0, 2).toUpperCase()}</div>
+                                            </div>
                                             <div className={styles.commentBody}>
                                                 <div className={styles.commentHeader}>
                                                     <p>{log.author} commented</p>
