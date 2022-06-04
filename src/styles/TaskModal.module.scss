@@ -173,6 +173,10 @@
     box-sizing: border-box;
     padding: 0 32px;
 
+    .authorSpan {
+        color: rgb(65, 105, 225);
+    }
+
     > div:first-child {
         margin-top: 20px;
     }
@@ -183,6 +187,7 @@
     }
 
     .activity {
+        color: #abaeb0;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -222,6 +227,7 @@
             padding: 10px 16px;
 
             .commentHeader {
+                color: #abaeb0;
                 display: flex;
                 justify-content: space-between;
                 flex-direction: row;

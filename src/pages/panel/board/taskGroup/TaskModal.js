@@ -110,7 +110,7 @@ function TaskModal(props) {
                                 if (log.type === 'activity') {
                                     return (
                                         <div className={styles.activity} key={log.timestamp}>
-                                            <p>{log.author} {log.text}</p>
+                                            <p><span className={styles.authorSpan}>{log.author}</span> {log.text}</p>
                                             <p className={styles.date}>{getTime(log.timestamp)}</p>
                                         </div>
                                     )
@@ -122,7 +122,7 @@ function TaskModal(props) {
                                             </div>
                                             <div className={styles.commentBody}>
                                                 <div className={styles.commentHeader}>
-                                                    <p>{log.author} commented</p>
+                                                    <p><span className={styles.authorSpan}>{log.author}</span> commented</p>
                                                     <p className={styles.date}>{getTime(log.timestamp)}</p>
                                                 </div>
                                                 <p>{log.text}</p>
