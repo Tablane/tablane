@@ -26,7 +26,7 @@ function SideBar(props) {
     const dispatch = useDispatch()
     // new space dialog
     const [newSpaceDialogOpen, changeNewSpaceDialogOpen, resetNewSpaceDialogOpen] = useToggleState(false)
-    const [newSpaceName, changeNewSpaceName] = useInputState('')
+    const [newSpaceName, changeNewSpaceName, resetNewSpaceName] = useInputState('')
 
     // localstorage space opened state
     const [spaceTabOpen, setSpaceTabOpen] = useLocalStorageState('spaceTabOpen', true)
@@ -79,6 +79,7 @@ function SideBar(props) {
 
     const handleNewSpace = async () => {
         resetNewSpaceDialogOpen()
+        resetNewSpaceName()
         dispatch(addSpace({
             workspaceId: workspace._id,
             _id: ObjectId(),
