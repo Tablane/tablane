@@ -125,7 +125,8 @@
     border-radius: 4px;
 }
 
-.contentTab .name:hover input {
+.contentTab .name:hover input,
+.contentTab .name input:focus {
     border: 1px solid #e4e4e4;
 }
 
@@ -148,7 +149,8 @@
     border-radius: 4px;
 }
 
-.contentTab .description:hover textarea {
+.contentTab .description:hover textarea,
+.contentTab .description textarea:focus {
     border: 1px solid #e4e4e4;
 }
 
