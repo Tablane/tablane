@@ -99,9 +99,8 @@ function TaskModal(props) {
                             <input type="text" value={name} onChange={changeName} onBlur={handleNameChange}/>
                         </form>
                         <form onSubmit={handleDescriptionChange} className={styles.description}>
-                            <textarea value={description} onChange={changeDescription} onBlur={handleDescriptionChange}/>
+                            <textarea placeholder="Description" value={description} onChange={changeDescription} onBlur={handleDescriptionChange}/>
                         </form>
-
                     </div>
                     <div className={styles.divider}></div>
                     <div className={styles.attributeTab}>
