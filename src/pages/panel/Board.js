@@ -35,8 +35,6 @@ function Board(props) {
                 && result.destination.droppableId === result.source.droppableId)) return
         if (result.type === "task") {
             dispatch(sortTask({ result }))
-        } else if (result.type === "taskgroup") {
-            dispatch(sortTaskGroup({ result }))
         } else if (/^attribute /gm.test(result.type)) {
             dispatch(sortAttribute({ result }))
         }
@@ -52,31 +50,14 @@ function Board(props) {
             {loading > 0 ? <LinearProgress/> : <div className="loading-placeholder"></div>}
             {board && (
                 <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
-                    <Droppable droppableId="taskgroups" type="taskgroup">
-                        {(provided) => (
-                            <div className="task-group" {...provided.droppableProps} ref={provided.innerRef}>
-                                {board.taskGroups.map((taskGroup, i) => {
-                                    return <TaskGroup
-                                        key={taskGroup._id}
-                                        taskGroup={taskGroup}
-                                        index={i}/>
-                                })}
-                                {newTaskGroupShown && (
-                                    <NewTaskGroup
-                                        attributes={board.attributes}
-                                        index={board.taskGroups.length}
-                                        toggleNewTaskGroup={toggleNewTaskGroupShown}
-                                        boardId={board._id}/>
-                                )}
-                                {provided.placeholder}
-                                <div className="add-task-group">
-                                    <div></div>
-                                    <button onClick={toggleNewTaskGroupShown}>ADD NEW TASKGROUP</button>
-                                    <div></div>
-                                </div>
-                            </div>
-                        )}
-                    </Droppable>
+                    <div className="task-group">
+                        {board.taskGroups.map((taskGroup, i) => {
+                            return <TaskGroup
+                                key={taskGroup._id}
+                                taskGroup={taskGroup}
+                                index={i}/>
+                        })}
+                    </div>
                 </DragDropContext>
             )}
         </div>

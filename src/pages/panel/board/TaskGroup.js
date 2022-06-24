@@ -78,136 +78,132 @@ function TaskGroup(props) {
     }
 
     return (
-        <Draggable draggableId={props.taskGroup._id} index={props.index}>
-            {(provided) => (
-                <div className="task" {...provided.draggableProps} ref={provided.innerRef}>
-                    <div className="title">
-                        <div {...provided.dragHandleProps}>
-                            {editing ? (
-                                <div className="taskGroup-title editing">
-                                    <form onSubmit={updateName} onBlur={updateName}>
-                                        <input
-                                            onKeyUp={e => {
-                                                if (e.key === 'Escape') e.currentTarget.blur()
-                                            }}
-                                            type="text"
-                                            name="editingName"
-                                            value={editingName}
-                                            onChange={changeEditingName}
-                                            autoFocus/>
-                                        <div>
-                                            <i onClick={cancelNameEditing} className="fas fa-times"> </i>
-                                            <i onClick={updateName} className="fas fa-check"> </i>
-                                        </div>
-                                    </form>
-                                </div>) : (
-                                <div className="taskGroup-title">
-                                    <p>{props.taskGroup.name}</p>
-                                    <i className="fas fa-pen" onClick={toggleEditing}> </i>
-                                    <i onClick={toggleDeleteDialogOpen} className="fas fa-trash-alt"> </i>
-                                </div>)}
-                            <p className="task-amount">{props.taskGroup.tasks.length} TASKS</p>
-                        </div>
-                        <Droppable
-                            droppableId={props.taskGroup._id + 'attribute'}
-                            direction="horizontal"
-                            type={`attribute ${props.taskGroup._id}`}>
-                            {(provided) => (
-                                <div className="attributes" {...provided.droppableProps} ref={provided.innerRef}>
-                                    {board.attributes.map((x, i) => {
-                                        return (
-                                            <Draggable
-                                                draggableId={props.taskGroup._id + x._id}
-                                                index={i}
-                                                key={props.taskGroup._id + x._id}>
-                                                {(provided) => (
-                                                    <div
-                                                        className="attribute"
-                                                        ref={provided.innerRef}
-                                                        {...provided.dragHandleProps}
-                                                        {...provided.draggableProps}>
-                                                        <i className="fas fa-caret-down"> </i>
-                                                        <p>{x.name}</p>
-                                                        <i className="fas fa-caret-down"
-                                                           onClick={e => handleAttributePopover(e, x)}> </i>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        )
-                                    })}
-                                    {provided.placeholder}
-                                    <div className="attribute">
-                                        <p><i
-                                            onClick={handleAddNewAttribute}
-                                            className="fas fa-plus-circle"> </i></p>
-                                    </div>
+        <div className="task">
+            <div className="title">
+                <div>
+                    {editing ? (
+                        <div className="taskGroup-title editing">
+                            <form onSubmit={updateName} onBlur={updateName}>
+                                <input
+                                    onKeyUp={e => {
+                                        if (e.key === 'Escape') e.currentTarget.blur()
+                                    }}
+                                    type="text"
+                                    name="editingName"
+                                    value={editingName}
+                                    onChange={changeEditingName}
+                                    autoFocus/>
+                                <div>
+                                    <i onClick={cancelNameEditing} className="fas fa-times"> </i>
+                                    <i onClick={updateName} className="fas fa-check"> </i>
                                 </div>
-                            )}
-                        </Droppable>
-                    </div>
-                    <Droppable droppableId={props.taskGroup._id} type="task">
-                        {(provided) => (
-                            <div className="tasks" ref={provided.innerRef} {...provided.droppableProps}>
-                                {props.taskGroup.tasks.map((task, i) => {
-                                    return (
-                                        <Task
-                                            key={task._id}
-                                            task={task}
-                                            index={i}
-                                            taskGroupId={props.taskGroup._id} />
-                                    )
-                                })}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                    <form onSubmit={handleAddTask}>
-                        <div className="new-task">
-                            <input
-                                type="text"
-                                placeholder="+ New Task"
-                                value={newTaskName}
-                                name="newTask"
-                                onChange={changeNewTaskName}/>
-                            {newTaskName ? <button>SAVE</button> : null}
-                        </div>
-                    </form>
-
-                    <Dialog
-                        open={deleteDialogOpen}
-                        onClose={toggleDeleteDialogOpen}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle
-                            id="alert-dialog-title">{`Delete ${props.taskGroup.name} group?`}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                All tasks within this Group will be deleted.
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={toggleDeleteDialogOpen} color="primary">
-                                Cancel
-                            </Button>
-                            <Button onClick={handleDelete} color="primary" variant="contained">
-                                Delete
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-
-                    <AttributePopover
-                        boardId={board._id}
-                        open={popoverOpen}
-                        close={handleAttributePopover}
-                        attr={popoverId}/>
-                    <AddAttributePopover
-                        boardId={board._id}
-                        anchor={newAttributeOpen}
-                        close={handleAddNewAttribute}/>
+                            </form>
+                        </div>) : (
+                        <div className="taskGroup-title">
+                            <p>{props.taskGroup.name}</p>
+                            <i className="fas fa-pen" onClick={toggleEditing}> </i>
+                            <i onClick={toggleDeleteDialogOpen} className="fas fa-trash-alt"> </i>
+                        </div>)}
+                    <p className="task-amount">{props.taskGroup.tasks.length} TASKS</p>
                 </div>
-            )}
-        </Draggable>
+                <Droppable
+                    droppableId={props.taskGroup._id + 'attribute'}
+                    direction="horizontal"
+                    type={`attribute ${props.taskGroup._id}`}>
+                    {(provided) => (
+                        <div className="attributes" {...provided.droppableProps} ref={provided.innerRef}>
+                            {board.attributes.map((x, i) => {
+                                return (
+                                    <Draggable
+                                        draggableId={props.taskGroup._id + x._id}
+                                        index={i}
+                                        key={props.taskGroup._id + x._id}>
+                                        {(provided) => (
+                                            <div
+                                                className="attribute"
+                                                ref={provided.innerRef}
+                                                {...provided.dragHandleProps}
+                                                {...provided.draggableProps}>
+                                                <i className="fas fa-caret-down"> </i>
+                                                <p>{x.name}</p>
+                                                <i className="fas fa-caret-down"
+                                                   onClick={e => handleAttributePopover(e, x)}> </i>
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                )
+                            })}
+                            {provided.placeholder}
+                            <div className="attribute">
+                                <p><i
+                                    onClick={handleAddNewAttribute}
+                                    className="fas fa-plus-circle"> </i></p>
+                            </div>
+                        </div>
+                    )}
+                </Droppable>
+            </div>
+            <Droppable droppableId={props.taskGroup._id} type="task">
+                {(provided) => (
+                    <div className="tasks" ref={provided.innerRef} {...provided.droppableProps}>
+                        {props.taskGroup.tasks.map((task, i) => {
+                            return (
+                                <Task
+                                    key={task._id}
+                                    task={task}
+                                    index={i}
+                                    taskGroupId={props.taskGroup._id}/>
+                            )
+                        })}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+            <form onSubmit={handleAddTask}>
+                <div className="new-task">
+                    <input
+                        type="text"
+                        placeholder="+ New Task"
+                        value={newTaskName}
+                        name="newTask"
+                        onChange={changeNewTaskName}/>
+                    {newTaskName ? <button>SAVE</button> : null}
+                </div>
+            </form>
+
+            <Dialog
+                open={deleteDialogOpen}
+                onClose={toggleDeleteDialogOpen}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle
+                    id="alert-dialog-title">{`Delete ${props.taskGroup.name} group?`}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        All tasks within this Group will be deleted.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={toggleDeleteDialogOpen} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="primary" variant="contained">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <AttributePopover
+                boardId={board._id}
+                open={popoverOpen}
+                close={handleAttributePopover}
+                attr={popoverId}/>
+            <AddAttributePopover
+                boardId={board._id}
+                anchor={newAttributeOpen}
+                close={handleAddNewAttribute}/>
+        </div>
     );
 }
 

@@ -125,16 +125,6 @@ export const deleteTaskGroup = createAsyncThunk('board/deleteTaskGroup', async (
     return response.data
 })
 
-export const sortTaskGroup = createAsyncThunk('board/sortTaskGroup', async ({ result }, { getState }) => {
-    const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${getState().board.board._id}`,
-        method: 'PATCH',
-        withCredentials: true,
-        data: { result }
-    })
-    return response.data
-})
-
 export const addAttribute = createAsyncThunk('board/addAttribute', async ({ type, _id }, { getState }) => {
     const response = await axios({
         url: `${process.env.REACT_APP_BACKEND_HOST}/api/attribute/${getState().board.board._id}`,
@@ -363,18 +353,6 @@ const boardSlice = createSlice({
         }).addCase(deleteTaskGroup.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(deleteTaskGroup.rejected, (state, action) => {
-            state.loading = state.loading - 1;
-
-
-        }).addCase(sortTaskGroup.pending, (state, action) => {
-            const { result } = action.meta.arg
-
-            state.loading = state.loading + 1;
-            const [taskgroup] = state.board.taskGroups.splice(result.source.index, 1)
-            state.board.taskGroups.splice(result.destination.index, 0, taskgroup)
-        }).addCase(sortTaskGroup.fulfilled, (state, action) => {
-            state.loading = state.loading - 1;
-        }).addCase(sortTaskGroup.rejected, (state, action) => {
             state.loading = state.loading - 1;
 
 
