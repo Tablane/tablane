@@ -1,12 +1,12 @@
 import {useCallback, useEffect} from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import {DragDropContext} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";
-import NewTaskGroup from "./board/NewTaskGroup";
 import useToggleState from "../../modules/hooks/useToggleState";
 import {useDispatch, useSelector} from "react-redux";
-import { fetchBoard, sortAttribute, sortTask, sortTaskGroup } from "../../modules/state/reducers/boardReducer";
+import { fetchBoard, sortAttribute, sortTask } from "../../modules/state/reducers/boardReducer";
+import _ from "lodash";
 
 function Board(props) {
     const { workspace } = useSelector(state => state.workspace)
@@ -45,18 +45,44 @@ function Board(props) {
         dispatch(fetchBoard(boardId))
     }, [boardId])
 
+    const groupTasks = () => {
+        if (!board.groupBy) {
+            return (
+                <TaskGroup
+                    name="Empty"
+                    taskGroupId={"empty"}
+                    tasks={board.tasks}
+                />
+            )
+        }
+
+        const labels = _.cloneDeep(board.attributes.find(attribute => attribute._id === board.groupBy).labels)
+
+        labels.map(label => label.tasks = [])
+
+        board.tasks.map(task => {
+            const value = task.options.find(option => option.column === board.groupBy).value
+            labels.find(label => label._id === value).tasks.push(task)
+        })
+
+        return labels.map(label => (
+            <TaskGroup
+                color={label.color}
+                key={label._id}
+                name={label.name}
+                taskGroupId={label._id}
+                tasks={label.tasks}
+            />
+        ))
+    }
+
     return (
         <div>
             {loading > 0 ? <LinearProgress/> : <div className="loading-placeholder"></div>}
             {board && (
                 <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
                     <div className="task-group">
-                        {board.taskGroups.map((taskGroup, i) => {
-                            return <TaskGroup
-                                key={taskGroup._id}
-                                taskGroup={taskGroup}
-                                index={i}/>
-                        })}
+                        {groupTasks()}
                     </div>
                 </DragDropContext>
             )}
