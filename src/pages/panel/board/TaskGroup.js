@@ -9,7 +9,7 @@ import AddAttributePopover from "./taskGroup/AddAttributePopover";
 import useInputState from "../../../modules/hooks/useInputState";
 import useToggleState from "../../../modules/hooks/useToggleState";
 import {useDispatch, useSelector} from "react-redux";
-import { addTask, deleteTaskGroup, editTaskGroupName } from "../../../modules/state/reducers/boardReducer";
+import { addTask } from "../../../modules/state/reducers/boardReducer";
 import {ObjectId} from "../../../utils";
 
 function TaskGroup(props) {
@@ -44,7 +44,6 @@ function TaskGroup(props) {
         dispatch(addTask({
             author: user.username,
             boardId: board._id,
-            taskGroupId: props.taskGroupId,
             newTaskName,
             _id: ObjectId()
         }))
@@ -56,20 +55,20 @@ function TaskGroup(props) {
     }
 
     const handleDelete = async () => {
-        dispatch(deleteTaskGroup({
-            boardId: board._id,
-            taskGroupId: props.taskGroupId,
-        }))
+        // dispatch(deleteTaskGroup({
+        //     boardId: board._id,
+        //     taskGroupId: props.taskGroupId,
+        // }))
     }
 
     const updateName = async (e) => {
         e.preventDefault()
         toggleEditing()
-        dispatch(editTaskGroupName({
-            boardId: board._id,
-            taskGroupId: props.taskGroupId,
-            name: editingName
-        }))
+        // dispatch(editTaskGroupName({
+        //     boardId: board._id,
+        //     taskGroupId: props.taskGroupId,
+        //     name: editingName
+        // }))
     }
 
     const cancelNameEditing = () => {

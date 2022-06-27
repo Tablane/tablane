@@ -53,7 +53,6 @@ function Task(props) {
             value: e.target.value,
             type: 'text',
             boardId: board._id,
-            taskGroupId: taskGroupId,
             taskId: task._id
         }))
     }
@@ -110,7 +109,6 @@ function Task(props) {
             type: 'name',
             value: taskName,
             boardId: board._id,
-            taskGroupId,
             taskId: task._id
         }))
     }

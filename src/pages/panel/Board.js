@@ -58,11 +58,17 @@ function Board(props) {
 
         const labels = _.cloneDeep(board.attributes.find(attribute => attribute._id === board.groupBy).labels)
 
+        labels.push({
+            name: "Empty",
+            color: "rgb(255, 255, 255)",
+            _id: "empty",
+        })
         labels.map(label => label.tasks = [])
 
         board.tasks.map(task => {
-            const value = task.options.find(option => option.column === board.groupBy).value
-            labels.find(label => label._id === value).tasks.push(task)
+            const value = task.options.find(option => option.column === board.groupBy)?.value
+            if (value) labels.find(label => label._id === value).tasks.push(task)
+            else labels.find(label => label._id === 'empty').tasks.push(task)
         })
 
         return labels.map(label => (

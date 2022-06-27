@@ -40,7 +40,6 @@ function TaskModal(props) {
             type: 'name',
             value: name,
             boardId,
-            taskGroupId,
             taskId: task._id
         }))
     }
@@ -53,7 +52,6 @@ function TaskModal(props) {
             type: 'description',
             value: description,
             boardId,
-            taskGroupId,
             taskId: task._id
         }))
     }
@@ -65,7 +63,6 @@ function TaskModal(props) {
 
         dispatch(addTaskComment({
             text: newComment,
-            taskGroupId,
             taskId: task._id,
             author: user.username
         }))

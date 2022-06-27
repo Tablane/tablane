@@ -82,7 +82,6 @@ function TaskColumnPopover(props) {
 
         dispatch(editOptionsTask({
             boardId: board._id,
-            taskGroupId,
             taskId: task._id,
             column: props.attribute._id,
             value: id._id,
@@ -98,7 +97,6 @@ function TaskColumnPopover(props) {
 
         dispatch(clearStatusTask({
             boardId: board._id,
-            taskGroupId,
             taskId: task._id,
             optionId: attribute._id
         }))

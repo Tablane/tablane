@@ -11,11 +11,11 @@ export const fetchBoard = createAsyncThunk('board/fetchBoard', async (boardId) =
     return response.data
 })
 
-export const addTask = createAsyncThunk('board/addTask', async ({ boardId, taskGroupId, newTaskName, _id }) => {
+export const addTask = createAsyncThunk('board/addTask', async ({ boardId, newTaskName, _id }) => {
     const response = await axios({
         method: 'POST',
         withCredentials: true,
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}`,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}`,
         data: {
             _id,
             name: newTaskName
@@ -24,9 +24,9 @@ export const addTask = createAsyncThunk('board/addTask', async ({ boardId, taskG
     return response.data
 })
 
-export const editTaskField = createAsyncThunk('board/editTaskName', async ({ boardId, taskGroupId, taskId, type, value }) => {
+export const editTaskField = createAsyncThunk('board/editTaskName', async ({ boardId, taskId, type, value }) => {
     const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}/${taskId}`,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskId}`,
         method: 'PATCH',
         withCredentials: true,
         data: {
@@ -37,11 +37,11 @@ export const editTaskField = createAsyncThunk('board/editTaskName', async ({ boa
     return response.data
 })
 
-export const deleteTask = createAsyncThunk('board/deleteTask', async ({ boardId, taskGroupId, taskId }) => {
+export const deleteTask = createAsyncThunk('board/deleteTask', async ({ boardId, taskId }) => {
     const response = await axios({
         method: 'DELETE',
         withCredentials: true,
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}/${taskId}`
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskId}`
     })
     return response.data
 })
@@ -58,9 +58,9 @@ export const sortTask = createAsyncThunk('board/sortTask', async ({ result }, { 
     return response.data
 })
 
-export const editOptionsTask = createAsyncThunk('board/editOptionsTask', async ({ taskGroupId, taskId, column, value, type }, { getState }) => {
+export const editOptionsTask = createAsyncThunk('board/editOptionsTask', async ({ taskId, column, value, type }, { getState }) => {
     const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}/${taskGroupId}/${taskId}`,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}/${taskId}`,
         method: 'PATCH',
         withCredentials: true,
         data: {
@@ -72,9 +72,9 @@ export const editOptionsTask = createAsyncThunk('board/editOptionsTask', async (
     return response.data
 })
 
-export const addTaskComment = createAsyncThunk('board/addTaskComment', async ({ taskGroupId, taskId, text }, { getState }) => {
+export const addTaskComment = createAsyncThunk('board/addTaskComment', async ({ taskId, text }, { getState }) => {
     const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}/${taskGroupId}/${taskId}`,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}/${taskId}`,
         method: 'POST',
         withCredentials: true,
         data: {
@@ -84,41 +84,9 @@ export const addTaskComment = createAsyncThunk('board/addTaskComment', async ({ 
     return response.data
 })
 
-export const clearStatusTask = createAsyncThunk('board/clearStatusTask', async ({ boardId, taskGroupId, taskId, optionId }) => {
+export const clearStatusTask = createAsyncThunk('board/clearStatusTask', async ({ boardId, taskId, optionId }) => {
     const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskGroupId}/${taskId}/${optionId}`,
-        method: 'DELETE',
-        withCredentials: true
-    })
-    return response.data
-})
-
-export const addTaskGroup = createAsyncThunk('board/addTaskGroup', async ({ name, _id }, { getState }) => {
-    const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${getState().board.board._id}`,
-        method: 'POST',
-        withCredentials: true,
-        data: {
-            _id,
-            name
-        },
-    })
-    return response.data
-})
-
-export const editTaskGroupName = createAsyncThunk('board/editTaskGroupName', async ({ boardId, taskGroupId, name }) => {
-    const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskGroup/${boardId}/${taskGroupId}`,
-        method: 'PATCH',
-        withCredentials: true,
-        data: { name }
-    })
-    return response.data
-})
-
-export const deleteTaskGroup = createAsyncThunk('board/deleteTaskGroup', async ({ boardId, taskGroupId }) => {
-    const response = await axios({
-        url: `${process.env.REACT_APP_BACKEND_HOST}/api/taskgroup/${boardId}/${taskGroupId}`,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}/${taskId}/${optionId}`,
         method: 'DELETE',
         withCredentials: true
     })
@@ -190,7 +158,7 @@ const boardSlice = createSlice({
 
 
         }).addCase(addTask.pending, (state, action) => {
-            const { taskGroupId, newTaskName, _id, author } = action.meta.arg
+            const { newTaskName, _id, author } = action.meta.arg
 
             state.loading = state.loading + 1;
             const task = {
@@ -206,7 +174,7 @@ const boardSlice = createSlice({
                     }
                 ]
             }
-            state.board.taskGroups.find(x => x._id.toString() === taskGroupId).tasks.push(task)
+            state.board.tasks.push(task)
         }).addCase(addTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(addTask.rejected, (state, action) => {
@@ -214,16 +182,14 @@ const boardSlice = createSlice({
 
 
         }).addCase(editTaskField.pending, (state, action) => {
-            const { taskGroupId, taskId, type, value } = action.meta.arg
+            const { taskId, type, value } = action.meta.arg
 
             state.loading = state.loading + 1;
             if (type === 'name') {
-                state.board.taskGroups
-                    .find(x => x._id.toString() === taskGroupId).tasks
+                state.board.tasks
                     .find(x => x._id.toString() === taskId).name = value
             } else if (type === 'description') {
-                state.board.taskGroups
-                    .find(x => x._id.toString() === taskGroupId).tasks
+                state.board.tasks
                     .find(x => x._id.toString() === taskId).description = value
             }
         }).addCase(editTaskField.fulfilled, (state, action) => {
@@ -233,13 +199,12 @@ const boardSlice = createSlice({
 
 
         }).addCase(deleteTask.pending, (state, action) => {
-            const { taskGroupId, taskId } = action.meta.arg
+            const { taskId } = action.meta.arg
 
             state.loading = state.loading + 1;
-            const taskGroup = state.board.taskGroups.find(x => x._id.toString() === taskGroupId)
-            const task = taskGroup.tasks.find(x => x._id.toString() === taskId)
-            const taskIndex = taskGroup.tasks.indexOf(task)
-            taskGroup.tasks.splice(taskIndex, 1)
+            const task = state.board.tasks.find(x => x._id.toString() === taskId)
+            const taskIndex = state.board.tasks.indexOf(task)
+            state.board.tasks.splice(taskIndex, 1)
         }).addCase(deleteTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(deleteTask.rejected, (state, action) => {
@@ -250,12 +215,11 @@ const boardSlice = createSlice({
             const { result } = action.meta.arg
 
             state.loading = state.loading + 1;
-            const sourceTaskGroup = state.board.taskGroups.find(x => x._id.toString() === result.source.droppableId)
-            const sourceIndex = sourceTaskGroup.tasks.findIndex(x => x._id.toString() === result.draggableId)
-            const destinationTaskGroup = state.board.taskGroups.find(x => x._id.toString() === result.destination.droppableId)
+            const task = state.board.tasks.find(x => x._id.toString() === result.draggableId)
+            const column = task.options.find(option => option.column.toString() === state.board.groupBy)
+            if (column) column.value = result.destination.droppableId
+            else task.options.push({ column: state.board.groupBy, value: result.destination.droppableId })
 
-            const task = sourceTaskGroup.tasks.splice(sourceIndex, 1)
-            destinationTaskGroup.tasks.splice(result.destination.index, 0, task[0])
         }).addCase(sortTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(sortTask.rejected, (state, action) => {
@@ -263,11 +227,10 @@ const boardSlice = createSlice({
 
 
         }).addCase(editOptionsTask.pending, (state, action) => {
-            const { column, value, type, taskGroupId, taskId } = action.meta.arg
+            const { column, value, type, taskId } = action.meta.arg
 
             state.loading = state.loading + 1;
-            const options = state.board.taskGroups
-                .find(x => x._id.toString() === taskGroupId).tasks
+            const options = state.board.tasks
                 .find(x => x._id.toString() === taskId).options
             const option = options.find(x => x.column.toString() === column)
 
@@ -285,7 +248,7 @@ const boardSlice = createSlice({
 
 
         }).addCase(addTaskComment.pending, (state, action) => {
-            const { text, author, taskGroupId, taskId } = action.meta.arg
+            const { text, author, taskId } = action.meta.arg
 
             state.loading = state.loading + 1;
             const comment = {
@@ -295,8 +258,7 @@ const boardSlice = createSlice({
                 text
             }
 
-            state.board.taskGroups
-                .find(x => x._id === taskGroupId).tasks
+            state.board.tasks
                 .find(task => task._id === taskId).history
                 .push(comment)
         }).addCase(addTaskComment.fulfilled, (state, action) => {
@@ -306,11 +268,10 @@ const boardSlice = createSlice({
 
 
         }).addCase(clearStatusTask.pending, (state, action) => {
-            const { taskGroupId, taskId, optionId } = action.meta.arg
+            const { taskId, optionId } = action.meta.arg
 
             state.loading = state.loading + 1;
-            const options = state.board.taskGroups
-                .find(x => x._id.toString() === taskGroupId).tasks
+            const options = state.board.tasks
                 .find(x => x._id.toString() === taskId).options
 
             const optionIndex = options.indexOf(options.find(x => x.column.toString() === optionId))
@@ -318,41 +279,6 @@ const boardSlice = createSlice({
         }).addCase(clearStatusTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
         }).addCase(clearStatusTask.rejected, (state, action) => {
-            state.loading = state.loading - 1;
-
-
-        }).addCase(addTaskGroup.pending, (state, action) => {
-            const { name, _id } = action.meta.arg
-
-            state.loading = state.loading + 1;
-            const taskGroup = { name, tasks: [], _id }
-            state.board.taskGroups.push(taskGroup)
-        }).addCase(addTaskGroup.fulfilled, (state, action) => {
-            state.loading = state.loading - 1;
-        }).addCase(addTaskGroup.rejected, (state, action) => {
-            state.loading = state.loading - 1;
-
-
-        }).addCase(editTaskGroupName.pending, (state, action) => {
-            const { taskGroupId, name } = action.meta.arg
-
-            state.loading = state.loading + 1;
-            state.board.taskGroups.find(x => x._id.toString() === taskGroupId).name = name
-        }).addCase(editTaskGroupName.fulfilled, (state, action) => {
-            state.loading = state.loading - 1;
-        }).addCase(editTaskGroupName.rejected, (state, action) => {
-            state.loading = state.loading - 1;
-
-
-        }).addCase(deleteTaskGroup.pending, (state, action) => {
-            const { taskGroupId } = action.meta.arg
-
-            state.loading = state.loading + 1;
-            const taskGroup = state.board.taskGroups.find(x => x._id.toString() === taskGroupId)
-            state.board.taskGroups.splice(state.board.taskGroups.indexOf(taskGroup), 1)
-        }).addCase(deleteTaskGroup.fulfilled, (state, action) => {
-            state.loading = state.loading - 1;
-        }).addCase(deleteTaskGroup.rejected, (state, action) => {
             state.loading = state.loading - 1;
 
 

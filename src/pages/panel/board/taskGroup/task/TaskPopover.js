@@ -48,7 +48,6 @@ function TaskPopover(props) {
         setDeleteDialog(false)
         dispatch(deleteTask({
             boardId: board._id,
-            taskGroupId: props.taskGroupId,
             taskId: props.task._id
         }))
     }

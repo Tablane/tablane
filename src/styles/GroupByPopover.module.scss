@@ -1,0 +1,43 @@
+.popover {
+  position: relative;
+  top: 15px;
+  border-radius: 6px!important;
+  background: orange;
+  margin-top: 10px;
+}
+
+.root {
+  width: 184px;
+  padding: 8px 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 11px;
+  margin: 0 8px;
+  box-sizing: border-box;
+
+  .title {
+    box-sizing: border-box;
+    height: 27px;
+    padding: 8px 6px 8px 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .statusList {
+
+    .status {
+      cursor: pointer;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      height: 32px;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #F0F1F3;
+      }
+    }
+  }
+}
