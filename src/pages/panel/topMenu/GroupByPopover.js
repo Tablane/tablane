@@ -1,16 +1,19 @@
 import {Popover} from "@material-ui/core";
 import styles from '../../../styles/GroupByPopover.module.scss'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGroupBy} from "../../../modules/state/reducers/boardReducer";
 
 function GroupByPopover({ groupByOpen, setGroupByOpen }) {
     const { board } = useSelector(state => state.board)
+    const dispatch = useDispatch()
 
     const handleClose = () => {
         setGroupByOpen(null)
     }
 
-    const handleGroupByChange = () => {
-
+    const handleGroupByChange = (_id) => {
+        dispatch(setGroupBy({ boardId: board._id, _id }))
+        handleClose()
     }
 
     return (
@@ -42,12 +45,12 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
                             <div
                                 className={styles.status}
                                 key={attribute._id}
-                                onClick={() => handleGroupByChange()}>
+                                onClick={() => handleGroupByChange(attribute._id)}>
                                 <span>{attribute.name}</span>
                             </div>
                         )
                     })}
-                    <div className={styles.status} onClick={() => handleGroupByChange()}>
+                    <div className={styles.status} onClick={() => handleGroupByChange('none')}>
                         <span>None</span>
                     </div>
                 </div>

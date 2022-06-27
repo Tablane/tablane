@@ -11,6 +11,16 @@ export const fetchBoard = createAsyncThunk('board/fetchBoard', async (boardId) =
     return response.data
 })
 
+export const setGroupBy = createAsyncThunk('board/setGroupBy', async ({ boardId, _id }) => {
+    const response = await axios({
+        method: 'PATCH',
+        withCredentials: true,
+        url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/${boardId}`,
+        data: { _id }
+    });
+    return response.data
+})
+
 export const addTask = createAsyncThunk('board/addTask', async ({ boardId, newTaskName, _id }) => {
     const response = await axios({
         method: 'POST',
@@ -154,6 +164,17 @@ const boardSlice = createSlice({
             state.board = action.payload
             state.loading = state.loading - 1;
         }).addCase(fetchBoard.rejected, (state, action) => {
+            state.loading = state.loading - 1;
+
+
+        }).addCase(setGroupBy.pending, (state, action) => {
+            const { _id } = action.meta.arg
+
+            state.board.groupBy = _id
+            state.loading = state.loading + 1;
+        }).addCase(setGroupBy.fulfilled, (state, action) => {
+            state.loading = state.loading - 1;
+        }).addCase(setGroupBy.rejected, (state, action) => {
             state.loading = state.loading - 1;
 
 

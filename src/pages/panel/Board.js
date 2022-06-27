@@ -46,7 +46,7 @@ function Board(props) {
     }, [boardId])
 
     const groupTasks = () => {
-        if (!board.groupBy) {
+        if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
                     name="Empty"
@@ -67,7 +67,8 @@ function Board(props) {
 
         board.tasks.map(task => {
             const value = task.options.find(option => option.column === board.groupBy)?.value
-            if (value) labels.find(label => label._id === value).tasks.push(task)
+            const label = labels.find(label => label._id === value)
+            if (value && label) label.tasks.push(task)
             else labels.find(label => label._id === 'empty').tasks.push(task)
         })
 

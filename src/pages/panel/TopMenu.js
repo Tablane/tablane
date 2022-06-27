@@ -11,7 +11,7 @@ function TopMenu(props) {
     const [groupByOpen, setGroupByOpen] = useState(null)
 
     const groupBy = () => {
-        if (!board?.groupBy) return 'None'
+        if (!board?.groupBy || board.groupBy === 'none') return 'None'
         return board.attributes.find(attribute => attribute._id === board.groupBy).name
     }
 
