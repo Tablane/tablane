@@ -49,7 +49,8 @@ function Board(props) {
         if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
-                    name="Empty"
+                    color={"rgb(196, 196, 196)"}
+                    name=""
                     taskGroupId={"empty"}
                     tasks={board.tasks}
                 />
@@ -59,8 +60,8 @@ function Board(props) {
         const labels = _.cloneDeep(board.attributes.find(attribute => attribute._id === board.groupBy).labels)
 
         labels.push({
-            name: "Empty",
-            color: "rgb(255, 255, 255)",
+            name: "",
+            color: "rgb(196, 196, 196)",
             _id: "empty",
         })
         labels.map(label => label.tasks = [])
