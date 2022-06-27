@@ -47,11 +47,13 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
                                 key={attribute._id}
                                 onClick={() => handleGroupByChange(attribute._id)}>
                                 <span>{attribute.name}</span>
+                                {board.groupBy === attribute._id && <i className="fas fa-check"></i>}
                             </div>
                         )
                     })}
                     <div className={styles.status} onClick={() => handleGroupByChange('none')}>
                         <span>None</span>
+                        {(!board.groupBy || board.groupBy === 'none') && <i className="fas fa-check"></i>}
                     </div>
                 </div>
             </div>
