@@ -21,14 +21,15 @@ export const setGroupBy = createAsyncThunk('board/setGroupBy', async ({ boardId,
     return response.data
 })
 
-export const addTask = createAsyncThunk('board/addTask', async ({ boardId, newTaskName, _id }) => {
+export const addTask = createAsyncThunk('board/addTask', async ({ boardId, newTaskName, taskGroupId, _id }) => {
     const response = await axios({
         method: 'POST',
         withCredentials: true,
         url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${boardId}`,
         data: {
             _id,
-            name: newTaskName
+            name: newTaskName,
+            taskGroupId
         }
     })
     return response.data
@@ -179,7 +180,7 @@ const boardSlice = createSlice({
 
 
         }).addCase(addTask.pending, (state, action) => {
-            const { newTaskName, _id, author } = action.meta.arg
+            const { newTaskName, taskGroupId, _id, author } = action.meta.arg
 
             state.loading = state.loading + 1;
             const task = {
@@ -194,6 +195,12 @@ const boardSlice = createSlice({
                         timestamp: new Date().getTime()
                     }
                 ]
+            }
+            if (state.board.groupBy) {
+                task.options.push({
+                    column: '628f8d4991b1fec278646596',
+                    value: taskGroupId
+                })
             }
             state.board.tasks.push(task)
         }).addCase(addTask.fulfilled, (state, action) => {

@@ -44,6 +44,7 @@ function TaskGroup(props) {
         dispatch(addTask({
             author: user.username,
             boardId: board._id,
+            taskGroupId: props.taskGroupId,
             newTaskName,
             _id: ObjectId()
         }))
