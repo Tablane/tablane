@@ -1,11 +1,10 @@
-import {useCallback, useEffect} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import {DragDropContext} from "react-beautiful-dnd";
 import {LinearProgress} from "@material-ui/core";
-import useToggleState from "../../modules/hooks/useToggleState";
 import {useDispatch, useSelector} from "react-redux";
-import { fetchBoard, sortAttribute, sortTask } from "../../modules/state/reducers/boardReducer";
+import {fetchBoard, setGroupBy, sortAttribute, sortTask} from "../../modules/state/reducers/boardReducer";
 import _ from "lodash";
 
 function Board(props) {
@@ -13,7 +12,7 @@ function Board(props) {
     const { board, loading } = useSelector(state => state.board)
     const dispatch = useDispatch()
 
-    const [newTaskGroupShown, toggleNewTaskGroupShown] = useToggleState(false)
+    const [groupedTasks, setGroupedTasks] = useState(false)
 
     const findBoardId = useCallback(() => {
         const space = props.match.params.space.replaceAll('-', ' ')
@@ -22,30 +21,8 @@ function Board(props) {
     }, [props.match.params.space, props.match.params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
 
-    const onDragStart = () => {
-        const [body] = document.getElementsByTagName('body')
-        body.style.cursor = 'pointer'
-    }
-
-    const handleDragEnd = async (result) => {
-        const [body] = document.getElementsByTagName('body')
-        body.style.cursor = 'auto'
-        if (result.destination === null ||
-            (result.destination.index === result.source.index
-                && result.destination.droppableId === result.source.droppableId)) return
-        if (result.type === "task") {
-            dispatch(sortTask({ result }))
-        } else if (/^attribute /gm.test(result.type)) {
-            dispatch(sortAttribute({ result }))
-        }
-    }
-
-    useEffect(() => {
-        if (!boardId) return
-        dispatch(fetchBoard(boardId))
-    }, [boardId])
-
-    const groupTasks = () => {
+    const groupTasks = useMemo(() => {
+        if (!board) return
         if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
@@ -73,6 +50,8 @@ function Board(props) {
             else labels.find(label => label._id === 'empty').tasks.push(task)
         })
 
+        setGroupedTasks(labels)
+
         return labels.map(label => (
             <TaskGroup
                 color={label.color}
@@ -82,7 +61,43 @@ function Board(props) {
                 tasks={label.tasks}
             />
         ))
+    }, [board])
+
+    const onDragStart = () => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'pointer'
     }
+
+    const handleDragEnd = async (result) => {
+        const [body] = document.getElementsByTagName('body')
+        body.style.cursor = 'auto'
+        if (result.destination === null ||
+            (result.destination.index === result.source.index
+                && result.destination.droppableId === result.source.droppableId)) return
+        if (result.type === "task") {
+            let destinationIndex = result.destination.index
+            const sourceIndex = board.tasks.findIndex(x => x._id.toString() === result.draggableId)
+            if (!(!board.groupBy || board.groupBy === 'none')) {
+                const destinationTask = groupedTasks.find(group => group._id === result.destination.droppableId).tasks[result.destination.index]
+
+                if (result.source.droppableId === result.destination.droppableId) {
+                    destinationIndex = board.tasks.findIndex(task => task._id === destinationTask?._id)
+                 } else {
+                    const splicedTasks = _.cloneDeep(board.tasks)
+                    splicedTasks.splice(sourceIndex, 1)
+                    destinationIndex = splicedTasks.findIndex(task => task._id === destinationTask?._id)
+                }
+            }
+            dispatch(sortTask({ result, destinationIndex, sourceIndex }))
+        } else if (/^attribute /gm.test(result.type)) {
+            dispatch(sortAttribute({ result }))
+        }
+    }
+
+    useEffect(() => {
+        if (!boardId) return
+        dispatch(fetchBoard(boardId))
+    }, [boardId])
 
     return (
         <div>
@@ -90,7 +105,7 @@ function Board(props) {
             {board && (
                 <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
                     <div className="task-group">
-                        {groupTasks()}
+                        {groupTasks}
                     </div>
                 </DragDropContext>
             )}

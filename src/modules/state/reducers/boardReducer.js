@@ -57,12 +57,14 @@ export const deleteTask = createAsyncThunk('board/deleteTask', async ({ boardId,
     return response.data
 })
 
-export const sortTask = createAsyncThunk('board/sortTask', async ({ result }, { getState }) => {
+export const sortTask = createAsyncThunk('board/sortTask', async ({ result, destinationIndex, sourceIndex }, { getState }) => {
     const response = await axios({
         method: 'PATCH',
         withCredentials: true,
         data: {
-            result
+            result,
+            destinationIndex,
+            sourceIndex
         },
         url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/${getState().board.board._id}`
     })
@@ -240,13 +242,20 @@ const boardSlice = createSlice({
 
 
         }).addCase(sortTask.pending, (state, action) => {
-            const { result } = action.meta.arg
+            const { result, destinationIndex, sourceIndex } = action.meta.arg
 
             state.loading = state.loading + 1;
             const task = state.board.tasks.find(x => x._id.toString() === result.draggableId)
             const column = task.options.find(option => option.column.toString() === state.board.groupBy)
             if (column) column.value = result.destination.droppableId
-            else task.options.push({ column: state.board.groupBy, value: result.destination.droppableId })
+            else if (!(state.board.groupBy === 'none' && state.board.groupBy && result.destination.droppableId === 'empty')) {
+                task.options.push({ column: state.board.groupBy, value: result.destination.droppableId })
+            }
+
+            state.board.tasks.splice(sourceIndex, 1)
+
+            if (destinationIndex < 0) state.board.tasks.push(task)
+            else state.board.tasks.splice(destinationIndex, 0, task)
 
         }).addCase(sortTask.fulfilled, (state, action) => {
             state.loading = state.loading - 1;
