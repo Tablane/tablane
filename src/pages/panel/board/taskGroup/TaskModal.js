@@ -6,14 +6,13 @@ import {toast} from "react-hot-toast";
 import useInputState from "../../../../modules/hooks/useInputState";
 import { addTaskComment, editTaskField } from "../../../../modules/state/reducers/boardReducer";
 import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
 
 function TaskModal(props) {
     const history = useHistory()
     const params = useParams()
     const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
-    const { task, taskGroupId, boardId } = props
+    const { task, boardId } = props
     const [name, changeName] = useInputState(task.name)
     const [description, changeDescription] = useInputState(task.description)
     const [newComment, changeNewComment, resetNewComment] = useInputState('')
@@ -69,9 +68,36 @@ function TaskModal(props) {
     }
 
     const getTime = (timestamp) => {
-        if (moment().diff(timestamp, 'days') > 7 || moment().diff(timestamp, 'days') < -7) {
-            return moment(timestamp).zone(4).format('MMMM D, YYYY')
-        } else return moment(timestamp).startOf("minute").fromNow()
+        const delta = Math.round((+new Date() - new Date(timestamp)) / 1000);
+
+        const minute = 60,
+            hour = minute * 60,
+            day = hour * 24
+
+        let timeString;
+
+        if (delta < 60) {
+            timeString = 'Just now' + delta;
+        } else if (delta < 2 * minute) {
+            timeString = '1 min'
+        } else if (delta < hour) {
+            timeString = Math.floor(delta / minute) + ' mins';
+        } else if (Math.floor(delta / hour) === 1) {
+            timeString = '1 hour ago'
+        } else if (delta < day) {
+            timeString = Math.floor(delta / hour) + ' hours ago';
+        } else if (delta < day * 2) {
+            timeString = 'yesterday';
+        } else if (delta < day * 7) {
+            timeString = Math.floor(delta / day) + ' days ago';
+        } else {
+            const date = new Date(timestamp)
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            timeString = `${months[date.getMonth()]} ${date.getDay()} ${date.getFullYear()} `
+                + `at ${date.toLocaleTimeString().substring(0, 5)}`
+        }
+
+        return timeString
     }
 
     return (
