@@ -1,24 +1,26 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
-import {DragDropContext} from "react-beautiful-dnd";
+import {DragDropContext} from "@hello-pangea/dnd";
 import {LinearProgress} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchBoard, setGroupBy, sortAttribute, sortTask} from "../../modules/state/reducers/boardReducer";
+import {fetchBoard, sortAttribute, sortTask} from "../../modules/state/reducers/boardReducer";
 import _ from "lodash";
+import {useParams} from "react-router-dom";
 
 function Board(props) {
     const { workspace } = useSelector(state => state.workspace)
     const { board, loading } = useSelector(state => state.board)
     const dispatch = useDispatch()
+    const params = useParams()
 
     const [groupedTasks, setGroupedTasks] = useState(false)
 
     const findBoardId = useCallback(() => {
-        const space = props.match.params.space.replaceAll('-', ' ')
-        const board = props.match.params.board.replaceAll('-', ' ')
+        const space = params.space.replaceAll('-', ' ')
+        const board = params.board.replaceAll('-', ' ')
         return workspace?.spaces.find(x => x.name === space).boards.find(x => x.name === board)._id
-    }, [props.match.params.space, props.match.params.board, workspace?.spaces, workspace])
+    }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
 
     const groupTasks = useMemo(() => {

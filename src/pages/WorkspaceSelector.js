@@ -6,7 +6,7 @@ import {
     makeStyles,
     TextField
 } from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import useInputState from "../modules/hooks/useInputState";
 import axios from "axios";
@@ -86,6 +86,7 @@ const useStyles = makeStyles({
 
 function WorkspaceSelector(props) {
     const classes = useStyles()
+    const navigate = useNavigate()
     const [name, changeName, resetName] = useInputState()
     const [dialogOpen, toggleDialogOpen] = useToggleState(false)
 
@@ -99,7 +100,7 @@ function WorkspaceSelector(props) {
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/`
         }).then(res => {
             toast('Workspace has been successfully created')
-            props.history.push(`/${res.data.id}`)
+            navigate(`/${res.data.id}`)
         }).catch(err => {
             console.log(err)
             toast('Please enable third-party cookies')

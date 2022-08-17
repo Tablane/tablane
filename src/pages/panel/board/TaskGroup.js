@@ -3,7 +3,7 @@ import '../../../styles/TaskGroup.css'
 import Task from './taskGroup/Task'
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {Draggable, Droppable} from "react-beautiful-dnd";
+import {Draggable, Droppable} from "@hello-pangea/dnd";
 import AttributePopover from "./taskGroup/AttributePopover";
 import AddAttributePopover from "./taskGroup/AddAttributePopover";
 import useInputState from "../../../modules/hooks/useInputState";

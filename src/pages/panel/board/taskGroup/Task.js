@@ -1,18 +1,19 @@
 import {Fragment, useState} from 'react'
 import '../../../../styles/Task.css'
 import TaskColumnPopover from "./task/TaskColumnPopover";
-import {Draggable} from "react-beautiful-dnd";
+import {Draggable} from "@hello-pangea/dnd";
 import TaskPopover from "./task/TaskPopover";
 import useInputState from "../../../../modules/hooks/useInputState";
 import {useDispatch, useSelector} from "react-redux";
 import { editOptionsTask, editTaskField } from "../../../../modules/state/reducers/boardReducer";
-import {useHistory, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import TaskModal from "./TaskModal";
 
 function Task(props) {
     const { board } = useSelector(state => state.board)
     const dispatch = useDispatch()
-    const history = useHistory()
+    const navigate = useNavigate()
+    const location = useLocation()
     const { taskId } = useParams()
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
@@ -24,7 +25,7 @@ function Task(props) {
 
     const openTaskModal = () => {
         if (taskEditing) return
-        history.push(`${history.location.pathname}/${props.task._id}`)
+        navigate(`${location.pathname}/${props.task._id}`)
     }
 
     const handleClose = () => {

@@ -5,7 +5,7 @@ import AccountPopOver from "./sideBar/AccountPopover";
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AnimateHeight from "react-animate-height";
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import {DragDropContext, Draggable, Droppable} from "@hello-pangea/dnd";
 import BoardPopover from "./sideBar/BoardPopover";
 import SpacePopover from "./sideBar/SpacePopover";
 import useLocalStorageState from "../../modules/hooks/useLocalStorageState";
@@ -203,8 +203,8 @@ function SideBar(props) {
                                                             {...provided.draggableProps}
                                                             ref={provided.innerRef}
                                                             {...provided.dragHandleProps}
-                                                            to={`/${props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}
-                                                            activeClassName="active-board">
+                                                            className={({ isActive }) => (isActive ? " active-board" : "")}
+                                                            to={`/${props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}>
                                                             <div> </div>
                                                             {board._id === editingBoard.boardId ?
                                                                 (

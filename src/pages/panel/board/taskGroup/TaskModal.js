@@ -1,5 +1,5 @@
 import styles from '../../../../styles/TaskModal.module.scss'
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {toast} from "react-hot-toast";
@@ -8,7 +8,7 @@ import { addTaskComment, editTaskField } from "../../../../modules/state/reducer
 import { useDispatch, useSelector } from "react-redux";
 
 function TaskModal(props) {
-    const history = useHistory()
+    const navigate = useNavigate()
     const params = useParams()
     const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -21,7 +21,7 @@ function TaskModal(props) {
         if (e?.key && e.key !== 'Escape') return
         handleDescriptionChange()
         handleNameChange()
-        history.push(`/${params.workspace}/${params.space}/${params.board}`)
+        navigate(`/${params.workspace}/${params.space}/${params.board}`)
     }
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 import {Fragment, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import {CircularProgress, makeStyles} from "@material-ui/core";
+import {useParams} from "react-router-dom";
 
 const useStyles = makeStyles({
     loading: {
@@ -51,18 +52,19 @@ const useStyles = makeStyles({
 function SharedBoard(props) {
     const classes = useStyles()
     const [board, setBoard] = useState(null)
+    const params = useParams()
 
     const getData = useCallback(async () => {
         await axios({
             method: 'GET',
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${props.match.params.boardId}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${params.boardId}`
         }).then(res => {
             setBoard(res.data)
         }).catch(() => {
             setBoard(false)
         })
-    }, [props.match.params.boardId])
+    }, [params.boardId])
 
     useEffect(() => {
         getData()

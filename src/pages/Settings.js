@@ -1,5 +1,5 @@
 import {CircularProgress, makeStyles} from "@material-ui/core";
-import {Link, NavLink, Redirect, Route, Switch} from "react-router-dom";
+import {Link, NavLink, Navigate, Route, Routes, useParams} from "react-router-dom";
 import General from "./settings/General";
 import Import from "./settings/Import";
 import Apps from "./settings/Apps";
@@ -79,18 +79,19 @@ const useStyles = makeStyles({
 function Settings(props) {
     const classes = useStyles();
     const [workspace, setWorkspace] = useState(null)
+    const params = useParams()
 
     const getData = useCallback(async() => {
         axios({
             method: 'GET',
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${props.match.params.workspace}`
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${params.workspace}`
         }).then(res => {
             setWorkspace(res.data)
         }).catch(err => {
             console.log(err)
         })
-    }, [props.match.params.workspace])
+    }, [params.workspace])
 
     useEffect(() => {
         getData()
@@ -106,30 +107,30 @@ function Settings(props) {
                 <h1>Settings</h1>
                 <p className={'workspaceName'}>{workspace.name}</p>
                 <div className={classes.settings}>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/general`}>Settings</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/users`}>People</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/import`}>Import/Export</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/apps`}>Apps</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/integrations`}>Integrations</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/billing`}>Upgrade</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/trash`}>Trash</NavLink>
-                    <NavLink activeClassName={'active'} to={`/settings/${workspace.id}/permissions`}>Security & Permissions</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/general`}>Settings</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/users`}>People</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/import`}>Import/Export</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/apps`}>Apps</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/integrations`}>Integrations</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/billing`}>Upgrade</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/trash`}>Trash</NavLink>
+                    <NavLink className={({ isActive }) => (isActive ? " active" : "")} to={`/settings/${workspace.id}/permissions`}>Security & Permissions</NavLink>
                 </div>
             </div>
 
             <WorkspaceContext.Provider value={providerValue}>
                 <div className={classes.content}>
-                    <Switch>
-                        <Route path={`/settings/${workspace.id}/general`} component={General}/>
-                        <Route path={`/settings/${workspace.id}/users`} component={Users}/>
-                        <Route path={`/settings/${workspace.id}/import`} component={Import}/>
-                        <Route path={`/settings/${workspace.id}/apps`} component={Apps}/>
-                        <Route path={`/settings/${workspace.id}/integrations`} component={Integrations}/>
-                        <Route path={`/settings/${workspace.id}/billing`} component={Billing}/>
-                        <Route path={`/settings/${workspace.id}/trash`} component={Trash}/>
-                        <Route path={`/settings/${workspace.id}/permissions`} component={Permissions}/>
-                        <Route path={`/`} component={() => <Redirect to={`/settings/${workspace.id}/general`}/>}/>
-                    </Switch>
+                    <Routes>
+                        <Route path={`/general`} element={<General />}/>
+                        <Route path={`/users`} element={<Users />}/>
+                        <Route path={`/import`} element={<Import />}/>
+                        <Route path={`/apps`} element={<Apps />}/>
+                        <Route path={`/integrations`} element={<Integrations />}/>
+                        <Route path={`/billing`} element={<Billing />}/>
+                        <Route path={`/trash`} element={<Trash />}/>
+                        <Route path={`/permissions`} element={<Permissions />}/>
+                        <Route path={`/`} element={() => <Navigate to={`/settings/${workspace.id}/general`}/>}/>
+                    </Routes>
                 </div>
             </WorkspaceContext.Provider>
         </div>

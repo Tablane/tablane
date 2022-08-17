@@ -14,7 +14,7 @@ import {useContext, useState} from "react";
 import axios from "axios";
 import WorkspaceContext from "../../modules/context/WorkspaceContext";
 import useToggleState from "../../modules/hooks/useToggleState";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
     container: {
@@ -76,7 +76,7 @@ function General(props) {
     const [name, changeName] = useInputState(workspace.name)
     const nameEdited = name !== workspace.name
     const [saving, setSaving] = useState(false)
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const handleDelete = () => {
         axios({
@@ -85,7 +85,7 @@ function General(props) {
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
         }).then(() => {
             toast('Workspace successfully deleted')
-            history.push('/')
+            navigate('/')
         }).catch(err => {
             console.log(err)
         })

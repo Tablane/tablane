@@ -3,7 +3,7 @@ import './App.css';
 import Auth from './pages/Auth'
 import {CircularProgress} from "@material-ui/core";
 import Panel from "./pages/Panel";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {Route, Routes, Navigate} from "react-router-dom";
 import WorkspaceSelector from "./pages/WorkspaceSelector";
 import SharedBoard from "./pages/SharedBoard";
 import Settings from "./pages/Settings";
@@ -23,18 +23,19 @@ function App() {
     if (user.status === 'loading') return <div className="loading"><CircularProgress/></div>
     return (
         <ContextProvider>
-            <Router>
-                <Switch>
-                    <Route path="/share/:boardId" component={SharedBoard}/>
-                    {user.status !== 'succeeded' && <Route path="/" component={Auth}/>}
-                    <Route exact path={['/login', '/register']} render={({ history }) => history.push('/')}/>
-                    <Route path="/settings/:workspace" component={Settings}/>
-                    <Route path="/:workspace" component={Panel}/>
-                    <Route path="/" render={({ history }) => (
-                        <WorkspaceSelector history={history} workspaces={user.user.workspaces}/>
-                    )}/>
-                </Switch>
-            </Router>
+                <Routes>
+                    <Route path="/share/:boardId" element={<SharedBoard />}/>
+                    <Route path="/*" element={<Auth />}/>
+                    {user.status === 'succeeded' && (
+                        <>
+                            <Route path='/login' element={<Navigate to={"/"} />}/>
+                            <Route path='/register' element={<Navigate to={"/"} />}/>
+                            <Route path="/settings/:workspace/*" element={<Settings />}/>
+                            <Route path="/:workspace/*" element={<Panel />}/>
+                            <Route path="/" element={<WorkspaceSelector workspaces={user.user.workspaces}/>}/>
+                        </>
+                    )}
+                </Routes>
             <SyncError/>
         </ContextProvider>
     );

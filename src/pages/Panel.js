@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Navigate, Route, Routes, useParams} from "react-router-dom";
 import SideBar from "./panel/SideBar";
 import TopMenu from "./panel/TopMenu";
 import Board from "./panel/Board";
@@ -13,23 +13,23 @@ function Panel(props) {
     const { workspace } = useSelector(state => state.workspace)
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState('sidebarOpen', true)
     const dispatch = useDispatch()
+    const params = useParams()
 
     useEffect(() => {
-        dispatch(fetchWorkspace(props.match.params.workspace))
+        dispatch(fetchWorkspace(params.workspace))
     }, [])
 
     const toggleSideBar = () => {
         setSidebarOpen(!sidebarOpen)
     }
 
-    const {url, path} = props.match;
     return (
         !workspace
             ? <div className="loading"><CircularProgress/></div>
             : <div className={`App ${!sidebarOpen ? 'sidebar-closed' : ''}`}>
                 <SideBar
                     history={props.history}
-                    url={url}
+                    url={'/' + params.workspace}
                     toggleSideBar={toggleSideBar}
                     sideBarClosed={!sidebarOpen}/>
                 <div className={`PanelContent ${sidebarOpen ? 'hidden' : ''}`}>
@@ -37,11 +37,12 @@ function Panel(props) {
                         toggleSideBar={toggleSideBar}
                         sideBarClosed={!sidebarOpen}/>
                     <div className="Board">
-                        <Switch>
-                            <Route exact path={`${path}/:space/:board/:taskId?`} component={Board}/>
-                            <Route exact path={url} component={Home}/>
-                            <Route path="/:workspace" component={() => <Redirect to={url}/>}/>
-                        </Switch>
+                        <Routes>
+                            <Route path="/:space/:board" element={<Board />}/>
+                            <Route path="/:space/:board/:taskId" element={<Board />}/>
+                            <Route index element={<Home />}/>
+                            <Route path="/:workspace" element={<Navigate to={"/"}/>}/>
+                        </Routes>
                     </div>
                 </div>
             </div>

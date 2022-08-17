@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Popover} from "@material-ui/core";
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import {DragDropContext, Draggable, Droppable} from "@hello-pangea/dnd";
 import AnimateHeight from "react-animate-height";
 import {useDispatch, useSelector} from "react-redux";
 import {

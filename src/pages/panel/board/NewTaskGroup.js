@@ -1,6 +1,6 @@
 import {Component} from 'react'
 import '../../../styles/TaskGroup.css'
-import {Draggable, Droppable} from "react-beautiful-dnd";
+import {Draggable, Droppable} from "@hello-pangea/dnd";
 import { connect } from "react-redux";
 import { addTaskGroup } from "../../../modules/state/reducers/boardReducer";
 import { ObjectId } from "../../../utils";
