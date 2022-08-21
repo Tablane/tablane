@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchBoard, sortAttribute, sortTask} from "../../modules/state/reducers/boardReducer";
 import _ from "lodash";
 import {useParams} from "react-router-dom";
+import BoardTopMenu from "./board/BoardTopMenu";
 
 function Board(props) {
     const { workspace } = useSelector(state => state.workspace)
@@ -102,16 +103,23 @@ function Board(props) {
     }, [boardId])
 
     return (
-        <div>
-            {loading > 0 ? <LinearProgress/> : <div className="loading-placeholder"></div>}
-            {board && (
-                <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
-                    <div className="task-group">
-                        {groupTasks}
-                    </div>
-                </DragDropContext>
-            )}
-        </div>
+        <>
+            <BoardTopMenu
+                toggleSideBar={props.toggleSideBar}
+                sideBarClosed={!props.sidebarOpen}/>
+            <div className="Board">
+                <div>
+                    {loading > 0 ? <LinearProgress/> : <div className="loading-placeholder"></div>}
+                    {board && (
+                        <DragDropContext onDragEnd={handleDragEnd} onDragStart={onDragStart}>
+                            <div className="task-group">
+                                {groupTasks}
+                            </div>
+                        </DragDropContext>
+                    )}
+                </div>
+            </div>
+        </>
     );
 }
 

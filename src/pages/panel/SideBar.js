@@ -265,6 +265,25 @@ function SideBar(props) {
                     <i className="fas fa-angle-double-left" onClick={props.toggleSideBar}> </i>
                 </div>
             </div>
+            <div className="menus">
+                <NavLink
+                    className={({ isActive }) => "home" + (isActive ? " active" : "")}
+                    to={`/${workspace.id}`}
+                    end>
+                    <div className="icon">
+                        <i className="fa-solid fa-house"></i>
+                    </div>
+                    <span>Home</span>
+                </NavLink>
+                <NavLink
+                    className={({ isActive }) => "notifications" + (isActive ? " active" : "")}
+                    to={`/${workspace.id}/notifications`}>
+                    <div className="icon">
+                        <i className="fa-solid fa-bell"></i>
+                    </div>
+                    <span>Notifications</span>
+                </NavLink>
+            </div>
             <div className="boards">
                 <div onClick={toggleSpaces} className="section-name">
                     <label>Spaces</label>

@@ -1,11 +1,11 @@
-import '../../styles/TopMenu.scss'
-import ShareDialog from "./topMenu/ShareDialog";
-import useToggleState from "../../modules/hooks/useToggleState";
+import '../../../styles/TopMenu.scss'
+import ShareDialog from "../topMenu/ShareDialog";
+import useToggleState from "../../../modules/hooks/useToggleState";
 import { useSelector } from "react-redux";
-import GroupByPopover from "./topMenu/GroupByPopover";
+import GroupByPopover from "../topMenu/GroupByPopover";
 import {useState} from "react";
 
-function TopMenu(props) {
+function BoardTopMenu(props) {
     const { board } = useSelector(state => state.board)
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
@@ -64,4 +64,4 @@ function TopMenu(props) {
     )
 }
 
-export default TopMenu
+export default BoardTopMenu

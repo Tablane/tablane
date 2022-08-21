@@ -71,14 +71,44 @@ a {
     display: inline-block;
 }
 
+.SideBar > .menus {
+    padding-top: 5px;
+    padding-bottom: 15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.SideBar > .menus > a {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 32px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.SideBar > .menus > a.active,
+.SideBar > .menus > a:hover {
+    background-color: #F8F9F9;
+}
+
+.SideBar > .menus > a > .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 7px;
+    width: 40px;
+    height: 32px;
+}
+
 .boards .section-name {
+    border-top: 1px solid rgba(0,0,0,0.1);
     cursor: pointer;
     padding: 0 20px;
     height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .boards .section-name:hover {
@@ -176,6 +206,10 @@ a {
     align-items: center;
     font-weight: 700;
     font-size: 0.8rem;
+}
+
+.space .space-icon > i {
+    line-height: 20px;
 }
 
 .space .space-title div:nth-of-type(3) {

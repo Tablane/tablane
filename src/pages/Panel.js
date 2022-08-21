@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import {Navigate, Route, Routes, useParams} from "react-router-dom";
 import SideBar from "./panel/SideBar";
-import TopMenu from "./panel/TopMenu";
 import Board from "./panel/Board";
 import Home from "./panel/Home";
 import {CircularProgress} from "@material-ui/core";
 import useLocalStorageState from "../modules/hooks/useLocalStorageState";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkspace } from "../modules/state/reducers/workspaceReducer";
+import Notifications from "./panel/Notifications";
 
 function Panel(props) {
     const { workspace } = useSelector(state => state.workspace)
@@ -33,17 +33,19 @@ function Panel(props) {
                     toggleSideBar={toggleSideBar}
                     sideBarClosed={!sidebarOpen}/>
                 <div className={`PanelContent ${sidebarOpen ? 'hidden' : ''}`}>
-                    <TopMenu
-                        toggleSideBar={toggleSideBar}
-                        sideBarClosed={!sidebarOpen}/>
-                    <div className="Board">
-                        <Routes>
-                            <Route path="/:space/:board" element={<Board />}/>
-                            <Route path="/:space/:board/:taskId" element={<Board />}/>
-                            <Route index element={<Home />}/>
-                            <Route path="/:workspace" element={<Navigate to={"/"}/>}/>
-                        </Routes>
-                    </div>
+                    <Routes>
+                        <Route
+                            path="/:space/:board"
+                            element={<Board sidebarOpen={sidebarOpen} toggleSideBar={toggleSideBar} />}/>
+                        <Route
+                            path="/:space/:board/:taskId"
+                            element={<Board sidebarOpen={sidebarOpen} toggleSideBar={toggleSideBar} />}/>
+                        <Route index element={<Home />}/>
+                        <Route
+                            path="/notifications"
+                            element={<Notifications sidebarOpen={sidebarOpen} toggleSideBar={toggleSideBar} />}/>
+                        <Route path="/:workspace" element={<Navigate to={"/"}/>}/>
+                    </Routes>
                 </div>
             </div>
     );
