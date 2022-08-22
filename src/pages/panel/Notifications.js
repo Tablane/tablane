@@ -23,6 +23,26 @@ function Notifications(props) {
                     to: { text: 'under review', color: '#9731ad' }
                 }
             ]
+        },
+        {
+            taskId: 'd146feb',
+            taskName: '',
+            changes: [
+                {
+                    timestamp: 1661090332887,
+                    user: 'user',
+                    type: 'changed status',
+                    from: { text: 'working on it', color: 'rgb(85, 89, 223)' },
+                    to: { text: 'done', color: 'rgb(0, 200, 117)' }
+                },
+                {
+                    timestamp: 1661161230176,
+                    user: 'users',
+                    type: 'changed status',
+                    from: { text: 'done', color: 'rgb(0, 200, 117)' },
+                    to: { text: 'under review', color: 'rgb(226, 68, 92)' }
+                }
+            ]
         }
     ]
 
@@ -51,7 +71,17 @@ function Notifications(props) {
                             {notification.changes.map(change => (
                                 <div className={styles.item} key={change.timestamp + change.from.toString()}>
                                     <div>
-                                        <span>{change.user} ({change.user.toUpperCase()}) from {change.user} to {change.user}</span>
+                                        <div>
+                                            <span className={styles.user}>{change.user}</span>
+                                            <div className={styles.type}>
+                                                <span>{change.type.toUpperCase()}</span>
+                                            </div>
+                                            <div className={styles.change}>
+                                                <span style={{backgroundColor: change.from.color}}>{change.from.text}</span>
+                                                <span>to</span>
+                                                <span style={{backgroundColor: change.to.color}}>{change.to.text}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div>
                                         <Date timestamp={change.timestamp} />
