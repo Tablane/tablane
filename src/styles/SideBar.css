@@ -86,8 +86,13 @@ a {
     cursor: pointer;
 }
 
-.SideBar > .menus > a.active,
 .SideBar > .menus > a:hover {
+    background-color: #F8F9F9;
+}
+
+.SideBar > .menus > a.active {
+    border-left: 4px solid #4169E1;
+    padding-left: 6px;
     background-color: #F8F9F9;
 }
 

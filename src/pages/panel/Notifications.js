@@ -6,12 +6,21 @@ function Notifications(props) {
     const notifications = [
         {
             taskId: 'd146feb',
+            taskName: '',
             changes: [
                 {
+                    timestamp: 1661090332887,
                     user: 'user',
                     type: 'changed status',
                     from: { text: 'working on it', color: '#3f8dcc' },
                     to: { text: 'done', color: '#83be31' }
+                },
+                {
+                    timestamp: 1661161230176,
+                    user: 'users',
+                    type: 'changed status',
+                    from: { text: 'done', color: '#83be31' },
+                    to: { text: 'under review', color: '#9731ad' }
                 }
             ]
         }
@@ -40,12 +49,12 @@ function Notifications(props) {
                                 </div>
                             </div>
                             {notification.changes.map(change => (
-                                <div className={styles.item}>
+                                <div className={styles.item} key={change.timestamp + change.from.toString()}>
                                     <div>
-                                        <span>{change.user} ({change.user}) from {change.user} to {change.user}</span>
+                                        <span>{change.user} ({change.user.toUpperCase()}) from {change.user} to {change.user}</span>
                                     </div>
                                     <div>
-                                        <Date timestamp={1661090332887} />
+                                        <Date timestamp={change.timestamp} />
                                     </div>
                                 </div>
                             ))}

@@ -12,13 +12,13 @@
     width: 100%;
     margin: 0 auto;
     padding: 20px 65px;
+    box-sizing: border-box;
 
     .group {
       background: white;
       box-shadow: 0 0 11px #00000026;
       margin: 20px 0;
       border-radius: 6px;
-      height: 121px;
       overflow: hidden;
 
       & > div:first-of-type {
