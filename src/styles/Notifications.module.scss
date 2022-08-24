@@ -11,15 +11,18 @@
     max-width: 1100px;
     width: 100%;
     margin: 0 auto;
-    padding: 20px 65px;
+    padding: 20px 65px 20px 12px;
     box-sizing: border-box;
+
+    @media (min-width: 992px) {
+      padding: 20px 65px;
+    }
 
     .group {
       background: white;
       box-shadow: 0 0 11px #00000026;
       margin: 20px 0;
       border-radius: 6px;
-      overflow: hidden;
 
       & > div:first-of-type {
         box-sizing: border-box;
@@ -53,6 +56,10 @@
         }
 
         & > div:nth-of-type(2) {
+          display: flex;
+          position: relative;
+          flex-direction: row;
+
           .watch {
             display: flex;
             justify-content: center;
@@ -70,10 +77,38 @@
               background-color: #F2F2F2;
             }
           }
+
+          .markRead {
+            transition: transform .05s cubic-bezier(.785,.135,.15,.86) 0s;
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            right: -50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            & > div {
+              background-color: #4169E1;
+              height: 32px;
+              width: 32px;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: white;
+
+              &:hover {
+                background-color: #224fd7;
+              }
+            }
+          }
         }
       }
 
       & > .item {
+        border-radius: 6px;
         box-sizing: border-box;
         height: 58px;
         padding: 15px 20px;

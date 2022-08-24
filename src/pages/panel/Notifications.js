@@ -66,6 +66,11 @@ function Notifications(props) {
                                     <div className={styles.watch}>
                                         <i className="fa-regular fa-eye"></i>
                                     </div>
+                                    <div className={styles.markRead}>
+                                        <div>
+                                            <i className="fa-solid fa-check"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {notification.changes.map(change => (
