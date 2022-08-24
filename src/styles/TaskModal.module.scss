@@ -1,291 +1,291 @@
 .root {
-    position: fixed;
-    z-index: 1300;
-    inset: 0;
+  position: fixed;
+  z-index: 1300;
+  inset: 0;
 }
 
 .background {
-    z-index: -1;
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    -webkit-tap-highlight-color: transparent;
+  z-index: -1;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .modal {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    top: 20px;
-    left: 25px;
-    width: calc(100vw - 50px);
-    height: calc(100% - 70px);
-    max-width: 1700px;
-    z-index: 801;
-    background: #fff;
-    border-radius: 12px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 20px;
+  left: 25px;
+  width: calc(100vw - 50px);
+  height: calc(100% - 70px);
+  max-width: 1700px;
+  z-index: 801;
+  background: #fff;
+  border-radius: 12px;
 }
 
 @media (min-width: 1751px) {
-    .modal {
-        left: calc(50vw - 850px);
-    }
+  .modal {
+    left: calc(50vw - 850px);
+  }
 }
 
 .topMenu {
-    padding: 24px 32px 8px 32px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 32px 8px 32px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-    .taskId {
-        margin: 0;
-        line-height: 32px;
-    }
+  .taskId {
+    margin: 0;
+    line-height: 32px;
+  }
 }
 
 .additionalMenu {
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  & > div:hover {
+    background-color: #ecedf0;
+  }
+
+  & > .watcher {
+    height: 32px;
+    width: 60px;
+    border-radius: 3px;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
-    & > div {
-        margin-left: 8px;
-        cursor: pointer;
+    i {
+      font-size: 1.3em;
     }
 
-    & > div:hover {
-        background-color: #ecedf0;
+    & > span {
+      margin-left: 5px;
+      line-height: 32px;
+    }
+  }
+
+  & > .close {
+    height: 32px;
+    width: 32px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover > i {
+      transform: rotate(90deg);
     }
 
-    & > .watcher {
-        height: 32px;
-        width: 60px;
-        border-radius: 3px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        i {
-            font-size: 1.3em;
-        }
-
-        & > span {
-            margin-left: 5px;
-            line-height: 32px;
-        }
+    & > i {
+      font-size: 1.5em;
+      transition: transform 0.2s;
     }
-
-    & > .close {
-        height: 32px;
-        width: 32px;
-        border-radius: 3px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover > i {
-            transform: rotate(90deg);
-        }
-
-        & > i {
-            font-size: 1.5em;
-            transition: transform 0.2s;
-        }
-    }
+  }
 }
 
 .mainContent {
-    height: 0;
-    flex: 1 0 0;
-    display: flex;
-    flex-direction: row;
+  height: 0;
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: row;
 }
 
 .contentTab {
-    flex: 1 1 0;
+  flex: 1 1 0;
+  box-sizing: border-box;
+  padding: 0 0 32px 0;
+
+  .name {
+    width: 100%;
     box-sizing: border-box;
-    padding: 0 0 32px 0;
+    padding: 10px 30px;
+    height: 75px;
+  }
 
-    .name {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 10px 30px;
-        height: 75px;
+  .name input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    font-size: 26px;
+    border-radius: 4px;
+  }
+
+  .name:hover input,
+  .contentTab .name input:focus {
+    border: 1px solid #e4e4e4;
+  }
+
+  .description {
+    padding: 10px 30px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 250px;
+
+    textarea {
+      width: 100%;
+      height: 100%;
+      outline: none;
+      padding: 10px 10px;
+      box-sizing: border-box;
+      border: 1px solid white;
+      font-size: 14px;
+      resize: none;
+      border-radius: 4px;
     }
 
-    .name input {
-        width: 100%;
-        height: 100%;
-        outline: none;
-        padding: 0 10px;
-        box-sizing: border-box;
-        border: 1px solid white;
-        font-size: 26px;
-        border-radius: 4px;
+    &:hover textarea,
+    textarea:focus {
+      border: 1px solid #e4e4e4;
     }
-
-    .name:hover input,
-    .contentTab .name input:focus {
-        border: 1px solid #e4e4e4;
-    }
-
-    .description {
-        padding: 10px 30px;
-        width: 100%;
-        box-sizing: border-box;
-        height: 250px;
-
-        textarea {
-            width: 100%;
-            height: 100%;
-            outline: none;
-            padding: 10px 10px;
-            box-sizing: border-box;
-            border: 1px solid white;
-            font-size: 14px;
-            resize: none;
-            border-radius: 4px;
-        }
-
-        &:hover textarea,
-        textarea:focus {
-            border: 1px solid #e4e4e4;
-        }
-    }
+  }
 }
 
 .divider {
-    width: 1px;
-    background-color: rgba(0, 0, 0, 0.1);
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .attributeTab {
-    width: 0;
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 0;
-    box-sizing: border-box;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  box-sizing: border-box;
 }
 
 .historyLog {
-    flex: 1 1 0;
-    width: 100%;
-    font-size: 13px;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 0 32px;
+  flex: 1 1 0;
+  width: 100%;
+  font-size: 13px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 0 32px;
 
-    .authorSpan {
-        color: rgb(65, 105, 225);
-    }
+  .authorSpan {
+    color: rgb(65, 105, 225);
+  }
 
-    > div:first-child {
-        margin-top: 20px;
-    }
+  > div:first-child {
+    margin-top: 20px;
+  }
 
-    p {
-        word-break: break-all;
-        margin: 0;
-    }
+  p {
+    word-break: break-all;
+    margin: 0;
+  }
 
-    .activity {
-        color: #abaeb0;
+  .activity {
+    color: #abaeb0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .comment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .author {
+      width: 42px;
+      flex-shrink: 0;
+      margin-top: 10px;
+
+      > div {
+        background-color: rgb(65, 105, 225);
+        border-radius: 50px;
+        width: 30px;
+        height: 30px;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .comment {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 20px;
-
-        .author {
-            width: 42px;
-            flex-shrink: 0;
-            margin-top: 10px;
-
-            > div {
-                background-color: rgb(65, 105, 225);
-                border-radius: 50px;
-                width: 30px;
-                height: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 11px;
-                color: white;
-            }
-        }
-
-        .commentBody {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            border-radius: 10px;
-            border: 1px solid #dedede;
-            padding: 10px 16px;
-
-            .commentHeader {
-                color: #abaeb0;
-                display: flex;
-                justify-content: space-between;
-                flex-direction: row;
-                margin-bottom: 20px;
-            }
-        }
-    }
-
-    .date {
+        justify-content: center;
+        align-items: center;
         font-size: 11px;
-        font-weight: 400;
-        flex-shrink: 0;
-        margin: 0 0 0 10px;
-        padding: 4px 0 0;
-        color: #abaeb0;
+        color: white;
+      }
     }
+
+    .commentBody {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      border: 1px solid #dedede;
+      padding: 10px 16px;
+
+      .commentHeader {
+        color: #abaeb0;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .date {
+    font-size: 11px;
+    font-weight: 400;
+    flex-shrink: 0;
+    margin: 0 0 0 10px;
+    padding: 4px 0 0;
+    color: #abaeb0;
+  }
 }
 
 .commentingBar {
-    box-sizing: border-box;
-    flex: 0 0 60px;
-    position: relative;
+  box-sizing: border-box;
+  flex: 0 0 60px;
+  position: relative;
+  width: 100%;
+  border-top: 1px solid #dedede;
+  border-radius: 0 0 12px 0;
+
+  &::before {
+    border-radius: 0;
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: -15px;
+    left: 0;
     width: 100%;
-    border-top: 1px solid #dedede;
+    height: 15px;
+    background-image: linear-gradient(
+      -180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+  }
+
+  form {
+    height: 100%;
     border-radius: 0 0 12px 0;
+  }
 
-    &::before {
-        border-radius: 0;
-        content: '';
-        display: block;
-        position: absolute;
-        z-index: 1;
-        top: -15px;
-        left: 0;
-        width: 100%;
-        height: 15px;
-        background-image: linear-gradient(
-            -180deg,
-            transparent 0%,
-            rgba(0, 0, 0, 0.05) 100%
-        );
-    }
-
-    form {
-        height: 100%;
-        border-radius: 0 0 12px 0;
-    }
-
-    input {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        outline: none;
-        border: none;
-        padding: 20px 10px;
-        margin: 0;
-        border-radius: 0 0 12px 0;
-    }
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    padding: 20px 10px;
+    margin: 0;
+    border-radius: 0 0 12px 0;
+  }
 }
