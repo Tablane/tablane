@@ -1,8 +1,13 @@
 import NotificationsTopMenu from "./notifications/NotificationsTopMenu";
 import styles from '../../styles/Notifications.module.scss'
 import Date from "../../utils/RelativeDate";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 function Notifications(props) {
+    const params = useParams()
+    const [tab, setTab] = useState('new')
+
     const notifications = [
         {
             taskId: 'd146feb',
@@ -32,8 +37,8 @@ function Notifications(props) {
             taskId: 'b624ueg',
             taskName: 'Random is something',
             location: {
-                space: 'Development',
-                board: 'Product'
+                space: 'test',
+                board: 'test'
             },
             changes: [
                 {
@@ -56,17 +61,21 @@ function Notifications(props) {
 
     return (
         <div className={styles.wrapper}>
-            <NotificationsTopMenu sidebarOpen={props.sidebarOpen} toggleSideBar={props.toggleSideBar} />
+            <NotificationsTopMenu
+                sidebarOpen={props.sidebarOpen}
+                toggleSideBar={props.toggleSideBar}
+                tab={tab}
+                setTab={setTab} />
             <div className={styles.panel}>
                 <div className={styles.notifications}>
                     {notifications.map(notification => (
-                        <div className={styles.group}>
+                        <div className={styles.group} key={notification.taskId}>
                             <div>
                                 <div>
-                                    <div className={styles.taskLocation}>
+                                    <Link to={`/${params.workspace}/${notification.location.space}/${notification.location.board}`}>
                                         <span>{notification.location.space} > {notification.location.board}</span>
-                                    </div>
-                                    <div className={styles.taskName}>
+                                    </Link>
+                                    <div>
                                         <span>{notification.taskName}</span>
                                     </div>
                                 </div>

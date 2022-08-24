@@ -34,7 +34,7 @@
         padding: 11px 0 5px 20px;
 
         & > div:first-of-type {
-          & > div:first-of-type {
+          & > a:first-of-type {
             box-sizing: border-box;
             height: 19px;
             font-size: 11px;
@@ -43,9 +43,10 @@
             border-radius: 3px;
             line-height: 11px;
             display: inline-block;
+            cursor: pointer;
           }
 
-          & > div:nth-of-type(2) {
+          & > div:first-of-type {
             box-sizing: border-box;
             height: 27px;
             font-size: 17px;
