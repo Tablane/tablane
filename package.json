@@ -46,7 +46,7 @@
     "overrides": [
       {
         "files": [
-          "*.css"
+          "*.css", "*.scss"
         ],
         "options": {
           "singleQuote": false,
