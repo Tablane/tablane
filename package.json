@@ -24,12 +24,39 @@
     "sass": "^1.54.4",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1"
+  },
   "scripts": {
     "dev": "concurrently \"npm start\" \"npm run dev --prefix ../task-board-backend/\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "arrowParens": "avoid",
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "none",
+    "overrides": [
+      {
+        "files": [
+          "*.css"
+        ],
+        "options": {
+          "singleQuote": false,
+          "tabWidth": 2
+        }
+      }
+    ]
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "eslintConfig": {
     "extends": [
