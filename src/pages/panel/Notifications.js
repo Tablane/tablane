@@ -6,7 +6,11 @@ function Notifications(props) {
     const notifications = [
         {
             taskId: 'd146feb',
-            taskName: '',
+            taskName: 'Implement some new features',
+            location: {
+                space: 'Development',
+                board: 'Product'
+            },
             changes: [
                 {
                     timestamp: 1661090332887,
@@ -25,8 +29,12 @@ function Notifications(props) {
             ]
         },
         {
-            taskId: 'd146feb',
-            taskName: '',
+            taskId: 'b624ueg',
+            taskName: 'Random is something',
+            location: {
+                space: 'Development',
+                board: 'Product'
+            },
             changes: [
                 {
                     timestamp: 1661090332887,
@@ -56,10 +64,10 @@ function Notifications(props) {
                             <div>
                                 <div>
                                     <div className={styles.taskLocation}>
-                                        <span>Development > Product</span>
+                                        <span>{notification.location.space} > {notification.location.board}</span>
                                     </div>
                                     <div className={styles.taskName}>
-                                        <span>Implement some new features</span>
+                                        <span>{notification.taskName}</span>
                                     </div>
                                 </div>
                                 <div>
