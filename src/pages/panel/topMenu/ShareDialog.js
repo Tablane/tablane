@@ -1,18 +1,24 @@
-import {Dialog, DialogContent, DialogTitle, makeStyles, Switch} from "@material-ui/core";
-import {useEffect, useState} from "react";
-import {toast} from "react-hot-toast";
-import axios from "axios";
-import {useSelector} from "react-redux";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    makeStyles,
+    Switch
+} from '@material-ui/core'
+import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles({
     content: {
-        marginBottom: '15px',
+        marginBottom: '15px'
     },
     sharing: {
         border: '1px solid #e9ebf0',
         maxWidth: '500px',
         padding: '5px 18px',
-        display: "flex",
+        display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '44px',
@@ -58,21 +64,25 @@ const useStyles = makeStyles({
             }
         }
     }
-});
+})
 
 function ShareDialog(props) {
-    const classes = useStyles();
-    const {board} = useSelector(state => state.board)
+    const classes = useStyles()
+    const { board } = useSelector(state => state.board)
     const [check, setCheck] = useState(board.sharing)
-    const [link, setLink] = useState(board.sharing
-        ? `${window.location.origin}/share/${board._id}`
-        : 'Loading...')
+    const [link, setLink] = useState(
+        board.sharing
+            ? `${window.location.origin}/share/${board._id}`
+            : 'Loading...'
+    )
 
     useEffect(() => {
         setCheck(board.sharing)
-        setLink(board.sharing
-            ? `${window.location.origin}/share/${board._id}`
-            : 'Loading...')
+        setLink(
+            board.sharing
+                ? `${window.location.origin}/share/${board._id}`
+                : 'Loading...'
+        )
     }, [board])
 
     const toggleShare = (e, x) => {
@@ -84,13 +94,18 @@ function ShareDialog(props) {
                 share: x
             },
             withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${board._id}`,
-        }).then(res => {
-            if (x) setLink(`${window.location.origin}/share/${res.data.boardId}`)
-        }).catch(err => {
-            setCheck(!x)
-            toast(err.toString())
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${board._id}`
         })
+            .then(res => {
+                if (x)
+                    setLink(
+                        `${window.location.origin}/share/${res.data.boardId}`
+                    )
+            })
+            .catch(err => {
+                setCheck(!x)
+                toast(err.toString())
+            })
     }
 
     const copy = e => {
@@ -101,11 +116,8 @@ function ShareDialog(props) {
     }
 
     return (
-        <Dialog
-            open={props.open}
-            onClose={props.handleClose}
-        >
-            <DialogTitle id="alert-dialog-title">{"Share Board"}</DialogTitle>
+        <Dialog open={props.open} onClose={props.handleClose}>
+            <DialogTitle id="alert-dialog-title">{'Share Board'}</DialogTitle>
             <DialogContent className={classes.content}>
                 <div className={classes.sharing}>
                     <p>Link sharing</p>
@@ -127,12 +139,13 @@ function ShareDialog(props) {
                             type="text"
                             value={link}
                             onClick={copy}
-                            readOnly/>
+                            readOnly
+                        />
                     </div>
                 )}
             </DialogContent>
         </Dialog>
-    );
+    )
 }
 
 export default ShareDialog

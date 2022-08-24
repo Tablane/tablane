@@ -1,316 +1,315 @@
 .SideBar {
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    transition: transform .2s ease-in-out;
-    position: absolute;
-    width: 280px;
-    height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out;
+  position: absolute;
+  width: 280px;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .SideBar.closed {
-    transform: translateX(-280px);
+  transform: translateX(-280px);
 }
 
 /* hide content next to the sidebar */
 .PanelContent.hidden {
-    margin-left: 280px;
+  margin-left: 280px;
 }
 
 @media (max-width: 576px) {
-    .SideBar {
-        width: 100%;
-    }
-    .SideBar.closed {
-        transform: translateX(-100%);
-    }
-    .PanelContent {
-        margin-left: 0;
-    }
-    .PanelContent.hidden {
-        transform: translateX(100%);
-    }
+  .SideBar {
+    width: 100%;
+  }
+  .SideBar.closed {
+    transform: translateX(-100%);
+  }
+  .PanelContent {
+    margin-left: 0;
+  }
+  .PanelContent.hidden {
+    transform: translateX(100%);
+  }
 }
 
-
 a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .SideBar p {
-    margin: 0
+  margin: 0;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    height: 61px;
-    min-height: 61px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  height: 61px;
+  min-height: 61px;
 }
 
 .header a i.fa-cog {
-    margin-right: 15px;
-    opacity: 0;
-    transition: opacity .2s;
+  margin-right: 15px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 .SideBar:hover .header a i:first-of-type {
-    opacity: 1;
+  opacity: 1;
 }
 
 .header i {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .header > div {
-    display: inline-block;
+  display: inline-block;
 }
 
 .SideBar > .menus {
-    padding-top: 5px;
-    padding-bottom: 15px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 5px;
+  padding-bottom: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .SideBar > .menus > a {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 32px;
-    padding: 0 10px;
-    cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 32px;
+  padding: 0 10px;
+  cursor: pointer;
 }
 
 .SideBar > .menus > a:hover {
-    background-color: #F8F9F9;
+  background-color: #f8f9f9;
 }
 
 .SideBar > .menus > a.active {
-    border-left: 4px solid #4169E1;
-    padding-left: 6px;
-    background-color: #F8F9F9;
+  border-left: 4px solid #4169e1;
+  padding-left: 6px;
+  background-color: #f8f9f9;
 }
 
 .SideBar > .menus > a > .icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 7px;
-    width: 40px;
-    height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 7px;
+  width: 40px;
+  height: 32px;
 }
 
 .boards .section-name {
-    border-top: 1px solid rgba(0,0,0,0.1);
-    cursor: pointer;
-    padding: 0 20px;
-    height: 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 0 20px;
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .boards .section-name:hover {
-    background-color: #F8F9F9;
+  background-color: #f8f9f9;
 }
 
 .boards .section-name label {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
 .boards .new-btn {
-    margin: 5px 20px;
+  margin: 5px 20px;
 }
 
 .boards .new-btn button {
-    background-color: #F3F4F7;
-    width: 100%;
-    text-transform: uppercase;
-    cursor: pointer;
-    font-weight: 600;
-    border: none;
-    height: 24px;
-    border-radius: 2px;
+  background-color: #f3f4f7;
+  width: 100%;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  height: 24px;
+  border-radius: 2px;
 }
 
 .boards .new-btn button:hover {
-    background-color: #E4E4E4;
+  background-color: #e4e4e4;
 }
 
 .boards button i {
-    width: 12px;
-    height: 12px;
-    padding-right: 5px;
+  width: 12px;
+  height: 12px;
+  padding-right: 5px;
 }
 
 /*BOARDS CSS STYLING -______________-__________-_______*/
 
 .spaces {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .spaces .space .space-title {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    height: 32px;
-    padding-right: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding-right: 20px;
 }
 
 .spaces .space .space-title:hover {
-    background-color: #F4F5F7;
+  background-color: #f4f5f7;
 }
 
 .spaces .space .space-title > div:first-of-type {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    transition: transform 0.2s;
-    opacity: 0;
-    font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  transition: transform 0.2s;
+  opacity: 0;
+  font-size: 0.8rem;
 }
 
 .boards:hover .space .space-title > div:first-of-type {
-    opacity: 1;
+  opacity: 1;
 }
 
 .space .space-title > div:first-of-type i {
-    transition: transform 0.2s;
+  transition: transform 0.2s;
 }
 
 .space .space-title > div:first-of-type i.open {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .spaces .space .space-title > div:nth-of-type(2) {
-    height: 100%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .space .space-icon {
-    width: 20px;
-    height: 20px;
-    background-color: #4169E1;
-    margin-right: 10px;
-    border-radius: 5px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
-    font-size: 0.8rem;
+  width: 20px;
+  height: 20px;
+  background-color: #4169e1;
+  margin-right: 10px;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.8rem;
 }
 
 .space .space-icon > i {
-    line-height: 20px;
+  line-height: 20px;
 }
 
 .space .space-title div:nth-of-type(3) {
-    margin-left: auto;
-    font-size: 0.8rem;
+  margin-left: auto;
+  font-size: 0.8rem;
 }
 
 .space .space-title div:nth-of-type(3) i {
-    cursor: pointer;
-    opacity: 0;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .space:hover .space-title div:nth-of-type(3) i:last-child {
-    opacity: 1;
+  opacity: 1;
 }
 
 .space > div:first-child:hover div:nth-of-type(3) i:first-child {
-    opacity: 1;
+  opacity: 1;
 }
 
 .space .space-title div:nth-of-type(3) i:nth-of-type(2) {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .space .space-boards > div > div {
-    min-height: 0.1px;
+  min-height: 0.1px;
 }
 
 .space .space-boards > div > div > div,
 .space .space-boards > div > div > a {
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 32px;
-    padding-left: 35px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 32px;
+  padding-left: 35px;
 }
 
 .space .space-boards > div > div > div:hover,
 .space .space-boards > div > div > a:hover {
-    background-color: #F4F5F7;
+  background-color: #f4f5f7;
 }
 
 .space .space-boards > div > div > div > div:first-of-type,
 .space .space-boards > div > div > a > div:first-of-type {
-    height: 5px;
-    width: 5px;
-    border-radius: 50%;
-    border: 1px solid black;
-    margin-right: 10px;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  border: 1px solid black;
+  margin-right: 10px;
 }
 
 .space .space-boards > div > div > div > i,
 .space .space-boards > div > div > a > i {
-    margin-left: auto;
-    margin-right: 20px;
-    font-size: 0.8rem;
-    opacity: 0;
-    cursor: pointer;
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 0.8rem;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .space .space-boards > div > div > a:hover > i {
-    opacity: 1;
+  opacity: 1;
 }
 
 .SideBar input {
-    padding-left: 10px;
-    box-sizing: border-box;
-    height: 80%;
-    margin: 0;
-    outline: none;
-    border-radius: 3px;
-    border: 1px solid #4169E1;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 80%;
+  margin: 0;
+  outline: none;
+  border-radius: 3px;
+  border: 1px solid #4169e1;
 }
 
 .SideBar input.space {
-    max-width: 150px;
+  max-width: 150px;
 }
 
 .space .space-boards .active-board {
-    background-color: #F4F5F7;
-    border-left: 4px solid #4169E1;
-    padding-left: 31px;
+  background-color: #f4f5f7;
+  border-left: 4px solid #4169e1;
+  padding-left: 31px;
 }
 
 /* END BOARDS CSS STYLING -__________-__________-_______*/
 
 .account {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    margin-top: auto;
-    padding: 15px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .account > div > button {
-    min-width: 0;
+  min-width: 0;
 }

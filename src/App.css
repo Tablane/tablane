@@ -1,27 +1,27 @@
 .App {
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
-    user-select: none;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
 }
 
 .App > div:last-of-type {
-    flex-grow: 1;
-    transition: 0.2s ease-in-out;
+  flex-grow: 1;
+  transition: 0.2s ease-in-out;
 }
 
 .App > div {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .MuiPopover-root {
-    user-select: none;
+  user-select: none;
 }

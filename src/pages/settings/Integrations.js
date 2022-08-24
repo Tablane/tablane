@@ -1,14 +1,11 @@
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles({
-});
+const useStyles = makeStyles({})
 
 function Integrations(props) {
-    const classes = useStyles();
+    const classes = useStyles()
 
-    return (
-        <h1>Integration settings</h1>
-    );
+    return <h1>Integration settings</h1>
 }
 
 export default Integrations

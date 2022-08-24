@@ -1,7 +1,7 @@
-import {Popover} from "@material-ui/core";
+import { Popover } from '@material-ui/core'
 import styles from '../../../styles/GroupByPopover.module.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setGroupBy} from "../../../modules/state/reducers/boardReducer";
+import { useDispatch, useSelector } from 'react-redux'
+import { setGroupBy } from '../../../modules/state/reducers/boardReducer'
 
 function GroupByPopover({ groupByOpen, setGroupByOpen }) {
     const { board } = useSelector(state => state.board)
@@ -11,7 +11,7 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
         setGroupByOpen(null)
     }
 
-    const handleGroupByChange = (_id) => {
+    const handleGroupByChange = _id => {
         dispatch(setGroupBy({ boardId: board._id, _id }))
         handleClose()
     }
@@ -19,7 +19,7 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
     return (
         <Popover
             classes={{
-                paper: styles.popover,
+                paper: styles.popover
             }}
             id={'groupBySelector'}
             open={Boolean(groupByOpen)}
@@ -27,11 +27,11 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
             onClose={handleClose}
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'center',
+                horizontal: 'center'
             }}
             transformOrigin={{
                 vertical: 'top',
-                horizontal: 'center',
+                horizontal: 'center'
             }}
         >
             <div className={styles.root}>
@@ -45,15 +45,25 @@ function GroupByPopover({ groupByOpen, setGroupByOpen }) {
                             <div
                                 className={styles.status}
                                 key={attribute._id}
-                                onClick={() => handleGroupByChange(attribute._id)}>
+                                onClick={() =>
+                                    handleGroupByChange(attribute._id)
+                                }
+                            >
                                 <span>{attribute.name}</span>
-                                {board?.groupBy === attribute._id && <i className="fas fa-check"></i>}
+                                {board?.groupBy === attribute._id && (
+                                    <i className="fas fa-check"></i>
+                                )}
                             </div>
                         )
                     })}
-                    <div className={styles.status} onClick={() => handleGroupByChange('none')}>
+                    <div
+                        className={styles.status}
+                        onClick={() => handleGroupByChange('none')}
+                    >
                         <span>None</span>
-                        {(!board?.groupBy || board?.groupBy === 'none') && <i className="fas fa-check"></i>}
+                        {(!board?.groupBy || board?.groupBy === 'none') && (
+                            <i className="fas fa-check"></i>
+                        )}
                     </div>
                 </div>
             </div>

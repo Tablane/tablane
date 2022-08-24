@@ -1,9 +1,9 @@
 import '../../../styles/TopMenu.scss'
-import ShareDialog from "../topMenu/ShareDialog";
-import useToggleState from "../../../modules/hooks/useToggleState";
-import { useSelector } from "react-redux";
-import GroupByPopover from "../topMenu/GroupByPopover";
-import {useState} from "react";
+import ShareDialog from '../topMenu/ShareDialog'
+import useToggleState from '../../../modules/hooks/useToggleState'
+import { useSelector } from 'react-redux'
+import GroupByPopover from '../topMenu/GroupByPopover'
+import { useState } from 'react'
 
 function BoardTopMenu(props) {
     const { board } = useSelector(state => state.board)
@@ -12,7 +12,9 @@ function BoardTopMenu(props) {
 
     const groupBy = () => {
         if (!board?.groupBy || board.groupBy === 'none') return 'None'
-        return board.attributes.find(attribute => attribute._id === board.groupBy).name
+        return board.attributes.find(
+            attribute => attribute._id === board.groupBy
+        ).name
     }
 
     const handleGroupByOpen = e => {
@@ -24,7 +26,12 @@ function BoardTopMenu(props) {
             <div>
                 <div className="details">
                     {props.sideBarClosed && (
-                        <i onClick={props.toggleSideBar} className="fas fa-angle-double-right"> </i>
+                        <i
+                            onClick={props.toggleSideBar}
+                            className="fas fa-angle-double-right"
+                        >
+                            {' '}
+                        </i>
                     )}
                     <div className="pic">
                         <div> </div>
@@ -43,14 +50,13 @@ function BoardTopMenu(props) {
                 {board && (
                     <ShareDialog
                         open={shareDialogOpen}
-                        handleClose={toggleShareDialogOpen} />
+                        handleClose={toggleShareDialogOpen}
+                    />
                 )}
             </div>
 
             <div className="view-options">
-                <div className="task-search">
-
-                </div>
+                <div className="task-search"></div>
                 <div className="task-filter">
                     <div className="group-by" onClick={handleGroupByOpen}>
                         <i className="fas fa-layer-group"></i>
@@ -59,7 +65,10 @@ function BoardTopMenu(props) {
                 </div>
             </div>
 
-            <GroupByPopover groupByOpen={groupByOpen} setGroupByOpen={setGroupByOpen} />
+            <GroupByPopover
+                groupByOpen={groupByOpen}
+                setGroupByOpen={setGroupByOpen}
+            />
         </div>
     )
 }

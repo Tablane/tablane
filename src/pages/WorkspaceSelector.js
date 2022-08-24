@@ -5,13 +5,13 @@ import {
     DialogTitle,
     makeStyles,
     TextField
-} from "@material-ui/core";
-import {Link, useNavigate} from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import useInputState from "../modules/hooks/useInputState";
-import axios from "axios";
-import {toast} from "react-hot-toast";
-import useToggleState from "../modules/hooks/useToggleState";
+} from '@material-ui/core'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import useInputState from '../modules/hooks/useInputState'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import useToggleState from '../modules/hooks/useToggleState'
 
 const useStyles = makeStyles({
     container: {
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
         '& p': {
             margin: 0,
             transition: 'background-color .2s',
-            borderRadius: '50%',
+            borderRadius: '50%'
         }
     },
     newWorkspace: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles({
         textAlign: 'center',
         '&:hover > div': {
             backgroundColor: 'rgb(83, 108, 254)',
-            color: 'white',
+            color: 'white'
         }
     },
     newAvatar: {
@@ -75,14 +75,13 @@ const useStyles = makeStyles({
         transition: 'color .2s, background-color .2s',
         color: '#4169e1',
         '& p': {
-            margin: 0,
+            margin: 0
         }
     },
     newText: {
         color: '#4169E1'
     }
-});
-
+})
 
 function WorkspaceSelector(props) {
     const classes = useStyles()
@@ -98,13 +97,15 @@ function WorkspaceSelector(props) {
                 name: name
             },
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/`
-        }).then(res => {
-            toast('Workspace has been successfully created')
-            navigate(`/${res.data.id}`)
-        }).catch(err => {
-            console.log(err)
-            toast('Please enable third-party cookies')
         })
+            .then(res => {
+                toast('Workspace has been successfully created')
+                navigate(`/${res.data.id}`)
+            })
+            .catch(err => {
+                console.log(err)
+                toast('Please enable third-party cookies')
+            })
         resetName()
     }
 
@@ -123,9 +124,14 @@ function WorkspaceSelector(props) {
                             </div>
                         </Link>
                     ))}
-                    <div className={classes.newWorkspace} onClick={toggleDialogOpen}>
+                    <div
+                        className={classes.newWorkspace}
+                        onClick={toggleDialogOpen}
+                    >
                         <div className={classes.newAvatar}>
-                            <p><i className="fas fa-plus"> </i></p>
+                            <p>
+                                <i className="fas fa-plus"> </i>
+                            </p>
                         </div>
                         <p className={classes.newText}>Add new</p>
                     </div>
@@ -136,7 +142,8 @@ function WorkspaceSelector(props) {
                 open={dialogOpen}
                 fullWidth={true}
                 maxWidth={'sm'}
-                onClose={toggleDialogOpen}>
+                onClose={toggleDialogOpen}
+            >
                 <DialogTitle>Create a new Workspace</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -153,7 +160,13 @@ function WorkspaceSelector(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={toggleDialogOpen}>Cancel</Button>
-                    <Button onClick={handleCreate} color="primary" variant="contained">Create</Button>
+                    <Button
+                        onClick={handleCreate}
+                        color="primary"
+                        variant="contained"
+                    >
+                        Create
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>

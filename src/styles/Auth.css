@@ -1,48 +1,48 @@
 .Auth {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 .Auth .form {
-    text-align: center;
-    width: 480px;
-    box-shadow: 0 25px 75px rgb(16 30 54 / 25%);
-    border-radius: 7px;
+  text-align: center;
+  width: 480px;
+  box-shadow: 0 25px 75px rgb(16 30 54 / 25%);
+  border-radius: 7px;
 }
 
 .Auth .form > div > form {
-    width: 100%;
+  width: 100%;
 }
 
 .Auth .form > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 50px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 50px 20px;
 }
 
 .Auth .form > p {
-    margin-bottom: 35px;
+  margin-bottom: 35px;
 }
 
 .Auth .form .inputs > div {
-    width: 80%;
-    margin: 15px 0;
+  width: 80%;
+  margin: 15px 0;
 }
 
 .Auth .form button {
-    width: 80%;
+  width: 80%;
 }
 
 .Auth a {
-    color: #4573ce;
+  color: #4573ce;
 }
 
 .Auth .progressWrapper {
-    margin-top: 30px;
-    width: 100%;
-    position: relative;
+  margin-top: 30px;
+  width: 100%;
+  position: relative;
 }

@@ -1,12 +1,12 @@
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import {Link} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import {CircularProgress} from "@material-ui/core";
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { CircularProgress } from '@material-ui/core'
 import '../../styles/Login.css'
-import useInputState from "../../modules/hooks/useInputState";
-import {useDispatch, useSelector} from "react-redux";
-import {registerUser} from "../../modules/state/reducers/userReducer";
+import useInputState from '../../modules/hooks/useInputState'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../../modules/state/reducers/userReducer'
 
 function Login() {
     const submit = useSelector(state => state.user.submit)
@@ -27,7 +27,7 @@ function Login() {
         else if (username.length < 3)
             errors.username = 'Username must be longer than 3 characters'
 
-        if (email === "") errors.email = "This field is required"
+        if (email === '') errors.email = 'This field is required'
         else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))
             errors.email = 'Email is invalid'
 
@@ -36,14 +36,14 @@ function Login() {
             errors.password = 'Password must be longer than 3 characters'
 
         setErrors(errors)
-        return Object.keys(errors).length === 0;
+        return Object.keys(errors).length === 0
     }, [username, email, password])
 
     useEffect(() => {
         if (validate) validateInput()
     }, [username, password, email, validate, validateInput])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
@@ -64,7 +64,8 @@ function Login() {
                             onChange={changeUsername}
                             error={Boolean(errors.username)}
                             helperText={errors.username}
-                            required/>
+                            required
+                        />
                         <TextField
                             id="email"
                             name="email"
@@ -73,7 +74,8 @@ function Login() {
                             onChange={changeEmail}
                             error={Boolean(errors.email)}
                             helperText={errors.email}
-                            required/>
+                            required
+                        />
                         <TextField
                             id="password"
                             name="password"
@@ -83,21 +85,32 @@ function Login() {
                             onChange={changePassword}
                             error={Boolean(errors.password)}
                             helperText={errors.password}
-                            required/>
+                            required
+                        />
                     </div>
                     <div className="progressWrapper">
                         <Button
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={submit === 'loading'}>Register</Button>
-                        {submit === 'loading' && <CircularProgress size={24} className="buttonProgress"/>}
+                            disabled={submit === 'loading'}
+                        >
+                            Register
+                        </Button>
+                        {submit === 'loading' && (
+                            <CircularProgress
+                                size={24}
+                                className="buttonProgress"
+                            />
+                        )}
                     </div>
                 </form>
             </div>
-            <p>or <Link to="/login">login</Link></p>
+            <p>
+                or <Link to="/login">login</Link>
+            </p>
         </div>
-    );
+    )
 }
 
 export default Login

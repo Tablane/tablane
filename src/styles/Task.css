@@ -1,240 +1,241 @@
 .Task {
-    height: 36px;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid white;
+  height: 36px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
 }
 
 .Task:hover {
-    background-color: #fafbfc
+  background-color: #fafbfc;
 }
 
 .Task[data-rbd-drag-handle-context-id] {
-    cursor: auto;
+  cursor: auto;
 }
 
 .Task:last-of-type {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .Task.editing {
-    background-color: #fafbfc;
+  background-color: #fafbfc;
 }
 
 .Task.editing input {
-    color: #4169e1;
+  color: #4169e1;
 }
 
 .Task > p {
-    margin: 0 0 0 15px;
+  margin: 0 0 0 15px;
 }
 
 .Task > form {
-    flex-grow: 1;
-    height: 100%;
+  flex-grow: 1;
+  height: 100%;
 }
 
 .Task > form > input {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-size: 16px;
-    height: 100%;
-    padding: 0;
-    background-color: transparent;
-    margin: 0 0 0 15px;
-    border: none;
-    outline: none;
-    width: calc(100% - 30px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 16px;
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  margin: 0 0 0 15px;
+  border: none;
+  outline: none;
+  width: calc(100% - 30px);
 }
 
 .Task > div {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .Task > div > div {
-    cursor: pointer;
-    border-right: 1px solid white;
-    background-color: rgb(196,196,196);
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    width: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  cursor: pointer;
+  border-right: 1px solid white;
+  background-color: rgb(196, 196, 196);
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Task > div > div > input {
-    text-align: center;
-    font-size: 13px;
-    border: none;
-    outline: none;
-    height: 100%;
-    width: 100%;
-    padding: 0 3px;
+  text-align: center;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  height: 100%;
+  width: 100%;
+  padding: 0 3px;
 }
 
 .Task > div > div:last-of-type {
-    width: 40px;
+  width: 40px;
 }
 
 .Task > div > div:last-of-type i {
-    color: rgba(0,0,0,0.6);
-    display: none;
+  color: rgba(0, 0, 0, 0.6);
+  display: none;
 }
 
 .Task > div > div:last-of-type:hover i {
-    display: inline;
+  display: inline;
 }
 
 .Task > div > div:last-of-type {
-    border-right: none;
+  border-right: none;
 }
 
 .task-popover {
-    width: 140px;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+  width: 140px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .task-popover .options {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
 }
 
 .task-popover .options > div {
-    width: 140px;
-    height: 32px;
-    margin-top: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  width: 140px;
+  height: 32px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .task-popover .options > div.editing {
-    cursor: auto;
+  cursor: auto;
 }
 
 .task-popover .options > div > div {
-    width: 108px;
-    height: 32px;
-    cursor: pointer;
-    transition: width 0.2s;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-    overflow: hidden;
+  width: 108px;
+  height: 32px;
+  cursor: pointer;
+  transition: width 0.2s;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .task-popover .options > div.editing > div {
-    cursor: auto;
-    transition: background-color .2s, width 0.2s;
+  cursor: auto;
+  transition: background-color 0.2s, width 0.2s;
 }
 
 .task-popover .options > div.editing > div:first-of-type {
-    width: 16px;
-    border-radius: 2px 0 0 2px;
-    cursor: pointer;
+  width: 16px;
+  border-radius: 2px 0 0 2px;
+  cursor: pointer;
 }
 
 .task-popover .options > div.editing > div:nth-of-type(2) {
-    border-radius: 0 2px 2px 0;
-    background-color: #F5F6F8;
-    width: 92px;
+  border-radius: 0 2px 2px 0;
+  background-color: #f5f6f8;
+  width: 92px;
 }
 
 .task-popover .options > div.editing > div:nth-of-type(2) input {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    border: none;
-    background-color: transparent;
-    text-align: center;
-    outline: none;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  background-color: transparent;
+  text-align: center;
+  outline: none;
 }
 
 .task-popover .options > div > i:first-of-type,
 .task-popover .options > div > i:last-of-type {
-    opacity: 0;
-    min-width: 16px;
-    width: 16px;
+  opacity: 0;
+  min-width: 16px;
+  width: 16px;
 }
 
 .task-popover .options > div > div > i {
-    opacity: 0;
+  opacity: 0;
 }
 
 .task-popover .options > div.editing:hover i {
-    opacity: 1;
+  opacity: 1;
 }
 
 .task-popover .options > div.default {
-    cursor: pointer;
-    width: 108px;
+  cursor: pointer;
+  width: 108px;
 }
 
 .task-popover .options > div.new-label {
-    justify-content: center;
-    height: 32px;
-    width: 108px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    border: dashed 1px #c4c4c4;
-    transition: background-color 0.2s;
+  justify-content: center;
+  height: 32px;
+  width: 108px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border: dashed 1px #c4c4c4;
+  transition: background-color 0.2s;
 }
 
-.task-popover .colors  {
-    display: flex;
-    background-color: #F5F6F8;
-    flex-wrap: wrap;
-    padding: 8px 16px;
+.task-popover .colors {
+  display: flex;
+  background-color: #f5f6f8;
+  flex-wrap: wrap;
+  padding: 8px 16px;
 }
 
 .task-popover .colors > div {
-    cursor: pointer;
-    padding: 4px;
-    width: 18px;
-    height: 18px;
-    /*border-radius: 50%;*/
+  cursor: pointer;
+  padding: 4px;
+  width: 18px;
+  height: 18px;
+  /*border-radius: 50%;*/
 }
 
 .task-popover .colors > div > div {
-    /*cursor: pointer;*/
-    /*margin: 4px;*/
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
+  /*cursor: pointer;*/
+  /*margin: 4px;*/
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
 }
 
 .task-popover .edit {
-    padding: 8px 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 31px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 31px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .task-popover .edit:hover {
-    background-color: #0073ea;
-    color: white;
+  background-color: #0073ea;
+  color: white;
 }
 
 .task-popover .edit i {
-    margin-right: 10px;
+  margin-right: 10px;
 }
-

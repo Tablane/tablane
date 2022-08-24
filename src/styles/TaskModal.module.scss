@@ -54,7 +54,7 @@
     }
 
     & > div:hover {
-        background-color: #ECEDF0;
+        background-color: #ecedf0;
     }
 
     & > .watcher {
@@ -89,7 +89,7 @@
 
         & > i {
             font-size: 1.5em;
-            transition: transform .2s;
+            transition: transform 0.2s;
         }
     }
 }
@@ -185,7 +185,7 @@
 
     p {
         word-break: break-all;
-        margin: 0
+        margin: 0;
     }
 
     .activity {
@@ -225,7 +225,7 @@
             display: flex;
             flex-direction: column;
             border-radius: 10px;
-            border: 1px solid #DEDEDE;
+            border: 1px solid #dedede;
             padding: 10px 16px;
 
             .commentHeader {
@@ -253,12 +253,12 @@
     flex: 0 0 60px;
     position: relative;
     width: 100%;
-    border-top: 1px solid #DEDEDE;
+    border-top: 1px solid #dedede;
     border-radius: 0 0 12px 0;
 
     &::before {
         border-radius: 0;
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         z-index: 1;
@@ -266,7 +266,11 @@
         left: 0;
         width: 100%;
         height: 15px;
-        background-image: linear-gradient(-180deg,transparent 0%,rgba(0,0,0,.05) 100%);
+        background-image: linear-gradient(
+            -180deg,
+            transparent 0%,
+            rgba(0, 0, 0, 0.05) 100%
+        );
     }
 
     form {

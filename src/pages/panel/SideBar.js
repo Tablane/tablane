@@ -1,17 +1,23 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import '../../styles/SideBar.css'
-import {Link, NavLink} from 'react-router-dom'
-import AccountPopOver from "./sideBar/AccountPopover";
-import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import AnimateHeight from "react-animate-height";
-import {DragDropContext, Draggable, Droppable} from "@hello-pangea/dnd";
-import BoardPopover from "./sideBar/BoardPopover";
-import SpacePopover from "./sideBar/SpacePopover";
-import useLocalStorageState from "../../modules/hooks/useLocalStorageState";
-import useInputState from "../../modules/hooks/useInputState";
-import useToggleState from "../../modules/hooks/useToggleState";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from 'react-router-dom'
+import AccountPopOver from './sideBar/AccountPopover'
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField
+} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import AnimateHeight from 'react-animate-height'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
+import BoardPopover from './sideBar/BoardPopover'
+import SpacePopover from './sideBar/SpacePopover'
+import useLocalStorageState from '../../modules/hooks/useLocalStorageState'
+import useInputState from '../../modules/hooks/useInputState'
+import useToggleState from '../../modules/hooks/useToggleState'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     addBoard,
     addSpace,
@@ -19,18 +25,29 @@ import {
     editSpaceName,
     sortBoard,
     sortSpace
-} from "../../modules/state/reducers/workspaceReducer";
-import { ObjectId } from "../../utils";
+} from '../../modules/state/reducers/workspaceReducer'
+import { ObjectId } from '../../utils'
 
 function SideBar(props) {
     const dispatch = useDispatch()
     // new space dialog
-    const [newSpaceDialogOpen, changeNewSpaceDialogOpen, resetNewSpaceDialogOpen] = useToggleState(false)
-    const [newSpaceName, changeNewSpaceName, resetNewSpaceName] = useInputState('')
+    const [
+        newSpaceDialogOpen,
+        changeNewSpaceDialogOpen,
+        resetNewSpaceDialogOpen
+    ] = useToggleState(false)
+    const [newSpaceName, changeNewSpaceName, resetNewSpaceName] =
+        useInputState('')
 
     // localstorage space opened state
-    const [spaceTabOpen, setSpaceTabOpen] = useLocalStorageState('spaceTabOpen', true)
-    const [spacesClosed, setSpacesClosed] = useLocalStorageState('spacesClosed', [])
+    const [spaceTabOpen, setSpaceTabOpen] = useLocalStorageState(
+        'spaceTabOpen',
+        true
+    )
+    const [spacesClosed, setSpacesClosed] = useLocalStorageState(
+        'spacesClosed',
+        []
+    )
 
     // popover dialogs
     const [boardPopoverAnchor, setBoardPopoverAnchor] = useState(null)
@@ -39,8 +56,10 @@ function SideBar(props) {
     const [popoverBoard, setPopoverBoard] = useState('')
 
     // new board
-    const [newBoardSpace, , resetNewBoardSpace, setNewBoardSpace] = useInputState('')
-    const [newBoardName, changeNewBoardName, resetNewBoardName] = useInputState('')
+    const [newBoardSpace, , resetNewBoardSpace, setNewBoardSpace] =
+        useInputState('')
+    const [newBoardName, changeNewBoardName, resetNewBoardName] =
+        useInputState('')
 
     // editing
     const [editingBoard, setEditingBoard] = useState('')
@@ -72,7 +91,7 @@ function SideBar(props) {
         setSpacePopoverAnchor(null)
     }
 
-    const handleNewBoardClick = (space) => {
+    const handleNewBoardClick = space => {
         setNewBoardSpace(space._id)
         resetNewBoardName()
     }
@@ -80,11 +99,13 @@ function SideBar(props) {
     const handleNewSpace = async () => {
         resetNewSpaceDialogOpen()
         resetNewSpaceName()
-        dispatch(addSpace({
-            workspaceId: workspace._id,
-            _id: ObjectId(),
-            name: newSpaceName
-        }))
+        dispatch(
+            addSpace({
+                workspaceId: workspace._id,
+                _id: ObjectId(),
+                name: newSpaceName
+            })
+        )
     }
 
     const handleNewBoard = async () => {
@@ -95,7 +116,14 @@ function SideBar(props) {
 
         resetNewBoardSpace()
         resetNewBoardName()
-        dispatch(addBoard({ workspaceId: workspace._id, spaceId: newBoardSpace, name: newBoardName, _id: ObjectId() }))
+        dispatch(
+            addBoard({
+                workspaceId: workspace._id,
+                spaceId: newBoardSpace,
+                name: newBoardName,
+                _id: ObjectId()
+            })
+        )
     }
 
     const handleBoardEditClick = (workspace, space, board) => {
@@ -115,15 +143,17 @@ function SideBar(props) {
     const handleSpaceEdit = async () => {
         if (editingSpaceName === '') return setEditingSpace('')
 
-        dispatch(editSpaceName({
-            workspaceId: workspace._id,
-            spaceId: editingSpace,
-            name: editingSpaceName
-        }))
+        dispatch(
+            editSpaceName({
+                workspaceId: workspace._id,
+                spaceId: editingSpace,
+                name: editingSpaceName
+            })
+        )
         setEditingSpace('')
     }
 
-    const toggleClosed = (x) => {
+    const toggleClosed = x => {
         if (editingSpace === x) return
 
         const newSpacesClosed = spacesClosed
@@ -144,82 +174,176 @@ function SideBar(props) {
         body.style.cursor = 'pointer'
     }
 
-    const handleDragEnd = async (result) => {
+    const handleDragEnd = async result => {
         const [body] = document.getElementsByTagName('body')
         body.style.cursor = 'auto'
-        if (result.destination === null ||
-            (result.destination.index === result.source.index
-                && result.destination.droppableId === result.source.droppableId)) return
-        if (result.type === "board") {
+        if (
+            result.destination === null ||
+            (result.destination.index === result.source.index &&
+                result.destination.droppableId === result.source.droppableId)
+        )
+            return
+        if (result.type === 'board') {
             dispatch(sortBoard({ workspaceId: workspace._id, result }))
-        } else if (result.type === "space") {
+        } else if (result.type === 'space') {
             dispatch(sortSpace({ workspaceId: workspace._id, result }))
         }
     }
 
-    const renderSpaces = () => workspace.spaces.map((space, i) => (
+    const renderSpaces = () =>
+        workspace.spaces.map((space, i) => (
             <Draggable draggableId={space._id} key={space._id} index={i}>
-                {(provided) => (
-                    <div className="space" {...provided.draggableProps} ref={provided.innerRef}>
-                        <div className="space-title" {...provided.dragHandleProps}>
+                {provided => (
+                    <div
+                        className="space"
+                        {...provided.draggableProps}
+                        ref={provided.innerRef}
+                    >
+                        <div
+                            className="space-title"
+                            {...provided.dragHandleProps}
+                        >
                             <div>
-                                <i className={`fas fa-caret-right ${spacesClosed.includes(space._id) ? '' : 'open'}`}> </i>
+                                <i
+                                    className={`fas fa-caret-right ${
+                                        spacesClosed.includes(space._id)
+                                            ? ''
+                                            : 'open'
+                                    }`}
+                                >
+                                    {' '}
+                                </i>
                             </div>
                             <div onClick={() => toggleClosed(space._id)}>
-                                <div className="space-icon">{space.name.charAt(0).toUpperCase()}</div>
-                                {space._id === editingSpace ?
-                                    (
-                                        <input type="text"
-                                               className='space'
-                                               defaultValue={space.name}
-                                               onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                               onBlur={handleSpaceEdit}
-                                               onChange={changeEditingSpaceName}
-                                               name="editingSpaceName"
-                                               autoFocus />
-                                    ) : (
-                                        <p>{space.name}</p>
-                                    )}
+                                <div className="space-icon">
+                                    {space.name.charAt(0).toUpperCase()}
+                                </div>
+                                {space._id === editingSpace ? (
+                                    <input
+                                        type="text"
+                                        className="space"
+                                        defaultValue={space.name}
+                                        onKeyUp={e => {
+                                            if (
+                                                e.key === 'Escape' ||
+                                                e.key === 'Enter'
+                                            )
+                                                e.currentTarget.blur()
+                                        }}
+                                        onBlur={handleSpaceEdit}
+                                        onChange={changeEditingSpaceName}
+                                        name="editingSpaceName"
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <p>{space.name}</p>
+                                )}
                             </div>
                             <div>
-                                <i className="fas fa-ellipsis-h" onClick={e => spaceClick(space, e)}> </i>
-                                <i onClick={() => handleNewBoardClick(space)}
-                                   className="fas fa-plus"> </i>
+                                <i
+                                    className="fas fa-ellipsis-h"
+                                    onClick={e => spaceClick(space, e)}
+                                >
+                                    {' '}
+                                </i>
+                                <i
+                                    onClick={() => handleNewBoardClick(space)}
+                                    className="fas fa-plus"
+                                >
+                                    {' '}
+                                </i>
                             </div>
                         </div>
 
                         <AnimateHeight
                             className="space-boards"
                             duration={200}
-                            height={spacesClosed.includes(space._id) ? 0 : 'auto'}>
+                            height={
+                                spacesClosed.includes(space._id) ? 0 : 'auto'
+                            }
+                        >
                             <Droppable droppableId={space._id} type="board">
-                                {(provided) => (
-                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                {provided => (
+                                    <div
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                    >
                                         {space.boards.map((board, i) => {
                                             return (
-                                                <Draggable key={board._id} draggableId={board._id} index={i}>
-                                                    {(provided) => (
+                                                <Draggable
+                                                    key={board._id}
+                                                    draggableId={board._id}
+                                                    index={i}
+                                                >
+                                                    {provided => (
                                                         <NavLink
                                                             {...provided.draggableProps}
-                                                            ref={provided.innerRef}
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
                                                             {...provided.dragHandleProps}
-                                                            className={({ isActive }) => (isActive ? " active-board" : "")}
-                                                            to={`/${props.url.replaceAll('/', '')}/${space.name.replaceAll(' ', '-')}/${board.name.replaceAll(' ', '-')}`}>
+                                                            className={({
+                                                                isActive
+                                                            }) =>
+                                                                isActive
+                                                                    ? ' active-board'
+                                                                    : ''
+                                                            }
+                                                            to={`/${props.url.replaceAll(
+                                                                '/',
+                                                                ''
+                                                            )}/${space.name.replaceAll(
+                                                                ' ',
+                                                                '-'
+                                                            )}/${board.name.replaceAll(
+                                                                ' ',
+                                                                '-'
+                                                            )}`}
+                                                        >
                                                             <div> </div>
-                                                            {board._id === editingBoard.boardId ?
-                                                                (
-                                                                    <input type="text"
-                                                                           className='board'
-                                                                           defaultValue={board.name}
-                                                                           onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                                                           onBlur={handleBoardEdit}
-                                                                           onChange={changeEditingBoardName}
-                                                                           name="editingBoardName"
-                                                                           autoFocus />
-                                                                ) : (
-                                                                    <p>{board.name}</p>
-                                                                )}
-                                                            <i className="fas fa-ellipsis-h" onClick={e => boardClick(space, board, e)}> </i>
+                                                            {board._id ===
+                                                            editingBoard.boardId ? (
+                                                                <input
+                                                                    type="text"
+                                                                    className="board"
+                                                                    defaultValue={
+                                                                        board.name
+                                                                    }
+                                                                    onKeyUp={e => {
+                                                                        if (
+                                                                            e.key ===
+                                                                                'Escape' ||
+                                                                            e.key ===
+                                                                                'Enter'
+                                                                        )
+                                                                            e.currentTarget.blur()
+                                                                    }}
+                                                                    onBlur={
+                                                                        handleBoardEdit
+                                                                    }
+                                                                    onChange={
+                                                                        changeEditingBoardName
+                                                                    }
+                                                                    name="editingBoardName"
+                                                                    autoFocus
+                                                                />
+                                                            ) : (
+                                                                <p>
+                                                                    {board.name}
+                                                                </p>
+                                                            )}
+                                                            <i
+                                                                className="fas fa-ellipsis-h"
+                                                                onClick={e =>
+                                                                    boardClick(
+                                                                        space,
+                                                                        board,
+                                                                        e
+                                                                    )
+                                                                }
+                                                            >
+                                                                {' '}
+                                                            </i>
                                                         </NavLink>
                                                     )}
                                                 </Draggable>
@@ -229,14 +353,27 @@ function SideBar(props) {
                                         {newBoardSpace === space._id && (
                                             <div>
                                                 <div> </div>
-                                                <input type="text"
-                                                       className='board'
-                                                       onKeyUp={e => {if ((e.key === 'Escape') || (e.key === 'Enter')) e.currentTarget.blur()}}
-                                                       onBlur={handleNewBoard}
-                                                       onChange={changeNewBoardName}
-                                                       name="newBoardName"
-                                                       autoFocus />
-                                                <i className="fas fa-ellipsis-h"> </i>
+                                                <input
+                                                    type="text"
+                                                    className="board"
+                                                    onKeyUp={e => {
+                                                        if (
+                                                            e.key ===
+                                                                'Escape' ||
+                                                            e.key === 'Enter'
+                                                        )
+                                                            e.currentTarget.blur()
+                                                    }}
+                                                    onBlur={handleNewBoard}
+                                                    onChange={
+                                                        changeNewBoardName
+                                                    }
+                                                    name="newBoardName"
+                                                    autoFocus
+                                                />
+                                                <i className="fas fa-ellipsis-h">
+                                                    {' '}
+                                                </i>
                                             </div>
                                         )}
                                     </div>
@@ -246,8 +383,7 @@ function SideBar(props) {
                     </div>
                 )}
             </Draggable>
-        )
-    )
+        ))
 
     if (!workspace) return <></>
     return (
@@ -259,25 +395,38 @@ function SideBar(props) {
                     </Link>
                 </div>
                 <div className="icons">
-                    {workspace.members
-                        ? <Link to={`/settings/${workspace.id}/general`}><i className="fas fa-cog"> </i></Link>
-                        : null}
-                    <i className="fas fa-angle-double-left" onClick={props.toggleSideBar}> </i>
+                    {workspace.members ? (
+                        <Link to={`/settings/${workspace.id}/general`}>
+                            <i className="fas fa-cog"> </i>
+                        </Link>
+                    ) : null}
+                    <i
+                        className="fas fa-angle-double-left"
+                        onClick={props.toggleSideBar}
+                    >
+                        {' '}
+                    </i>
                 </div>
             </div>
             <div className="menus">
                 <NavLink
-                    className={({ isActive }) => "home" + (isActive ? " active" : "")}
+                    className={({ isActive }) =>
+                        'home' + (isActive ? ' active' : '')
+                    }
                     to={`/${workspace.id}`}
-                    end>
+                    end
+                >
                     <div className="icon">
                         <i className="fa-solid fa-house"></i>
                     </div>
                     <span>Home</span>
                 </NavLink>
                 <NavLink
-                    className={({ isActive }) => "notifications" + (isActive ? " active" : "")}
-                    to={`/${workspace.id}/notifications`}>
+                    className={({ isActive }) =>
+                        'notifications' + (isActive ? ' active' : '')
+                    }
+                    to={`/${workspace.id}/notifications`}
+                >
                     <div className="icon">
                         <i className="fa-solid fa-bell"></i>
                     </div>
@@ -287,7 +436,17 @@ function SideBar(props) {
             <div className="boards">
                 <div onClick={toggleSpaces} className="section-name">
                     <label>Spaces</label>
-                    <i style={{transition: 'transform 0.2s', transform: spaceTabOpen ? 'rotate(360deg)' : 'rotate(270deg)'}} className="fas fa-angle-down"> </i>
+                    <i
+                        style={{
+                            transition: 'transform 0.2s',
+                            transform: spaceTabOpen
+                                ? 'rotate(360deg)'
+                                : 'rotate(270deg)'
+                        }}
+                        className="fas fa-angle-down"
+                    >
+                        {' '}
+                    </i>
                 </div>
 
                 <AnimateHeight
@@ -296,24 +455,32 @@ function SideBar(props) {
                     height={spaceTabOpen ? 'auto' : 0}
                 >
                     <div className="new-btn">
-                        <button onClick={changeNewSpaceDialogOpen}><i
-                            className="fas fa-plus"> </i>New Space
+                        <button onClick={changeNewSpaceDialogOpen}>
+                            <i className="fas fa-plus"> </i>New Space
                         </button>
                     </div>
                     <div className="space">
                         <div className="space-title">
                             <div> </div>
                             <div>
-                                <div className="space-icon"><i className="fas fa-th-large"> </i></div>
+                                <div className="space-icon">
+                                    <i className="fas fa-th-large"> </i>
+                                </div>
                                 <p>Everything</p>
                             </div>
                         </div>
                     </div>
 
-                    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+                    <DragDropContext
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                    >
                         <Droppable droppableId="spaces" type="space">
-                            {(provided) => (
-                                <div {...provided.droppableProps} ref={provided.innerRef}>
+                            {provided => (
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
                                     {renderSpaces()}
                                     {provided.placeholder}
                                 </div>
@@ -339,7 +506,8 @@ function SideBar(props) {
                 open={newSpaceDialogOpen}
                 onClose={changeNewSpaceDialogOpen}
                 aria-labelledby="form-dialog-title"
-                fullWidth={true}>
+                fullWidth={true}
+            >
                 <DialogTitle id="form-dialog-title">Add new Space</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -371,7 +539,8 @@ function SideBar(props) {
                     workspace={workspace}
                     space={popoverSpace}
                     board={popoverBoard}
-                    handleClose={boardPopoverClose} />
+                    handleClose={boardPopoverClose}
+                />
             )}
 
             {editingSpace === '' && (
@@ -380,11 +549,11 @@ function SideBar(props) {
                     anchor={spacePopoverAnchor}
                     workspace={workspace}
                     space={popoverSpace}
-                    handleClose={spacePopoverClose} />
+                    handleClose={spacePopoverClose}
+                />
             )}
-
         </div>
-    );
+    )
 }
 
 export default SideBar

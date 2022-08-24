@@ -1,14 +1,11 @@
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles({
-});
+const useStyles = makeStyles({})
 
 function Billing(props) {
-    const classes = useStyles();
+    const classes = useStyles()
 
-    return (
-        <h1>Billing settings</h1>
-    );
+    return <h1>Billing settings</h1>
 }
 
 export default Billing

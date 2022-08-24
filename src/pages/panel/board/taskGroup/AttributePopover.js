@@ -1,14 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import Popover from '@material-ui/core/Popover';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import React, { useEffect, useState } from 'react'
+import Popover from '@material-ui/core/Popover'
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import '../../../../styles/AttributePopover.css'
-import { deleteAttribute, editAttributeName } from "../../../../modules/state/reducers/boardReducer";
-import { useDispatch } from "react-redux";
+import {
+    deleteAttribute,
+    editAttributeName
+} from '../../../../modules/state/reducers/boardReducer'
+import { useDispatch } from 'react-redux'
 
 function AttributePopover(props) {
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [name, setName] = useState(props.attr.name);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [name, setName] = useState(props.attr.name)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -30,10 +39,10 @@ function AttributePopover(props) {
         dispatch(editAttributeName({ attributeId: props.attr._id, name }))
     }
 
-    const handleClose = (e) => {
+    const handleClose = e => {
         updateName()
         props.close()
-    };
+    }
 
     return (
         <div>
@@ -44,19 +53,25 @@ function AttributePopover(props) {
                 onClose={handleClose}
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'left'
                 }}
                 transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'left',
+                    horizontal: 'left'
                 }}
             >
                 <div className="content">
                     <div className="name">
-                        <input onChange={e => setName(e.target.value)} value={name} />
+                        <input
+                            onChange={e => setName(e.target.value)}
+                            value={name}
+                        />
                         <i className="far fa-edit"> </i>
                     </div>
-                    <div className="delete" onClick={handleAttributeDeleteClick}>
+                    <div
+                        className="delete"
+                        onClick={handleAttributeDeleteClick}
+                    >
                         <i className="far fa-trash-alt"> </i>
                         <p>Delete</p>
                     </div>
@@ -72,20 +87,28 @@ function AttributePopover(props) {
                 <DialogTitle id="alert-dialog-title">{`Delete this column?`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        This column will be deleted in all tasks within this Board.
+                        This column will be deleted in all tasks within this
+                        Board.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleAttributeDeleteClick} color="primary">
+                    <Button
+                        onClick={handleAttributeDeleteClick}
+                        color="primary"
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleAttributeDelete} color="primary" variant="contained">
+                    <Button
+                        onClick={handleAttributeDelete}
+                        color="primary"
+                        variant="contained"
+                    >
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
         </div>
-    );
+    )
 }
 
 export default AttributePopover

@@ -1,159 +1,159 @@
 .task {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .task .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .task .title p {
-    margin: 0;
+  margin: 0;
 }
 
 .task .title .taskGroup-title {
-    background-color: #579BFC;
-    border-radius: 3px 3px 0 0;
-    color: white;
-    padding: 4px 8px;
-    font-size: 0.8em;
-    text-transform: uppercase;
-    margin-right: 15px;
-    margin-top: auto;
-    display: flex;
-    align-items: center;
+  background-color: #579bfc;
+  border-radius: 3px 3px 0 0;
+  color: white;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  margin-right: 15px;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
 }
 
 .task .title .taskGroup-title.editing {
-    border: 1px solid #579BFC;
-    background-color: white;
-    padding: 1px 8px;
-    width: 200px;
-    height: 21px;
+  border: 1px solid #579bfc;
+  background-color: white;
+  padding: 1px 8px;
+  width: 200px;
+  height: 21px;
 }
 
 .task .title .taskGroup-title.editing form {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .task .title input {
-    max-width: 160px;
-    outline: none;
-    border: none;
+  max-width: 160px;
+  outline: none;
+  border: none;
 }
 
 .task .title .taskGroup-title.editing i:first-of-type {
-    color: #fd7171;
-    display: block;
+  color: #fd7171;
+  display: block;
 }
 
 .task .title .taskGroup-title.editing i:last-of-type {
-    color: #77d257;
-    display: block;
+  color: #77d257;
+  display: block;
 }
 
 .task .title > div > p {
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    text-align: center;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 .task .title .taskGroup-title i {
-    cursor: pointer;
-    margin-left: 10px;
-    font-size: 0.7rem;
-    display: none;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 0.7rem;
+  display: none;
 }
 
 .task .title > div:first-of-type:hover i {
-    display: inline;
+  display: inline;
 }
 
 .task .title div,
 .task .title .attributes {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .task .title .attribute > p.task-amount {
-    font-size: 0.8em;
-    margin-bottom: 0;
-    padding-bottom: 3px;
+  font-size: 0.8em;
+  margin-bottom: 0;
+  padding-bottom: 3px;
 }
 
 .task .title .attributes > div {
-    cursor: auto;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    text-align: center;
-    width: 121px;
+  cursor: auto;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  text-align: center;
+  width: 121px;
 }
 
 .task .title .attribute > i {
-    opacity: 0;
-    transition: opacity 0.2s;
-    margin-left: 5px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  margin-left: 5px;
 }
 
 .task .title .attribute:hover > i:last-of-type {
-    opacity: 1;
+  opacity: 1;
 }
 
 .task .title .attributes > div:last-of-type {
-    width: 40px;
+  width: 40px;
 }
 
 .task .title > div {
-    cursor: auto;
-    display: flex;
-    flex-direction: row;
+  cursor: auto;
+  display: flex;
+  flex-direction: row;
 }
 
 .tasks {
-    border: 2px solid white;
-    border-bottom: none;
-    border-radius: 0 2px 0 0;
+  border: 2px solid white;
+  border-bottom: none;
+  border-radius: 0 2px 0 0;
 }
 
 .task .new-task {
-    border: 2px solid white;
-    background-color: #eee;
-    border-radius: 0 0 2px 2px;
-    height: 26px;
-    display: flex;
-    align-items: center;
+  border: 2px solid white;
+  background-color: #eee;
+  border-radius: 0 0 2px 2px;
+  height: 26px;
+  display: flex;
+  align-items: center;
 }
 
 .task .new-task p {
-    margin: 0 0 0 15px;
-    font-size: 0.8em;
+  margin: 0 0 0 15px;
+  font-size: 0.8em;
 }
 
 .task .new-task input {
-    height: 30px;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    flex-grow: 1;
-    padding: 0 20px;
+  height: 30px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  flex-grow: 1;
+  padding: 0 20px;
 }
 
 .task .new-task button {
-    background-color: #4169E1;
-    border: none;
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    height: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  background-color: #4169e1;
+  border: none;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  height: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-    width: 55px;
-    border-radius: 2px;
-    margin: 0 15px;
-    transition: 5s;
+  width: 55px;
+  border-radius: 2px;
+  margin: 0 15px;
+  transition: 5s;
 }

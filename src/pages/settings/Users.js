@@ -1,28 +1,28 @@
-import {Fragment, useState} from "react";
-import {makeStyles} from "@material-ui/core";
-import useInputState from "../../modules/hooks/useInputState";
-import axios from "axios";
-import {toast} from "react-hot-toast";
-import usePopoverState from "../../modules/hooks/usePopoverState";
-import UserPopup from "./users/UserPopup";
-import {useContext} from "react";
-import WorkspaceContext from "../../modules/context/WorkspaceContext";
-import RolePopup from "./users/RolePopup";
+import { Fragment, useState } from 'react'
+import { makeStyles } from '@material-ui/core'
+import useInputState from '../../modules/hooks/useInputState'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import usePopoverState from '../../modules/hooks/usePopoverState'
+import UserPopup from './users/UserPopup'
+import { useContext } from 'react'
+import WorkspaceContext from '../../modules/context/WorkspaceContext'
+import RolePopup from './users/RolePopup'
 
 const useStyles = makeStyles({
     container: {
-        width: '100%',
+        width: '100%'
     },
     title: {
         fontWeight: 500,
         fontSize: '21px',
         color: '#505050',
-        margin: '0 0 30px',
+        margin: '0 0 30px'
     },
     invite: {
         '& form': {
             display: 'flex',
-            margin: '0 auto 30px',
+            margin: '0 auto 30px'
         },
         '& input': {
             height: '34px',
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
             borderRadius: '2px 0 0 2px',
             marginRight: '0',
             '&:focus': {
-                border: '1px solid #999',
+                border: '1px solid #999'
             }
         },
         '& form > div': {
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
             fontSize: '14px',
             '& > span': {
                 fontSize: '14px',
-                lineHeight: '14px',
+                lineHeight: '14px'
             },
             '& > i': {
                 transition: 'transform 0.2s',
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
                 fontSize: '14px',
                 marginLeft: '8px',
                 '&.menu-open': {
-                    transform: 'rotate(-90deg)',
+                    transform: 'rotate(-90deg)'
                 }
             }
         },
@@ -78,7 +78,7 @@ const useStyles = makeStyles({
             borderRadius: '0 3px 3px 0',
             '&:hover': {
                 borderColor: '#234FD7',
-                backgroundColor: '#234FD7',
+                backgroundColor: '#234FD7'
             }
         }
     },
@@ -90,7 +90,7 @@ const useStyles = makeStyles({
     header: {
         paddingRight: '40px',
         display: 'flex',
-        flexDirection: "row",
+        flexDirection: 'row',
         borderBottom: '1px solid #e4e4e4',
         justifyContent: 'space-between',
         '& > div': {
@@ -113,21 +113,21 @@ const useStyles = makeStyles({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '140px',
+                width: '140px'
             },
             '& > span:last-of-type': {
-                width: '80px',
+                width: '80px'
             }
         }
     },
     rows: {
-        paddingRight: '40px',
+        paddingRight: '40px'
     },
     row: {
         display: 'flex',
         height: '60px',
         alignItems: 'center',
-        flexDirection: "row",
+        flexDirection: 'row',
         borderBottom: '1px solid #e4e4e4',
         justifyContent: 'space-between',
         '& > div': {
@@ -142,7 +142,7 @@ const useStyles = makeStyles({
                 lineHeight: '24px',
                 color: '#343434',
                 fontSize: '13px',
-                flexGrow: 1,
+                flexGrow: 1
             },
             '& > span': {
                 lineHeight: '24px',
@@ -162,13 +162,13 @@ const useStyles = makeStyles({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '140px',
+                width: '140px'
             },
             '& > span:last-of-type': {
                 width: '80px',
                 cursor: 'pointer',
                 '&:hover': {
-                    color: '#4169E1',
+                    color: '#4169E1'
                 }
             }
         },
@@ -195,48 +195,50 @@ const useStyles = makeStyles({
             marginLeft: '3px',
             '&.pending': {
                 color: '#fc0',
-                borderColor: '#fc0',
+                borderColor: '#fc0'
             },
             '&.owner': {
                 color: '#4169E1',
-                borderColor: '#4169E1',
+                borderColor: '#4169E1'
             },
             '&.view-only': {
                 color: '#fb926a',
-                borderColor: '#fb926a',
+                borderColor: '#fb926a'
             }
         }
     }
-});
+})
 
 function Users(props) {
-    const classes = useStyles();
-    const {workspace, getData} = useContext(WorkspaceContext)
+    const classes = useStyles()
+    const { workspace, getData } = useContext(WorkspaceContext)
     const [email, changeEmail, resetEmail] = useInputState('')
     const [role, setRole] = useState('Member')
     const [anchor, open, close] = usePopoverState(false)
     const [addRoleAnchor, addRoleOpen, addRoleClose] = usePopoverState(false)
     const [roleAnchor, roleOpen, roleClose] = usePopoverState(false)
 
-    const addUser = (e) => {
+    const addUser = e => {
         e.preventDefault()
         resetEmail()
         axios({
-            method: "POST",
+            method: 'POST',
             withCredentials: true,
             data: {
                 email: email,
                 role: role
             },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}`,
-        }).then((res) => {
-            toast('User invited')
-            getData()
-        }).catch(err => {
-            if (err.response && err.response.data.error) {
-                toast(err.response.data.error)
-            }
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}`
         })
+            .then(res => {
+                toast('User invited')
+                getData()
+            })
+            .catch(err => {
+                if (err.response && err.response.data.error) {
+                    toast(err.response.data.error)
+                }
+            })
     }
 
     return (
@@ -244,10 +246,21 @@ function Users(props) {
             <p className={classes.title}>Manage People</p>
             <div className={classes.invite}>
                 <form onSubmit={addUser}>
-                    <input placeholder="Invite by Email" value={email} onChange={changeEmail} type="text"/>
+                    <input
+                        placeholder="Invite by Email"
+                        value={email}
+                        onChange={changeEmail}
+                        type="text"
+                    />
                     <div onClick={addRoleOpen}>
                         <span>{role}</span>
-                        <i className={`fas fa-caret-left ${Boolean(addRoleAnchor) ? 'menu-open' : ''}`}> </i>
+                        <i
+                            className={`fas fa-caret-left ${
+                                Boolean(addRoleAnchor) ? 'menu-open' : ''
+                            }`}
+                        >
+                            {' '}
+                        </i>
                     </div>
                     <button>Invite</button>
                 </form>
@@ -266,36 +279,68 @@ function Users(props) {
                 <div className={classes.rows}>
                     {workspace.members.map(x => (
                         <Fragment key={x.user._id}>
-                            {anchor.id === x.user._id && <UserPopup member={x} anchor={anchor} close={close} />}
-                            {(roleAnchor.id === x.user._id && x.role !== 'owner') && (
-                                <RolePopup anchor={roleAnchor} close={roleClose} cRole={x.role} />
+                            {anchor.id === x.user._id && (
+                                <UserPopup
+                                    member={x}
+                                    anchor={anchor}
+                                    close={close}
+                                />
                             )}
+                            {roleAnchor.id === x.user._id &&
+                                x.role !== 'owner' && (
+                                    <RolePopup
+                                        anchor={roleAnchor}
+                                        close={roleClose}
+                                        cRole={x.role}
+                                    />
+                                )}
                             <div className={classes.row} key={x.email}>
                                 <div>
                                     <div>
                                         <span>{x.user.username}</span>
                                         <div className={classes.labels}>
                                             {x.labels.map(label => (
-                                                <span key={label} className={`${label.toLowerCase()}`}>{label}</span>
+                                                <span
+                                                    key={label}
+                                                    className={`${label.toLowerCase()}`}
+                                                >
+                                                    {label}
+                                                </span>
                                             ))}
-                                            {x.role === 'owner' && (<span className={"owner"}>Owner</span>)}
-                                            {x.role === 'guest' && (<span className={"view-only"}>View Only</span>)}
+                                            {x.role === 'owner' && (
+                                                <span className={'owner'}>
+                                                    Owner
+                                                </span>
+                                            )}
+                                            {x.role === 'guest' && (
+                                                <span className={'view-only'}>
+                                                    View Only
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                     <span>{x.user.email}</span>
                                 </div>
                                 <div>
-                                    <span id={x.user._id} onClick={roleOpen}>{x.role}</span>
-                                    <span onClick={open} id={x.user._id}><i className="fas fa-ellipsis-h"> </i></span>
+                                    <span id={x.user._id} onClick={roleOpen}>
+                                        {x.role}
+                                    </span>
+                                    <span onClick={open} id={x.user._id}>
+                                        <i className="fas fa-ellipsis-h"> </i>
+                                    </span>
                                 </div>
                             </div>
                         </Fragment>
                     ))}
                 </div>
             </div>
-            <RolePopup anchor={addRoleAnchor} setRole={setRole} close={addRoleClose} />
+            <RolePopup
+                anchor={addRoleAnchor}
+                setRole={setRole}
+                close={addRoleClose}
+            />
         </div>
-    );
+    )
 }
 
 export default Users

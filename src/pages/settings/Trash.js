@@ -1,14 +1,11 @@
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles({
-});
+const useStyles = makeStyles({})
 
 function Trash(props) {
-    const classes = useStyles();
+    const classes = useStyles()
 
-    return (
-        <h1>Trash settings</h1>
-    );
+    return <h1>Trash settings</h1>
 }
 
 export default Trash

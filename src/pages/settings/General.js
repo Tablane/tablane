@@ -6,21 +6,21 @@ import {
     DialogContentText,
     DialogTitle,
     makeStyles
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import useInputState from "../../modules/hooks/useInputState";
-import {toast} from "react-hot-toast";
-import {useContext, useState} from "react";
-import axios from "axios";
-import WorkspaceContext from "../../modules/context/WorkspaceContext";
-import useToggleState from "../../modules/hooks/useToggleState";
-import { useNavigate } from "react-router-dom";
+} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import useInputState from '../../modules/hooks/useInputState'
+import { toast } from 'react-hot-toast'
+import { useContext, useState } from 'react'
+import axios from 'axios'
+import WorkspaceContext from '../../modules/context/WorkspaceContext'
+import useToggleState from '../../modules/hooks/useToggleState'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles({
     container: {
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
+        width: '100%'
     },
     name: {
         fontWeight: 500,
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
             justifyContent: 'center',
             alignItems: 'center',
             marginRight: '20px',
-            color: 'white',
+            color: 'white'
         },
         '& input': {
             outline: 'none',
@@ -61,17 +61,17 @@ const useStyles = makeStyles({
     },
     buttons: {
         display: 'flex',
-        flexDirection: "row",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         '& div > button:nth-of-type(2)': {
             marginLeft: '15px'
         }
     }
-});
+})
 
 function General(props) {
-    const classes = useStyles();
-    const {workspace, getData} = useContext(WorkspaceContext)
+    const classes = useStyles()
+    const { workspace, getData } = useContext(WorkspaceContext)
     const [deleting, setDeleting] = useToggleState(false)
     const [name, changeName] = useInputState(workspace.name)
     const nameEdited = name !== workspace.name
@@ -83,12 +83,14 @@ function General(props) {
             method: 'DELETE',
             withCredentials: true,
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
-        }).then(() => {
-            toast('Workspace successfully deleted')
-            navigate('/')
-        }).catch(err => {
-            console.log(err)
         })
+            .then(() => {
+                toast('Workspace successfully deleted')
+                navigate('/')
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     const handleRename = () => {
@@ -100,13 +102,15 @@ function General(props) {
                 name: name
             },
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
-        }).then(res => {
-            getData()
-            setSaving(false)
-        }).catch(err => {
-            setSaving(false)
-            console.log(err)
         })
+            .then(res => {
+                getData()
+                setSaving(false)
+            })
+            .catch(err => {
+                setSaving(false)
+                console.log(err)
+            })
     }
 
     return (
@@ -117,16 +121,39 @@ function General(props) {
                 </div>
                 <div className={classes.workspaceName}>
                     <div>{workspace.name[0]}</div>
-                    <input type="text" value={name} onChange={changeName}/>
+                    <input type="text" value={name} onChange={changeName} />
                 </div>
                 <div className={classes.buttons}>
                     <div>
-                        <Button variant="outlined" onClick={() => toast('Currently not supported')}>Transfer Ownership</Button>
-                        <Button color="secondary" variant="outlined" onClick={setDeleting}>Delete Workspace</Button>
+                        <Button
+                            variant="outlined"
+                            onClick={() => toast('Currently not supported')}
+                        >
+                            Transfer Ownership
+                        </Button>
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            onClick={setDeleting}
+                        >
+                            Delete Workspace
+                        </Button>
                     </div>
-                    <div style={{position: 'relative'}}>
-                        <Button variant="outlined" color="primary" disabled={!nameEdited} onClick={handleRename}>{nameEdited ? 'Save' : 'Saved'}</Button>
-                        {saving && <CircularProgress size={24} className="buttonProgress"/>}
+                    <div style={{ position: 'relative' }}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={!nameEdited}
+                            onClick={handleRename}
+                        >
+                            {nameEdited ? 'Save' : 'Saved'}
+                        </Button>
+                        {saving && (
+                            <CircularProgress
+                                size={24}
+                                className="buttonProgress"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -137,24 +164,29 @@ function General(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Delete Workspace?"}
+                    {'Delete Workspace?'}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Deleting this Workspace will delete all files, tasks, and history.
+                        Deleting this Workspace will delete all files, tasks,
+                        and history.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={setDeleting} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="primary" variant="contained">
+                    <Button
+                        onClick={handleDelete}
+                        color="primary"
+                        variant="contained"
+                    >
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
         </>
-    );
+    )
 }
 
 export default General

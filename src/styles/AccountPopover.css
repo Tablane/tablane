@@ -1,121 +1,121 @@
 .popover {
-    width: 410px;
-    height: 360px;
-    display: flex;
-    flex-direction: column;
+  width: 410px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
 }
 
 .popover p {
-    margin: 0;
+  margin: 0;
 }
 
 .popover > div:first-of-type {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
 .popover > div .workspaces {
-    width: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 40px;
-    padding: 5px 0;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+  padding: 5px 0;
 }
 
 .popover > div .workspaces > div {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .popover > div .workspaces > div:last-of-type {
-    margin-bottom: 0;
-    font-size: 8px;
-    color: #333333;
-    background-color: transparent;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='%23333' stroke-width='1' stroke-dasharray='3' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-    border-radius: 100px;
+  margin-bottom: 0;
+  font-size: 8px;
+  color: #333333;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='%23333' stroke-width='1' stroke-dasharray='3' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  border-radius: 100px;
 }
 
 .popover > div .workspaces > div,
 .popover > div .workspace-settings div > div.circle,
 .popover > div .user-settings div > div.circle {
-    color: white;
-    font-weight: 700;
-    font-size: 0.8em;
-    cursor: pointer;
-    background-color: rgb(83, 108, 254);
-    border-radius: 50%;
-    line-height: 26px;
-    text-align: center;
-    width: 26px;
-    height: 26px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8em;
+  cursor: pointer;
+  background-color: rgb(83, 108, 254);
+  border-radius: 50%;
+  line-height: 26px;
+  text-align: center;
+  width: 26px;
+  height: 26px;
 }
 
 .popover .workspace-settings > div:first-of-type,
 .popover .user-settings > div:first-of-type {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .popover > div > div > div > p {
-    margin-left: 10px;
-    font-weight: 600;
-    font-size: 12px;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 12px;
 }
 
 .popover .workspace-settings,
 .popover .user-settings {
-    padding: 15px 20px;
-    border-left: 1px solid #e9ebf0;
-    width: 185px;
-    display: flex;
-    flex-direction: column;
+  padding: 15px 20px;
+  border-left: 1px solid #e9ebf0;
+  width: 185px;
+  display: flex;
+  flex-direction: column;
 }
 
 .popover div.buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 div.buttons button,
 div.buttons a {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    box-sizing: border-box;
-    text-align: left;
-    width: 100%;
-    font-size: 13px;
-    height: 30px;
-    padding: 9px 0;
-    cursor: pointer;
-    background-color: white;
-    outline: none;
-    border: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+  font-size: 13px;
+  height: 30px;
+  padding: 9px 0;
+  cursor: pointer;
+  background-color: white;
+  outline: none;
+  border: none;
 }
 
 .popover > div:nth-of-type(2) {
-    border-top: 1px solid #e9ebf0;
-    height: 39px;
-    line-height: 39px;
-    padding: 0 16px;
-    background-color: #fafbfc;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
+  border-top: 1px solid #e9ebf0;
+  height: 39px;
+  line-height: 39px;
+  padding: 0 16px;
+  background-color: #fafbfc;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
 }
 
 .popover > div:nth-of-type(2) i {
-    width: 28px;
-    text-align: center;
+  width: 28px;
+  text-align: center;
 }

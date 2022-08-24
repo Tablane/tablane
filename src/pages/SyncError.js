@@ -4,19 +4,20 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, makeStyles
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import React, {useContext, useEffect, useState} from "react";
-import SyncErrorContext from "../modules/context/SyncErrorContext";
-import {green} from "@material-ui/core/colors";
-import BoardContext from "../modules/context/BoardContext";
-import axios from "axios";
+    DialogTitle,
+    makeStyles
+} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import React, { useContext, useEffect, useState } from 'react'
+import SyncErrorContext from '../modules/context/SyncErrorContext'
+import { green } from '@material-ui/core/colors'
+import BoardContext from '../modules/context/BoardContext'
+import axios from 'axios'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     wrapper: {
         margin: theme.spacing(1),
-        position: 'relative',
+        position: 'relative'
     },
     buttonProgress: {
         color: green[500],
@@ -24,14 +25,14 @@ const useStyles = makeStyles((theme) => ({
         top: '50%',
         left: '50%',
         marginTop: -12,
-        marginLeft: -12,
-    },
-}));
+        marginLeft: -12
+    }
+}))
 
 function SyncError() {
     const classes = useStyles()
-    const {syncError, setSyncError} = useContext(SyncErrorContext)
-    const {getBoardData} = useContext(BoardContext)
+    const { syncError, setSyncError } = useContext(SyncErrorContext)
+    const { getBoardData } = useContext(BoardContext)
     const [trying, setTrying] = useState(false)
     const [secondsLeft, setSecondsLeft] = useState(10)
 
@@ -53,15 +54,17 @@ function SyncError() {
             method: 'GET',
             url: `${process.env.REACT_APP_BACKEND_HOST}/api/user`,
             withCredentials: true
-        }).then(() => {
-            getBoardData()
-            setSyncError(false)
-            setTrying(false)
-            setSecondsLeft(10)
-        }).catch(() => {
-            setTrying(false)
-            setSecondsLeft(10)
         })
+            .then(() => {
+                getBoardData()
+                setSyncError(false)
+                setTrying(false)
+                setSecondsLeft(10)
+            })
+            .catch(() => {
+                setTrying(false)
+                setSecondsLeft(10)
+            })
     }
 
     return (
@@ -70,7 +73,9 @@ function SyncError() {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">{"Client out of sync"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+                {'Client out of sync'}
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     We will try to reconnect you.
@@ -82,14 +87,23 @@ function SyncError() {
                         onClick={handleTry}
                         color="primary"
                         variant="contained"
-                        disabled={trying}>
+                        disabled={trying}
+                    >
                         {trying ? (
                             <span>Reconnecting</span>
                         ) : (
-                            <span>Retrying in {secondsLeft} second{secondsLeft !== 1 && 's'}</span>
+                            <span>
+                                Retrying in {secondsLeft} second
+                                {secondsLeft !== 1 && 's'}
+                            </span>
                         )}
                     </Button>
-                    {trying && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                    {trying && (
+                        <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                        />
+                    )}
                 </div>
             </DialogActions>
         </Dialog>

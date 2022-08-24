@@ -1,12 +1,12 @@
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import {Link} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import {CircularProgress} from "@material-ui/core";
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { CircularProgress } from '@material-ui/core'
 import '../../styles/Login.css'
-import useInputState from "../../modules/hooks/useInputState";
-import {useDispatch, useSelector} from "react-redux";
-import {loginUser} from "../../modules/state/reducers/userReducer";
+import useInputState from '../../modules/hooks/useInputState'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser } from '../../modules/state/reducers/userReducer'
 
 function Login() {
     const [validate, setValidate] = useState(false)
@@ -31,14 +31,14 @@ function Login() {
             errors.password = 'Password must be longer than 3 characters'
 
         setErrors(errors)
-        return Object.keys(errors).length === 0;
+        return Object.keys(errors).length === 0
     }, [username, password])
 
     useEffect(() => {
         if (validate) validateInput()
     }, [username, password, validate, validateInput])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
@@ -59,7 +59,8 @@ function Login() {
                             onChange={changeUsername}
                             error={Boolean(errors.username)}
                             helperText={errors.username}
-                            required/>
+                            required
+                        />
                         <TextField
                             id="password"
                             name="password"
@@ -69,22 +70,32 @@ function Login() {
                             onChange={changePassword}
                             error={Boolean(errors.password)}
                             helperText={errors.password}
-                            required/>
+                            required
+                        />
                     </div>
                     <div className="progressWrapper">
                         <Button
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={submit === 'loading'}>Login</Button>
-                        {submit === 'loading' && <CircularProgress size={24} className="buttonProgress"/>}
+                            disabled={submit === 'loading'}
+                        >
+                            Login
+                        </Button>
+                        {submit === 'loading' && (
+                            <CircularProgress
+                                size={24}
+                                className="buttonProgress"
+                            />
+                        )}
                     </div>
                 </form>
             </div>
-            <p>or <Link to="/register">sign up</Link></p>
+            <p>
+                or <Link to="/register">sign up</Link>
+            </p>
         </div>
-    );
-
+    )
 }
 
 export default Login

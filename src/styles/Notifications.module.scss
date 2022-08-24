@@ -1,186 +1,185 @@
 .wrapper {
-  height: 100%;
+    height: 100%;
 }
 
 .panel {
-  background-color: #eee;
-  overflow: auto;
-  height: 100%;
+    background-color: #eee;
+    overflow: auto;
+    height: 100%;
 
-  .notifications {
-    max-width: 1100px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px 65px 20px 12px;
-    box-sizing: border-box;
-
-    @media (min-width: 992px) {
-      padding: 20px 65px;
-    }
-
-    .group {
-      background: white;
-      box-shadow: 0 0 11px #00000026;
-      margin: 20px 0;
-      border-radius: 6px;
-
-      & > div:first-of-type {
+    .notifications {
+        max-width: 1100px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px 65px 20px 12px;
         box-sizing: border-box;
-        height: 63px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #efeef0;
-        padding: 11px 0 5px 20px;
 
-        & > div:first-of-type {
-          & > a:first-of-type {
-            box-sizing: border-box;
-            height: 19px;
-            font-size: 11px;
-            padding: 3px 6px;
-            border: 1px solid #e9ebf0;
-            border-radius: 3px;
-            line-height: 11px;
-            display: inline-block;
-            cursor: pointer;
-          }
-
-          & > div:first-of-type {
-            box-sizing: border-box;
-            height: 27px;
-            font-size: 17px;
-            font-weight: 500;
-            line-height: 17px;
-            padding: 5px 10px 5px 5px;
-          }
+        @media (min-width: 992px) {
+            padding: 20px 65px;
         }
 
-        & > div:nth-of-type(2) {
-          display: flex;
-          position: relative;
-          flex-direction: row;
+        .group {
+            background: white;
+            box-shadow: 0 0 11px #00000026;
+            margin: 20px 0;
+            border-radius: 6px;
 
-          .watch {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 10px;
-            height: 32px;
-            width: 32px;
-            padding: 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: background-color .2s;
-
-            &:hover {
-              background-color: #F2F2F2;
-            }
-          }
-
-          .markRead {
-            transition: transform .05s cubic-bezier(.785,.135,.15,.86) 0s;
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            right: -50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-
-            & > div {
-              background-color: #4169E1;
-              height: 32px;
-              width: 32px;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: white;
-
-              &:hover {
-                background-color: #224fd7;
-              }
-            }
-          }
-        }
-      }
-
-      & > .item {
-        border-radius: 6px;
-        box-sizing: border-box;
-        height: 58px;
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        & > div:first-of-type {
-          font-size: 13px;
-          line-height: 13px;
-
-          & > div {
-            display: flex;
-            flex-direction: row;
-
-            .user {
-              display: flex;
-              align-items: center;
-            }
-
-            .type {
-              color: #7b68ee;
-              font-size: 11px;
-              font-weight: 500;
-              line-height: 11px;
-              margin: 0 10px;
-              padding: 4px 8px;
-              text-transform: uppercase;
-              border-radius: 20px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              overflow: visible;
-              background: #fff;
-              box-shadow: 0 0 3px #00000042;
-              flex-shrink: 0;
-            }
-
-            .change {
-              display: flex;
-              align-items: center;
-
-              & > span:first-of-type,
-              & > span:nth-of-type(3) {
+            & > div:first-of-type {
+                box-sizing: border-box;
+                height: 63px;
                 display: flex;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: center;
-                height: 20px;
-                padding: 0 7px;
-                border-radius: 6px;
-                max-width: 304px;
-                min-width: 0;
-                color: white;
-              }
+                border-bottom: 1px solid #efeef0;
+                padding: 11px 0 5px 20px;
 
-              & > span:nth-of-type(2) {
-                margin: 0 5px;
-              }
+                & > div:first-of-type {
+                    & > a:first-of-type {
+                        box-sizing: border-box;
+                        height: 19px;
+                        font-size: 11px;
+                        padding: 3px 6px;
+                        border: 1px solid #e9ebf0;
+                        border-radius: 3px;
+                        line-height: 11px;
+                        display: inline-block;
+                        cursor: pointer;
+                    }
+
+                    & > div:first-of-type {
+                        box-sizing: border-box;
+                        height: 27px;
+                        font-size: 17px;
+                        font-weight: 500;
+                        line-height: 17px;
+                        padding: 5px 10px 5px 5px;
+                    }
+                }
+
+                & > div:nth-of-type(2) {
+                    display: flex;
+                    position: relative;
+                    flex-direction: row;
+
+                    .watch {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 10px;
+                        height: 32px;
+                        width: 32px;
+                        padding: 6px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        box-sizing: border-box;
+                        transition: background-color 0.2s;
+
+                        &:hover {
+                            background-color: #f2f2f2;
+                        }
+                    }
+
+                    .markRead {
+                        transition: transform 0.05s
+                            cubic-bezier(0.785, 0.135, 0.15, 0.86) 0s;
+                        position: absolute;
+                        width: 32px;
+                        height: 32px;
+                        right: -50px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+
+                        & > div {
+                            background-color: #4169e1;
+                            height: 32px;
+                            width: 32px;
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: white;
+
+                            &:hover {
+                                background-color: #224fd7;
+                            }
+                        }
+                    }
+                }
             }
-          }
+
+            & > .item {
+                border-radius: 6px;
+                box-sizing: border-box;
+                height: 58px;
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                & > div:first-of-type {
+                    font-size: 13px;
+                    line-height: 13px;
+
+                    & > div {
+                        display: flex;
+                        flex-direction: row;
+
+                        .user {
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .type {
+                            color: #7b68ee;
+                            font-size: 11px;
+                            font-weight: 500;
+                            line-height: 11px;
+                            margin: 0 10px;
+                            padding: 4px 8px;
+                            text-transform: uppercase;
+                            border-radius: 20px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            overflow: visible;
+                            background: #fff;
+                            box-shadow: 0 0 3px #00000042;
+                            flex-shrink: 0;
+                        }
+
+                        .change {
+                            display: flex;
+                            align-items: center;
+
+                            & > span:first-of-type,
+                            & > span:nth-of-type(3) {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                height: 20px;
+                                padding: 0 7px;
+                                border-radius: 6px;
+                                max-width: 304px;
+                                min-width: 0;
+                                color: white;
+                            }
+
+                            & > span:nth-of-type(2) {
+                                margin: 0 5px;
+                            }
+                        }
+                    }
+                }
+
+                & > div:nth-of-type(2) {
+                }
+            }
         }
 
-        & > div:nth-of-type(2) {
-
+        .item {
+            background: #fbfbfb;
         }
-      }
     }
-
-    .item {
-      background: #FBFBFB;
-
-    }
-  }
 }

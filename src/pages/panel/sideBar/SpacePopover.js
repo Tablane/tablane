@@ -6,18 +6,18 @@ import {
     DialogTitle,
     makeStyles,
     Popover
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import React, {useState} from "react";
-import {toast} from "react-hot-toast";
-import { deleteSpace } from "../../../modules/state/reducers/workspaceReducer";
-import { useDispatch } from "react-redux";
+} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import React, { useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { deleteSpace } from '../../../modules/state/reducers/workspaceReducer'
+import { useDispatch } from 'react-redux'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     popover: {
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "row",
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
         '& > div': {
             width: '40px',
             height: '40px',
@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme) => ({
             color: 'crimson'
         }
     }
-}));
+}))
 
 function SpacePopover(props) {
     const dispatch = useDispatch()
-    const classes = useStyles();
-    const [deleting, setDeleting] = useState(false);
+    const classes = useStyles()
+    const [deleting, setDeleting] = useState(false)
 
     const handleDeleteClick = () => {
         setDeleting(true)
@@ -46,9 +46,11 @@ function SpacePopover(props) {
 
     const handleSpaceDelete = async () => {
         handleClose()
-        const {workspace, space} = props
+        const { workspace, space } = props
 
-        dispatch(deleteSpace({ workspaceId: workspace._id, spaceId: space._id }))
+        dispatch(
+            deleteSpace({ workspaceId: workspace._id, spaceId: space._id })
+        )
         setDeleting(false)
     }
 
@@ -59,7 +61,7 @@ function SpacePopover(props) {
     }
 
     const handleEditClick = () => {
-        const {workspace, space} = props
+        const { workspace, space } = props
 
         props.handleClose()
         props.handleEditClick(workspace, space)
@@ -79,17 +81,23 @@ function SpacePopover(props) {
                     onClose={props.handleClose}
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'center',
+                        horizontal: 'center'
                     }}
                     transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'center',
+                        horizontal: 'center'
                     }}
                 >
                     <div className={classes.popover}>
-                        <div onClick={handleCopyClick}><i className="fas fa-link"> </i></div>
-                        <div onClick={handleEditClick}><i className="fas fa-pen"> </i></div>
-                        <div onClick={handleDeleteClick}><i className="fas fa-trash-alt"> </i></div>
+                        <div onClick={handleCopyClick}>
+                            <i className="fas fa-link"> </i>
+                        </div>
+                        <div onClick={handleEditClick}>
+                            <i className="fas fa-pen"> </i>
+                        </div>
+                        <div onClick={handleDeleteClick}>
+                            <i className="fas fa-trash-alt"> </i>
+                        </div>
                     </div>
                 </Popover>
             </div>
@@ -101,7 +109,9 @@ function SpacePopover(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Remove Space?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    {'Remove Space?'}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         All boards and tasks within this Space will be deleted.
@@ -111,7 +121,11 @@ function SpacePopover(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSpaceDelete} color="primary" variant="contained">
+                    <Button
+                        onClick={handleSpaceDelete}
+                        color="primary"
+                        variant="contained"
+                    >
                         Delete
                     </Button>
                 </DialogActions>
