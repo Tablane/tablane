@@ -1,0 +1,68 @@
+.container {
+  padding: 40px;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 21px;
+  margin: 0 0 30px;
+}
+
+.workspaces {
+  & > a {
+    cursor: auto;
+  }
+}
+.workspace {
+  cursor: pointer;
+  display: inline-block;
+  width: 160px;
+  height: 204px;
+  margin: 0 70px 50px 0;
+  text-align: center;
+  &:hover div p {
+    background-color: rgba(84, 77, 97, 0.8);
+  }
+}
+.avatar {
+  width: 160px;
+  height: 160px;
+  background-color: rgb(83, 108, 254);
+  border-radius: 50%;
+  line-height: 160px;
+  font-size: 50px;
+  color: white;
+  & p {
+    margin: 0;
+    transition: background-color 0.2s;
+    border-radius: 50%;
+  }
+}
+.newWorkspace {
+  cursor: pointer;
+  display: inline-block;
+  width: 160px;
+  height: 204px;
+  margin: 0 70px 50px 0;
+  text-align: center;
+  &:hover > div {
+    background-color: rgb(83, 108, 254);
+    color: white;
+  }
+}
+.newAvatar {
+  width: 160px;
+  height: 160px;
+  border: 1px solid #979797;
+  border-radius: 50%;
+  line-height: 160px;
+  font-size: 50px;
+  transition: color 0.2s, background-color 0.2s;
+  color: #4169e1;
+  & p {
+    margin: 0;
+  }
+}
+.newText {
+  color: #4169e1;
+}

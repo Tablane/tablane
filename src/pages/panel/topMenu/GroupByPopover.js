@@ -1,4 +1,4 @@
-import { Popover } from '@material-ui/core'
+import { Popover } from '@mui/material'
 import styles from '../../../styles/GroupByPopover.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGroupBy } from '../../../modules/state/reducers/boardReducer'

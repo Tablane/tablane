@@ -1,4 +1,4 @@
-import { CircularProgress, makeStyles } from '@material-ui/core'
+import { CircularProgress } from '@mui/material'
 import {
     Link,
     NavLink,
@@ -18,73 +18,9 @@ import Permissions from './settings/Permissions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import WorkspaceContext from '../modules/context/WorkspaceContext'
-
-const useStyles = makeStyles({
-    container: {
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'horizontal'
-    },
-    sidebar: {
-        backgroundColor: '#F7F7F7',
-        width: '170px',
-        padding: '40px',
-        '& .back': {
-            fontSize: '14px',
-            fontWeight: 500,
-            borderRadius: '30px',
-            padding: '4px 15px',
-            textTransform: 'uppercase',
-            color: 'white',
-            letterSpacing: '.05rem',
-            backgroundColor: '#4169E1',
-            '& i': {
-                marginRight: '5px'
-            }
-        },
-        '& h1': {
-            color: '#505050',
-            margin: 0,
-            paddingTop: '30px',
-            fontWeight: 500,
-            fontSize: '22px'
-        },
-        '& .workspaceName': {
-            marginTop: '30px',
-            marginBottom: '20px',
-            color: '#4169E1',
-            textTransform: 'uppercase',
-            fontSize: '15px',
-            fontWeight: 500
-        }
-    },
-    settings: {
-        '& a': {
-            fontSize: '14px',
-            fontWeight: 400,
-            display: 'block',
-            margin: '5px 0',
-            padding: '10px 0',
-            textDecoration: 'none',
-            color: '#a19da8',
-            '&:hover': {
-                color: '#554f5f'
-            }
-        },
-        '& .active': {
-            color: '#554f5f',
-            fontWeight: 700
-        }
-    },
-    content: {
-        padding: '40px',
-        display: 'flex',
-        flexGrow: 1
-    }
-})
+import styles from '../styles/Settings.module.scss'
 
 function Settings(props) {
-    const classes = useStyles()
     const [workspace, setWorkspace] = useState(null)
     const params = useParams()
 
@@ -118,17 +54,17 @@ function Settings(props) {
             </div>
         )
     return (
-        <div className={classes.container}>
-            <div className={classes.sidebar}>
-                <Link to={`/${workspace.id}`} className={'back'}>
+        <div className={styles.container}>
+            <div className={styles.sidebar}>
+                <Link to={`/${workspace.id}`} className={styles.back}>
                     <i className="fas fa-chevron-left"> </i>Back
                 </Link>
                 <h1>Settings</h1>
-                <p className={'workspaceName'}>{workspace.name}</p>
-                <div className={classes.settings}>
+                <p className={styles.workspaceName}>{workspace.name}</p>
+                <div className={styles.settings}>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/general`}
                     >
@@ -136,7 +72,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/users`}
                     >
@@ -144,7 +80,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/import`}
                     >
@@ -152,7 +88,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/apps`}
                     >
@@ -160,7 +96,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/integrations`}
                     >
@@ -168,7 +104,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/billing`}
                     >
@@ -176,7 +112,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/trash`}
                     >
@@ -184,7 +120,7 @@ function Settings(props) {
                     </NavLink>
                     <NavLink
                         className={({ isActive }) =>
-                            isActive ? ' active' : ''
+                            isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/permissions`}
                     >
@@ -194,7 +130,7 @@ function Settings(props) {
             </div>
 
             <WorkspaceContext.Provider value={providerValue}>
-                <div className={classes.content}>
+                <div className={styles.content}>
                     <Routes>
                         <Route path={`/general`} element={<General />} />
                         <Route path={`/users`} element={<Users />} />

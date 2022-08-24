@@ -7,8 +7,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle
-} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+} from '@mui/material'
+import Button from '@mui/material/Button'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import AttributePopover from './taskGroup/AttributePopover'
 import AddAttributePopover from './taskGroup/AddAttributePopover'

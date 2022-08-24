@@ -1,0 +1,62 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  background-color: #f7f7f7;
+  width: 170px;
+  padding: 40px;
+  .back {
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 30px;
+    padding: 4px 15px;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 0.05rem;
+    background-color: #4169e1;
+    i {
+      margin-right: 5px;
+    }
+  }
+  h1 {
+    color: #505050;
+    margin: 0;
+    padding-top: 30px;
+    font-weight: 500;
+    font-size: 22px;
+  }
+  .workspaceName {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #4169e1;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 500;
+  }
+}
+.settings {
+  a {
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+    margin: 5px 0;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #a19da8;
+    &:hover {
+      color: #554f5f;
+    }
+    &.active {
+      color: #554f5f;
+      font-weight: 700;
+    }
+  }
+}
+.content {
+  padding: 40px;
+  display: flex;
+  flex-grow: 1;
+}

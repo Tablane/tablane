@@ -4,33 +4,16 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    makeStyles
-} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+    DialogTitle
+} from '@mui/material'
+import Button from '@mui/material/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import SyncErrorContext from '../modules/context/SyncErrorContext'
-import { green } from '@material-ui/core/colors'
 import BoardContext from '../modules/context/BoardContext'
 import axios from 'axios'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        margin: theme.spacing(1),
-        position: 'relative'
-    },
-    buttonProgress: {
-        color: green[500],
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        marginTop: -12,
-        marginLeft: -12
-    }
-}))
+import styles from '../styles/SyncError.module.scss'
 
 function SyncError() {
-    const classes = useStyles()
     const { syncError, setSyncError } = useContext(SyncErrorContext)
     const { getBoardData } = useContext(BoardContext)
     const [trying, setTrying] = useState(false)
@@ -82,7 +65,7 @@ function SyncError() {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <div className={classes.wrapper}>
+                <div className={styles.wrapper}>
                     <Button
                         onClick={handleTry}
                         color="primary"
@@ -101,7 +84,7 @@ function SyncError() {
                     {trying && (
                         <CircularProgress
                             size={24}
-                            className={classes.buttonProgress}
+                            className={styles.buttonProgress}
                         />
                     )}
                 </div>

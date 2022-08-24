@@ -1,6 +1,6 @@
 import '../../../../styles/AddAttributePopover.css'
 import { toast } from 'react-hot-toast'
-import { Popover } from '@material-ui/core'
+import { Popover } from '@mui/material'
 import { ObjectId } from '../../../../utils'
 import { addAttribute } from '../../../../modules/state/reducers/boardReducer'
 import { useDispatch } from 'react-redux'

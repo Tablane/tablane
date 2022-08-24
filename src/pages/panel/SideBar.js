@@ -8,8 +8,8 @@ import {
     DialogContent,
     DialogTitle,
     TextField
-} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+} from '@mui/material'
+import Button from '@mui/material/Button'
 import AnimateHeight from 'react-animate-height'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import BoardPopover from './sideBar/BoardPopover'

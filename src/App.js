@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
 import Auth from './pages/Auth'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress } from '@mui/material'
 import Panel from './pages/Panel'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import WorkspaceSelector from './pages/WorkspaceSelector'

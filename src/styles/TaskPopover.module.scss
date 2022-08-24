@@ -1,0 +1,16 @@
+.container {
+  height: 40px;
+  display: flex;
+  & i {
+    width: 38px;
+    padding: 12px 0;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background-color: #f9f9f9;
+    }
+  }
+  & i:last-of-type {
+    color: #ff80b9;
+  }
+}

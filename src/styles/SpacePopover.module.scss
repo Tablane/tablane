@@ -1,0 +1,19 @@
+.popover {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  & > div {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+  }
+  & > div:last-of-type {
+    color: crimson;
+  }
+}

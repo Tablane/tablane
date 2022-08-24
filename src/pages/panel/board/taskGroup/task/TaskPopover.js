@@ -4,38 +4,18 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    makeStyles,
     Popover
-} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+} from '@mui/material'
+import Button from '@mui/material/Button'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteTask } from '../../../../../modules/state/reducers/boardReducer'
-
-const useStyles = makeStyles({
-    container: {
-        height: '40px',
-        display: 'flex',
-        '& i': {
-            width: '38px',
-            padding: '12px 0',
-            textAlign: 'center',
-            cursor: 'pointer',
-            '&:hover': {
-                backgroundColor: '#f9f9f9'
-            }
-        },
-        '& i:last-of-type': {
-            color: '#ff80b9'
-        }
-    }
-})
+import styles from '../../../../../styles/TaskPopover.module.scss'
 
 function TaskPopover(props) {
     const dispatch = useDispatch()
     const { board } = useSelector(state => state.board)
-    const classes = useStyles()
     const [deleteDialog, setDeleteDialog] = useState(false)
 
     // delete dialog
@@ -82,7 +62,7 @@ function TaskPopover(props) {
                     horizontal: 'center'
                 }}
             >
-                <div className={classes.container}>
+                <div className={styles.container}>
                     <i className="fas fa-hashtag" onClick={copyTaskId}>
                         {' '}
                     </i>

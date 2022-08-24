@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Popover } from '@material-ui/core'
+import { Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
 import { useDispatch, useSelector } from 'react-redux'

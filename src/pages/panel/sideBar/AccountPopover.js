@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Popover } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import { Popover } from '@mui/material'
+import Button from '@mui/material/Button'
 import '../../../styles/AccountPopover.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'

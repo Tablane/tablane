@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.name {
+  font-weight: 500;
+  font-size: 21px;
+  color: #505050;
+  margin-bottom: 30px;
+  & p {
+    margin: 0;
+  }
+}
+.workspaceName {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+  align-items: center;
+  & div {
+    text-transform: uppercase;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(64, 188, 134);
+    display: inline-flex;
+    line-height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    color: white;
+  }
+  & input {
+    outline: none;
+    padding: 16px 20px 12px 0;
+    border: none;
+    color: rgba(34, 34, 34, 0.6);
+    font-size: 16px;
+    border-bottom: 1px solid #e4e4e4;
+    flex-grow: 1;
+  }
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  & div > button:nth-of-type(2) {
+    margin-left: 15px;
+  }
+}

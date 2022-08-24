@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import { DragDropContext } from '@hello-pangea/dnd'
-import { LinearProgress } from '@material-ui/core'
+import { LinearProgress } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     fetchBoard,

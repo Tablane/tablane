@@ -1,56 +1,10 @@
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import { CircularProgress, makeStyles } from '@material-ui/core'
+import { CircularProgress } from '@mui/material'
 import { useParams } from 'react-router-dom'
-
-const useStyles = makeStyles({
-    loading: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-    },
-    forbidden: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '80px',
-        '& div': {
-            textAlign: 'center',
-            padding: '45px',
-            borderRadius: '8px',
-            boxShadow: '0 10px 30px rgb(0 0 0 / 15%)',
-            '& p:first-of-type': {
-                fontSize: '24px',
-                fontWeight: 500
-            },
-            '& p:nth-of-type(2)': {
-                fontSize: '14px',
-                '& span': {
-                    cursor: 'pointer',
-                    textDecoration: 'underline',
-                    color: '#4169e1'
-                }
-            }
-        }
-    },
-    container: {
-        height: '100vh',
-        display: 'flex'
-    },
-    taskGroups: {
-        backgroundColor: '#EEE',
-        padding: '25px',
-        width: '100%'
-    },
-    tasks: {
-        border: '2px solid white',
-        borderRadius: '0 2px 2px 2px'
-    }
-})
+import styles from '../styles/SharedBoard.module.scss'
 
 function SharedBoard(props) {
-    const classes = useStyles()
     const [board, setBoard] = useState(null)
     const params = useParams()
 
@@ -106,13 +60,13 @@ function SharedBoard(props) {
 
     if (board === null)
         return (
-            <div className={classes.loading}>
+            <div className={styles.loading}>
                 <CircularProgress />
             </div>
         )
     if (board === false)
         return (
-            <div className={classes.forbidden}>
+            <div className={styles.forbidden}>
                 <div>
                     <p>This page is currently unavailable</p>
                     <p>
@@ -124,8 +78,8 @@ function SharedBoard(props) {
         )
 
     return (
-        <div className={classes.container}>
-            <div className={classes.taskGroups}>
+        <div className={styles.container}>
+            <div className={styles.taskGroups}>
                 {board.taskGroups.map(taskGroup => (
                     <div className="task" key={taskGroup._id}>
                         <div className="title">
@@ -148,7 +102,7 @@ function SharedBoard(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className={classes.tasks}>
+                        <div className={styles.tasks}>
                             {taskGroup.tasks.map(task => (
                                 <div className="Task" key={task._id}>
                                     <p>{task.name}</p>

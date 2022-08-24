@@ -4,40 +4,17 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    makeStyles,
     Popover
-} from '@material-ui/core'
+} from '@mui/material'
 import React, { useState } from 'react'
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { deleteBoard } from '../../../modules/state/reducers/workspaceReducer'
-
-const useStyles = makeStyles(theme => ({
-    popover: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        '& > div': {
-            width: '40px',
-            height: '40px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            '&:hover': {
-                cursor: 'pointer',
-                background: '#F9F9F9'
-            }
-        },
-        '& > div:last-of-type': {
-            color: 'crimson'
-        }
-    }
-}))
+import styles from '../../../styles/BoardPopover.module.scss'
 
 function BoardPopover(props) {
     const dispatch = useDispatch()
-    const classes = useStyles()
     const [deleting, setDeleting] = useState(false)
 
     const handleBoardDelete = async () => {
@@ -91,7 +68,7 @@ function BoardPopover(props) {
                         horizontal: 'center'
                     }}
                 >
-                    <div className={classes.popover}>
+                    <div className={styles.popover}>
                         <div onClick={handleCopyClick}>
                             <i className="fas fa-link"> </i>
                         </div>

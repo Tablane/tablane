@@ -1,0 +1,43 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.forbidden {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  & div {
+    text-align: center;
+    padding: 45px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 15%);
+    & p:first-of-type {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    & p:nth-of-type(2) {
+      font-size: 14px;
+      & span {
+        cursor: pointer;
+        text-decoration: underline;
+        color: #4169e1;
+      }
+    }
+  }
+}
+.container {
+  height: 100vh;
+  display: flex;
+}
+.taskGroups {
+  background-color: #eee;
+  padding: 25px;
+  width: 100%;
+}
+.tasks {
+  border: 2px solid white;
+  border-radius: 0 2px 2px 2px;
+}
