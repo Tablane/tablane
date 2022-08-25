@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   height: 44px;
-  & p {
+  p {
     margin: 0;
     width: 500px;
     flex-grow: 1;
@@ -25,16 +25,17 @@
   height: 100px;
   padding: 18px;
   background-color: #fafbfc;
-  & div:first-of-type {
+  div:first-of-type {
     display: flex;
     justify-content: center;
     align-items: center;
     align-self: flex-start;
-    & p {
+    p {
       margin: 0;
+      margin-left: 10px;
     }
   }
-  & input {
+  input {
     appearance: none;
     margin-top: 18px;
     border: 1px solid #e9ebf0;
