@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Popover } from '@mui/material'
+import { Popover, Tooltip } from '@mui/material'
 import Button from '@mui/material/Button'
 import '../../../styles/AccountPopover.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -57,19 +57,31 @@ function AccountPopover(props) {
                             {user &&
                                 user.workspaces.map(x => {
                                     return (
-                                        <div
-                                            onClick={() =>
-                                                changeWorkspace(x.id)
-                                            }
-                                            key={x._id}
+                                        <Tooltip
+                                            title={x.name}
+                                            placement="right"
+                                            arrow
                                         >
-                                            {x.name.toUpperCase().charAt(0)}
-                                        </div>
+                                            <div
+                                                onClick={() =>
+                                                    changeWorkspace(x.id)
+                                                }
+                                                key={x._id}
+                                            >
+                                                {x.name.toUpperCase().charAt(0)}
+                                            </div>
+                                        </Tooltip>
                                     )
                                 })}
-                            <div>
-                                <i className="fas fa-plus"> </i>
-                            </div>
+                            <Tooltip
+                                title={'Add Workspace'}
+                                placement="right"
+                                arrow
+                            >
+                                <div>
+                                    <i className="fas fa-plus"> </i>
+                                </div>
+                            </Tooltip>
                         </div>
                         <div className="workspace-settings">
                             <div>
