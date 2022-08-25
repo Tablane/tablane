@@ -60,13 +60,13 @@ function AccountPopover(props) {
                                         <Tooltip
                                             title={x.name}
                                             placement="right"
+                                            key={x._id}
                                             arrow
                                         >
                                             <div
                                                 onClick={() =>
                                                     changeWorkspace(x.id)
                                                 }
-                                                key={x._id}
                                             >
                                                 {x.name.toUpperCase().charAt(0)}
                                             </div>
