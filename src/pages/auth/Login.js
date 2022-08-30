@@ -52,6 +52,7 @@ function Login() {
                 <form action="" onSubmit={handleSubmit} noValidate>
                     <div className="inputs">
                         <TextField
+                            variant="standard"
                             id="username"
                             name="username"
                             label="Username"
@@ -62,6 +63,7 @@ function Login() {
                             required
                         />
                         <TextField
+                            variant="standard"
                             id="password"
                             name="password"
                             label="Password"
