@@ -46,7 +46,7 @@
             cursor: pointer;
           }
 
-          & > div:first-of-type {
+          & > a:nth-of-type(2) > div {
             box-sizing: border-box;
             height: 27px;
             font-size: 17px;
