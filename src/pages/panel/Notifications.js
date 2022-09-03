@@ -3,17 +3,31 @@ import styles from '../../styles/Notifications.module.scss'
 import Date from '../../utils/RelativeDate'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Tooltip } from '@mui/material'
+import {
+    clearNotification,
+    unclearNotification
+} from '../../modules/state/reducers/userReducer'
 
 function Notifications(props) {
     const params = useParams()
     const [tab, setTab] = useState('new')
     const { workspace } = useSelector(state => state.workspace)
     const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const notifications = user.user.notifications.find(
         x => x.workspaceId === workspace.id
     )
+
+    const handleClick = taskId => {
+        if (tab === 'new') {
+            dispatch(clearNotification({ workspaceId: workspace.id, taskId }))
+        } else if (tab === 'cleared') {
+            dispatch(unclearNotification({ workspaceId: workspace.id, taskId }))
+        }
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -55,14 +69,37 @@ function Notifications(props) {
                                         </Link>
                                     </div>
                                     <div>
-                                        <div className={styles.watch}>
-                                            <i className="fa-regular fa-eye"></i>
-                                        </div>
-                                        <div className={styles.markRead}>
-                                            <div>
-                                                <i className="fa-solid fa-check"></i>
+                                        <Tooltip
+                                            title="Stop watching"
+                                            arrow
+                                            placement="top"
+                                        >
+                                            <div className={styles.watch}>
+                                                <i className="fa-regular fa-eye"></i>
                                             </div>
-                                        </div>
+                                        </Tooltip>
+                                        <Tooltip
+                                            title={
+                                                tab === 'new'
+                                                    ? 'Clear notification'
+                                                    : 'Unclear notification'
+                                            }
+                                            arrow
+                                            placement="top"
+                                        >
+                                            <div
+                                                className={styles.markRead}
+                                                onClick={() =>
+                                                    handleClick(
+                                                        notification.taskId
+                                                    )
+                                                }
+                                            >
+                                                <div>
+                                                    <i className="fa-solid fa-check"></i>
+                                                </div>
+                                            </div>
+                                        </Tooltip>
                                     </div>
                                 </div>
                                 {notification.changes.map(change => (
