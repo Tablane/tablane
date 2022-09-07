@@ -107,12 +107,14 @@ function Users(props) {
                                                 </span>
                                             ))}
                                             {x.role === 'owner' && (
-                                                <span className={'owner'}>
+                                                <span className={styles.owner}>
                                                     Owner
                                                 </span>
                                             )}
                                             {x.role === 'guest' && (
-                                                <span className={'view-only'}>
+                                                <span
+                                                    className={styles.viewOnly}
+                                                >
                                                     View Only
                                                 </span>
                                             )}

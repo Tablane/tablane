@@ -169,7 +169,7 @@
   justify-content: center;
   margin-right: 20px;
   height: 100%;
-  & span {
+  span {
     border-radius: 4px;
     line-height: 22px;
     box-sizing: border-box;
@@ -189,7 +189,7 @@
       color: #4169e1;
       border-color: #4169e1;
     }
-    &.view-only {
+    &.viewOnly {
       color: #fb926a;
       border-color: #fb926a;
     }
