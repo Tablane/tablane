@@ -13,13 +13,6 @@
     &:hover {
       background-color: #f9f9f9;
     }
-    & > div {
-      width: 16px;
-      height: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
     & > p {
       font-size: 13px;
       font-weight: 400;
@@ -27,10 +20,10 @@
       padding: 8px 0 8px 10px;
       margin: 0;
     }
-  }
-  & i.fa-check {
-    margin-left: 6px;
-    font-size: 13px;
-    color: #4169e1;
+    & > i {
+      margin-left: 6px;
+      font-size: 13px;
+      color: #4169e1;
+    }
   }
 }
