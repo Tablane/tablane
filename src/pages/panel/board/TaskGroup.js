@@ -1,19 +1,10 @@
 import { useState } from 'react'
 import '../../../styles/TaskGroup.css'
 import Task from './taskGroup/Task'
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle
-} from '@mui/material'
-import Button from '@mui/material/Button'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import AttributePopover from './taskGroup/AttributePopover'
 import AddAttributePopover from './taskGroup/AddAttributePopover'
 import useInputState from '../../../modules/hooks/useInputState'
-import useToggleState from '../../../modules/hooks/useToggleState'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask } from '../../../modules/state/reducers/boardReducer'
 import { ObjectId } from '../../../utils'
@@ -25,15 +16,6 @@ function TaskGroup(props) {
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
-
-    // name editing
-    const [editing, toggleEditing] = useToggleState(false)
-    const [editingName, changeEditingName, resetEditingName] = useInputState(
-        props.name
-    )
-
-    // delete confirmation
-    const [deleteDialogOpen, toggleDeleteDialogOpen] = useToggleState(false)
 
     // attribute popover
     const [popoverOpen, setPopoverOpen] = useState(false)
@@ -65,82 +47,18 @@ function TaskGroup(props) {
         setPopoverOpen(e ? e.target.parentNode : null)
     }
 
-    const handleDelete = async () => {
-        // dispatch(deleteTaskGroup({
-        //     boardId: board._id,
-        //     taskGroupId: props.taskGroupId,
-        // }))
-    }
-
-    const updateName = async e => {
-        e.preventDefault()
-        toggleEditing()
-        // dispatch(editTaskGroupName({
-        //     boardId: board._id,
-        //     taskGroupId: props.taskGroupId,
-        //     name: editingName
-        // }))
-    }
-
-    const cancelNameEditing = () => {
-        toggleEditing()
-        resetEditingName()
-    }
-
     return (
         <div className="task">
             <div className="title">
                 <div>
-                    {editing ? (
-                        <div
-                            className="taskGroup-title editing"
-                            style={{ backgroundColor: props.color }}
-                        >
-                            <form onSubmit={updateName} onBlur={updateName}>
-                                <input
-                                    onKeyUp={e => {
-                                        if (e.key === 'Escape')
-                                            e.currentTarget.blur()
-                                    }}
-                                    type="text"
-                                    name="editingName"
-                                    value={editingName}
-                                    onChange={changeEditingName}
-                                    autoFocus
-                                />
-                                <div>
-                                    <i
-                                        onClick={cancelNameEditing}
-                                        className="fas fa-times"
-                                    >
-                                        {' '}
-                                    </i>
-                                    <i
-                                        onClick={updateName}
-                                        className="fas fa-check"
-                                    >
-                                        {' '}
-                                    </i>
-                                </div>
-                            </form>
-                        </div>
-                    ) : (
-                        <div
-                            className="taskGroup-title"
-                            style={{ backgroundColor: props.color }}
-                        >
-                            <p>{props.name}</p>
-                            <i className="fas fa-pen" onClick={toggleEditing}>
-                                {' '}
-                            </i>
-                            <i
-                                onClick={toggleDeleteDialogOpen}
-                                className="fas fa-trash-alt"
-                            >
-                                {' '}
-                            </i>
-                        </div>
-                    )}
+                    <div
+                        className="taskGroup-title"
+                        style={{ backgroundColor: props.color }}
+                    >
+                        <p style={{ color: !props.name && '' }}>
+                            {props.name || 'Empty'}
+                        </p>
+                    </div>
                     <p className="task-amount">{props.tasks.length} TASKS</p>
                 </div>
                 <Droppable
@@ -236,32 +154,6 @@ function TaskGroup(props) {
                     {newTaskName ? <button>SAVE</button> : null}
                 </div>
             </form>
-
-            <Dialog
-                open={deleteDialogOpen}
-                onClose={toggleDeleteDialogOpen}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{`Delete ${props.name} group?`}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        All tasks within this Group will be deleted.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={toggleDeleteDialogOpen} color="primary">
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={handleDelete}
-                        color="primary"
-                        variant="contained"
-                    >
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
             <AttributePopover
                 boardId={board._id}
