@@ -71,6 +71,8 @@
   height: 35px;
   display: flex;
   justify-content: space-between;
+  box-sizing: content-box;
+  border-bottom: 1px solid #e9ebf0;
 
   .task-filter {
     display: flex;
