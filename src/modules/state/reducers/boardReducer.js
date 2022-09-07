@@ -262,7 +262,7 @@ const boardSlice = createSlice({
                 }
                 if (state.board.groupBy) {
                     task.options.push({
-                        column: '628f8d4991b1fec278646596',
+                        column: state.board.groupBy,
                         value: taskGroupId
                     })
                 }
@@ -466,13 +466,12 @@ const boardSlice = createSlice({
                 if (attributeIndex > -1)
                     state.board.attributes.splice(attributeIndex, 1)
 
-                state.board.taskGroups.map(taskGroup => {
-                    taskGroup.tasks.map(task => {
-                        task.options = task.options.filter(
+                state.board.tasks.map(
+                    task =>
+                        (task.options = task.options.filter(
                             option => option.column.toString() !== attributeId
-                        )
-                    })
-                })
+                        ))
+                )
             })
             .addCase(deleteAttribute.fulfilled, (state, action) => {
                 state.loading = state.loading - 1
