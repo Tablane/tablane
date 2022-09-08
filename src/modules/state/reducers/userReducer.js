@@ -43,30 +43,6 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
     return response.data
 })
 
-export const clearNotification = createAsyncThunk(
-    'user/clearNotification',
-    async ({ workspaceId, taskId }) => {
-        const response = await axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/notification/${workspaceId}/${taskId}`
-        })
-        return response.data
-    }
-)
-
-export const unclearNotification = createAsyncThunk(
-    'user/unclearNotification',
-    async ({ workspaceId, taskId }) => {
-        const response = await axios({
-            method: 'PATCH',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/notification/${workspaceId}/${taskId}`
-        })
-        return response.data
-    }
-)
-
 const userSlice = createSlice({
     name: 'user',
     initialState: { status: 'loading' },
@@ -117,40 +93,6 @@ const userSlice = createSlice({
                 state.submit = 'failed'
                 toast('User Already Exists')
             })
-
-            .addCase(clearNotification.pending, (state, action) => {
-                const { workspaceId, taskId } = action.meta.arg
-
-                const notifications = state.user.notifications.find(
-                    x => (x.workspaceId = workspaceId)
-                )
-                const [notification] = notifications.new.splice(
-                    notifications.new.indexOf(
-                        notification => notification.taskId === taskId
-                    ),
-                    1
-                )
-                if (notification) notifications.cleared.unshift(notification)
-            })
-            .addCase(clearNotification.fulfilled, (state, action) => {})
-            .addCase(clearNotification.rejected, (state, action) => {})
-
-            .addCase(unclearNotification.pending, (state, action) => {
-                const { workspaceId, taskId } = action.meta.arg
-
-                const notifications = state.user.notifications.find(
-                    x => (x.workspaceId = workspaceId)
-                )
-                const [notification] = notifications.cleared.splice(
-                    notifications.cleared.indexOf(
-                        notification => notification.taskId === taskId
-                    ),
-                    1
-                )
-                if (notification) notifications.new.unshift(notification)
-            })
-            .addCase(unclearNotification.fulfilled, (state, action) => {})
-            .addCase(unclearNotification.rejected, (state, action) => {})
     }
 })
 

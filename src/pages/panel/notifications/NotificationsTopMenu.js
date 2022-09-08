@@ -21,9 +21,11 @@ function NotificationsTopMenu(props) {
                     </div>
                     <div className={styles.tabs}>
                         <div
-                            onClick={() => props.setTab('new')}
+                            onClick={() =>
+                                props.updateCondition({ cleared: false })
+                            }
                             className={`${styles.tab} ${
-                                props.tab === 'new' && styles.active
+                                !props.condition.cleared && styles.active
                             }`}
                         >
                             <div>
@@ -31,9 +33,11 @@ function NotificationsTopMenu(props) {
                             </div>
                         </div>
                         <div
-                            onClick={() => props.setTab('cleared')}
+                            onClick={() =>
+                                props.updateCondition({ cleared: true })
+                            }
                             className={`${styles.tab} ${
-                                props.tab === 'cleared' && styles.active
+                                props.condition.cleared && styles.active
                             }`}
                         >
                             <div>

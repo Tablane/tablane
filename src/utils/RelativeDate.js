@@ -46,7 +46,7 @@ function Dates(props) {
             timeString =
                 `${
                     months[date.getMonth()]
-                } ${date.getDay()} ${date.getFullYear()} ` +
+                } ${date.getDate()} ${date.getFullYear()} ` +
                 `at ${date.toLocaleTimeString().substring(0, 5)}`
         }
 
