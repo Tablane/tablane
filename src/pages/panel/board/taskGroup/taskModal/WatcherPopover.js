@@ -1,15 +1,28 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../styles/WatcherPopover.module.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useInputState from '../../../../../modules/hooks/useInputState'
+import {
+    addWatcher,
+    removeWatcher
+} from '../../../../../modules/state/reducers/boardReducer'
 
 function WatcherPopover({ task, anchor, setAnchor }) {
     const { workspace } = useSelector(state => state.workspace)
     const { user } = useSelector(state => state.user)
     const [search, handleSearch] = useInputState('')
+    const dispatch = useDispatch()
 
     const handleClose = () => {
         setAnchor(false)
+    }
+
+    const handleClick = (user, isWatcher) => {
+        if (isWatcher) {
+            dispatch(removeWatcher({ task: task, user: user }))
+        } else {
+            dispatch(addWatcher({ task: task, user: user }))
+        }
     }
 
     const userSearch = user => {
@@ -51,6 +64,7 @@ function WatcherPopover({ task, anchor, setAnchor }) {
                                 isWatcher ? styles.isWatcher : null
                             }`}
                             key={user._id}
+                            onClick={() => handleClick(user, isWatcher)}
                         >
                             <div className={styles.profileWrapper}>
                                 <div>
@@ -69,6 +83,7 @@ function WatcherPopover({ task, anchor, setAnchor }) {
                             <div
                                 className={styles.user + ' ' + styles.isWatcher}
                                 key={user._id}
+                                onClick={() => handleClick(user, true)}
                             >
                                 <div className={styles.profileWrapper}>
                                     <div>
@@ -92,7 +107,11 @@ function WatcherPopover({ task, anchor, setAnchor }) {
                         })
                         .filter(({ user }) => userSearch(user))
                         .map(({ user }) => (
-                            <div className={styles.user} key={user._id}>
+                            <div
+                                className={styles.user}
+                                key={user._id}
+                                onClick={() => handleClick(user, false)}
+                            >
                                 <div className={styles.profileWrapper}>
                                     <div>
                                         {user.username.charAt(0).toUpperCase()}

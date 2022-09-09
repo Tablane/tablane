@@ -213,6 +213,32 @@ export const editAttributeLabels = createAsyncThunk(
     }
 )
 
+export const addWatcher = createAsyncThunk(
+    'board/addWatcher',
+    async ({ task, user }) => {
+        const response = await axios({
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/watcher/${task._id}`,
+            method: 'POST',
+            withCredentials: true,
+            data: { userId: user._id }
+        })
+        return response.data
+    }
+)
+
+export const removeWatcher = createAsyncThunk(
+    'board/removeWatcher',
+    async ({ task, user }) => {
+        const response = await axios({
+            url: `${process.env.REACT_APP_BACKEND_HOST}/api/task/watcher/${task._id}`,
+            method: 'DELETE',
+            withCredentials: true,
+            data: { userId: user._id }
+        })
+        return response.data
+    }
+)
+
 const boardSlice = createSlice({
     name: 'board',
     initialState: { loading: 0 },
@@ -510,6 +536,37 @@ const boardSlice = createSlice({
                 state.loading = state.loading - 1
             })
             .addCase(editAttributeLabels.rejected, (state, action) => {
+                state.loading = state.loading - 1
+            })
+            .addCase(addWatcher.pending, (state, action) => {
+                const { task, user } = action.meta.arg
+
+                state.loading = state.loading + 1
+                state.board.tasks
+                    .find(x => x._id === task._id)
+                    .watcher.push(user)
+            })
+            .addCase(addWatcher.fulfilled, (state, action) => {
+                state.loading = state.loading - 1
+            })
+            .addCase(addWatcher.rejected, (state, action) => {
+                state.loading = state.loading - 1
+            })
+            .addCase(removeWatcher.pending, (state, action) => {
+                const { task, user } = action.meta.arg
+
+                state.loading = state.loading + 1
+                const localTask = state.board.tasks.find(
+                    x => x._id === task._id
+                )
+                localTask.watcher = localTask.watcher.filter(
+                    x => x._id !== user._id
+                )
+            })
+            .addCase(removeWatcher.fulfilled, (state, action) => {
+                state.loading = state.loading - 1
+            })
+            .addCase(removeWatcher.rejected, (state, action) => {
                 state.loading = state.loading - 1
             })
     }
