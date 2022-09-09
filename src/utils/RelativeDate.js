@@ -1,10 +1,11 @@
 import styles from '../styles/RelativeDate.module.scss'
 import { useEffect, useState } from 'react'
+import { Tooltip } from '@mui/material'
 
-function Dates(props) {
+function RelativeDate(props) {
     const [time, setTime] = useState(Date.now())
 
-    const getTime = timestamp => {
+    const getTime = (timestamp, relative = true) => {
         const delta = Math.round((+new Date() - new Date(timestamp)) / 1000)
 
         const minute = 60,
@@ -13,19 +14,19 @@ function Dates(props) {
 
         let timeString = ''
 
-        if (delta < 60) {
+        if (delta < 60 && relative) {
             timeString = 'Just now'
-        } else if (delta < 2 * minute) {
+        } else if (delta < 2 * minute && relative) {
             timeString = '1 min'
-        } else if (delta < hour) {
+        } else if (delta < hour && relative) {
             timeString = Math.floor(delta / minute) + ' mins'
-        } else if (Math.floor(delta / hour) === 1) {
+        } else if (Math.floor(delta / hour) === 1 && relative) {
             timeString = '1 hour ago'
-        } else if (delta < day) {
+        } else if (delta < day && relative) {
             timeString = Math.floor(delta / hour) + ' hours ago'
-        } else if (delta < day * 2) {
+        } else if (delta < day * 2 && relative) {
             timeString = 'yesterday'
-        } else if (delta < day * 7) {
+        } else if (delta < day * 7 && relative) {
             timeString = Math.floor(delta / day) + ' days ago'
         } else {
             const date = new Date(timestamp)
@@ -60,7 +61,15 @@ function Dates(props) {
         }
     }, [])
 
-    return <span className={styles.date}>{getTime(props.timestamp)}</span>
+    return (
+        <Tooltip
+            title={getTime(props.timestamp, false)}
+            placement={'top'}
+            arrow
+        >
+            <span className={styles.date}>{getTime(props.timestamp)}</span>
+        </Tooltip>
+    )
 }
 
-export default Dates
+export default RelativeDate

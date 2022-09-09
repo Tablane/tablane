@@ -1,6 +1,6 @@
 import NotificationsTopMenu from './notifications/NotificationsTopMenu'
 import styles from '../../styles/Notifications.module.scss'
-import Date from '../../utils/RelativeDate'
+import RelativeDate from '../../utils/RelativeDate'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -216,7 +216,7 @@ function Notifications(props) {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <Date
+                                                    <RelativeDate
                                                         timestamp={
                                                             change.timestamp
                                                         }
