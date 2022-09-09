@@ -19,10 +19,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import WorkspaceContext from '../modules/context/WorkspaceContext'
 import styles from '../styles/Settings.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUser } from '../modules/state/reducers/userReducer'
 
 function Settings(props) {
     const [workspace, setWorkspace] = useState(null)
+    const { user } = useSelector(state => state.user)
     const params = useParams()
+    const dispatch = useDispatch()
 
     const getData = useCallback(async () => {
         axios({
@@ -125,6 +129,51 @@ function Settings(props) {
                         to={`/settings/${workspace.id}/permissions`}
                     >
                         Security & Permissions
+                    </NavLink>
+
+                    <div className={styles.divider}></div>
+                    <p className={styles.userName}>{user.username}</p>
+
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                        to={`/settings/${workspace.id}/profile`}
+                    >
+                        My Settings
+                    </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                        to={`/settings/${workspace.id}/workspaces`}
+                    >
+                        Workspaces
+                    </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                        to={`/settings/${workspace.id}/notifications`}
+                    >
+                        Notifications
+                    </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                        to={`/settings/${workspace.id}/applications`}
+                    >
+                        Apps
+                    </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                        to={`/settings/${workspace.id}/logout`}
+                        onClick={() => dispatch(logoutUser())}
+                    >
+                        Log out
                     </NavLink>
                 </div>
             </div>

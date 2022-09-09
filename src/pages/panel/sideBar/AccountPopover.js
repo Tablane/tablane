@@ -108,6 +108,9 @@ function AccountPopover(props) {
                                 >
                                     Integrations
                                 </Link>
+                                <Link to={`/settings/${workspaceId}/billing`}>
+                                    Upgrade
+                                </Link>
                                 <Link to={`/settings/${workspaceId}/trash`}>
                                     Trash
                                 </Link>
@@ -126,13 +129,17 @@ function AccountPopover(props) {
                                 <p>{user.username}</p>
                             </div>
                             <div className="buttons">
-                                <Link to={`/settings/user/profile`}>
+                                <Link to={`/settings/${workspaceId}/profile`}>
                                     My Settings
                                 </Link>
-                                <Link to={`/settings/user/notifications`}>
+                                <Link
+                                    to={`/settings/${workspaceId}/notifications`}
+                                >
                                     Notifications
                                 </Link>
-                                <Link to={`/settings/user/apps`}>Apps</Link>
+                                <Link to={`/settings/${workspaceId}/apps`}>
+                                    Apps
+                                </Link>
                                 <button onClick={() => dispatch(logoutUser())}>
                                     Log out
                                 </button>
