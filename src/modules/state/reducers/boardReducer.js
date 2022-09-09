@@ -351,8 +351,8 @@ const boardSlice = createSlice({
                 if (column) column.value = result.destination.droppableId
                 else if (
                     !(
-                        state.board.groupBy === 'none' &&
-                        state.board.groupBy &&
+                        state.board.groupBy === 'none' ||
+                        !state.board.groupBy ||
                         result.destination.droppableId === 'empty'
                     )
                 ) {
