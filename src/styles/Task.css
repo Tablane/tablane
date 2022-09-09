@@ -82,8 +82,8 @@
   font-size: 26px;
 }
 
-.Task > div > div.people .person {
-  position: relative;
+.Task > div > div.people > div {
+  width: 20px;
 }
 
 .Task > div > div.people .person {
