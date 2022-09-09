@@ -1,14 +1,14 @@
 import styles from '../../../../styles/TaskModal.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
-import { toast } from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 import useInputState from '../../../../modules/hooks/useInputState'
 import {
     addTaskComment,
     editTaskField
 } from '../../../../modules/state/reducers/boardReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import WatcherPopover from './taskModal/WatcherPopover'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -17,6 +17,7 @@ function TaskModal(props) {
     const dispatch = useDispatch()
     const { task, boardId } = props
     const [name, changeName] = useInputState(task.name)
+    const [anchor, setAnchor] = useState(null)
     const [description, changeDescription] = useInputState(task.description)
     const [newComment, changeNewComment, resetNewComment] = useInputState('')
 
@@ -76,6 +77,7 @@ function TaskModal(props) {
         )
     }
 
+    // TODO: replace this with relativeDate component
     const getTime = timestamp => {
         const delta = Math.round((+new Date() - new Date(timestamp)) / 1000)
 
@@ -134,10 +136,10 @@ function TaskModal(props) {
                     <div className={styles.additionalMenu}>
                         <div
                             className={styles.watcher}
-                            onClick={() => toast('Coming Soon')}
+                            onClick={e => setAnchor(e.currentTarget)}
                         >
                             <i className="far fa-eye"></i>
-                            <span>5</span>
+                            <span>{task.watcher.length}</span>
                         </div>
                         <div className={styles.close} onClick={handleClose}>
                             <i className="fas fa-times"></i>
@@ -247,6 +249,7 @@ function TaskModal(props) {
                     </div>
                 </div>
             </div>
+            <WatcherPopover task={task} anchor={anchor} setAnchor={setAnchor} />
         </div>
     )
 }
