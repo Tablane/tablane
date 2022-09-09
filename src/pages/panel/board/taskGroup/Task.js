@@ -11,6 +11,8 @@ import {
 } from '../../../../modules/state/reducers/boardReducer'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
+import PersonColumnPopover from './task/PersonColumnPopover'
+import { Tooltip } from '@mui/material'
 
 function Task(props) {
     const { board } = useSelector(state => state.board)
@@ -18,6 +20,7 @@ function Task(props) {
     const navigate = useNavigate()
     const location = useLocation()
     const { taskId } = useParams()
+    const { workspace } = useSelector(state => state.workspace)
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -49,7 +52,7 @@ function Task(props) {
     }
 
     const handleTextEdit = async e => {
-        const { taskGroupId, task } = props
+        const { task } = props
         if (
             task.options.find(option => option.column === e.target.name)
                 ?.value === e.target.value
@@ -118,6 +121,73 @@ function Task(props) {
         )
     }
 
+    const getPersonLabel = attribute => {
+        let taskOption = props.task.options.find(
+            x => x.column === attribute._id
+        )
+
+        const people = []
+        if (taskOption) {
+            taskOption.value.map(userId => {
+                const person = workspace.members.find(
+                    ({ user }) => user._id === userId
+                )
+                if (person) people.push(person.user)
+            })
+        }
+
+        return (
+            <Fragment key={attribute._id}>
+                {people.length > 0 ? (
+                    <div
+                        className="people"
+                        onClick={e => handleClick(e, attribute)}
+                    >
+                        {people.map((person, i) => {
+                            return (
+                                <Tooltip
+                                    title={person.username}
+                                    key={person._id}
+                                    arrow
+                                >
+                                    <div style={{ zIndex: people.length - i }}>
+                                        <div className="person">
+                                            {person.username
+                                                .charAt(0)
+                                                .toUpperCase()}
+                                            {person.username
+                                                .charAt(1)
+                                                .toUpperCase()}
+                                        </div>
+                                    </div>
+                                </Tooltip>
+                            )
+                        })}
+                    </div>
+                ) : (
+                    <div
+                        className="people"
+                        onClick={e => handleClick(e, attribute)}
+                    >
+                        <i className="fa-regular fa-circle-user"></i>
+                    </div>
+                )}
+                {attribute._id.toString() === activeOption && (
+                    <PersonColumnPopover
+                        boardId={board._id}
+                        attribute={attribute}
+                        people={people}
+                        taskOption={taskOption}
+                        anchor={anchor}
+                        open={columnDialogOpen}
+                        task={props.task}
+                        handleClose={handleClose}
+                    />
+                )}
+            </Fragment>
+        )
+    }
+
     const toggleTaskEdit = () => {
         document.activeElement.blur()
         setTimeout(() => setTaskEditing(!taskEditing), 0)
@@ -125,7 +195,7 @@ function Task(props) {
 
     const handleTaskEdit = e => {
         e.preventDefault()
-        const { taskGroupId, task } = props
+        const { task } = props
         toggleTaskEdit()
         dispatch(
             editTaskField({
@@ -178,6 +248,9 @@ function Task(props) {
                                     return getStatusLabel(attribute)
                                 if (attribute.type === 'text')
                                     return getTextLabel(attribute)
+                                if (attribute.type === 'people') {
+                                    return getPersonLabel(attribute)
+                                }
 
                                 return (
                                     <div

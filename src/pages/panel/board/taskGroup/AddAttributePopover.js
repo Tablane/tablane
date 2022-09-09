@@ -14,7 +14,7 @@ function AddAttributePopover(props) {
 
     const handleNewColumn = async type => {
         handleClose()
-        if (type !== 'status' && type !== 'text') {
+        if (!['status', 'text', 'people'].includes(type)) {
             toast('Coming soon')
             return
         }

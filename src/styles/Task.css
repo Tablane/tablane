@@ -71,6 +71,33 @@
   align-items: center;
 }
 
+.Task > div > div.people {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Task > div > div.people i {
+  font-size: 26px;
+}
+
+.Task > div > div.people .person {
+  position: relative;
+}
+
+.Task > div > div.people .person {
+  background-color: #4169e1;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: 10px;
+}
+
 .Task > div > div > input {
   text-align: center;
   font-size: 13px;
@@ -209,12 +236,9 @@
   padding: 4px;
   width: 18px;
   height: 18px;
-  /*border-radius: 50%;*/
 }
 
 .task-popover .colors > div > div {
-  /*cursor: pointer;*/
-  /*margin: 4px;*/
   width: 18px;
   height: 18px;
   border-radius: 50%;

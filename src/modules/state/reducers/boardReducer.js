@@ -277,6 +277,7 @@ const boardSlice = createSlice({
                     _id,
                     name: newTaskName,
                     options: [],
+                    watcher: [],
                     history: [
                         {
                             type: 'activity',
@@ -387,6 +388,9 @@ const boardSlice = createSlice({
                 } else if (type === 'text') {
                     if (option) option.value = value
                     else options.push({ column, value, _id: ObjectId() })
+                } else if (type === 'person') {
+                    if (option) option.value = value
+                    else options.push({ column, value })
                 }
             })
             .addCase(editOptionsTask.fulfilled, (state, action) => {
