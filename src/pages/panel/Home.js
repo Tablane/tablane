@@ -1,9 +1,11 @@
 import styles from '../../styles/Home.module.scss'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function Home(props) {
     const { workspace } = useSelector(state => state.workspace)
     const { user } = useSelector(state => state.user)
+    const navigate = useNavigate()
 
     const tasks = user.assignedTasks.filter(
         x => x.workspace._id === workspace._id
@@ -24,7 +26,15 @@ function Home(props) {
                 <p className={styles.myWork}>My Work</p>
                 <div className={styles.taskList}>
                     {tasks.map(task => (
-                        <div key={task._id} className={styles.task}>
+                        <div
+                            key={task._id}
+                            className={styles.task}
+                            onClick={() =>
+                                navigate(
+                                    `/${workspace.id}/${task.board.space.name}/${task.board.name}/${task._id}`
+                                )
+                            }
+                        >
                             <div>
                                 <span>{task.name}</span>
                             </div>
