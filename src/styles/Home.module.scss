@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .topMenu {
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 61px;
+    display: flex;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e9ebf0;
+
+    i {
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    > div {
+      box-sizing: border-box;
+      height: 100%;
+      line-height: 50px;
+      border-bottom: 3px solid #4169e1;
+
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      color: #292d34;
+    }
+  }
+
+  .panel {
+    padding: 30px 40px;
+
+    .myWork {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1;
+      cursor: default;
+      color: #292d34;
+    }
+
+    .taskList {
+      .task {
+        margin-top: 1px;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 3px;
+        border-color: #f4f5f7;
+        box-shadow: 0 1px 3px #0000001a;
+        height: 34px;
+        cursor: pointer;
+        font-size: 13.5px;
+
+        &:hover {
+          background-color: #fbfbfc;
+        }
+
+        > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

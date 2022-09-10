@@ -58,7 +58,15 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route index element={<Home />} />
+                    <Route
+                        index
+                        element={
+                            <Home
+                                sidebarOpen={sidebarOpen}
+                                toggleSideBar={toggleSideBar}
+                            />
+                        }
+                    />
                     <Route
                         path="/notifications"
                         element={
