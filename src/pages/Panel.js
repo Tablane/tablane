@@ -8,9 +8,10 @@ import useLocalStorageState from '../modules/hooks/useLocalStorageState'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchWorkspace } from '../modules/state/reducers/workspaceReducer'
 import Notifications from './panel/Notifications'
+import WorkspaceNotFound from './panel/WorkspaceNotFound'
 
 function Panel(props) {
-    const { workspace } = useSelector(state => state.workspace)
+    const { workspace, status } = useSelector(state => state.workspace)
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState(
         'sidebarOpen',
         true
@@ -26,6 +27,7 @@ function Panel(props) {
         setSidebarOpen(!sidebarOpen)
     }
 
+    if (status === 'error') return <WorkspaceNotFound />
     return !workspace ? (
         <div className="loading">
             <CircularProgress />

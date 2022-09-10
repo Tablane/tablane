@@ -117,19 +117,22 @@ export const sortSpace = createAsyncThunk(
 
 const workspaceSlice = createSlice({
     name: 'board',
-    initialState: { loading: 0 },
+    initialState: { loading: 0, status: 'loading' },
     reducers: {},
     extraReducers(builder) {
         builder
             .addCase(fetchWorkspace.pending, (state, action) => {
                 state.workspace = null
+                state.status = 'loading'
                 state.loading = state.loading + 1
             })
             .addCase(fetchWorkspace.fulfilled, (state, action) => {
                 state.workspace = action.payload
+                state.status = 'done'
                 state.loading = state.loading - 1
             })
             .addCase(fetchWorkspace.rejected, (state, action) => {
+                state.status = 'error'
                 state.loading = state.loading - 1
             })
             .addCase(addBoard.pending, (state, action) => {
