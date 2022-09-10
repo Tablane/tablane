@@ -75,6 +75,7 @@ const userSlice = createSlice({
             })
 
             .addCase(logoutUser.fulfilled, (state, action) => {
+                localStorage.removeItem('defaultWorkspace')
                 state.user = null
                 state.status = 'logout'
                 toast('Successfully logged out')

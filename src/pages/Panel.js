@@ -21,11 +21,15 @@ function Panel(props) {
 
     useEffect(() => {
         dispatch(fetchWorkspace(params.workspace))
-    }, [])
+    }, [params.workspace])
 
     const toggleSideBar = () => {
         setSidebarOpen(!sidebarOpen)
     }
+
+    useEffect(() => {
+        localStorage.setItem('defaultWorkspace', params.workspace)
+    }, [params.workspace])
 
     if (status === 'error') return <WorkspaceNotFound />
     return !workspace ? (
@@ -78,7 +82,12 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route path="/:workspace" element={<Navigate to={'/'} />} />
+                    <Route
+                        path="/:workspace"
+                        element={
+                            <Navigate to={localStorage.getItem('lastUrl')} />
+                        }
+                    />
                 </Routes>
             </div>
         </div>
