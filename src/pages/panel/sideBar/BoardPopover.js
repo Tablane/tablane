@@ -12,15 +12,19 @@ import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { deleteBoard } from '../../../modules/state/reducers/workspaceReducer'
 import styles from '../../../styles/BoardPopover.module.scss'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function BoardPopover(props) {
     const dispatch = useDispatch()
+    const location = useLocation()
+    const navigate = useNavigate()
     const [deleting, setDeleting] = useState(false)
 
     const handleBoardDelete = async () => {
         handleClose()
         const { workspace, space, board } = props
         setDeleting(false)
+        if (location.pathname.includes(board.name)) navigate('/' + workspace.id)
         dispatch(
             deleteBoard({
                 workspaceId: workspace._id,
