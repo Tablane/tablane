@@ -429,6 +429,7 @@ function SideBar(props) {
                 >
                     <div className="icon">
                         <i className="fa-solid fa-bell"></i>
+                        <span className="indicator">1</span>
                     </div>
                     <span>Notifications</span>
                 </NavLink>

@@ -105,6 +105,26 @@ a {
   height: 32px;
 }
 
+.SideBar > .menus > a.notifications > .icon {
+  position: relative;
+}
+
+.SideBar > .menus > a > .icon > .indicator {
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  background: #fd71af;
+  position: absolute;
+  top: 2px;
+  left: calc(50% + 1px);
+}
+
 .boards .section-name {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
