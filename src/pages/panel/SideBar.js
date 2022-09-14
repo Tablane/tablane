@@ -69,6 +69,7 @@ function SideBar(props) {
 
     // workspace
     const { workspace } = useSelector(state => state.workspace)
+    const { user } = useSelector(state => state.user)
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
@@ -429,7 +430,11 @@ function SideBar(props) {
                 >
                     <div className="icon">
                         <i className="fa-solid fa-bell"></i>
-                        <span className="indicator">1</span>
+                        {user?.newNotifications > 0 && (
+                            <span className="indicator">
+                                {user?.newNotifications}
+                            </span>
+                        )}
                     </div>
                     <span>Notifications</span>
                 </NavLink>
