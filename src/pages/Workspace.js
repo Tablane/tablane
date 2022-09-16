@@ -1,17 +1,14 @@
-import { useEffect } from 'react'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
-import SideBar from './panel/SideBar'
-import Board from './panel/Board'
-import Home from './panel/Home'
+import SideBar from './workspace/SideBar'
+import Board from './workspace/Board'
+import Home from './workspace/Home'
 import { CircularProgress } from '@mui/material'
 import useLocalStorageState from '../modules/hooks/useLocalStorageState'
-import { useDispatch } from 'react-redux'
-import Notifications from './panel/Notifications'
-import WorkspaceNotFound from './panel/WorkspaceNotFound'
+import Notifications from './workspace/Notifications'
+import WorkspaceNotFound from './workspace/WorkspaceNotFound'
 import { useFetchWorkspaceQuery } from '../modules/state/services/workspaces'
-import PrivateRoute from '../utils/PrivateRoute'
 
-function Panel(props) {
+function Workspace(props) {
     const params = useParams()
     const {
         data: workspace,
@@ -45,7 +42,7 @@ function Panel(props) {
             />
             <div className={`PanelContent ${sidebarOpen ? 'hidden' : ''}`}>
                 <Routes>
-                    <PrivateRoute
+                    <Route
                         path="/:space/:board"
                         element={
                             <Board
@@ -54,7 +51,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <PrivateRoute
+                    <Route
                         path="/:space/:board/:taskId"
                         element={
                             <Board
@@ -63,7 +60,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <PrivateRoute
+                    <Route
                         index
                         element={
                             <Home
@@ -72,7 +69,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <PrivateRoute
+                    <Route
                         path="/notifications"
                         element={
                             <Notifications
@@ -81,7 +78,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <PrivateRoute
+                    <Route
                         path="/:workspace"
                         element={
                             <Navigate to={localStorage.getItem('lastUrl')} />
@@ -93,4 +90,4 @@ function Panel(props) {
     )
 }
 
-export default Panel
+export default Workspace

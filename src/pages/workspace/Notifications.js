@@ -10,12 +10,13 @@ import {
     fetchNotifications,
     unclearNotification
 } from '../../modules/state/reducers/notificationReducer'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
 
 function Notifications(props) {
     const params = useParams()
     const dispatch = useDispatch()
     const [condition, setCondition] = useState({ cleared: false })
-    const { workspace } = useSelector(state => state.workspace)
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { notifications, loading } = useSelector(state => state.notification)
 
     const handleClick = taskId => {

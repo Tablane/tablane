@@ -2,11 +2,9 @@ import { Dialog, DialogContent, DialogTitle, Switch } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
 import styles from '../../../styles/ShareDialog.module.scss'
 
-function ShareDialog(props) {
-    const { board } = useSelector(state => state.board)
+function ShareDialog({ handleClose, open, board }) {
     const [check, setCheck] = useState(board.sharing)
     const [link, setLink] = useState(
         board.sharing
@@ -54,7 +52,7 @@ function ShareDialog(props) {
     }
 
     return (
-        <Dialog open={props.open} onClose={props.handleClose}>
+        <Dialog open={open} onClose={handleClose}>
             <DialogTitle id="alert-dialog-title">{'Share Board'}</DialogTitle>
             <DialogContent className={styles.content}>
                 <div className={styles.sharing}>

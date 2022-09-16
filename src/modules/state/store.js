@@ -1,15 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { userApi } from './services/users'
-import { workspaceApi } from './services/workspaces'
+import { api } from './services/api'
 
 export const store = configureStore({
     reducer: {
-        [userApi.reducerPath]: userApi.reducer,
-        [workspaceApi.reducerPath]: workspaceApi.reducer
+        [api.reducerPath]: api.reducer
     },
     middleware: getDefaultMiddleware =>
-        getDefaultMiddleware().concat(userApi.middleware)
+        getDefaultMiddleware().concat(api.middleware)
 })
 
 setupListeners(store.dispatch)

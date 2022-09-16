@@ -1,12 +1,10 @@
 import '../../../styles/TopMenu.scss'
 import ShareDialog from '../topMenu/ShareDialog'
 import useToggleState from '../../../modules/hooks/useToggleState'
-import { useSelector } from 'react-redux'
 import GroupByPopover from '../topMenu/GroupByPopover'
 import { useState } from 'react'
 
-function BoardTopMenu(props) {
-    const { board } = useSelector(state => state.board)
+function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
 
@@ -25,9 +23,9 @@ function BoardTopMenu(props) {
         <div className="TopMenu">
             <div>
                 <div className="details">
-                    {props.sideBarClosed && (
+                    {sideBarClosed && (
                         <i
-                            onClick={props.toggleSideBar}
+                            onClick={toggleSideBar}
                             className="fas fa-angle-double-right"
                         >
                             {' '}
@@ -49,6 +47,7 @@ function BoardTopMenu(props) {
 
                 {board && (
                     <ShareDialog
+                        board={board}
                         open={shareDialogOpen}
                         handleClose={toggleShareDialogOpen}
                     />
@@ -66,6 +65,7 @@ function BoardTopMenu(props) {
             </div>
 
             <GroupByPopover
+                board={board}
                 groupByOpen={groupByOpen}
                 setGroupByOpen={setGroupByOpen}
             />

@@ -8,10 +8,10 @@ import useInputState from '../../../modules/hooks/useInputState'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask } from '../../../modules/state/reducers/boardReducer'
 import { ObjectId } from '../../../utils'
+import { useFetchUserQuery } from '../../../modules/state/services/users'
 
 function TaskGroup(props) {
-    const { board } = useSelector(state => state.board)
-    const { user } = useSelector(state => state.user)
+    const { data: user } = useFetchUserQuery()
     const dispatch = useDispatch()
 
     // new task input
@@ -34,7 +34,7 @@ function TaskGroup(props) {
         dispatch(
             addTask({
                 author: user.username,
-                boardId: board._id,
+                boardId: props.board._id,
                 taskGroupId: props.taskGroupId,
                 newTaskName,
                 _id: ObjectId()
@@ -72,7 +72,7 @@ function TaskGroup(props) {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {board.attributes.map((x, i) => {
+                            {props.board.attributes.map((x, i) => {
                                 return (
                                     <Draggable
                                         draggableId={props.taskGroupId + x._id}
@@ -131,6 +131,7 @@ function TaskGroup(props) {
                         {props.tasks.map((task, i) => {
                             return (
                                 <Task
+                                    board={props.board}
                                     key={task._id}
                                     task={task}
                                     index={i}
@@ -156,13 +157,13 @@ function TaskGroup(props) {
             </form>
 
             <AttributePopover
-                boardId={board._id}
+                boardId={props.board._id}
                 open={popoverOpen}
                 close={handleAttributePopover}
                 attr={popoverId}
             />
             <AddAttributePopover
-                boardId={board._id}
+                boardId={props.board._id}
                 anchor={newAttributeOpen}
                 close={handleAddNewAttribute}
             />

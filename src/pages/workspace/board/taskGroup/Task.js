@@ -4,7 +4,7 @@ import TaskColumnPopover from './task/TaskColumnPopover'
 import { Draggable } from '@hello-pangea/dnd'
 import TaskPopover from './task/TaskPopover'
 import useInputState from '../../../../modules/hooks/useInputState'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
     editOptionsTask,
     editTaskField
@@ -13,14 +13,14 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import PersonColumnPopover from './task/PersonColumnPopover'
 import { Tooltip } from '@mui/material'
+import { useFetchWorkspaceQuery } from '../../../../modules/state/services/workspaces'
 
 function Task(props) {
-    const { board } = useSelector(state => state.board)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-    const { taskId } = useParams()
-    const { workspace } = useSelector(state => state.workspace)
+    const { taskId, workspace: workspaceId } = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(workspaceId)
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -64,7 +64,7 @@ function Task(props) {
                 column: e.target.name,
                 value: e.target.value,
                 type: 'text',
-                boardId: board._id,
+                boardId: props.board._id,
                 taskId: task._id
             })
         )
@@ -174,7 +174,7 @@ function Task(props) {
                 )}
                 {attribute._id.toString() === activeOption && (
                     <PersonColumnPopover
-                        boardId={board._id}
+                        boardId={props.board._id}
                         attribute={attribute}
                         people={people}
                         taskOption={taskOption}
@@ -201,7 +201,7 @@ function Task(props) {
             editTaskField({
                 type: 'name',
                 value: taskName,
-                boardId: board._id,
+                boardId: props.board._id,
                 taskId: task._id
             })
         )
@@ -243,7 +243,7 @@ function Task(props) {
                             <p>{props.task.name}</p>
                         )}
                         <div onClick={e => e.stopPropagation()}>
-                            {board.attributes.map(attribute => {
+                            {props.board.attributes.map(attribute => {
                                 if (attribute.type === 'status')
                                     return getStatusLabel(attribute)
                                 if (attribute.type === 'text')
@@ -272,6 +272,7 @@ function Task(props) {
 
             {!taskEditing && (
                 <TaskPopover
+                    board={props.board}
                     toggleTaskEdit={toggleTaskEdit}
                     open={moreDialogOpen}
                     anchor={anchor}
@@ -283,7 +284,7 @@ function Task(props) {
 
             {taskId === props.task._id && (
                 <TaskModal
-                    boardId={board._id}
+                    boardId={props.board._id}
                     taskGroupId={props.taskGroupId}
                     task={props.task}
                 />

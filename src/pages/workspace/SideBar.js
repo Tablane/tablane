@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../../styles/SideBar.css'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
 import AccountPopOver from './sideBar/AccountPopover'
 import {
     Dialog,
@@ -27,6 +27,8 @@ import {
     sortSpace
 } from '../../modules/state/reducers/workspaceReducer'
 import { ObjectId } from '../../utils'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
+import { useFetchUserQuery } from '../../modules/state/services/users'
 
 function SideBar(props) {
     const dispatch = useDispatch()
@@ -68,8 +70,9 @@ function SideBar(props) {
     const [editingSpaceName, changeEditingSpaceName] = useInputState('')
 
     // workspace
-    const { workspace } = useSelector(state => state.workspace)
-    const { user } = useSelector(state => state.user)
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const { data: user } = useFetchUserQuery()
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
