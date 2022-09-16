@@ -9,13 +9,12 @@ import {
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import { toast } from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
-import { deleteBoard } from '../../../modules/state/reducers/workspaceReducer'
 import styles from '../../../styles/BoardPopover.module.scss'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useDeleteBoardMutation } from '../../../modules/services/workspaceSlice'
 
 function BoardPopover(props) {
-    const dispatch = useDispatch()
+    const [deleteBoard] = useDeleteBoardMutation()
     const location = useLocation()
     const navigate = useNavigate()
     const [deleting, setDeleting] = useState(false)
@@ -25,13 +24,11 @@ function BoardPopover(props) {
         const { workspace, space, board } = props
         setDeleting(false)
         if (location.pathname.includes(board.name)) navigate('/' + workspace.id)
-        dispatch(
-            deleteBoard({
-                workspaceId: workspace._id,
-                spaceId: space._id,
-                boardId: board._id
-            })
-        )
+        deleteBoard({
+            workspaceId: workspace._id,
+            spaceId: space._id,
+            boardId: board._id
+        })
     }
 
     const deleteDialogOpen = () => {

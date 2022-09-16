@@ -28,4 +28,9 @@ export const userApi = api.injectEndpoints({
     })
 })
 
-export const { useFetchUserQuery } = userApi
+export const {
+    useFetchUserQuery,
+    useLoginUserMutation,
+    useRegisterUserMutation,
+    useLogoutUserMutation
+} = userApi

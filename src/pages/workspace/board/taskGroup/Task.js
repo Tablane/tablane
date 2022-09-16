@@ -4,19 +4,17 @@ import TaskColumnPopover from './task/TaskColumnPopover'
 import { Draggable } from '@hello-pangea/dnd'
 import TaskPopover from './task/TaskPopover'
 import useInputState from '../../../../modules/hooks/useInputState'
-import { useDispatch } from 'react-redux'
-import {
-    editOptionsTask,
-    editTaskField
-} from '../../../../modules/state/reducers/boardReducer'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import PersonColumnPopover from './task/PersonColumnPopover'
 import { Tooltip } from '@mui/material'
-import { useFetchWorkspaceQuery } from '../../../../modules/state/services/workspaceSlice'
+import { useFetchWorkspaceQuery } from '../../../../modules/services/workspaceSlice'
+import {
+    useEditOptionsTaskMutation,
+    useEditTaskFieldMutation
+} from '../../../../modules/services/boardSlice'
 
 function Task(props) {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
     const { taskId, workspace: workspaceId } = useParams()
@@ -25,6 +23,8 @@ function Task(props) {
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
     const [moreDialogOpen, setMoreDialogOpen] = useState(false)
+    const [editOptionsTask] = useEditOptionsTaskMutation()
+    const [editTaskField] = useEditTaskFieldMutation()
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -59,15 +59,13 @@ function Task(props) {
         )
             return
 
-        dispatch(
-            editOptionsTask({
-                column: e.target.name,
-                value: e.target.value,
-                type: 'text',
-                boardId: props.board._id,
-                taskId: task._id
-            })
-        )
+        editOptionsTask({
+            column: e.target.name,
+            value: e.target.value,
+            type: 'text',
+            boardId: props.board._id,
+            taskId: task._id
+        })
     }
 
     const getStatusLabel = attribute => {
@@ -197,14 +195,12 @@ function Task(props) {
         e.preventDefault()
         const { task } = props
         toggleTaskEdit()
-        dispatch(
-            editTaskField({
-                type: 'name',
-                value: taskName,
-                boardId: props.board._id,
-                taskId: task._id
-            })
-        )
+        editTaskField({
+            type: 'name',
+            value: taskName,
+            boardId: props.board._id,
+            taskId: task._id
+        })
     }
 
     return (

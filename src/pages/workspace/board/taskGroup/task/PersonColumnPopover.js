@@ -1,8 +1,8 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../styles/WatcherPopover.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useInputState from '../../../../../modules/hooks/useInputState'
-import { editOptionsTask } from '../../../../../modules/state/reducers/boardReducer'
+import { useEditOptionsTaskMutation } from '../../../../../modules/services/boardSlice'
 
 function PersonColumnPopover({
     boardId,
@@ -16,31 +16,27 @@ function PersonColumnPopover({
     const { workspace } = useSelector(state => state.workspace)
     const { user } = useSelector(state => state.user)
     const [search, handleSearch] = useInputState('')
-    const dispatch = useDispatch()
+    const [editOptionsTask] = useEditOptionsTaskMutation()
 
     const handleClick = (user, isAssignee) => {
         if (isAssignee) {
-            dispatch(
-                editOptionsTask({
-                    column: attribute._id,
-                    value: taskOption.value.filter(x => x !== user._id),
-                    type: 'person',
-                    boardId,
-                    taskId: task._id
-                })
-            )
+            editOptionsTask({
+                column: attribute._id,
+                value: taskOption.value.filter(x => x !== user._id),
+                type: 'person',
+                boardId,
+                taskId: task._id
+            })
         } else {
             let value = [user._id]
             if (taskOption) value = [...taskOption.value, user._id]
-            dispatch(
-                editOptionsTask({
-                    column: attribute._id,
-                    value,
-                    type: 'person',
-                    boardId,
-                    taskId: task._id
-                })
-            )
+            editOptionsTask({
+                column: attribute._id,
+                value,
+                type: 'person',
+                boardId,
+                taskId: task._id
+            })
         }
     }
 

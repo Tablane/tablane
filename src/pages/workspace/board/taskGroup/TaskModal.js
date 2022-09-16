@@ -3,23 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import useInputState from '../../../../modules/hooks/useInputState'
-import {
-    addTaskComment,
-    editTaskField
-} from '../../../../modules/state/reducers/boardReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import WatcherPopover from './taskModal/WatcherPopover'
+import {
+    useAddTaskCommentMutation,
+    useEditTaskFieldMutation
+} from '../../../../modules/services/boardSlice'
 
 function TaskModal(props) {
     const navigate = useNavigate()
     const params = useParams()
     const { user } = useSelector(state => state.user)
-    const dispatch = useDispatch()
     const { task, boardId } = props
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
     const [description, changeDescription] = useInputState(task.description)
     const [newComment, changeNewComment, resetNewComment] = useInputState('')
+    const [addTaskComment] = useAddTaskCommentMutation()
+    const [editTaskField] = useEditTaskFieldMutation()
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
@@ -39,28 +40,24 @@ function TaskModal(props) {
         e?.preventDefault()
         if (name === task.name) return
 
-        dispatch(
-            editTaskField({
-                type: 'name',
-                value: name,
-                boardId,
-                taskId: task._id
-            })
-        )
+        editTaskField({
+            type: 'name',
+            value: name,
+            boardId,
+            taskId: task._id
+        })
     }
 
     const handleDescriptionChange = e => {
         e?.preventDefault()
         if (description === task.description) return
 
-        dispatch(
-            editTaskField({
-                type: 'description',
-                value: description,
-                boardId,
-                taskId: task._id
-            })
-        )
+        editTaskField({
+            type: 'description',
+            value: description,
+            boardId,
+            taskId: task._id
+        })
     }
 
     const handleAddComment = e => {
@@ -68,13 +65,11 @@ function TaskModal(props) {
         if (newComment === '') return
         resetNewComment()
 
-        dispatch(
-            addTaskComment({
-                text: newComment,
-                taskId: task._id,
-                author: user.username
-            })
-        )
+        addTaskComment({
+            text: newComment,
+            taskId: task._id,
+            author: user.username
+        })
     }
 
     // TODO: replace this with relativeDate component

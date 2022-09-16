@@ -9,12 +9,11 @@ import {
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteTask } from '../../../../../modules/state/reducers/boardReducer'
 import styles from '../../../../../styles/TaskPopover.module.scss'
+import { useDeleteTaskMutation } from '../../../../../modules/services/boardSlice'
 
 function TaskPopover(props) {
-    const dispatch = useDispatch()
+    const [deleteTask] = useDeleteTaskMutation()
     const [deleteDialog, setDeleteDialog] = useState(false)
 
     // delete dialog
@@ -25,12 +24,10 @@ function TaskPopover(props) {
 
     const handleDelete = () => {
         setDeleteDialog(false)
-        dispatch(
-            deleteTask({
-                boardId: props.board._id,
-                taskId: props.task._id
-            })
-        )
+        deleteTask({
+            boardId: props.board._id,
+            taskId: props.task._id
+        })
     }
 
     // copy task id

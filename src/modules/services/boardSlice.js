@@ -1,5 +1,5 @@
 import { api } from './api'
-import { ObjectId } from '../../../utils'
+import { ObjectId } from '../../utils'
 
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({

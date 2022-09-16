@@ -5,15 +5,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { CircularProgress } from '@mui/material'
 import '../../styles/Login.css'
 import useInputState from '../../modules/hooks/useInputState'
-import { useDispatch } from 'react-redux'
 import '../../styles/Auth.css'
-import { loginUser } from '../../modules/state/reducers/userReducer'
+import { useLoginUserMutation } from '../../modules/services/userSlice'
 
 function Login() {
-    const [submitting, setSubmitting] = useState(false)
+    const [loginUser, isSubmitting] = useLoginUserMutation()
     const [validate, setValidate] = useState(false)
-
-    const dispatch = useDispatch()
 
     const [username, changeUsername] = useInputState()
     const [password, changePassword] = useInputState()
@@ -42,9 +39,8 @@ function Login() {
     const handleSubmit = e => {
         e.preventDefault()
         setValidate(true)
-        setSubmitting(true)
         if (validateInput()) {
-            dispatch(loginUser({ username, password }))
+            loginUser({ username, password })
         }
     }
 
@@ -83,11 +79,11 @@ function Login() {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                disabled={submitting}
+                                disabled={isSubmitting}
                             >
                                 Login
                             </Button>
-                            {submitting && (
+                            {isSubmitting && (
                                 <CircularProgress
                                     size={24}
                                     className="buttonProgress"

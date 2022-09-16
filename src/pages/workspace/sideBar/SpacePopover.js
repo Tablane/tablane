@@ -9,12 +9,11 @@ import {
 import Button from '@mui/material/Button'
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { deleteSpace } from '../../../modules/state/reducers/workspaceReducer'
-import { useDispatch } from 'react-redux'
 import styles from '../../../styles/SpacePopover.module.scss'
+import { useDeleteSpaceMutation } from '../../../modules/services/workspaceSlice'
 
 function SpacePopover(props) {
-    const dispatch = useDispatch()
+    const [deleteSpace] = useDeleteSpaceMutation()
     const [deleting, setDeleting] = useState(false)
 
     const handleDeleteClick = () => {
@@ -25,9 +24,7 @@ function SpacePopover(props) {
         handleClose()
         const { workspace, space } = props
 
-        dispatch(
-            deleteSpace({ workspaceId: workspace._id, spaceId: space._id })
-        )
+        deleteSpace({ workspaceId: workspace._id, spaceId: space._id })
         setDeleting(false)
     }
 

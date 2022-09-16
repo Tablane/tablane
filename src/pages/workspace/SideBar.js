@@ -17,21 +17,26 @@ import SpacePopover from './sideBar/SpacePopover'
 import useLocalStorageState from '../../modules/hooks/useLocalStorageState'
 import useInputState from '../../modules/hooks/useInputState'
 import useToggleState from '../../modules/hooks/useToggleState'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-    addBoard,
-    addSpace,
-    editBoardName,
-    editSpaceName,
-    sortBoard,
-    sortSpace
-} from '../../modules/state/reducers/workspaceReducer'
 import { ObjectId } from '../../utils'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
-import { useFetchUserQuery } from '../../modules/state/services/userSlice'
+import {
+    useAddBoardMutation,
+    useAddSpaceMutation,
+    useEditBoardNameMutation,
+    useEditSpaceNameMutation,
+    useFetchWorkspaceQuery,
+    useSortBoardMutation,
+    useSortSpaceMutation
+} from '../../modules/services/workspaceSlice'
+import { useFetchUserQuery } from '../../modules/services/userSlice'
 
 function SideBar(props) {
-    const dispatch = useDispatch()
+    const [addBoard] = useAddBoardMutation()
+    const [addSpace] = useAddSpaceMutation()
+    const [editBoardName] = useEditBoardNameMutation()
+    const [editSpaceName] = useEditSpaceNameMutation()
+    const [sortBoard] = useSortBoardMutation()
+    const [sortSpace] = useSortSpaceMutation()
+
     // new space dialog
     const [
         newSpaceDialogOpen,
@@ -103,13 +108,11 @@ function SideBar(props) {
     const handleNewSpace = async () => {
         resetNewSpaceDialogOpen()
         resetNewSpaceName()
-        dispatch(
-            addSpace({
-                workspaceId: workspace._id,
-                _id: ObjectId(),
-                name: newSpaceName
-            })
-        )
+        addSpace({
+            workspaceId: workspace._id,
+            _id: ObjectId(),
+            name: newSpaceName
+        })
     }
 
     const handleNewBoard = async () => {
@@ -120,14 +123,12 @@ function SideBar(props) {
 
         resetNewBoardSpace()
         resetNewBoardName()
-        dispatch(
-            addBoard({
-                workspaceId: workspace._id,
-                spaceId: newBoardSpace,
-                name: newBoardName,
-                _id: ObjectId()
-            })
-        )
+        addBoard({
+            workspaceId: workspace._id,
+            spaceId: newBoardSpace,
+            name: newBoardName,
+            _id: ObjectId()
+        })
     }
 
     const handleBoardEditClick = (workspace, space, board) => {
@@ -140,20 +141,18 @@ function SideBar(props) {
 
     const handleBoardEdit = async () => {
         if (editingBoardName === '') return
-        dispatch(editBoardName({ ...editingBoard, name: editingBoardName }))
+        editBoardName({ ...editingBoard, name: editingBoardName })
         setEditingBoard('')
     }
 
     const handleSpaceEdit = async () => {
         if (editingSpaceName === '') return setEditingSpace('')
 
-        dispatch(
-            editSpaceName({
-                workspaceId: workspace._id,
-                spaceId: editingSpace,
-                name: editingSpaceName
-            })
-        )
+        editSpaceName({
+            workspaceId: workspace._id,
+            spaceId: editingSpace,
+            name: editingSpaceName
+        })
         setEditingSpace('')
     }
 
@@ -188,9 +187,9 @@ function SideBar(props) {
         )
             return
         if (result.type === 'board') {
-            dispatch(sortBoard({ workspaceId: workspace._id, result }))
+            sortBoard({ workspaceId: workspace._id, result })
         } else if (result.type === 'space') {
-            dispatch(sortSpace({ workspaceId: workspace._id, result }))
+            sortSpace({ workspaceId: workspace._id, result })
         }
     }
 

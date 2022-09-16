@@ -3,44 +3,42 @@ import styles from '../../styles/Notifications.module.scss'
 import RelativeDate from '../../utils/RelativeDate'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { LinearProgress, Tooltip } from '@mui/material'
+import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import {
-    clearNotification,
-    fetchNotifications,
-    unclearNotification
-} from '../../modules/state/reducers/notificationReducer'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
+    useClearNotificationMutation,
+    useFetchNotificationsMutation,
+    useUnclearNotificationMutation
+} from '../../modules/services/notificationSlice'
 
 function Notifications(props) {
+    const [clearNotification] = useClearNotificationMutation()
+    const [fetchNotifications] = useFetchNotificationsMutation()
+    const [unclearNotification] = useUnclearNotificationMutation()
     const params = useParams()
-    const dispatch = useDispatch()
     const [condition, setCondition] = useState({ cleared: false })
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { notifications, loading } = useSelector(state => state.notification)
 
     const handleClick = taskId => {
         if (!condition.cleared) {
-            dispatch(
-                clearNotification({
-                    workspaceId: workspace._id,
-                    taskId,
-                    condition
-                })
-            )
+            clearNotification({
+                workspaceId: workspace._id,
+                taskId,
+                condition
+            })
         } else if (condition.cleared) {
-            dispatch(
-                unclearNotification({
-                    workspaceId: workspace._id,
-                    taskId,
-                    condition
-                })
-            )
+            unclearNotification({
+                workspaceId: workspace._id,
+                taskId,
+                condition
+            })
         }
     }
 
     useEffect(() => {
-        dispatch(fetchNotifications({ workspaceId: workspace._id, condition }))
+        fetchNotifications({ workspaceId: workspace._id, condition })
     }, [condition])
 
     const updateCondition = options => {
