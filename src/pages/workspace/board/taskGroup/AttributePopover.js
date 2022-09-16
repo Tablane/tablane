@@ -10,15 +10,15 @@ import {
 import Button from '@mui/material/Button'
 import '../../../../styles/AttributePopover.css'
 import {
-    deleteAttribute,
-    editAttributeName
-} from '../../../../modules/state/reducers/boardReducer'
-import { useDispatch } from 'react-redux'
+    useDeleteAttributeMutation,
+    useEditAttributeNameMutation
+} from '../../../../modules/services/boardSlice'
 
 function AttributePopover(props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [name, setName] = useState(props.attr.name)
-    const dispatch = useDispatch()
+    const [deleteAttribute] = useDeleteAttributeMutation()
+    const [editAttributeName] = useEditAttributeNameMutation()
 
     useEffect(() => {
         setName(props.attr.name)
@@ -31,12 +31,12 @@ function AttributePopover(props) {
 
     const handleAttributeDelete = async () => {
         setDeleteDialogOpen(!deleteDialogOpen)
-        dispatch(deleteAttribute({ attributeId: props.attr._id }))
+        deleteAttribute({ attributeId: props.attr._id })
     }
 
     const updateName = async () => {
         if (props.attr.name === name) return
-        dispatch(editAttributeName({ attributeId: props.attr._id, name }))
+        editAttributeName({ attributeId: props.attr._id, name })
     }
 
     const handleClose = e => {

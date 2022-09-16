@@ -1,11 +1,9 @@
 import { Popover } from '@mui/material'
 import styles from '../../../styles/GroupByPopover.module.scss'
-import { useDispatch } from 'react-redux'
-import { useSetGroupByMutation } from '../../../modules/state/services/boardSlice'
+import { useSetGroupByMutation } from '../../../modules/services/boardSlice'
 
 function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
     const [setGroupBy] = useSetGroupByMutation()
-    const dispatch = useDispatch()
 
     const handleClose = () => {
         setGroupByOpen(null)

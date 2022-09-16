@@ -2,11 +2,10 @@ import '../../../../styles/AddAttributePopover.css'
 import { toast } from 'react-hot-toast'
 import { Popover } from '@mui/material'
 import { ObjectId } from '../../../../utils'
-import { addAttribute } from '../../../../modules/state/reducers/boardReducer'
-import { useDispatch } from 'react-redux'
+import { useAddAttributeMutation } from '../../../../modules/services/boardSlice'
 
 function AddAttributePopover(props) {
-    const dispatch = useDispatch()
+    const [addAttribute] = useAddAttributeMutation()
 
     const handleClose = () => {
         props.close()
@@ -18,12 +17,10 @@ function AddAttributePopover(props) {
             toast('Coming soon')
             return
         }
-        dispatch(
-            addAttribute({
-                type,
-                _id: ObjectId()
-            })
-        )
+        addAttribute({
+            type,
+            _id: ObjectId()
+        })
     }
 
     return (

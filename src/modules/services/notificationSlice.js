@@ -1,8 +1,4 @@
 import { api } from './api'
-import {
-    clearNotification,
-    unclearNotification
-} from '../reducers/notificationReducer'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({

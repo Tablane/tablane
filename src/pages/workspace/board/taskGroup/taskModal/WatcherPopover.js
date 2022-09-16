@@ -1,17 +1,18 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../styles/WatcherPopover.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import {
-    addWatcher,
-    removeWatcher
-} from '../../../../../modules/state/reducers/boardReducer'
+    useAddWatcherMutation,
+    useRemoveWatcherMutation
+} from '../../../../../modules/services/boardSlice'
 
 function WatcherPopover({ task, anchor, setAnchor }) {
     const { workspace } = useSelector(state => state.workspace)
     const { user } = useSelector(state => state.user)
     const [search, handleSearch] = useInputState('')
-    const dispatch = useDispatch()
+    const [addWatcher] = useAddWatcherMutation()
+    const [removeWatcher] = useRemoveWatcherMutation()
 
     const handleClose = () => {
         setAnchor(false)
@@ -19,9 +20,9 @@ function WatcherPopover({ task, anchor, setAnchor }) {
 
     const handleClick = (user, isWatcher) => {
         if (isWatcher) {
-            dispatch(removeWatcher({ task: task, user: user }))
+            removeWatcher({ task: task, user: user })
         } else {
-            dispatch(addWatcher({ task: task, user: user }))
+            addWatcher({ task: task, user: user })
         }
     }
 

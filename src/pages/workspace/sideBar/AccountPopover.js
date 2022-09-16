@@ -3,19 +3,20 @@ import { Popover, Tooltip } from '@mui/material'
 import Button from '@mui/material/Button'
 import '../../../styles/AccountPopover.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { logoutUser } from '../../../modules/state/reducers/userReducer'
-import { useFetchWorkspaceQuery } from '../../../modules/state/services/workspaceSlice'
-import { useFetchUserQuery } from '../../../modules/state/services/userSlice'
+import { useFetchWorkspaceQuery } from '../../../modules/services/workspaceSlice'
+import {
+    useFetchUserQuery,
+    useLogoutUserMutation
+} from '../../../modules/services/userSlice'
 
-function AccountPopover(props) {
+function AccountPopover() {
     const [anchor, setAnchor] = useState(null)
     const navigate = useNavigate()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { data: user } = useFetchUserQuery()
 
-    const dispatch = useDispatch()
+    const [logoutUser] = useLogoutUserMutation()
 
     const handleClick = e => {
         setAnchor(e.currentTarget)
@@ -143,7 +144,7 @@ function AccountPopover(props) {
                                 <Link to={`/settings/${workspaceId}/apps`}>
                                     Apps
                                 </Link>
-                                <button onClick={() => dispatch(logoutUser())}>
+                                <button onClick={() => logoutUser()}>
                                     Log out
                                 </button>
                             </div>

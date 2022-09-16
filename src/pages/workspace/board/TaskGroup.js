@@ -6,8 +6,8 @@ import AttributePopover from './taskGroup/AttributePopover'
 import AddAttributePopover from './taskGroup/AddAttributePopover'
 import useInputState from '../../../modules/hooks/useInputState'
 import { ObjectId } from '../../../utils'
-import { useFetchUserQuery } from '../../../modules/state/services/userSlice'
-import { useAddTaskMutation } from '../../../modules/state/services/boardSlice'
+import { useFetchUserQuery } from '../../../modules/services/userSlice'
+import { useAddTaskMutation } from '../../../modules/services/boardSlice'
 
 function TaskGroup(props) {
     const { data: user } = useFetchUserQuery()

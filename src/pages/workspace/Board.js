@@ -3,22 +3,22 @@ import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { LinearProgress } from '@mui/material'
-import { useDispatch } from 'react-redux'
-import {
-    sortAttribute,
-    sortTask
-} from '../../modules/state/reducers/boardReducer'
 import _ from 'lodash'
 import { Navigate, useParams } from 'react-router-dom'
 import BoardTopMenu from './board/BoardTopMenu'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
-import { useFetchBoardQuery } from '../../modules/state/services/boardSlice'
+import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
+import {
+    useFetchBoardQuery,
+    useSortAttributeMutation,
+    useSortTaskMutation
+} from '../../modules/services/boardSlice'
 import { toast } from 'react-hot-toast'
 
 function Board(props) {
+    const [sortAttribute] = useSortAttributeMutation()
+    const [sortTask] = useSortTaskMutation()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const dispatch = useDispatch()
 
     const [groupedTasks, setGroupedTasks] = useState(false)
 
@@ -119,9 +119,9 @@ function Board(props) {
                     )
                 }
             }
-            dispatch(sortTask({ result, destinationIndex, sourceIndex }))
+            sortTask({ result, destinationIndex, sourceIndex })
         } else if (/^attribute /gm.test(result.type)) {
-            dispatch(sortAttribute({ result }))
+            sortAttribute({ result })
         }
     }
 

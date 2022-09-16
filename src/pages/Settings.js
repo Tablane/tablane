@@ -19,14 +19,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import WorkspaceContext from '../modules/context/WorkspaceContext'
 import styles from '../styles/Settings.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser } from '../modules/state/reducers/userReducer'
+import { useSelector } from 'react-redux'
+import { useLogoutUserMutation } from '../modules/services/userSlice'
 
 function Settings(props) {
+    const [logoutUser] = useLogoutUserMutation()
     const [workspace, setWorkspace] = useState(null)
     const { user } = useSelector(state => state.user)
     const params = useParams()
-    const dispatch = useDispatch()
 
     const getData = useCallback(async () => {
         axios({
@@ -171,7 +171,7 @@ function Settings(props) {
                             isActive ? styles.active : ''
                         }
                         to={`/settings/${workspace.id}/logout`}
-                        onClick={() => dispatch(logoutUser())}
+                        onClick={() => logoutUser()}
                     >
                         Log out
                     </NavLink>

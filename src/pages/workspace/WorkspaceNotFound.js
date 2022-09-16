@@ -1,14 +1,13 @@
 import styles from '../../styles/WorkspaceNotFound.module.scss'
-import { useDispatch } from 'react-redux'
-import { logoutUser } from '../../modules/state/reducers/userReducer'
 import { useNavigate } from 'react-router-dom'
+import { useLogoutUserMutation } from '../../modules/services/userSlice'
 
-function WorkspaceNotFound(props) {
-    const dispatch = useDispatch()
+function WorkspaceNotFound() {
+    const [logoutUser] = useLogoutUserMutation()
     const navigate = useNavigate()
 
     const logout = () => {
-        dispatch(logoutUser())
+        logoutUser()
     }
 
     const goHome = () => {

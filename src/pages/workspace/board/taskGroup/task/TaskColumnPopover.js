@@ -2,18 +2,20 @@ import { useState } from 'react'
 import { Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-    clearStatusTask,
-    editAttributeLabels,
-    editOptionsTask
-} from '../../../../../modules/state/reducers/boardReducer'
+import { useSelector } from 'react-redux'
 import { ObjectId } from '../../../../../utils'
 import _ from 'lodash'
+import {
+    useClearStatusTaskMutation,
+    useEditAttributeLabelsMutation,
+    useEditOptionsTaskMutation
+} from '../../../../../modules/services/boardSlice'
 
 function TaskColumnPopover(props) {
     const { board } = useSelector(state => state.board)
-    const dispatch = useDispatch()
+    const [editAttributeLabels] = useEditAttributeLabelsMutation()
+    const [clearStatusTask] = useClearStatusTaskMutation()
+    const [editOptionsTask] = useEditOptionsTaskMutation()
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -24,12 +26,10 @@ function TaskColumnPopover(props) {
 
     const toggleEdit = async () => {
         if (labelsEditing) {
-            dispatch(
-                editAttributeLabels({
-                    name: props.attribute.name,
-                    labels: editingLabels
-                })
-            )
+            editAttributeLabels({
+                name: props.attribute.name,
+                labels: editingLabels
+            })
         }
         setLabelsEditing(!labelsEditing)
         setColorEditingLabel(-1)
@@ -87,15 +87,13 @@ function TaskColumnPopover(props) {
         const { taskGroupId, task } = props
         if (labelsEditing) return
 
-        dispatch(
-            editOptionsTask({
-                boardId: board._id,
-                taskId: task._id,
-                column: props.attribute._id,
-                value: id._id,
-                type: 'status'
-            })
-        )
+        editOptionsTask({
+            boardId: board._id,
+            taskId: task._id,
+            column: props.attribute._id,
+            value: id._id,
+            type: 'status'
+        })
         handleClose()
     }
 
@@ -104,13 +102,11 @@ function TaskColumnPopover(props) {
         const { taskGroupId, task, attribute } = props
         if (labelsEditing) return
 
-        dispatch(
-            clearStatusTask({
-                boardId: board._id,
-                taskId: task._id,
-                optionId: attribute._id
-            })
-        )
+        clearStatusTask({
+            boardId: board._id,
+            taskId: task._id,
+            optionId: attribute._id
+        })
         handleClose()
     }
 
