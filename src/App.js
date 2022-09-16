@@ -1,7 +1,7 @@
 import './App.css'
 import { CircularProgress } from '@mui/material'
 import Workspace from './pages/Workspace'
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import WorkspaceSelector from './pages/WorkspaceSelector'
 import SharedBoard from './pages/SharedBoard'
 import Settings from './pages/Settings'
@@ -9,10 +9,10 @@ import { useFetchUserQuery } from './modules/state/services/users'
 import PrivateRoutes from './utils/PrivateRoute'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
+import ErrorPage from './utils/ErrorPage'
 
 function App() {
     const { data: user, error, isLoading } = useFetchUserQuery()
-    const navigate = useNavigate()
 
     if (isLoading)
         return (
@@ -21,7 +21,7 @@ function App() {
             </div>
         )
     if (error) {
-        return <p>{JSON.stringify(error)}</p>
+        return <ErrorPage error={error} />
     }
     return (
         <Routes>
