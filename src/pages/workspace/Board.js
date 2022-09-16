@@ -1,23 +1,21 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import '../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { LinearProgress } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
-    fetchBoard,
     sortAttribute,
     sortTask
 } from '../../modules/state/reducers/boardReducer'
 import _ from 'lodash'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import BoardTopMenu from './board/BoardTopMenu'
-import { useFetchUserQuery } from '../../modules/state/services/users'
 import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
 import { useFetchBoardQuery } from '../../modules/state/services/boards'
+import { toast } from 'react-hot-toast'
 
 function Board(props) {
-    const { data: user } = useFetchUserQuery()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const dispatch = useDispatch()
@@ -29,7 +27,7 @@ function Board(props) {
         const board = params.board.replaceAll('-', ' ')
         return workspace?.spaces
             .find(x => x.name === space)
-            .boards.find(x => x.name === board)._id
+            ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
     const { data: board, error, isLoading } = useFetchBoardQuery(boardId)
@@ -127,6 +125,10 @@ function Board(props) {
         }
     }
 
+    if (error) {
+        toast('Could not find that Board')
+        return <Navigate to={`/${workspace.id}`} />
+    }
     return (
         <>
             <BoardTopMenu

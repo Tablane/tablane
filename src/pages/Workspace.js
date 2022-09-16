@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes, useParams, Outlet } from 'react-router-dom'
 import SideBar from './workspace/SideBar'
 import Board from './workspace/Board'
 import Home from './workspace/Home'
@@ -7,6 +7,8 @@ import useLocalStorageState from '../modules/hooks/useLocalStorageState'
 import Notifications from './workspace/Notifications'
 import WorkspaceNotFound from './workspace/WorkspaceNotFound'
 import { useFetchWorkspaceQuery } from '../modules/state/services/workspaces'
+import FunctionAndNavigate from '../utils/FunctionAndNavigate'
+import { toast } from 'react-hot-toast'
 
 function Workspace(props) {
     const params = useParams()
@@ -32,6 +34,7 @@ function Workspace(props) {
             </div>
         )
     }
+
     return (
         <div className={`App ${!sidebarOpen ? 'sidebar-closed' : ''}`}>
             <SideBar
@@ -79,9 +82,12 @@ function Workspace(props) {
                         }
                     />
                     <Route
-                        path="/:workspace"
+                        path="/*"
                         element={
-                            <Navigate to={localStorage.getItem('lastUrl')} />
+                            <FunctionAndNavigate
+                                to={`/${workspace.id}`}
+                                fn={() => toast('Could not find that Board')}
+                            />
                         }
                     />
                 </Routes>
