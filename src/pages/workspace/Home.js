@@ -5,9 +5,8 @@ import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
 
 function Home(props) {
     const params = useParams()
-    console.log(params)
     const { data: user } = useFetchUserQuery()
-    const { data: workspace } = useFetchWorkspaceQuery()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const navigate = useNavigate()
 
     const tasks = user.assignedTasks.filter(

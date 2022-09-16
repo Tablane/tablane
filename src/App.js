@@ -1,18 +1,18 @@
 import './App.css'
-import Auth from './pages/Auth'
 import { CircularProgress } from '@mui/material'
-import Panel from './pages/Panel'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import Workspace from './pages/Workspace'
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import WorkspaceSelector from './pages/WorkspaceSelector'
 import SharedBoard from './pages/SharedBoard'
 import Settings from './pages/Settings'
-import ContextProvider from './ContextProvider'
-import SyncError from './pages/SyncError'
 import { useFetchUserQuery } from './modules/state/services/users'
-import PrivateRoute from './utils/PrivateRoute'
+import PrivateRoutes from './utils/PrivateRoute'
+import Register from './pages/auth/Register'
+import Login from './pages/auth/Login'
 
 function App() {
     const { data: user, error, isLoading } = useFetchUserQuery()
+    const navigate = useNavigate()
 
     if (isLoading)
         return (
@@ -20,25 +20,23 @@ function App() {
                 <CircularProgress />
             </div>
         )
+    if (error) {
+        return <p>{JSON.stringify(error)}</p>
+    }
     return (
-        <ContextProvider>
-            <Routes>
-                <Route path="/share/:boardId" element={<SharedBoard />} />
-                <Route path="/*" element={<Auth />} />
-                <Route path="/login" element={<Navigate to={'/'} />} />
-                <Route path="/register" element={<Navigate to={'/'} />} />
-                <PrivateRoute
-                    path="/settings/:workspace/*"
-                    element={<Settings />}
-                />
-                <PrivateRoute path="/:workspace/*" element={<Panel />} />
-                <PrivateRoute
-                    path="/"
+        <Routes>
+            <Route path="/share/:boardId" element={<SharedBoard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<PrivateRoutes />}>
+                <Route path="/settings/:workspace/*" element={<Settings />} />
+                <Route path="/:workspace/*" element={<Workspace />} />
+                <Route
+                    index
                     element={<WorkspaceSelector workspaces={user.workspaces} />}
                 />
-            </Routes>
-            <SyncError />
-        </ContextProvider>
+            </Route>
+        </Routes>
     )
 }
 

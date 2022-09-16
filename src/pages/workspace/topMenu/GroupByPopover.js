@@ -3,8 +3,7 @@ import styles from '../../../styles/GroupByPopover.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGroupBy } from '../../../modules/state/reducers/boardReducer'
 
-function GroupByPopover({ groupByOpen, setGroupByOpen }) {
-    const { board } = useSelector(state => state.board)
+function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
     const dispatch = useDispatch()
 
     const handleClose = () => {

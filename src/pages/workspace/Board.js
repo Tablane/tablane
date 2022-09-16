@@ -12,12 +12,15 @@ import {
 import _ from 'lodash'
 import { useParams } from 'react-router-dom'
 import BoardTopMenu from './board/BoardTopMenu'
+import { useFetchUserQuery } from '../../modules/state/services/users'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
+import { useFetchBoardQuery } from '../../modules/state/services/boards'
 
 function Board(props) {
-    const { workspace } = useSelector(state => state.workspace)
-    const { board, loading } = useSelector(state => state.board)
-    const dispatch = useDispatch()
+    const { data: user } = useFetchUserQuery()
     const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const dispatch = useDispatch()
 
     const [groupedTasks, setGroupedTasks] = useState(false)
 
@@ -29,12 +32,14 @@ function Board(props) {
             .boards.find(x => x.name === board)._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
+    const { data: board, error, isLoading } = useFetchBoardQuery(boardId)
 
     const groupTasks = useMemo(() => {
         if (!board) return
         if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
+                    board={board}
                     color={'rgb(196, 196, 196)'}
                     name=""
                     taskGroupId={'empty'}
@@ -68,6 +73,7 @@ function Board(props) {
 
         return labels.map(label => (
             <TaskGroup
+                board={board}
                 color={label.color}
                 key={label._id}
                 name={label.name}
@@ -121,20 +127,16 @@ function Board(props) {
         }
     }
 
-    useEffect(() => {
-        if (!boardId) return
-        dispatch(fetchBoard(boardId))
-    }, [boardId])
-
     return (
         <>
             <BoardTopMenu
+                board={board}
                 toggleSideBar={props.toggleSideBar}
                 sideBarClosed={!props.sidebarOpen}
             />
             <div className="Board">
                 <div>
-                    {loading > 0 ? (
+                    {isLoading ? (
                         <LinearProgress />
                     ) : (
                         <div className="loading-placeholder"></div>

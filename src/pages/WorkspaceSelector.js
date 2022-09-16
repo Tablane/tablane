@@ -12,7 +12,6 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import useToggleState from '../modules/hooks/useToggleState'
 import styles from '../styles/WorkspaceSelector.module.scss'
-import { useEffect } from 'react'
 
 function WorkspaceSelector(props) {
     const navigate = useNavigate()
@@ -38,11 +37,6 @@ function WorkspaceSelector(props) {
             })
         resetName()
     }
-
-    useEffect(() => {
-        const defaultWorkspace = localStorage.getItem('defaultWorkspace')
-        if (defaultWorkspace) navigate(defaultWorkspace)
-    }, [])
 
     return (
         <>

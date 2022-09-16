@@ -2,16 +2,19 @@ import { useState } from 'react'
 import { Popover, Tooltip } from '@mui/material'
 import Button from '@mui/material/Button'
 import '../../../styles/AccountPopover.css'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { logoutUser } from '../../../modules/state/reducers/userReducer'
+import { useFetchWorkspaceQuery } from '../../../modules/state/services/workspaces'
+import { useFetchUserQuery } from '../../../modules/state/services/users'
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)
     const navigate = useNavigate()
-    const { workspace } = useSelector(state => state.workspace)
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const { data: user } = useFetchUserQuery()
 
-    const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
 
     const handleClick = e => {

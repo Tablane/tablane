@@ -7,6 +7,7 @@ import '../../styles/Login.css'
 import useInputState from '../../modules/hooks/useInputState'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../../modules/state/reducers/userReducer'
+import '../../styles/Auth.css'
 
 function Login() {
     const submit = useSelector(state => state.user.submit)
@@ -52,66 +53,68 @@ function Login() {
     }
 
     return (
-        <div className="form">
-            <div>
-                <form action="" onSubmit={handleSubmit} noValidate>
-                    <div className="inputs">
-                        <TextField
-                            variant="standard"
-                            id="username"
-                            name="username"
-                            label="Username"
-                            value={username}
-                            onChange={changeUsername}
-                            error={Boolean(errors.username)}
-                            helperText={errors.username}
-                            required
-                        />
-                        <TextField
-                            variant="standard"
-                            id="email"
-                            name="email"
-                            label="Email"
-                            value={email}
-                            onChange={changeEmail}
-                            error={Boolean(errors.email)}
-                            helperText={errors.email}
-                            required
-                        />
-                        <TextField
-                            variant="standard"
-                            id="password"
-                            name="password"
-                            label="Password"
-                            type="password"
-                            value={password}
-                            onChange={changePassword}
-                            error={Boolean(errors.password)}
-                            helperText={errors.password}
-                            required
-                        />
-                    </div>
-                    <div className="progressWrapper">
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            disabled={submit === 'loading'}
-                        >
-                            Register
-                        </Button>
-                        {submit === 'loading' && (
-                            <CircularProgress
-                                size={24}
-                                className="buttonProgress"
+        <div className="Auth">
+            <div className="form">
+                <div>
+                    <form action="" onSubmit={handleSubmit} noValidate>
+                        <div className="inputs">
+                            <TextField
+                                variant="standard"
+                                id="username"
+                                name="username"
+                                label="Username"
+                                value={username}
+                                onChange={changeUsername}
+                                error={Boolean(errors.username)}
+                                helperText={errors.username}
+                                required
                             />
-                        )}
-                    </div>
-                </form>
+                            <TextField
+                                variant="standard"
+                                id="email"
+                                name="email"
+                                label="Email"
+                                value={email}
+                                onChange={changeEmail}
+                                error={Boolean(errors.email)}
+                                helperText={errors.email}
+                                required
+                            />
+                            <TextField
+                                variant="standard"
+                                id="password"
+                                name="password"
+                                label="Password"
+                                type="password"
+                                value={password}
+                                onChange={changePassword}
+                                error={Boolean(errors.password)}
+                                helperText={errors.password}
+                                required
+                            />
+                        </div>
+                        <div className="progressWrapper">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={submit === 'loading'}
+                            >
+                                Register
+                            </Button>
+                            {submit === 'loading' && (
+                                <CircularProgress
+                                    size={24}
+                                    className="buttonProgress"
+                                />
+                            )}
+                        </div>
+                    </form>
+                </div>
+                <p>
+                    or <Link to="/login">login</Link>
+                </p>
             </div>
-            <p>
-                or <Link to="/login">login</Link>
-            </p>
         </div>
     )
 }

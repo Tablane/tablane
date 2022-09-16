@@ -15,7 +15,6 @@ import styles from '../../../../../styles/TaskPopover.module.scss'
 
 function TaskPopover(props) {
     const dispatch = useDispatch()
-    const { board } = useSelector(state => state.board)
     const [deleteDialog, setDeleteDialog] = useState(false)
 
     // delete dialog
@@ -28,7 +27,7 @@ function TaskPopover(props) {
         setDeleteDialog(false)
         dispatch(
             deleteTask({
-                boardId: board._id,
+                boardId: props.board._id,
                 taskId: props.task._id
             })
         )
