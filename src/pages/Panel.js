@@ -5,38 +5,37 @@ import Board from './panel/Board'
 import Home from './panel/Home'
 import { CircularProgress } from '@mui/material'
 import useLocalStorageState from '../modules/hooks/useLocalStorageState'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchWorkspace } from '../modules/state/reducers/workspaceReducer'
+import { useDispatch } from 'react-redux'
 import Notifications from './panel/Notifications'
 import WorkspaceNotFound from './panel/WorkspaceNotFound'
+import { useFetchWorkspaceQuery } from '../modules/state/services/workspaces'
+import PrivateRoute from '../utils/PrivateRoute'
 
 function Panel(props) {
-    const { workspace, status } = useSelector(state => state.workspace)
+    const params = useParams()
+    const {
+        data: workspace,
+        error,
+        isLoading
+    } = useFetchWorkspaceQuery(params.workspace)
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState(
         'sidebarOpen',
         true
     )
-    const dispatch = useDispatch()
-    const params = useParams()
-
-    useEffect(() => {
-        dispatch(fetchWorkspace(params.workspace))
-    }, [params.workspace])
 
     const toggleSideBar = () => {
         setSidebarOpen(!sidebarOpen)
     }
 
-    useEffect(() => {
-        localStorage.setItem('defaultWorkspace', params.workspace)
-    }, [params.workspace])
-
-    if (status === 'error') return <WorkspaceNotFound />
-    return !workspace ? (
-        <div className="loading">
-            <CircularProgress />
-        </div>
-    ) : (
+    if (error) return <WorkspaceNotFound />
+    if (isLoading) {
+        return (
+            <div className="loading">
+                <CircularProgress />
+            </div>
+        )
+    }
+    return (
         <div className={`App ${!sidebarOpen ? 'sidebar-closed' : ''}`}>
             <SideBar
                 history={props.history}
@@ -46,7 +45,7 @@ function Panel(props) {
             />
             <div className={`PanelContent ${sidebarOpen ? 'hidden' : ''}`}>
                 <Routes>
-                    <Route
+                    <PrivateRoute
                         path="/:space/:board"
                         element={
                             <Board
@@ -55,7 +54,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route
+                    <PrivateRoute
                         path="/:space/:board/:taskId"
                         element={
                             <Board
@@ -64,7 +63,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route
+                    <PrivateRoute
                         index
                         element={
                             <Home
@@ -73,7 +72,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route
+                    <PrivateRoute
                         path="/notifications"
                         element={
                             <Notifications
@@ -82,7 +81,7 @@ function Panel(props) {
                             />
                         }
                     />
-                    <Route
+                    <PrivateRoute
                         path="/:workspace"
                         element={
                             <Navigate to={localStorage.getItem('lastUrl')} />

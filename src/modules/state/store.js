@@ -1,14 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './reducers/userReducer'
-import boardReducer from './reducers/boardReducer'
-import workspaceReducer from './reducers/workspaceReducer'
-import notificationReducer from './reducers/notificationReducer'
+import { setupListeners } from '@reduxjs/toolkit/query/react'
+import { userApi } from './services/users'
+import { workspaceApi } from './services/workspaces'
 
 export const store = configureStore({
     reducer: {
-        user: userReducer,
-        board: boardReducer,
-        workspace: workspaceReducer,
-        notification: notificationReducer
-    }
+        [userApi.reducerPath]: userApi.reducer,
+        [workspaceApi.reducerPath]: workspaceApi.reducer
+    },
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(userApi.middleware)
 })
+
+setupListeners(store.dispatch)
