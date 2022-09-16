@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import './App.css'
 import Auth from './pages/Auth'
 import { CircularProgress } from '@mui/material'
@@ -9,18 +8,13 @@ import SharedBoard from './pages/SharedBoard'
 import Settings from './pages/Settings'
 import ContextProvider from './ContextProvider'
 import SyncError from './pages/SyncError'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchUser } from './modules/state/reducers/userReducer'
+import { useFetchUserQuery } from './modules/state/services/users'
+import PrivateRoute from './utils/PrivateRoute'
 
 function App() {
-    const user = useSelector(state => state.user)
-    const dispatch = useDispatch()
+    const { data: user, error, isLoading } = useFetchUserQuery()
 
-    useEffect(() => {
-        dispatch(fetchUser())
-    }, [])
-
-    if (user.status === 'loading')
+    if (isLoading)
         return (
             <div className="loading">
                 <CircularProgress />
@@ -31,28 +25,17 @@ function App() {
             <Routes>
                 <Route path="/share/:boardId" element={<SharedBoard />} />
                 <Route path="/*" element={<Auth />} />
-                {user.status === 'succeeded' && (
-                    <>
-                        <Route path="/login" element={<Navigate to={'/'} />} />
-                        <Route
-                            path="/register"
-                            element={<Navigate to={'/'} />}
-                        />
-                        <Route
-                            path="/settings/:workspace/*"
-                            element={<Settings />}
-                        />
-                        <Route path="/:workspace/*" element={<Panel />} />
-                        <Route
-                            path="/"
-                            element={
-                                <WorkspaceSelector
-                                    workspaces={user.user.workspaces}
-                                />
-                            }
-                        />
-                    </>
-                )}
+                <Route path="/login" element={<Navigate to={'/'} />} />
+                <Route path="/register" element={<Navigate to={'/'} />} />
+                <PrivateRoute
+                    path="/settings/:workspace/*"
+                    element={<Settings />}
+                />
+                <PrivateRoute path="/:workspace/*" element={<Panel />} />
+                <PrivateRoute
+                    path="/"
+                    element={<WorkspaceSelector workspaces={user.workspaces} />}
+                />
             </Routes>
             <SyncError />
         </ContextProvider>

@@ -1,10 +1,13 @@
 import styles from '../../styles/Home.module.scss'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useFetchUserQuery } from '../../modules/state/services/users'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
 
 function Home(props) {
-    const { workspace } = useSelector(state => state.workspace)
-    const { user } = useSelector(state => state.user)
+    const params = useParams()
+    console.log(params)
+    const { data: user } = useFetchUserQuery()
+    const { data: workspace } = useFetchWorkspaceQuery()
     const navigate = useNavigate()
 
     const tasks = user.assignedTasks.filter(
