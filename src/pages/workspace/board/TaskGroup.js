@@ -5,14 +5,13 @@ import { Draggable, Droppable } from '@hello-pangea/dnd'
 import AttributePopover from './taskGroup/AttributePopover'
 import AddAttributePopover from './taskGroup/AddAttributePopover'
 import useInputState from '../../../modules/hooks/useInputState'
-import { useDispatch, useSelector } from 'react-redux'
-import { addTask } from '../../../modules/state/reducers/boardReducer'
 import { ObjectId } from '../../../utils'
-import { useFetchUserQuery } from '../../../modules/state/services/users'
+import { useFetchUserQuery } from '../../../modules/state/services/userSlice'
+import { useAddTaskMutation } from '../../../modules/state/services/boardSlice'
 
 function TaskGroup(props) {
     const { data: user } = useFetchUserQuery()
-    const dispatch = useDispatch()
+    const [addTask] = useAddTaskMutation()
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
@@ -31,15 +30,13 @@ function TaskGroup(props) {
     const handleAddTask = async e => {
         e.preventDefault()
         resetNewTaskName()
-        dispatch(
-            addTask({
-                author: user.username,
-                boardId: props.board._id,
-                taskGroupId: props.taskGroupId,
-                newTaskName,
-                _id: ObjectId()
-            })
-        )
+        addTask({
+            author: user.username,
+            boardId: props.board._id,
+            taskGroupId: props.taskGroupId,
+            newTaskName,
+            _id: ObjectId()
+        })
     }
 
     const handleAttributePopover = (e, id = null) => {

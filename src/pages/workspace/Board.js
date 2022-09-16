@@ -11,8 +11,8 @@ import {
 import _ from 'lodash'
 import { Navigate, useParams } from 'react-router-dom'
 import BoardTopMenu from './board/BoardTopMenu'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
-import { useFetchBoardQuery } from '../../modules/state/services/boards'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
+import { useFetchBoardQuery } from '../../modules/state/services/boardSlice'
 import { toast } from 'react-hot-toast'
 
 function Board(props) {

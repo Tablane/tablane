@@ -1,7 +1,7 @@
 import styles from '../../styles/Home.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFetchUserQuery } from '../../modules/state/services/users'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
+import { useFetchUserQuery } from '../../modules/state/services/userSlice'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
 
 function Home(props) {
     const params = useParams()

@@ -13,7 +13,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import PersonColumnPopover from './task/PersonColumnPopover'
 import { Tooltip } from '@mui/material'
-import { useFetchWorkspaceQuery } from '../../../../modules/state/services/workspaces'
+import { useFetchWorkspaceQuery } from '../../../../modules/state/services/workspaceSlice'
 
 function Task(props) {
     const dispatch = useDispatch()

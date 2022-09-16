@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { useFetchUserQuery } from '../modules/state/services/users'
+import { useFetchUserQuery } from '../modules/state/services/userSlice'
 
 const PrivateRoutes = () => {
     const { data: user } = useFetchUserQuery()
