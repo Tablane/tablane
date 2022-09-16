@@ -1,11 +1,12 @@
 .container {
-  background-color: #575858;
   height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
 
   .modal {
+    box-shadow: rgb(17 17 26 / 10%) 0px 8px 24px,
+      rgb(17 17 26 / 10%) 0px 16px 56px, rgb(17 17 26 / 10%) 0px 24px 80px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
