@@ -10,7 +10,7 @@ import {
     fetchNotifications,
     unclearNotification
 } from '../../modules/state/reducers/notificationReducer'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
 
 function Notifications(props) {
     const params = useParams()

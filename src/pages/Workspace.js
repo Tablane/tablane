@@ -6,7 +6,7 @@ import { CircularProgress } from '@mui/material'
 import useLocalStorageState from '../modules/hooks/useLocalStorageState'
 import Notifications from './workspace/Notifications'
 import WorkspaceNotFound from './workspace/WorkspaceNotFound'
-import { useFetchWorkspaceQuery } from '../modules/state/services/workspaces'
+import { useFetchWorkspaceQuery } from '../modules/state/services/workspaceSlice'
 import FunctionAndNavigate from '../utils/FunctionAndNavigate'
 import { toast } from 'react-hot-toast'
 

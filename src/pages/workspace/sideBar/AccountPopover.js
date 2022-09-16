@@ -5,8 +5,8 @@ import '../../../styles/AccountPopover.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logoutUser } from '../../../modules/state/reducers/userReducer'
-import { useFetchWorkspaceQuery } from '../../../modules/state/services/workspaces'
-import { useFetchUserQuery } from '../../../modules/state/services/users'
+import { useFetchWorkspaceQuery } from '../../../modules/state/services/workspaceSlice'
+import { useFetchUserQuery } from '../../../modules/state/services/userSlice'
 
 function AccountPopover(props) {
     const [anchor, setAnchor] = useState(null)

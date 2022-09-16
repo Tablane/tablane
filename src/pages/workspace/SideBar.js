@@ -27,8 +27,8 @@ import {
     sortSpace
 } from '../../modules/state/reducers/workspaceReducer'
 import { ObjectId } from '../../utils'
-import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaces'
-import { useFetchUserQuery } from '../../modules/state/services/users'
+import { useFetchWorkspaceQuery } from '../../modules/state/services/workspaceSlice'
+import { useFetchUserQuery } from '../../modules/state/services/userSlice'
 
 function SideBar(props) {
     const dispatch = useDispatch()
