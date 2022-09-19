@@ -6,31 +6,32 @@ export const workspaceApi = api.injectEndpoints({
             query: workspaceId => `workspace/${workspaceId}`
         }),
         addBoard: builder.mutation({
-            query: ({ workspaceId, spaceId, name, _id }) => ({
-                url: `board/${workspaceId}/${spaceId}`,
+            query: ({ workspace, spaceId, name, _id }) => ({
+                url: `board/${workspace._id}/${spaceId}`,
                 method: 'POST',
                 body: { name, _id }
             }),
             async onQueryStarted(
-                { workspaceId, spaceId, name, _id },
+                { workspace, spaceId, name, _id },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
                             const board = {
                                 _id,
                                 name,
-                                workspace: workspaceId,
+                                workspace: workspace._id,
                                 attributes: [],
                                 taskGroups: [],
                                 sharing: false
                             }
-                            workspace.spaces
+                            localWorkspace.spaces
                                 .find(space => space._id === spaceId)
                                 .boards.push(board)
+                            return localWorkspace
                         }
                     )
                 )
@@ -48,15 +49,15 @@ export const workspaceApi = api.injectEndpoints({
                 body: { name }
             }),
             async onQueryStarted(
-                { workspaceId, spaceId, boardId, name },
+                { workspace, spaceId, boardId, name },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
-                            workspace.spaces
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
+                            localWorkspace.spaces
                                 .find(space => space._id === spaceId)
                                 .boards.find(
                                     board => board._id === boardId
@@ -72,20 +73,20 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         deleteBoard: builder.mutation({
-            query: ({ workspaceId, spaceId, boardId }) => ({
-                url: `board/${workspaceId}/${spaceId}/${boardId}`,
+            query: ({ workspace, spaceId, boardId }) => ({
+                url: `board/${workspace._id}/${spaceId}/${boardId}`,
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { workspaceId, spaceId, boardId, name },
+                { workspace, spaceId, boardId, name },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
-                            const space = workspace.spaces.find(
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
+                            const space = localWorkspace.spaces.find(
                                 x => x._id.toString() === spaceId
                             )
                             space.boards = space.boards.filter(
@@ -102,26 +103,26 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         sortBoard: builder.mutation({
-            query: ({ workspaceId, result }) => ({
-                url: `board/drag/${workspaceId}`,
+            query: ({ workspace, result }) => ({
+                url: `board/drag/${workspace._id}`,
                 method: 'PATCH',
                 body: { result }
             }),
             async onQueryStarted(
-                { workspaceId, result },
+                { workspace, result },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
-                            const source = workspace.spaces.find(
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
+                            const source = localWorkspace.spaces.find(
                                 x =>
                                     x._id.toString() ===
                                     result.source.droppableId
                             )
-                            const destination = workspace.spaces.find(
+                            const destination = localWorkspace.spaces.find(
                                 x =>
                                     x._id.toString() ===
                                     result.destination.droppableId
@@ -147,26 +148,26 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         addSpace: builder.mutation({
-            query: ({ workspaceId, name, _id }) => ({
-                url: `space/${workspaceId}`,
+            query: ({ workspace, name, _id }) => ({
+                url: `space/${workspace._id}`,
                 method: 'POST',
                 body: { name, _id }
             }),
             async onQueryStarted(
-                { workspaceId, name, _id },
+                { workspace, name, _id },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
                             const space = {
                                 _id,
                                 name,
                                 boards: []
                             }
-                            workspace.spaces.push(space)
+                            localWorkspace.spaces.push(space)
                         }
                     )
                 )
@@ -178,19 +179,19 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         editSpaceName: builder.mutation({
-            query: ({ workspaceId, spaceId, name }) => ({
-                url: `space/${workspaceId}/${spaceId}`,
+            query: ({ workspace, spaceId, name }) => ({
+                url: `space/${workspace._id}/${spaceId}`,
                 method: 'PATCH',
                 body: { name }
             }),
             async onQueryStarted(
-                { workspaceId, spaceId, name },
+                { workspace, spaceId, name },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
+                        'fetchWorkspace',
+                        workspace.id.toString(),
                         workspace => {
                             workspace.spaces.find(
                                 space => space._id === spaceId
@@ -206,22 +207,23 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         deleteSpace: builder.mutation({
-            query: ({ workspaceId, spaceId }) => ({
-                url: `space/${workspaceId}/${spaceId}`,
+            query: ({ workspace, spaceId }) => ({
+                url: `space/${workspace._id}/${spaceId}`,
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { workspaceId, spaceId, name },
+                { workspace, spaceId, name },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
-                            workspace.spaces = workspace.spaces.filter(
-                                space => space._id !== spaceId
-                            )
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
+                            localWorkspace.spaces =
+                                localWorkspace.spaces.filter(
+                                    space => space._id !== spaceId
+                                )
                         }
                     )
                 )
@@ -233,25 +235,25 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         sortSpace: builder.mutation({
-            query: ({ workspaceId, result }) => ({
-                url: `space/drag/${workspaceId}`,
+            query: ({ workspace, result }) => ({
+                url: `space/drag/${workspace._id}`,
                 method: 'PATCH',
                 body: { result }
             }),
             async onQueryStarted(
-                { workspaceId, result },
+                { workspace, result },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
-                        'fetchBoard',
-                        workspaceId,
-                        workspace => {
-                            const [space] = workspace.spaces.splice(
+                        'fetchWorkspace',
+                        workspace.id.toString(),
+                        localWorkspace => {
+                            const [space] = localWorkspace.spaces.splice(
                                 result.source.index,
                                 1
                             )
-                            workspace.spaces.splice(
+                            localWorkspace.spaces.splice(
                                 result.destination.index,
                                 0,
                                 space

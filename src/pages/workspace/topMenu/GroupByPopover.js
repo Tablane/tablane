@@ -10,7 +10,6 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
     }
 
     const handleGroupByChange = _id => {
-        // dispatch(setGroupBy({ boardId: board._id, _id }))
         setGroupBy({ boardId: board._id, groupBy: _id })
         handleClose()
     }

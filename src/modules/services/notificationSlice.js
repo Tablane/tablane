@@ -3,25 +3,28 @@ import { api } from './api'
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchNotifications: builder.query({
-            query: (workspaceId, condition) => ({
+            query: ({ workspaceId, condition }) => ({
                 url: `notification/${workspaceId}`,
                 method: 'POST',
                 body: { condition }
             })
         }),
         clearNotification: builder.mutation({
-            query: (workspaceId, taskId, condition) => ({
+            query: ({ workspaceId, taskId, condition }) => ({
                 url: `notification/${workspaceId}/${taskId}`,
                 method: 'DELETE',
                 body: { condition }
             }),
-            async onQueryStarted({ taskId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { taskId, workspaceId, condition },
+                { dispatch, queryFulfilled }
+            ) {
                 const patchResult = dispatch(
                     notificationApi.util.updateQueryData(
                         'fetchNotifications',
-                        undefined,
+                        { workspaceId, condition },
                         notifications => {
-                            notifications = notifications.filter(
+                            return notifications.filter(
                                 x => x.task._id !== taskId
                             )
                         }
@@ -35,25 +38,28 @@ export const notificationApi = api.injectEndpoints({
             }
         }),
         unclearNotification: builder.mutation({
-            query: (workspaceId, taskId, condition) => ({
+            query: ({ workspaceId, taskId, condition }) => ({
                 url: `notification/${workspaceId}/${taskId}`,
                 method: 'PATCH',
                 body: { condition }
             }),
-            async onQueryStarted({ taskId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { taskId, workspaceId, condition },
+                { dispatch, queryFulfilled }
+            ) {
                 const patchResult = dispatch(
                     notificationApi.util.updateQueryData(
                         'fetchNotifications',
-                        undefined,
+                        { workspaceId, condition },
                         notifications => {
-                            notifications = notifications.filter(
+                            return notifications.filter(
                                 x => x.task._id !== taskId
                             )
                         }
                     )
                 )
                 try {
-                    await queryFulfilled
+                    await queryFulfilled.then(x => console.log(x))
                 } catch {
                     patchResult.undo()
                 }
@@ -63,7 +69,7 @@ export const notificationApi = api.injectEndpoints({
 })
 
 export const {
-    useFetchNotificationsMutation,
+    useFetchNotificationsQuery,
     useClearNotificationMutation,
     useUnclearNotificationMutation
 } = notificationApi

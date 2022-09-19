@@ -25,7 +25,7 @@ function BoardPopover(props) {
         setDeleting(false)
         if (location.pathname.includes(board.name)) navigate('/' + workspace.id)
         deleteBoard({
-            workspaceId: workspace._id,
+            workspace,
             spaceId: space._id,
             boardId: board._id
         })

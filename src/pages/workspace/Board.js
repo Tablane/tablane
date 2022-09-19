@@ -119,9 +119,14 @@ function Board(props) {
                     )
                 }
             }
-            sortTask({ result, destinationIndex, sourceIndex })
+            sortTask({
+                result,
+                destinationIndex,
+                sourceIndex,
+                boardId: board._id
+            })
         } else if (/^attribute /gm.test(result.type)) {
-            sortAttribute({ result })
+            sortAttribute({ result, boardId: board._id })
         }
     }
 
