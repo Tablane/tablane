@@ -35,7 +35,7 @@ function ShareDialog({ handleClose, open, board }) {
             .then(res => {
                 if (x)
                     setLink(
-                        `${window.location.origin}/share/${res.data.boardId}`
+                        `${window.location.origin}/share/${res.data.message}`
                     )
             })
             .catch(err => {
