@@ -1,15 +1,18 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../styles/WatcherPopover.module.scss'
-import { useSelector } from 'react-redux'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import {
     useAddWatcherMutation,
     useRemoveWatcherMutation
 } from '../../../../../modules/services/boardSlice'
+import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
+import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
+import { useParams } from 'react-router-dom'
 
-function WatcherPopover({ task, anchor, setAnchor }) {
-    const { workspace } = useSelector(state => state.workspace)
-    const { user } = useSelector(state => state.user)
+function WatcherPopover({ task, anchor, setAnchor, boardId }) {
+    const params = useParams()
+    const { data: user } = useFetchUserQuery()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [search, handleSearch] = useInputState('')
     const [addWatcher] = useAddWatcherMutation()
     const [removeWatcher] = useRemoveWatcherMutation()
@@ -20,9 +23,9 @@ function WatcherPopover({ task, anchor, setAnchor }) {
 
     const handleClick = (user, isWatcher) => {
         if (isWatcher) {
-            removeWatcher({ task: task, user: user })
+            removeWatcher({ task: task, user: user, boardId })
         } else {
-            addWatcher({ task: task, user: user })
+            addWatcher({ task: task, user: user, boardId })
         }
     }
 

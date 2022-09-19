@@ -90,6 +90,7 @@ function Task(props) {
                 </div>
                 {attribute._id.toString() === activeOption && (
                     <TaskColumnPopover
+                        boardId={props.board._id}
                         attribute={attribute}
                         anchor={anchor}
                         open={columnDialogOpen}

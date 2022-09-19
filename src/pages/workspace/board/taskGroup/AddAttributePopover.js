@@ -18,6 +18,7 @@ function AddAttributePopover(props) {
             return
         }
         addAttribute({
+            boardId: props.boardId,
             type,
             _id: ObjectId()
         })

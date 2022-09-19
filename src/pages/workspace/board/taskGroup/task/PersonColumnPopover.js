@@ -1,8 +1,10 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../styles/WatcherPopover.module.scss'
-import { useSelector } from 'react-redux'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import { useEditOptionsTaskMutation } from '../../../../../modules/services/boardSlice'
+import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
+import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
+import { useParams } from 'react-router-dom'
 
 function PersonColumnPopover({
     boardId,
@@ -13,8 +15,9 @@ function PersonColumnPopover({
     taskOption,
     people
 }) {
-    const { workspace } = useSelector(state => state.workspace)
-    const { user } = useSelector(state => state.user)
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const { data: user } = useFetchUserQuery()
     const [search, handleSearch] = useInputState('')
     const [editOptionsTask] = useEditOptionsTaskMutation()
 

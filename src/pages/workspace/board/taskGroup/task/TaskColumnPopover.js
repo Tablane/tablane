@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
-import { useSelector } from 'react-redux'
 import { ObjectId } from '../../../../../utils'
 import _ from 'lodash'
 import {
@@ -12,7 +11,6 @@ import {
 } from '../../../../../modules/services/boardSlice'
 
 function TaskColumnPopover(props) {
-    const { board } = useSelector(state => state.board)
     const [editAttributeLabels] = useEditAttributeLabelsMutation()
     const [clearStatusTask] = useClearStatusTaskMutation()
     const [editOptionsTask] = useEditOptionsTaskMutation()
@@ -27,6 +25,7 @@ function TaskColumnPopover(props) {
     const toggleEdit = async () => {
         if (labelsEditing) {
             editAttributeLabels({
+                boardId: props.boardId,
                 name: props.attribute.name,
                 labels: editingLabels
             })
@@ -84,11 +83,11 @@ function TaskColumnPopover(props) {
 
     // change label to id
     const handleLabelChange = id => {
-        const { taskGroupId, task } = props
+        const { task } = props
         if (labelsEditing) return
 
         editOptionsTask({
-            boardId: board._id,
+            boardId: props.boardId,
             taskId: task._id,
             column: props.attribute._id,
             value: id._id,
@@ -99,11 +98,11 @@ function TaskColumnPopover(props) {
 
     // change label to none
     const handleLabelClear = () => {
-        const { taskGroupId, task, attribute } = props
+        const { task, attribute } = props
         if (labelsEditing) return
 
         clearStatusTask({
-            boardId: board._id,
+            boardId: props.boardId,
             taskId: task._id,
             optionId: attribute._id
         })

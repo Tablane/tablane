@@ -149,14 +149,8 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         sortTask: builder.mutation({
-            query: ({
-                result,
-                destinationIndex,
-                sourceIndex,
-                boardId,
-                taskId
-            }) => ({
-                url: `task/${boardId}/${taskId}`,
+            query: ({ result, destinationIndex, sourceIndex, boardId }) => ({
+                url: `task/${boardId}`,
                 method: 'PATCH',
                 body: {
                     result,

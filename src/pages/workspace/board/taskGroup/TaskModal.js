@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import useInputState from '../../../../modules/hooks/useInputState'
-import { useSelector } from 'react-redux'
 import WatcherPopover from './taskModal/WatcherPopover'
 import {
     useAddTaskCommentMutation,
     useEditTaskFieldMutation
 } from '../../../../modules/services/boardSlice'
+import { useFetchUserQuery } from '../../../../modules/services/userSlice'
 
 function TaskModal(props) {
     const navigate = useNavigate()
     const params = useParams()
-    const { user } = useSelector(state => state.user)
+    const { data: user } = useFetchUserQuery()
     const { task, boardId } = props
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
@@ -66,6 +66,7 @@ function TaskModal(props) {
         resetNewComment()
 
         addTaskComment({
+            boardId,
             text: newComment,
             taskId: task._id,
             author: user.username
@@ -244,7 +245,12 @@ function TaskModal(props) {
                     </div>
                 </div>
             </div>
-            <WatcherPopover task={task} anchor={anchor} setAnchor={setAnchor} />
+            <WatcherPopover
+                task={task}
+                anchor={anchor}
+                setAnchor={setAnchor}
+                boardId={boardId}
+            />
         </div>
     )
 }

@@ -1,25 +1,26 @@
 import NotificationsTopMenu from './notifications/NotificationsTopMenu'
 import styles from '../../styles/Notifications.module.scss'
 import RelativeDate from '../../utils/RelativeDate'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { LinearProgress, Tooltip } from '@mui/material'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import {
     useClearNotificationMutation,
-    useFetchNotificationsMutation,
+    useFetchNotificationsQuery,
     useUnclearNotificationMutation
 } from '../../modules/services/notificationSlice'
 
 function Notifications(props) {
     const [clearNotification] = useClearNotificationMutation()
-    const [fetchNotifications] = useFetchNotificationsMutation()
+    const [condition, setCondition] = useState({ cleared: false })
     const [unclearNotification] = useUnclearNotificationMutation()
     const params = useParams()
-    const [condition, setCondition] = useState({ cleared: false })
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const { notifications, loading } = useSelector(state => state.notification)
+    const { data: notifications, isLoading } = useFetchNotificationsQuery({
+        workspaceId: workspace._id,
+        condition
+    })
 
     const handleClick = taskId => {
         if (!condition.cleared) {
@@ -36,10 +37,6 @@ function Notifications(props) {
             })
         }
     }
-
-    useEffect(() => {
-        fetchNotifications({ workspaceId: workspace._id, condition })
-    }, [condition])
 
     const updateCondition = options => {
         setCondition({ ...condition, ...options })
@@ -69,7 +66,7 @@ function Notifications(props) {
                 updateCondition={updateCondition}
             />
             <div className={styles.panel}>
-                {loading > 0 ? (
+                {isLoading ? (
                     <LinearProgress />
                 ) : (
                     <>

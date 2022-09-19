@@ -19,13 +19,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import WorkspaceContext from '../modules/context/WorkspaceContext'
 import styles from '../styles/Settings.module.scss'
-import { useSelector } from 'react-redux'
-import { useLogoutUserMutation } from '../modules/services/userSlice'
+import {
+    useFetchUserQuery,
+    useLogoutUserMutation
+} from '../modules/services/userSlice'
 
 function Settings(props) {
     const [logoutUser] = useLogoutUserMutation()
     const [workspace, setWorkspace] = useState(null)
-    const { user } = useSelector(state => state.user)
+    const { data: user } = useFetchUserQuery()
     const params = useParams()
 
     const getData = useCallback(async () => {

@@ -31,12 +31,16 @@ function AttributePopover(props) {
 
     const handleAttributeDelete = async () => {
         setDeleteDialogOpen(!deleteDialogOpen)
-        deleteAttribute({ attributeId: props.attr._id })
+        deleteAttribute({ attributeId: props.attr._id, boardId: props.boardId })
     }
 
     const updateName = async () => {
         if (props.attr.name === name) return
-        editAttributeName({ attributeId: props.attr._id, name })
+        editAttributeName({
+            attributeId: props.attr._id,
+            name,
+            boardId: props.boardId
+        })
     }
 
     const handleClose = e => {

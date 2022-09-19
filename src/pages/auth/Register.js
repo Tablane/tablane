@@ -9,7 +9,7 @@ import '../../styles/Auth.css'
 import { useRegisterUserMutation } from '../../modules/services/userSlice'
 
 function Login() {
-    const [registerUser, isSubmitting] = useRegisterUserMutation()
+    const [registerUser, { isLoading }] = useRegisterUserMutation()
 
     const [validate, setValidate] = useState(false)
 
@@ -96,11 +96,11 @@ function Login() {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                             >
                                 Register
                             </Button>
-                            {isSubmitting && (
+                            {isLoading && (
                                 <CircularProgress
                                     size={24}
                                     className="buttonProgress"

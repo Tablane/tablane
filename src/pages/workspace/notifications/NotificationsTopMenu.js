@@ -1,9 +1,6 @@
-import { useSelector } from 'react-redux'
 import styles from '../../../styles/NotificationsTopMenu.module.scss'
 
 function NotificationsTopMenu(props) {
-    const { board } = useSelector(state => state.board)
-
     return (
         <div className={styles.TopMenu}>
             <div>
