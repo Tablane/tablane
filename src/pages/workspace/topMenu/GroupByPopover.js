@@ -1,6 +1,9 @@
 import { Popover } from '@mui/material'
 import styles from '../../../styles/GroupByPopover.module.scss'
 import { useSetGroupByMutation } from '../../../modules/services/boardSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import React from 'react'
 
 function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
     const [setGroupBy] = useSetGroupByMutation()
@@ -49,7 +52,7 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
                             >
                                 <span>{attribute.name}</span>
                                 {board?.groupBy === attribute._id && (
-                                    <i className="fas fa-check"></i>
+                                    <FontAwesomeIcon icon={solid('check')} />
                                 )}
                             </div>
                         )
@@ -60,7 +63,7 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
                     >
                         <span>None</span>
                         {(!board?.groupBy || board?.groupBy === 'none') && (
-                            <i className="fas fa-check"></i>
+                            <FontAwesomeIcon icon={solid('check')} />
                         )}
                     </div>
                 </div>

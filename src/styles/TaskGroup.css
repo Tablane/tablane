@@ -37,7 +37,7 @@
   text-align: center;
 }
 
-.task .title .taskGroup-title i {
+.task .title .taskGroup-title svg {
   cursor: pointer;
   margin-left: 10px;
   font-size: 0.7rem;
@@ -65,7 +65,7 @@
   width: 121px;
 }
 
-.task .title .attribute > i {
+.task .title .attribute > svg {
   opacity: 0;
   transition: opacity 0.2s;
   margin-left: 5px;

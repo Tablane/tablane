@@ -2,6 +2,9 @@ import styles from '../../styles/Home.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFetchUserQuery } from '../../modules/services/userSlice'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import React from 'react'
 
 function Home(props) {
     const params = useParams()
@@ -17,9 +20,9 @@ function Home(props) {
         <div className={styles.container}>
             <div className={styles.topMenu}>
                 {!props.sidebarOpen && (
-                    <i
+                    <FontAwesomeIcon
+                        icon={solid('angle-double-right')}
                         onClick={props.toggleSideBar}
-                        className="fas fa-angle-double-right"
                     />
                 )}
                 <div>Home</div>

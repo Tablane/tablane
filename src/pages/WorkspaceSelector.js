@@ -12,6 +12,8 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import useToggleState from '../modules/hooks/useToggleState'
 import styles from '../styles/WorkspaceSelector.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function WorkspaceSelector(props) {
     const navigate = useNavigate()
@@ -59,7 +61,7 @@ function WorkspaceSelector(props) {
                     >
                         <div className={styles.newAvatar}>
                             <p>
-                                <i className="fas fa-plus"> </i>
+                                <FontAwesomeIcon icon={solid('plus')} />
                             </p>
                         </div>
                         <p className={styles.newText}>Add new</p>

@@ -9,6 +9,8 @@ import {
     useEditTaskFieldMutation
 } from '../../../../modules/services/boardSlice'
 import { useFetchUserQuery } from '../../../../modules/services/userSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -134,11 +136,11 @@ function TaskModal(props) {
                             className={styles.watcher}
                             onClick={e => setAnchor(e.currentTarget)}
                         >
-                            <i className="far fa-eye"></i>
+                            <FontAwesomeIcon icon={regular('eye')} />
                             <span>{task.watcher.length}</span>
                         </div>
                         <div className={styles.close} onClick={handleClose}>
-                            <i className="fas fa-times"></i>
+                            <FontAwesomeIcon icon={solid('times')} />
                         </div>
                     </div>
                 </div>

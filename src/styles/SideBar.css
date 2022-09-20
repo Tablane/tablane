@@ -52,17 +52,17 @@ a {
   min-height: 61px;
 }
 
-.header a i.fa-cog {
+.header a svg[data-icon="gear"] {
   margin-right: 15px;
   opacity: 0;
   transition: opacity 0.2s;
 }
 
-.SideBar:hover .header a i:first-of-type {
+.SideBar:hover .header a svg:first-of-type {
   opacity: 1;
 }
 
-.header i {
+.header svg {
   cursor: pointer;
 }
 
@@ -164,7 +164,7 @@ a {
   background-color: #e4e4e4;
 }
 
-.boards button i {
+.boards button svg {
   width: 12px;
   height: 12px;
   padding-right: 5px;
@@ -202,11 +202,11 @@ a {
   opacity: 1;
 }
 
-.space .space-title > div:first-of-type i {
+.space .space-title > div:first-of-type svg {
   transition: transform 0.2s;
 }
 
-.space .space-title > div:first-of-type i.open {
+.space .space-title > div:first-of-type svg.open {
   transform: rotate(90deg);
 }
 
@@ -232,7 +232,7 @@ a {
   font-size: 0.8rem;
 }
 
-.space .space-icon > i {
+.space .space-icon > svg {
   line-height: 20px;
 }
 
@@ -241,20 +241,20 @@ a {
   font-size: 0.8rem;
 }
 
-.space .space-title div:nth-of-type(3) i {
+.space .space-title div:nth-of-type(3) svg {
   cursor: pointer;
   opacity: 0;
 }
 
-.space:hover .space-title div:nth-of-type(3) i:last-child {
+.space:hover .space-title div:nth-of-type(3) svg:last-child {
   opacity: 1;
 }
 
-.space > div:first-child:hover div:nth-of-type(3) i:first-child {
+.space > div:first-child:hover div:nth-of-type(3) svg:first-child {
   opacity: 1;
 }
 
-.space .space-title div:nth-of-type(3) i:nth-of-type(2) {
+.space .space-title div:nth-of-type(3) svg:nth-of-type(2) {
   margin-left: 10px;
 }
 
@@ -286,8 +286,7 @@ a {
   margin-right: 10px;
 }
 
-.space .space-boards > div > div > div > i,
-.space .space-boards > div > div > a > i {
+.space .space-boards > div > div > a > svg {
   margin-left: auto;
   margin-right: 20px;
   font-size: 0.8rem;
@@ -295,7 +294,7 @@ a {
   cursor: pointer;
 }
 
-.space .space-boards > div > div > a:hover > i {
+.space .space-boards > div > div > a:hover > svg {
   opacity: 1;
 }
 

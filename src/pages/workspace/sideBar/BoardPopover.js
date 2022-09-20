@@ -12,6 +12,8 @@ import { toast } from 'react-hot-toast'
 import styles from '../../../styles/BoardPopover.module.scss'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDeleteBoardMutation } from '../../../modules/services/workspaceSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function BoardPopover(props) {
     const [deleteBoard] = useDeleteBoardMutation()
@@ -71,13 +73,13 @@ function BoardPopover(props) {
                 >
                     <div className={styles.popover}>
                         <div onClick={handleCopyClick}>
-                            <i className="fas fa-link"> </i>
+                            <FontAwesomeIcon icon={solid('link')} />
                         </div>
                         <div onClick={handleEditClick}>
-                            <i className="fas fa-pen"> </i>
+                            <FontAwesomeIcon icon={solid('pen')} />
                         </div>
                         <div onClick={deleteDialogOpen}>
-                            <i className="fas fa-trash-alt"> </i>
+                            <FontAwesomeIcon icon={solid('trash-alt')} />
                         </div>
                     </div>
                 </Popover>

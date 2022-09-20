@@ -23,6 +23,8 @@ import {
     useFetchUserQuery,
     useLogoutUserMutation
 } from '../modules/services/userSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function Settings(props) {
     const [logoutUser] = useLogoutUserMutation()
@@ -63,7 +65,8 @@ function Settings(props) {
         <div className={styles.container}>
             <div className={styles.sidebar}>
                 <Link to={`/${workspace.id}`} className={styles.back}>
-                    <i className="fas fa-chevron-left"> </i>Back
+                    <FontAwesomeIcon icon={solid('chevron-left')} />
+                    Back
                 </Link>
                 <h1>Settings</h1>
                 <p className={styles.workspaceName}>{workspace.name}</p>

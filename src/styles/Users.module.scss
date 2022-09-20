@@ -8,11 +8,11 @@
   margin: 0 0 30px;
 }
 .invite {
-  & form {
+  form {
     display: flex;
     margin: 0 auto 30px;
   }
-  & input {
+  input {
     height: 34px;
     box-sizing: border-box;
     appearance: none;
@@ -26,7 +26,7 @@
       border: 1px solid #999;
     }
   }
-  & form > div {
+  form > div {
     width: 80px;
     display: flex;
     justify-content: center;
@@ -42,17 +42,17 @@
       font-size: 14px;
       line-height: 14px;
     }
-    & > i {
+    & > svg {
       transition: transform 0.2s;
       vertical-align: middle;
       font-size: 14px;
       margin-left: 8px;
-      &.menu-open {
+      &.menuOpen {
         transform: rotate(-90deg);
       }
     }
   }
-  & button {
+  button {
     margin-left: 0;
     cursor: pointer;
     outline: none;

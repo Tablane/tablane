@@ -1,8 +1,10 @@
 import { Dialog, DialogContent, DialogTitle, Switch } from '@mui/material'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import styles from '../../../styles/ShareDialog.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function ShareDialog({ handleClose, open, board }) {
     const [check, setCheck] = useState(board.sharing)
@@ -68,7 +70,7 @@ function ShareDialog({ handleClose, open, board }) {
                 {check && (
                     <div className={styles.shareInfo}>
                         <div>
-                            <i className="fas fa-link"> </i>
+                            <FontAwesomeIcon icon={solid('link')} />Ï
                             <p>Public link</p>
                         </div>
                         <input

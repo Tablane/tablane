@@ -4,6 +4,8 @@ import { toast } from 'react-hot-toast'
 import { useContext } from 'react'
 import WorkspaceContext from '../../../modules/context/WorkspaceContext'
 import styles from '../../../styles/RolePopup.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function RolePopup(props) {
     const { workspace, getData } = useContext(WorkspaceContext)
@@ -54,20 +56,20 @@ function RolePopup(props) {
                     <div onClick={setRole} id="Guest">
                         <p>Guest</p>
                         {props.cRole === 'guest' && (
-                            <i className="fas fa-check"> </i>
+                            <FontAwesomeIcon icon={solid('check')} />
                         )}
                     </div>
                     <div onClick={setRole} id="Member">
                         <p>Member</p>
                         {props.cRole === 'member' && (
-                            <i className="fas fa-check"> </i>
+                            <FontAwesomeIcon icon={solid('check')} />
                         )}
                     </div>
                     <div onClick={setRole} id="Admin">
                         <p>Admin</p>
                         {(props.cRole === 'admin' ||
                             props.cRole === 'owner') && (
-                            <i className="fas fa-check"> </i>
+                            <FontAwesomeIcon icon={solid('check')} />
                         )}
                     </div>
                 </div>

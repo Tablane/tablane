@@ -115,7 +115,7 @@ div.buttons a {
   justify-content: space-between;
 }
 
-.popover > div:nth-of-type(2) i {
+.popover > div:nth-of-type(2) svg {
   width: 28px;
   text-align: center;
 }

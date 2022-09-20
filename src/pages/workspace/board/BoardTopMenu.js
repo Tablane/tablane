@@ -3,6 +3,8 @@ import ShareDialog from '../topMenu/ShareDialog'
 import useToggleState from '../../../modules/hooks/useToggleState'
 import GroupByPopover from '../topMenu/GroupByPopover'
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
@@ -24,12 +26,10 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
             <div>
                 <div className="details">
                     {sideBarClosed && (
-                        <i
+                        <FontAwesomeIcon
+                            icon={solid('angle-double-right')}
                             onClick={toggleSideBar}
-                            className="fas fa-angle-double-right"
-                        >
-                            {' '}
-                        </i>
+                        />
                     )}
                     <div className="pic">
                         <div> </div>
@@ -40,7 +40,7 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
                 </div>
                 <div>
                     <button className="share" onClick={toggleShareDialogOpen}>
-                        <i className="fas fa-share-alt"> </i>
+                        <FontAwesomeIcon icon={solid('share-alt')} />
                         <p>Share</p>
                     </button>
                 </div>
@@ -58,7 +58,7 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
                 <div className="task-search"></div>
                 <div className="task-filter">
                     <div className="group-by" onClick={handleGroupByOpen}>
-                        <i className="fas fa-layer-group"></i>
+                        <FontAwesomeIcon icon={solid('layer-group')} />
                         <p>Group by: {groupBy()}</p>
                     </div>
                 </div>

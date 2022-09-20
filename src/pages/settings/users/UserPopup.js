@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useContext } from 'react'
 import WorkspaceContext from '../../../modules/context/WorkspaceContext'
 import styles from '../../../styles/UserPopup.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function UserPopup(props) {
     const { workspace, getData } = useContext(WorkspaceContext)
@@ -52,14 +54,16 @@ function UserPopup(props) {
                         <>
                             <div onClick={copyId}>
                                 <div>
-                                    <i className="far fa-clone"> </i>
+                                    <FontAwesomeIcon icon={regular('clone')} />
                                 </div>
                                 <p>Copy Member ID</p>
                             </div>
                             {props.member.role !== 'owner' && (
                                 <div onClick={removeUser}>
                                     <div>
-                                        <i className="fas fa-times"> </i>
+                                        <FontAwesomeIcon
+                                            icon={solid('times')}
+                                        />
                                     </div>
                                     <p>Remove</p>
                                 </div>
@@ -70,13 +74,13 @@ function UserPopup(props) {
                         <>
                             <div>
                                 <div>
-                                    <i className="fas fa-share"> </i>
+                                    <FontAwesomeIcon icon={solid('share')} />
                                 </div>
                                 <p>Resend Invitation</p>
                             </div>
                             <div>
                                 <div>
-                                    <i className="fas fa-times"> </i>
+                                    <FontAwesomeIcon icon={solid('times')} />
                                 </div>
                                 <p>Cancel invite</p>
                             </div>

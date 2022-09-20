@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import useInputState from '../../modules/hooks/useInputState'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
@@ -8,6 +8,8 @@ import { useContext } from 'react'
 import WorkspaceContext from '../../modules/context/WorkspaceContext'
 import RolePopup from './users/RolePopup'
 import styles from '../../styles/Users.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function Users(props) {
     const { workspace, getData } = useContext(WorkspaceContext)
@@ -53,13 +55,12 @@ function Users(props) {
                     />
                     <div onClick={addRoleOpen}>
                         <span>{role}</span>
-                        <i
-                            className={`fas fa-caret-left ${
-                                Boolean(addRoleAnchor) ? 'menu-open' : ''
-                            }`}
-                        >
-                            {' '}
-                        </i>
+                        <FontAwesomeIcon
+                            className={
+                                Boolean(addRoleAnchor) ? styles.menuOpen : ''
+                            }
+                            icon={solid('caret-left')}
+                        />
                     </div>
                     <button>Invite</button>
                 </form>
@@ -127,7 +128,9 @@ function Users(props) {
                                         {x.role}
                                     </span>
                                     <span onClick={open} id={x.user._id}>
-                                        <i className="fas fa-ellipsis-h"> </i>
+                                        <FontAwesomeIcon
+                                            icon={solid('ellipsis-h')}
+                                        />
                                     </span>
                                 </div>
                             </div>

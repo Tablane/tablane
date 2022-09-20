@@ -5,6 +5,8 @@ import { useEditOptionsTaskMutation } from '../../../../../modules/services/boar
 import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
 import { useParams } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function PersonColumnPopover({
     boardId,
@@ -66,7 +68,7 @@ function PersonColumnPopover({
             <div className={styles.container}>
                 <div className={styles.search}>
                     <div className={styles.icon}>
-                        <i className="fa-solid fa-magnifying-glass"></i>
+                        <FontAwesomeIcon icon={solid('magnifying-glass')} />
                     </div>
                     <input
                         value={search}

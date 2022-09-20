@@ -8,6 +8,8 @@ import useInputState from '../../../modules/hooks/useInputState'
 import { ObjectId } from '../../../utils'
 import { useFetchUserQuery } from '../../../modules/services/userSlice'
 import { useAddTaskMutation } from '../../../modules/services/boardSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function TaskGroup(props) {
     const { data: user } = useFetchUserQuery()
@@ -83,21 +85,19 @@ function TaskGroup(props) {
                                                 {...provided.dragHandleProps}
                                                 {...provided.draggableProps}
                                             >
-                                                <i className="fas fa-caret-down">
-                                                    {' '}
-                                                </i>
+                                                <FontAwesomeIcon
+                                                    icon={solid('caret-down')}
+                                                />
                                                 <p>{x.name}</p>
-                                                <i
-                                                    className="fas fa-caret-down"
+                                                <FontAwesomeIcon
+                                                    icon={solid('caret-down')}
                                                     onClick={e =>
                                                         handleAttributePopover(
                                                             e,
                                                             x
                                                         )
                                                     }
-                                                >
-                                                    {' '}
-                                                </i>
+                                                />
                                             </div>
                                         )}
                                     </Draggable>
@@ -106,12 +106,10 @@ function TaskGroup(props) {
                             {provided.placeholder}
                             <div className="attribute">
                                 <p>
-                                    <i
+                                    <FontAwesomeIcon
+                                        icon={solid('plus-circle')}
                                         onClick={handleAddNewAttribute}
-                                        className="fas fa-plus-circle"
-                                    >
-                                        {' '}
-                                    </i>
+                                    />
                                 </p>
                             </div>
                         </div>

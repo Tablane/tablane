@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
@@ -9,6 +9,8 @@ import {
     useEditAttributeLabelsMutation,
     useEditOptionsTaskMutation
 } from '../../../../../modules/services/boardSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function TaskColumnPopover(props) {
     const [editAttributeLabels] = useEditAttributeLabelsMutation()
@@ -221,9 +223,11 @@ function TaskColumnPopover(props) {
                                                             : ''
                                                     }
                                                 >
-                                                    <i className="fas fa-grip-vertical">
-                                                        {' '}
-                                                    </i>
+                                                    <FontAwesomeIcon
+                                                        icon={solid(
+                                                            'grip-vertical'
+                                                        )}
+                                                    />
                                                     <div
                                                         style={{
                                                             backgroundColor
@@ -236,9 +240,11 @@ function TaskColumnPopover(props) {
                                                         }
                                                     >
                                                         {labelsEditing ? (
-                                                            <i className="fas fa-tint">
-                                                                {' '}
-                                                            </i>
+                                                            <FontAwesomeIcon
+                                                                icon={solid(
+                                                                    'tint'
+                                                                )}
+                                                            />
                                                         ) : (
                                                             x.name
                                                         )}
@@ -263,16 +269,16 @@ function TaskColumnPopover(props) {
                                                     ) : (
                                                         ''
                                                     )}
-                                                    <i
+                                                    <FontAwesomeIcon
                                                         onClick={() =>
                                                             handleEditDelete(
                                                                 x._id
                                                             )
                                                         }
-                                                        className="fas fa-times-circle"
-                                                    >
-                                                        {' '}
-                                                    </i>
+                                                        icon={solid(
+                                                            'times-circle'
+                                                        )}
+                                                    />
                                                 </div>
                                             )}
                                         </Draggable>
@@ -330,7 +336,11 @@ function TaskColumnPopover(props) {
                 </AnimateHeight>
 
                 <div className="edit" onClick={toggleEdit}>
-                    {labelsEditing ? '' : <i className="fas fa-pen"> </i>}
+                    {labelsEditing ? (
+                        ''
+                    ) : (
+                        <FontAwesomeIcon icon={solid('pen')} />
+                    )}
                     <p>{labelsEditing ? 'Apply' : 'Edit Labels'}</p>
                 </div>
             </div>

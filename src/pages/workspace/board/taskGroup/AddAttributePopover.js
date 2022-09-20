@@ -3,6 +3,8 @@ import { toast } from 'react-hot-toast'
 import { Popover } from '@mui/material'
 import { ObjectId } from '../../../../utils'
 import { useAddAttributeMutation } from '../../../../modules/services/boardSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function AddAttributePopover(props) {
     const [addAttribute] = useAddAttributeMutation()
@@ -45,24 +47,32 @@ function AddAttributePopover(props) {
                     <div>
                         <div>
                             <div onClick={() => handleNewColumn('status')}>
-                                <i className="fas fa-bars"> </i>Status
+                                <FontAwesomeIcon icon={solid('bars')} />
+                                Status
                             </div>
                             <div onClick={() => handleNewColumn('text')}>
-                                <i className="fas fa-font"> </i>Text
+                                <FontAwesomeIcon icon={solid('font')} />
+                                Text
                             </div>
                             <div onClick={() => handleNewColumn('people')}>
-                                <i className="far fa-user-circle"> </i>People
+                                <FontAwesomeIcon
+                                    icon={regular('user-circle')}
+                                />
+                                People
                             </div>
                         </div>
                         <div>
                             <div onClick={() => handleNewColumn('dropdown')}>
-                                <i className="fas fa-tag"> </i>Dropdown
+                                <FontAwesomeIcon icon={solid('tag')} />
+                                Dropdown
                             </div>
                             <div onClick={() => handleNewColumn('date')}>
-                                <i className="far fa-calendar"> </i>Date
+                                <FontAwesomeIcon icon={regular('calendar')} />
+                                Date
                             </div>
                             <div onClick={() => handleNewColumn('number')}>
-                                <i className="fas fa-hashtag"> </i>Numbers
+                                <FontAwesomeIcon icon={solid('hashtag')} />
+                                Numbers
                             </div>
                         </div>
                     </div>

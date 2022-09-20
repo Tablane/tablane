@@ -1,4 +1,7 @@
 import styles from '../../../styles/NotificationsTopMenu.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import React from 'react'
 
 function NotificationsTopMenu(props) {
     return (
@@ -6,12 +9,10 @@ function NotificationsTopMenu(props) {
             <div>
                 <div className={styles.details}>
                     {!props.sidebarOpen && (
-                        <i
+                        <FontAwesomeIcon
+                            icon={solid('angle-double-right')}
                             onClick={props.toggleSideBar}
-                            className="fas fa-angle-double-right"
-                        >
-                            {' '}
-                        </i>
+                        />
                     )}
                     <div>
                         <h1>Notifications</h1>

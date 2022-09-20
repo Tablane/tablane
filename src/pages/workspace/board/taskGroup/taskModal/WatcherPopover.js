@@ -8,6 +8,8 @@ import {
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
 import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function WatcherPopover({ task, anchor, setAnchor, boardId }) {
     const params = useParams()
@@ -52,7 +54,7 @@ function WatcherPopover({ task, anchor, setAnchor, boardId }) {
             <div className={styles.container}>
                 <div className={styles.search}>
                     <div className={styles.icon}>
-                        <i className="fa-solid fa-magnifying-glass"></i>
+                        <FontAwesomeIcon icon={solid('magnifying-glass')} />
                     </div>
                     <input
                         value={search}

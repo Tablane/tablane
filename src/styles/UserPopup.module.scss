@@ -28,7 +28,7 @@
       margin: 0;
     }
   }
-  & i.fa-times {
+  svg[data-icon="xmark"] {
     color: #fd71af;
   }
 }

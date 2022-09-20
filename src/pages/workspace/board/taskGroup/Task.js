@@ -13,6 +13,8 @@ import {
     useEditOptionsTaskMutation,
     useEditTaskFieldMutation
 } from '../../../../modules/services/boardSlice'
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -168,7 +170,7 @@ function Task(props) {
                         className="people"
                         onClick={e => handleClick(e, attribute)}
                     >
-                        <i className="fa-regular fa-circle-user"></i>
+                        <FontAwesomeIcon icon={regular('circle-user')} />
                     </div>
                 )}
                 {attribute._id.toString() === activeOption && (
@@ -260,7 +262,7 @@ function Task(props) {
                             })}
 
                             <div onClick={handleMoreClick}>
-                                <i className="fas fa-ellipsis-h"> </i>
+                                <FontAwesomeIcon icon={solid('ellipsis-h')} />
                             </div>
                         </div>
                     </div>

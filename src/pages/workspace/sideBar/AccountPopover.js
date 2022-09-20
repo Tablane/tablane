@@ -8,6 +8,8 @@ import {
     useFetchUserQuery,
     useLogoutUserMutation
 } from '../../../modules/services/userSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function AccountPopover() {
     const [anchor, setAnchor] = useState(null)
@@ -83,7 +85,7 @@ function AccountPopover() {
                                 arrow
                             >
                                 <div>
-                                    <i className="fas fa-plus"> </i>
+                                    <FontAwesomeIcon icon={solid('plus')} />
                                 </div>
                             </Tooltip>
                         </div>

@@ -65,7 +65,7 @@
     justify-content: center;
     align-items: center;
 
-    i {
+    svg {
       font-size: 1.3em;
     }
 
@@ -83,11 +83,11 @@
     justify-content: center;
     align-items: center;
 
-    &:hover > i {
+    &:hover > svg {
       transform: rotate(90deg);
     }
 
-    & > i {
+    & > svg {
       font-size: 1.5em;
       transition: transform 0.2s;
     }

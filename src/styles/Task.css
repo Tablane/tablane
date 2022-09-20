@@ -79,7 +79,7 @@
   align-items: center;
 }
 
-.Task > div > div.people i {
+.Task > div > div.people svg {
   font-size: 26px;
 }
 
@@ -113,12 +113,12 @@
   width: 40px;
 }
 
-.Task > div > div:last-of-type i {
+.Task > div > div:last-of-type svg {
   color: rgba(0, 0, 0, 0.6);
   display: none;
 }
 
-.Task > div > div:last-of-type:hover i {
+.Task > div > div:last-of-type:hover svg {
   display: inline;
 }
 
@@ -202,11 +202,11 @@
   width: 16px;
 }
 
-.task-popover .options > div > div > i {
+.task-popover .options > div > div > svg {
   opacity: 0;
 }
 
-.task-popover .options > div.editing:hover i {
+.task-popover .options > div.editing:hover svg {
   opacity: 1;
 }
 
@@ -261,6 +261,6 @@
   color: white;
 }
 
-.task-popover .edit i {
+.task-popover .edit svg {
   margin-right: 10px;
 }

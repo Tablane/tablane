@@ -13,6 +13,8 @@ import {
     useDeleteAttributeMutation,
     useEditAttributeNameMutation
 } from '../../../../modules/services/boardSlice'
+import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function AttributePopover(props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -70,13 +72,13 @@ function AttributePopover(props) {
                             onChange={e => setName(e.target.value)}
                             value={name}
                         />
-                        <i className="far fa-edit"> </i>
+                        <FontAwesomeIcon icon={regular('edit')} />
                     </div>
                     <div
                         className="delete"
                         onClick={handleAttributeDeleteClick}
                     >
-                        <i className="far fa-trash-alt"> </i>
+                        <FontAwesomeIcon icon={regular('trash-alt')} />
                         <p>Delete</p>
                     </div>
                 </div>

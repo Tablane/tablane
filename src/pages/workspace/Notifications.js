@@ -10,6 +10,8 @@ import {
     useFetchNotificationsQuery,
     useUnclearNotificationMutation
 } from '../../modules/services/notificationSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function Notifications(props) {
     const [clearNotification] = useClearNotificationMutation()
@@ -116,7 +118,11 @@ function Notifications(props) {
                                                     <div
                                                         className={styles.watch}
                                                     >
-                                                        <i className="fa-regular fa-eye"></i>
+                                                        <FontAwesomeIcon
+                                                            icon={regular(
+                                                                'eye'
+                                                            )}
+                                                        />
                                                     </div>
                                                 </Tooltip>
                                                 <Tooltip
@@ -141,9 +147,17 @@ function Notifications(props) {
                                                     >
                                                         <div>
                                                             {condition.cleared ? (
-                                                                <i className="fa-solid fa-rotate-left"></i>
+                                                                <FontAwesomeIcon
+                                                                    icon={solid(
+                                                                        'rotate-left'
+                                                                    )}
+                                                                />
                                                             ) : (
-                                                                <i className="fa-solid fa-check"></i>
+                                                                <FontAwesomeIcon
+                                                                    icon={solid(
+                                                                        'check'
+                                                                    )}
+                                                                />
                                                             )}
                                                         </div>
                                                     </div>

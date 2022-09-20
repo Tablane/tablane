@@ -11,6 +11,8 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import styles from '../../../../../styles/TaskPopover.module.scss'
 import { useDeleteTaskMutation } from '../../../../../modules/services/boardSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function TaskPopover(props) {
     const [deleteTask] = useDeleteTaskMutation()
@@ -59,15 +61,15 @@ function TaskPopover(props) {
                 }}
             >
                 <div className={styles.container}>
-                    <i className="fas fa-hashtag" onClick={copyTaskId}>
-                        {' '}
-                    </i>
-                    <i className="fas fa-pen" onClick={editTask}>
-                        {' '}
-                    </i>
-                    <i className="far fa-trash-alt" onClick={handleDeleteClose}>
-                        {' '}
-                    </i>
+                    <FontAwesomeIcon
+                        icon={solid('hashtag')}
+                        onClick={copyTaskId}
+                    />
+                    <FontAwesomeIcon icon={solid('pen')} onClick={editTask} />
+                    <FontAwesomeIcon
+                        icon={regular('trash-alt')}
+                        onClick={handleDeleteClose}
+                    />
                 </div>
             </Popover>
 

@@ -28,6 +28,8 @@ import {
     useSortSpaceMutation
 } from '../../modules/services/workspaceSlice'
 import { useFetchUserQuery } from '../../modules/services/userSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function SideBar(props) {
     const [addBoard] = useAddBoardMutation()
@@ -207,15 +209,14 @@ function SideBar(props) {
                             {...provided.dragHandleProps}
                         >
                             <div>
-                                <i
-                                    className={`fas fa-caret-right ${
+                                <FontAwesomeIcon
+                                    className={
                                         spacesClosed.includes(space._id)
                                             ? ''
                                             : 'open'
-                                    }`}
-                                >
-                                    {' '}
-                                </i>
+                                    }
+                                    icon={solid('caret-right')}
+                                />
                             </div>
                             <div onClick={() => toggleClosed(space._id)}>
                                 <div className="space-icon">
@@ -243,18 +244,14 @@ function SideBar(props) {
                                 )}
                             </div>
                             <div>
-                                <i
-                                    className="fas fa-ellipsis-h"
+                                <FontAwesomeIcon
                                     onClick={e => spaceClick(space, e)}
-                                >
-                                    {' '}
-                                </i>
-                                <i
+                                    icon={solid('ellipsis-h')}
+                                />
+                                <FontAwesomeIcon
                                     onClick={() => handleNewBoardClick(space)}
-                                    className="fas fa-plus"
-                                >
-                                    {' '}
-                                </i>
+                                    icon={solid('plus')}
+                                />
                             </div>
                         </div>
 
@@ -335,8 +332,7 @@ function SideBar(props) {
                                                                     {board.name}
                                                                 </p>
                                                             )}
-                                                            <i
-                                                                className="fas fa-ellipsis-h"
+                                                            <FontAwesomeIcon
                                                                 onClick={e =>
                                                                     boardClick(
                                                                         space,
@@ -344,9 +340,10 @@ function SideBar(props) {
                                                                         e
                                                                     )
                                                                 }
-                                                            >
-                                                                {' '}
-                                                            </i>
+                                                                icon={solid(
+                                                                    'ellipsis-h'
+                                                                )}
+                                                            />
                                                         </NavLink>
                                                     )}
                                                 </Draggable>
@@ -374,9 +371,9 @@ function SideBar(props) {
                                                     name="newBoardName"
                                                     autoFocus
                                                 />
-                                                <i className="fas fa-ellipsis-h">
-                                                    {' '}
-                                                </i>
+                                                <FontAwesomeIcon
+                                                    icon={solid('ellipsis-h')}
+                                                />
                                             </div>
                                         )}
                                     </div>
@@ -400,15 +397,13 @@ function SideBar(props) {
                 <div className="icons">
                     {workspace.members ? (
                         <Link to={`/settings/${workspace.id}/general`}>
-                            <i className="fas fa-cog"> </i>
+                            <FontAwesomeIcon icon={solid('cog')} />
                         </Link>
                     ) : null}
-                    <i
-                        className="fas fa-angle-double-left"
+                    <FontAwesomeIcon
                         onClick={props.toggleSideBar}
-                    >
-                        {' '}
-                    </i>
+                        icon={solid('angle-double-left')}
+                    />
                 </div>
             </div>
             <div className="menus">
@@ -420,7 +415,7 @@ function SideBar(props) {
                     end
                 >
                     <div className="icon">
-                        <i className="fa-solid fa-house"></i>
+                        <FontAwesomeIcon icon={solid('house')} />
                     </div>
                     <span>Home</span>
                 </NavLink>
@@ -431,7 +426,7 @@ function SideBar(props) {
                     to={`/${workspace.id}/notifications`}
                 >
                     <div className="icon">
-                        <i className="fa-solid fa-bell"></i>
+                        <FontAwesomeIcon icon={solid('bell')} />
                         {user?.newNotifications > 0 && (
                             <span className="indicator">
                                 {user?.newNotifications}
@@ -444,17 +439,15 @@ function SideBar(props) {
             <div className="boards">
                 <div onClick={toggleSpaces} className="section-name">
                     <label>Spaces</label>
-                    <i
+                    <FontAwesomeIcon
                         style={{
                             transition: 'transform 0.2s',
                             transform: spaceTabOpen
                                 ? 'rotate(360deg)'
                                 : 'rotate(270deg)'
                         }}
-                        className="fas fa-angle-down"
-                    >
-                        {' '}
-                    </i>
+                        icon={solid('angle-down')}
+                    />
                 </div>
 
                 <AnimateHeight
@@ -464,7 +457,8 @@ function SideBar(props) {
                 >
                     <div className="new-btn">
                         <button onClick={changeNewSpaceDialogOpen}>
-                            <i className="fas fa-plus"> </i>New Space
+                            <FontAwesomeIcon icon={solid('plus')} />
+                            New Space
                         </button>
                     </div>
                     <div className="space">
@@ -472,7 +466,7 @@ function SideBar(props) {
                             <div> </div>
                             <div>
                                 <div className="space-icon">
-                                    <i className="fas fa-th-large"> </i>
+                                    <FontAwesomeIcon icon={solid('th-large')} />
                                 </div>
                                 <p>Everything</p>
                             </div>
@@ -501,7 +495,7 @@ function SideBar(props) {
             <div className="boards">
                 <div className="section-name">
                     <label>Something else</label>
-                    <i className="fas fa-angle-down"> </i>
+                    <FontAwesomeIcon icon={solid('angle-down')} />
                 </div>
             </div>
 

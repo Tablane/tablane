@@ -4,6 +4,8 @@ import { Draggable, Droppable } from '@hello-pangea/dnd'
 import { connect } from 'react-redux'
 import { addTaskGroup } from '../../../modules/state/reducers/boardReducer'
 import { ObjectId } from '../../../utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 class NewTaskGroup extends Component {
     constructor(props) {
@@ -61,18 +63,14 @@ class NewTaskGroup extends Component {
                                             autoFocus
                                         />
                                         <div>
-                                            <i
+                                            <FontAwesomeIcon
+                                                icon={solid('times')}
                                                 onClick={this.removeTaskGroup}
-                                                className="fas fa-times"
-                                            >
-                                                {' '}
-                                            </i>
-                                            <i
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={solid('check')}
                                                 onClick={this.addTaskGroup}
-                                                className="fas fa-check"
-                                            >
-                                                {' '}
-                                            </i>
+                                            />
                                         </div>
                                     </form>
                                 </div>
@@ -107,13 +105,17 @@ class NewTaskGroup extends Component {
                                                             {...provided.dragHandleProps}
                                                             {...provided.draggableProps}
                                                         >
-                                                            <i className="fas fa-caret-down">
-                                                                {' '}
-                                                            </i>
+                                                            <FontAwesomeIcon
+                                                                icon={solid(
+                                                                    'caret-down'
+                                                                )}
+                                                            />
                                                             <p>{x.name}</p>
-                                                            <i className="fas fa-caret-down">
-                                                                {' '}
-                                                            </i>
+                                                            <FontAwesomeIcon
+                                                                icon={solid(
+                                                                    'caret-down'
+                                                                )}
+                                                            />
                                                         </div>
                                                     )}
                                                 </Draggable>
@@ -122,9 +124,9 @@ class NewTaskGroup extends Component {
                                         {provided.placeholder}
                                         <div className="attribute">
                                             <p>
-                                                <i className="fas fa-plus-circle">
-                                                    {' '}
-                                                </i>
+                                                <FontAwesomeIcon
+                                                    icon={solid('plus-circle')}
+                                                />
                                             </p>
                                         </div>
                                     </div>
