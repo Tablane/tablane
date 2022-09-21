@@ -9,7 +9,7 @@ import {
     useLogoutUserMutation
 } from '../../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { brands, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function AccountPopover() {
     const [anchor, setAnchor] = useState(null)
@@ -157,10 +157,10 @@ function AccountPopover() {
                             <p>Download Apps</p>
                         </div>
                         <div>
-                            <i className="fab fa-apple"> </i>
-                            <i className="fab fa-android"> </i>
-                            <i className="fas fa-desktop"> </i>
-                            <i className="fab fa-chrome"> </i>
+                            <FontAwesomeIcon icon={brands('apple')} />
+                            <FontAwesomeIcon icon={brands('android')} />
+                            <FontAwesomeIcon icon={solid('desktop')} />
+                            <FontAwesomeIcon icon={brands('chrome')} />
                         </div>
                     </div>
                 </div>
