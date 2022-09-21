@@ -195,8 +195,8 @@
   outline: none;
 }
 
-.task-popover .options > div > i:first-of-type,
-.task-popover .options > div > i:last-of-type {
+.task-popover .options > div > svg:first-of-type,
+.task-popover .options > div > svg:last-of-type {
   opacity: 0;
   min-width: 16px;
   width: 16px;

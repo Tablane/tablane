@@ -71,7 +71,7 @@
   margin-left: 5px;
 }
 
-.task .title .attribute:hover > i:last-of-type {
+.task .title .attribute:hover > svg:last-of-type {
   opacity: 1;
 }
 
