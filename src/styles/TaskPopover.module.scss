@@ -1,7 +1,7 @@
 .container {
   height: 40px;
   display: flex;
-  & svg {
+  svg {
     width: 38px;
     padding: 12px 0;
     text-align: center;
@@ -10,7 +10,7 @@
       background-color: #f9f9f9;
     }
   }
-  & i:last-of-type {
+  svg:last-of-type {
     color: #ff80b9;
   }
 }
