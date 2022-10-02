@@ -70,7 +70,7 @@ function ShareDialog({ handleClose, open, board }) {
                 {check && (
                     <div className={styles.shareInfo}>
                         <div>
-                            <FontAwesomeIcon icon={solid('link')} />Ï
+                            <FontAwesomeIcon icon={solid('link')} />
                             <p>Public link</p>
                         </div>
                         <input
