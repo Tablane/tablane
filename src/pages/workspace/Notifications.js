@@ -19,7 +19,11 @@ function Notifications(props) {
     const [unclearNotification] = useUnclearNotificationMutation()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const { data: notifications, isLoading } = useFetchNotificationsQuery({
+    const {
+        data: notifications,
+        isFetching,
+        error
+    } = useFetchNotificationsQuery({
         workspaceId: workspace._id,
         condition
     })
@@ -68,175 +72,198 @@ function Notifications(props) {
                 updateCondition={updateCondition}
             />
             <div className={styles.panel}>
-                {isLoading ? (
+                {isFetching ? (
                     <LinearProgress />
                 ) : (
                     <>
-                        {' '}
                         <div className="loading-placeholder"></div>
                         <div className={styles.notifications}>
-                            {groupedNotifications.length === 0 && (
+                            {error && (
+                                <div className={styles.errorWrapper}>
+                                    <p className={styles.title}>
+                                        Sorry, we're having trouble displaying
+                                        your notifications.
+                                    </p>
+                                    <span>Please try again.</span>
+                                </div>
+                            )}
+                            {!error && groupedNotifications.length === 0 && (
                                 <p>You have no unread notifications</p>
                             )}
-                            {groupedNotifications.map(notification => {
-                                const board = notification.task.board
-                                const space = board.space
-                                return (
-                                    <div
-                                        className={styles.group}
-                                        key={notification.task._id}
-                                    >
-                                        <div>
+                            {!error &&
+                                groupedNotifications.map(notification => {
+                                    const board = notification.task.board
+                                    const space = board.space
+                                    return (
+                                        <div
+                                            className={styles.group}
+                                            key={notification.task._id}
+                                        >
                                             <div>
-                                                <Link
-                                                    to={`/${params.workspace}/${space.name}/${board.name}`}
-                                                >
-                                                    <span>
-                                                        {space.name} >{' '}
-                                                        {board.name}
-                                                    </span>
-                                                </Link>
-                                                <Link
-                                                    to={`/${params.workspace}/${space.name}/${board.name}/${notification.task._id}`}
-                                                >
-                                                    <div>
-                                                        <span>
-                                                            {
-                                                                notification
-                                                                    .task.name
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </Link>
-                                            </div>
-                                            <div>
-                                                <Tooltip
-                                                    title="Stop watching"
-                                                    arrow
-                                                    placement="top"
-                                                >
-                                                    <div
-                                                        className={styles.watch}
+                                                <div>
+                                                    <Link
+                                                        to={`/${params.workspace}/${space.name}/${board.name}`}
                                                     >
-                                                        <FontAwesomeIcon
-                                                            icon={regular(
-                                                                'eye'
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={
-                                                        condition.cleared
-                                                            ? 'Unclear notification'
-                                                            : 'Clear notification'
-                                                    }
-                                                    arrow
-                                                    placement="top"
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles.markRead
+                                                        <span>
+                                                            {space.name} >{' '}
+                                                            {board.name}
+                                                        </span>
+                                                    </Link>
+                                                    <Link
+                                                        to={`/${params.workspace}/${space.name}/${board.name}/${notification.task._id}`}
+                                                    >
+                                                        <div>
+                                                            <span>
+                                                                {
+                                                                    notification
+                                                                        .task
+                                                                        .name
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </Link>
+                                                </div>
+                                                <div>
+                                                    <Tooltip
+                                                        title="Stop watching"
+                                                        arrow
+                                                        placement="top"
+                                                    >
+                                                        <div
+                                                            className={
+                                                                styles.watch
+                                                            }
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={regular(
+                                                                    'eye'
+                                                                )}
+                                                            />
+                                                        </div>
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={
+                                                            condition.cleared
+                                                                ? 'Unclear notification'
+                                                                : 'Clear notification'
                                                         }
-                                                        onClick={() =>
-                                                            handleClick(
-                                                                notification
-                                                                    .task._id
-                                                            )
+                                                        arrow
+                                                        placement="top"
+                                                    >
+                                                        <div
+                                                            className={
+                                                                styles.markRead
+                                                            }
+                                                            onClick={() =>
+                                                                handleClick(
+                                                                    notification
+                                                                        .task
+                                                                        ._id
+                                                                )
+                                                            }
+                                                        >
+                                                            <div>
+                                                                {condition.cleared ? (
+                                                                    <FontAwesomeIcon
+                                                                        icon={solid(
+                                                                            'rotate-left'
+                                                                        )}
+                                                                    />
+                                                                ) : (
+                                                                    <FontAwesomeIcon
+                                                                        icon={solid(
+                                                                            'check'
+                                                                        )}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                            {notification.changes.map(
+                                                change => (
+                                                    <div
+                                                        className={styles.item}
+                                                        key={
+                                                            change.timestamp +
+                                                            change.from.toString()
                                                         }
                                                     >
                                                         <div>
-                                                            {condition.cleared ? (
-                                                                <FontAwesomeIcon
-                                                                    icon={solid(
-                                                                        'rotate-left'
-                                                                    )}
-                                                                />
-                                                            ) : (
-                                                                <FontAwesomeIcon
-                                                                    icon={solid(
-                                                                        'check'
-                                                                    )}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </Tooltip>
-                                            </div>
-                                        </div>
-                                        {notification.changes.map(change => (
-                                            <div
-                                                className={styles.item}
-                                                key={
-                                                    change.timestamp +
-                                                    change.from.toString()
-                                                }
-                                            >
-                                                <div>
-                                                    <div>
-                                                        <span
-                                                            className={
-                                                                styles.user
-                                                            }
-                                                        >
-                                                            {
-                                                                change.user
-                                                                    .username
-                                                            }
-                                                        </span>
-                                                        <div
-                                                            className={
-                                                                styles.type
-                                                            }
-                                                        >
-                                                            <span>
-                                                                {change.change_type.toUpperCase()}
-                                                            </span>
-                                                        </div>
-                                                        <div
-                                                            className={
-                                                                styles.change
-                                                            }
-                                                        >
-                                                            <span
-                                                                style={{
-                                                                    backgroundColor:
+                                                            <div>
+                                                                <span
+                                                                    className={
+                                                                        styles.user
+                                                                    }
+                                                                >
+                                                                    {
                                                                         change
-                                                                            .from
-                                                                            .color
-                                                                }}
-                                                            >
-                                                                {
-                                                                    change.from
-                                                                        .text
+                                                                            .user
+                                                                            .username
+                                                                    }
+                                                                </span>
+                                                                <div
+                                                                    className={
+                                                                        styles.type
+                                                                    }
+                                                                >
+                                                                    <span>
+                                                                        {change.change_type.toUpperCase()}
+                                                                    </span>
+                                                                </div>
+                                                                <div
+                                                                    className={
+                                                                        styles.change
+                                                                    }
+                                                                >
+                                                                    <span
+                                                                        style={{
+                                                                            backgroundColor:
+                                                                                change
+                                                                                    .from
+                                                                                    .color
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            change
+                                                                                .from
+                                                                                .text
+                                                                        }
+                                                                    </span>
+                                                                    <span>
+                                                                        to
+                                                                    </span>
+                                                                    <span
+                                                                        style={{
+                                                                            backgroundColor:
+                                                                                change
+                                                                                    .to
+                                                                                    .color
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            change
+                                                                                .to
+                                                                                .text
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <RelativeDate
+                                                                timestamp={
+                                                                    change.timestamp
                                                                 }
-                                                            </span>
-                                                            <span>to</span>
-                                                            <span
-                                                                style={{
-                                                                    backgroundColor:
-                                                                        change
-                                                                            .to
-                                                                            .color
-                                                                }}
-                                                            >
-                                                                {change.to.text}
-                                                            </span>
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <RelativeDate
-                                                        timestamp={
-                                                            change.timestamp
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )
-                            })}
+                                                )
+                                            )}
+                                        </div>
+                                    )
+                                })}
                         </div>
                     </>
                 )}
