@@ -1,5 +1,6 @@
 import { api } from './api'
 import { ObjectId } from '../../utils'
+import { toast } from 'react-hot-toast'
 
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -28,6 +29,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -78,6 +80,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -115,6 +118,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -144,6 +148,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -199,6 +204,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -255,6 +261,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -292,6 +299,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -326,6 +334,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -371,6 +380,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -399,6 +409,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -439,6 +450,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -473,6 +485,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -500,6 +513,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -528,6 +542,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -559,6 +574,7 @@ export const boardApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
