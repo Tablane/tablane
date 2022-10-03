@@ -30,7 +30,7 @@ function Board(props) {
             ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
-    const { data: board, error, isLoading } = useFetchBoardQuery(boardId)
+    const { data: board, error, isFetching } = useFetchBoardQuery(boardId)
 
     const groupTasks = useMemo(() => {
         if (!board) return
@@ -143,12 +143,12 @@ function Board(props) {
             />
             <div className="Board">
                 <div>
-                    {isLoading ? (
+                    {isFetching ? (
                         <LinearProgress />
                     ) : (
                         <div className="loading-placeholder"></div>
                     )}
-                    {board && (
+                    {!isFetching && board && (
                         <DragDropContext
                             onDragEnd={handleDragEnd}
                             onDragStart={onDragStart}

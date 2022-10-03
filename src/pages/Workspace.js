@@ -15,7 +15,7 @@ function Workspace(props) {
     const {
         data: workspace,
         error,
-        isLoading
+        isFetching
     } = useFetchWorkspaceQuery(params.workspace)
     const [sidebarOpen, setSidebarOpen] = useLocalStorageState(
         'sidebarOpen',
@@ -27,7 +27,7 @@ function Workspace(props) {
     }
 
     if (error) return <WorkspaceNotFound />
-    if (isLoading) {
+    if (isFetching) {
         return (
             <div className="loading">
                 <CircularProgress />
