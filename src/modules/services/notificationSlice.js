@@ -1,13 +1,16 @@
 import { api } from './api'
+import { toast } from 'react-hot-toast'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
+        tagTypes: ['Notifications'],
         fetchNotifications: builder.query({
             query: ({ workspaceId, condition }) => ({
                 url: `notification/${workspaceId}`,
                 method: 'POST',
                 body: { condition }
-            })
+            }),
+            providesTags: ['Notifications']
         }),
         clearNotification: builder.mutation({
             query: ({ workspaceId, taskId, condition }) => ({
@@ -15,6 +18,7 @@ export const notificationApi = api.injectEndpoints({
                 method: 'DELETE',
                 body: { condition }
             }),
+            invalidatesTags: ['Notifications'],
             async onQueryStarted(
                 { taskId, workspaceId, condition },
                 { dispatch, queryFulfilled }
@@ -33,6 +37,7 @@ export const notificationApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -43,6 +48,7 @@ export const notificationApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: { condition }
             }),
+            invalidatesTags: ['Notifications'],
             async onQueryStarted(
                 { taskId, workspaceId, condition },
                 { dispatch, queryFulfilled }
@@ -59,8 +65,9 @@ export const notificationApi = api.injectEndpoints({
                     )
                 )
                 try {
-                    await queryFulfilled.then(x => console.log(x))
+                    await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
