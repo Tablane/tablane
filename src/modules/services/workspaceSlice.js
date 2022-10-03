@@ -1,4 +1,5 @@
 import { api } from './api'
+import { toast } from 'react-hot-toast'
 
 export const workspaceApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -38,6 +39,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -68,6 +70,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -98,6 +101,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -143,6 +147,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -174,6 +179,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -202,6 +208,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -230,6 +237,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
@@ -264,6 +272,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
+                    toast('Something went wrong')
                     patchResult.undo()
                 }
             }
