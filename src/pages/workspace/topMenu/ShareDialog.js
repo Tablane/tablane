@@ -5,45 +5,16 @@ import axios from 'axios'
 import styles from '../../../styles/ShareDialog.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useSetSharingMutation } from '../../../modules/services/boardSlice'
 
 function ShareDialog({ handleClose, open, board }) {
-    const [check, setCheck] = useState(board.sharing)
-    const [link, setLink] = useState(
-        board.sharing
-            ? `${window.location.origin}/share/${board._id}`
-            : 'Loading...'
-    )
+    const [setSharing] = useSetSharingMutation()
 
-    useEffect(() => {
-        setCheck(board.sharing)
-        setLink(
-            board.sharing
-                ? `${window.location.origin}/share/${board._id}`
-                : 'Loading...'
-        )
-    }, [board])
-
-    const toggleShare = (e, x) => {
-        setCheck(x)
-        if (x) setLink('Loading...')
-        axios({
-            method: 'PATCH',
-            data: {
-                share: x
-            },
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/board/share/${board._id}`
+    const toggleShare = (e, share) => {
+        setSharing({
+            boardId: board._id,
+            share
         })
-            .then(res => {
-                if (x)
-                    setLink(
-                        `${window.location.origin}/share/${res.data.message}`
-                    )
-            })
-            .catch(err => {
-                setCheck(!x)
-                toast(err.toString())
-            })
     }
 
     const copy = e => {
@@ -60,14 +31,14 @@ function ShareDialog({ handleClose, open, board }) {
                 <div className={styles.sharing}>
                     <p>Link sharing</p>
                     <Switch
-                        checked={check}
+                        checked={board.sharing}
                         onChange={toggleShare}
                         color="primary"
                         name="checkedB"
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                 </div>
-                {check && (
+                {board.sharing && (
                     <div className={styles.shareInfo}>
                         <div>
                             <FontAwesomeIcon icon={solid('link')} />
@@ -75,7 +46,7 @@ function ShareDialog({ handleClose, open, board }) {
                         </div>
                         <input
                             type="text"
-                            value={link}
+                            value={`${window.location.origin}/share/${board._id}`}
                             onClick={copy}
                             readOnly
                         />

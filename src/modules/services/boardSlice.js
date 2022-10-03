@@ -578,6 +578,33 @@ export const boardApi = api.injectEndpoints({
                     patchResult.undo()
                 }
             }
+        }),
+        setSharing: builder.mutation({
+            query: ({ boardId, share }) => ({
+                url: `board/share/${boardId}`,
+                method: 'PATCH',
+                body: { share }
+            }),
+            async onQueryStarted(
+                { boardId, share },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board => {
+                            board.sharing = share
+                        }
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
         })
     })
 })
@@ -598,5 +625,6 @@ export const {
     useSortAttributeMutation,
     useEditAttributeLabelsMutation,
     useAddWatcherMutation,
-    useRemoveWatcherMutation
+    useRemoveWatcherMutation,
+    useSetSharingMutation
 } = boardApi
