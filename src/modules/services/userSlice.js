@@ -41,7 +41,6 @@ export const userApi = api.injectEndpoints({
                 body: { username, password, email }
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                console.log(arg)
                 try {
                     const { data } = await queryFulfilled
                     const patchResult = dispatch(
