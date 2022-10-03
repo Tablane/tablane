@@ -1,11 +1,270 @@
 import { api } from './api'
 import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
+import { io } from 'socket.io-client'
+
+const setGroupBy = ({ board, groupBy }) => {
+    board.groupBy = groupBy
+}
+const addTask = ({ board, newTaskName, taskGroupId, _id, author }) => {
+    const task = {
+        _id,
+        name: newTaskName,
+        options: [],
+        watcher: [],
+        history: [
+            {
+                type: 'activity',
+                author,
+                text: 'created this task',
+                timestamp: new Date().getTime()
+            }
+        ]
+    }
+    if (board.groupBy && board.groupBy !== 'empty') {
+        task.options.push({
+            column: board.groupBy,
+            value: taskGroupId
+        })
+    }
+    board.tasks.push(task)
+}
+const editTaskField = ({ board, taskId, type, value }) => {
+    if (type === 'name') {
+        board.tasks.find(x => x._id.toString() === taskId).name = value
+    } else if (type === 'description') {
+        board.tasks.find(x => x._id.toString() === taskId).description = value
+    }
+}
+const deleteTask = ({ board, taskId }) => {
+    const task = board.tasks.find(x => x._id.toString() === taskId)
+    const taskIndex = board.tasks.indexOf(task)
+    board.tasks.splice(taskIndex, 1)
+}
+const sortTask = ({ board, result, destinationIndex, sourceIndex }) => {
+    const task = board.tasks.find(x => x._id.toString() === result.draggableId)
+    const column = task.options.find(
+        option => option.column.toString() === board.groupBy
+    )
+    if (column) column.value = result.destination.droppableId
+    else if (
+        !(
+            board.groupBy === 'none' ||
+            !board.groupBy ||
+            result.destination.droppableId === 'empty'
+        )
+    ) {
+        task.options.push({
+            column: board.groupBy,
+            value: result.destination.droppableId
+        })
+    }
+
+    board.tasks.splice(sourceIndex, 1)
+
+    if (destinationIndex < 0) board.tasks.push(task)
+    else board.tasks.splice(destinationIndex, 0, task)
+}
+const editOptionsTask = ({ board, column, value, type, taskId }) => {
+    const options = board.tasks.find(x => x._id.toString() === taskId).options
+    const option = options.find(x => x.column.toString() === column)
+
+    if (type === 'status') {
+        if (option) option.value = value
+        else
+            options.push({
+                column,
+                value,
+                _id: ObjectId()
+            })
+    } else if (type === 'text') {
+        if (option) option.value = value
+        else
+            options.push({
+                column,
+                value,
+                _id: ObjectId()
+            })
+    } else if (type === 'person') {
+        if (option) option.value = value
+        else options.push({ column, value })
+    }
+}
+const addTaskComment = ({ board, text, author, taskId }) => {
+    const comment = {
+        type: 'comment',
+        author,
+        timestamp: new Date().getTime(),
+        text
+    }
+
+    board.tasks.find(task => task._id === taskId).history.push(comment)
+}
+const clearStatusTask = ({ board, taskId, optionId }) => {
+    const options = board.tasks.find(x => x._id.toString() === taskId).options
+
+    const optionIndex = options.indexOf(
+        options.find(x => x.column.toString() === optionId)
+    )
+    if (optionIndex >= 0) options.splice(optionIndex, 1)
+}
+const addAttribute = ({ board, type, _id }) => {
+    let name = type.charAt(0).toUpperCase() + type.slice(1)
+    while (board.attributes.filter(x => x.name === name).length >= 1) {
+        if (/ \d$/gm.test(name)) {
+            name =
+                name.substring(0, name.length - 1) +
+                ` ${parseInt(name.slice(-1)) + 1}`
+        } else name = name + ' 1'
+    }
+
+    let attribute = {
+        name,
+        type: type,
+        _id
+    }
+    if (type === 'status') attribute.labels = []
+    board.attributes.push(attribute)
+}
+const editAttributeName = ({ board, name, attributeId }) => {
+    board.attributes.find(x => x._id.toString() === attributeId).name = name
+}
+const deleteAttribute = ({ board, attributeId }) => {
+    const attributeIndex = board.attributes.indexOf(
+        board.attributes.find(x => x._id.toString() === attributeId)
+    )
+    if (attributeIndex > -1) board.attributes.splice(attributeIndex, 1)
+
+    board.tasks.map(
+        task =>
+            (task.options = task.options.filter(
+                option => option.column.toString() !== attributeId
+            ))
+    )
+}
+const sortAttribute = ({ board, result }) => {
+    const [attribute] = board.attributes.splice(result.source.index, 1)
+    board.attributes.splice(result.destination.index, 0, attribute)
+}
+const editAttributeLabels = ({ board, name, labels }) => {
+    board.attributes.find(x => x.name === name).labels = labels
+}
+const addWatcher = ({ board, task, user }) => {
+    board.tasks.find(x => x._id === task._id).watcher.push(user)
+}
+const removeWatcher = ({ board, task, user }) => {
+    const localTask = board.tasks.find(x => x._id === task._id)
+    localTask.watcher = localTask.watcher.filter(x => x._id !== user._id)
+}
+const setSharing = ({ board, share }) => {
+    board.sharing = share
+}
 
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchBoard: builder.query({
-            query: boardId => `board/${boardId}`
+            query: boardId => `board/${boardId}`,
+            async onCacheEntryAdded(
+                boardId,
+                { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+            ) {
+                const socket = io(process.env.REACT_APP_BACKEND_HOST, {
+                    withCredentials: true
+                })
+                try {
+                    await cacheDataLoaded
+                    socket.emit('subscribe', boardId)
+
+                    socket.on(boardId, ({ event, body }) => {
+                        switch (event) {
+                            case 'setGroupBy':
+                                updateCachedData(board =>
+                                    setGroupBy({ board, ...body })
+                                )
+                                break
+                            case 'addTask':
+                                updateCachedData(board =>
+                                    addTask({ board, ...body })
+                                )
+                                break
+                            case 'editTaskField':
+                                updateCachedData(board =>
+                                    editTaskField({ board, ...body })
+                                )
+                                break
+                            case 'deleteTask':
+                                updateCachedData(board =>
+                                    deleteTask({ board, ...body })
+                                )
+                                break
+                            case 'sortTask':
+                                updateCachedData(board =>
+                                    sortTask({ board, ...body })
+                                )
+                                break
+                            case 'editOptionsTask':
+                                updateCachedData(board =>
+                                    editOptionsTask({ board, ...body })
+                                )
+                                break
+                            case 'addTaskComment':
+                                updateCachedData(board =>
+                                    addTaskComment({ board, ...body })
+                                )
+                                break
+                            case 'clearStatusTask':
+                                updateCachedData(board =>
+                                    clearStatusTask({ board, ...body })
+                                )
+                                break
+                            case 'addAttribute':
+                                updateCachedData(board =>
+                                    addAttribute({ board, ...body })
+                                )
+                                break
+                            case 'editAttributeName':
+                                updateCachedData(board =>
+                                    editAttributeName({ board, ...body })
+                                )
+                                break
+                            case 'deleteAttribute':
+                                updateCachedData(board =>
+                                    deleteAttribute({ board, ...body })
+                                )
+                                break
+                            case 'sortAttribute':
+                                updateCachedData(board =>
+                                    sortAttribute({ board, ...body })
+                                )
+                                break
+                            case 'editAttributeLabels':
+                                updateCachedData(board =>
+                                    editAttributeLabels({ board, ...body })
+                                )
+                                break
+                            case 'addWatcher':
+                                updateCachedData(board =>
+                                    addWatcher({ board, ...body })
+                                )
+                                break
+                            case 'removeWatcher':
+                                updateCachedData(board =>
+                                    removeWatcher({ board, ...body })
+                                )
+                                break
+                            case 'setSharing':
+                                updateCachedData(board =>
+                                    setSharing({ board, ...body })
+                                )
+                                break
+                            default:
+                                console.log('unknown update:', event)
+                        }
+                    })
+                } catch {}
+                await cacheEntryRemoved
+                socket.disconnect()
+            }
         }),
         setGroupBy: builder.mutation({
             query: ({ boardId, groupBy }) => ({
@@ -21,9 +280,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            board.groupBy = groupBy
-                        }
+                        board => setGroupBy({ board, groupBy })
                     )
                 )
                 try {
@@ -52,29 +309,14 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const task = {
+                        board =>
+                            addTask({
+                                board,
+                                newTaskName,
+                                taskGroupId,
                                 _id,
-                                name: newTaskName,
-                                options: [],
-                                watcher: [],
-                                history: [
-                                    {
-                                        type: 'activity',
-                                        author,
-                                        text: 'created this task',
-                                        timestamp: new Date().getTime()
-                                    }
-                                ]
-                            }
-                            if (board.groupBy && board.groupBy !== 'empty') {
-                                task.options.push({
-                                    column: board.groupBy,
-                                    value: taskGroupId
-                                })
-                            }
-                            board.tasks.push(task)
-                        }
+                                author
+                            })
                     )
                 )
                 try {
@@ -102,17 +344,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            if (type === 'name') {
-                                board.tasks.find(
-                                    x => x._id.toString() === taskId
-                                ).name = value
-                            } else if (type === 'description') {
-                                board.tasks.find(
-                                    x => x._id.toString() === taskId
-                                ).description = value
-                            }
-                        }
+                        board => editTaskField({ board, taskId, type, value })
                     )
                 )
                 try {
@@ -136,13 +368,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const task = board.tasks.find(
-                                x => x._id.toString() === taskId
-                            )
-                            const taskIndex = board.tasks.indexOf(task)
-                            board.tasks.splice(taskIndex, 1)
-                        }
+                        board => deleteTask({ board, taskId })
                     )
                 )
                 try {
@@ -171,34 +397,14 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const task = board.tasks.find(
-                                x => x._id.toString() === result.draggableId
-                            )
-                            const column = task.options.find(
-                                option =>
-                                    option.column.toString() === board.groupBy
-                            )
-                            if (column)
-                                column.value = result.destination.droppableId
-                            else if (
-                                !(
-                                    board.groupBy === 'none' ||
-                                    !board.groupBy ||
-                                    result.destination.droppableId === 'empty'
-                                )
-                            ) {
-                                task.options.push({
-                                    column: board.groupBy,
-                                    value: result.destination.droppableId
-                                })
-                            }
-
-                            board.tasks.splice(sourceIndex, 1)
-
-                            if (destinationIndex < 0) board.tasks.push(task)
-                            else board.tasks.splice(destinationIndex, 0, task)
-                        }
+                        board =>
+                            sortTask({
+                                board,
+                                result,
+                                destinationIndex,
+                                sourceIndex,
+                                boardId
+                            })
                     )
                 )
                 try {
@@ -227,35 +433,14 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const options = board.tasks.find(
-                                x => x._id.toString() === taskId
-                            ).options
-                            const option = options.find(
-                                x => x.column.toString() === column
-                            )
-
-                            if (type === 'status') {
-                                if (option) option.value = value
-                                else
-                                    options.push({
-                                        column,
-                                        value,
-                                        _id: ObjectId()
-                                    })
-                            } else if (type === 'text') {
-                                if (option) option.value = value
-                                else
-                                    options.push({
-                                        column,
-                                        value,
-                                        _id: ObjectId()
-                                    })
-                            } else if (type === 'person') {
-                                if (option) option.value = value
-                                else options.push({ column, value })
-                            }
-                        }
+                        board =>
+                            editOptionsTask({
+                                board,
+                                column,
+                                value,
+                                type,
+                                taskId
+                            })
                     )
                 )
                 try {
@@ -282,18 +467,14 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const comment = {
-                                type: 'comment',
+                        board =>
+                            addTaskComment({
+                                board,
+                                text,
                                 author,
-                                timestamp: new Date().getTime(),
-                                text
-                            }
-
-                            board.tasks
-                                .find(task => task._id === taskId)
-                                .history.push(comment)
-                        }
+                                taskId,
+                                boardId
+                            })
                     )
                 )
                 try {
@@ -317,18 +498,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const options = board.tasks.find(
-                                x => x._id.toString() === taskId
-                            ).options
-
-                            const optionIndex = options.indexOf(
-                                options.find(
-                                    x => x.column.toString() === optionId
-                                )
-                            )
-                            if (optionIndex >= 0) options.splice(optionIndex, 1)
-                        }
+                        board => clearStatusTask({ board, taskId, optionId })
                     )
                 )
                 try {
@@ -353,28 +523,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            let name =
-                                type.charAt(0).toUpperCase() + type.slice(1)
-                            while (
-                                board.attributes.filter(x => x.name === name)
-                                    .length >= 1
-                            ) {
-                                if (/ \d$/gm.test(name)) {
-                                    name =
-                                        name.substring(0, name.length - 1) +
-                                        ` ${parseInt(name.slice(-1)) + 1}`
-                                } else name = name + ' 1'
-                            }
-
-                            let attribute = {
-                                name,
-                                type: type,
-                                _id
-                            }
-                            if (type === 'status') attribute.labels = []
-                            board.attributes.push(attribute)
-                        }
+                        board => addAttribute({ board, type, _id })
                     )
                 )
                 try {
@@ -399,11 +548,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            board.attributes.find(
-                                x => x._id.toString() === attributeId
-                            ).name = name
-                        }
+                        board => editAttributeName({ board, name, attributeId })
                     )
                 )
                 try {
@@ -427,24 +572,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const attributeIndex = board.attributes.indexOf(
-                                board.attributes.find(
-                                    x => x._id.toString() === attributeId
-                                )
-                            )
-                            if (attributeIndex > -1)
-                                board.attributes.splice(attributeIndex, 1)
-
-                            board.tasks.map(
-                                task =>
-                                    (task.options = task.options.filter(
-                                        option =>
-                                            option.column.toString() !==
-                                            attributeId
-                                    ))
-                            )
-                        }
+                        board => deleteAttribute({ board, attributeId })
                     )
                 )
                 try {
@@ -469,17 +597,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const [attribute] = board.attributes.splice(
-                                result.source.index,
-                                1
-                            )
-                            board.attributes.splice(
-                                result.destination.index,
-                                0,
-                                attribute
-                            )
-                        }
+                        board => sortAttribute({ board, result })
                     )
                 )
                 try {
@@ -504,10 +622,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            board.attributes.find(x => x.name === name).labels =
-                                labels
-                        }
+                        board => editAttributeLabels({ board, name, labels })
                     )
                 )
                 try {
@@ -532,11 +647,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            board.tasks
-                                .find(x => x._id === task._id)
-                                .watcher.push(user)
-                        }
+                        board => addWatcher({ board, task, user })
                     )
                 )
                 try {
@@ -561,14 +672,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            const localTask = board.tasks.find(
-                                x => x._id === task._id
-                            )
-                            localTask.watcher = localTask.watcher.filter(
-                                x => x._id !== user._id
-                            )
-                        }
+                        board => removeWatcher({ board, task, user })
                     )
                 )
                 try {
@@ -593,9 +697,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => {
-                            board.sharing = share
-                        }
+                        board => setSharing({ board, share })
                     )
                 )
                 try {

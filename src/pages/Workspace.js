@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useParams, Outlet } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import SideBar from './workspace/SideBar'
 import Board from './workspace/Board'
 import Home from './workspace/Home'
