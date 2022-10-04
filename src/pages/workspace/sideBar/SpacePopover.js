@@ -26,7 +26,11 @@ function SpacePopover(props) {
         handleClose()
         const { workspace, space } = props
 
-        deleteSpace({ workspace: workspace, spaceId: space._id })
+        deleteSpace({
+            workspaceId: workspace._id,
+            workspaceIdFriendly: workspace.id,
+            spaceId: space._id
+        })
         setDeleting(false)
     }
 

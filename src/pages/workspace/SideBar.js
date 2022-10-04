@@ -111,7 +111,8 @@ function SideBar(props) {
         resetNewSpaceDialogOpen()
         resetNewSpaceName()
         addSpace({
-            workspace,
+            workspaceId: workspace._id,
+            workspaceIdFriendly: workspace.id,
             _id: ObjectId(),
             name: newSpaceName
         })
@@ -126,7 +127,8 @@ function SideBar(props) {
         resetNewBoardSpace()
         resetNewBoardName()
         addBoard({
-            workspace,
+            workspaceId: workspace._id,
+            workspaceIdFriendly: workspace.id,
             spaceId: newBoardSpace,
             name: newBoardName,
             _id: ObjectId()
@@ -143,7 +145,12 @@ function SideBar(props) {
 
     const handleBoardEdit = async () => {
         if (editingBoardName === '') return
-        editBoardName({ ...editingBoard, name: editingBoardName, workspace })
+        editBoardName({
+            ...editingBoard,
+            name: editingBoardName,
+            workspaceIdFriendly: workspace.id,
+            workspaceId: workspace._id
+        })
         setEditingBoard('')
     }
 
@@ -151,7 +158,8 @@ function SideBar(props) {
         if (editingSpaceName === '') return setEditingSpace('')
 
         editSpaceName({
-            workspace,
+            workspaceId: workspace._id,
+            workspaceIdFriendly: workspace.id,
             spaceId: editingSpace,
             name: editingSpaceName
         })
@@ -189,9 +197,17 @@ function SideBar(props) {
         )
             return
         if (result.type === 'board') {
-            sortBoard({ workspace, result })
+            sortBoard({
+                workspaceId: workspace._id,
+                workspaceIdFriendly: workspace.id,
+                result
+            })
         } else if (result.type === 'space') {
-            sortSpace({ workspace: workspace, result })
+            sortSpace({
+                workspaceId: workspace._id,
+                workspaceIdFriendly: workspace.id,
+                result
+            })
         }
     }
 
