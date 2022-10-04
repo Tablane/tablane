@@ -61,6 +61,7 @@ function Login() {
                                 id="username"
                                 name="username"
                                 label="Username"
+                                autoComplete="username"
                                 value={username}
                                 onChange={changeUsername}
                                 error={Boolean(errors.username)}
@@ -72,6 +73,7 @@ function Login() {
                                 id="email"
                                 name="email"
                                 label="Email"
+                                autoComplete="email"
                                 value={email}
                                 onChange={changeEmail}
                                 error={Boolean(errors.email)}
@@ -84,6 +86,7 @@ function Login() {
                                 name="password"
                                 label="Password"
                                 type="password"
+                                autoComplete="current-password"
                                 value={password}
                                 onChange={changePassword}
                                 error={Boolean(errors.password)}
