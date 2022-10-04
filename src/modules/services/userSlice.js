@@ -4,7 +4,8 @@ import { toast } from 'react-hot-toast'
 export const userApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchUser: builder.query({
-            query: () => 'user'
+            query: () => 'user',
+            providesTags: ['User']
         }),
         loginUser: builder.mutation({
             query: ({ username, password }) => ({

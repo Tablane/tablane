@@ -15,9 +15,6 @@ import Trash from './settings/Trash'
 import Integrations from './settings/Integrations'
 import Users from './settings/Users'
 import Permissions from './settings/Permissions'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import axios from 'axios'
-import WorkspaceContext from '../modules/context/WorkspaceContext'
 import styles from '../styles/Settings.module.scss'
 import {
     useFetchUserQuery,
@@ -25,40 +22,28 @@ import {
 } from '../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 
-function Settings(props) {
+function Settings() {
     const [logoutUser] = useLogoutUserMutation()
-    const [workspace, setWorkspace] = useState(null)
     const { data: user } = useFetchUserQuery()
     const params = useParams()
+    const {
+        data: workspace,
+        error,
+        isLoading
+    } = useFetchWorkspaceQuery(params.workspace)
 
-    const getData = useCallback(async () => {
-        axios({
-            method: 'GET',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${params.workspace}`
-        })
-            .then(res => {
-                setWorkspace(res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [params.workspace])
-
-    useEffect(() => {
-        getData()
-    }, [getData])
-
-    const providerValue = useMemo(
-        () => ({ workspace, getData }),
-        [workspace, getData]
-    )
-
-    if (!workspace)
+    if (isLoading)
         return (
             <div className="loading">
                 <CircularProgress />
+            </div>
+        )
+    if (error)
+        return (
+            <div className="loading">
+                <p>test error -- -error</p>
             </div>
         )
     return (
@@ -183,34 +168,26 @@ function Settings(props) {
                 </div>
             </div>
 
-            <WorkspaceContext.Provider value={providerValue}>
-                <div className={styles.content}>
-                    <Routes>
-                        <Route path={`/general`} element={<General />} />
-                        <Route path={`/users`} element={<Users />} />
-                        <Route path={`/import`} element={<Import />} />
-                        <Route path={`/apps`} element={<Apps />} />
-                        <Route
-                            path={`/integrations`}
-                            element={<Integrations />}
-                        />
-                        <Route path={`/billing`} element={<Billing />} />
-                        <Route path={`/trash`} element={<Trash />} />
-                        <Route
-                            path={`/permissions`}
-                            element={<Permissions />}
-                        />
-                        <Route
-                            path={`/`}
-                            element={() => (
-                                <Navigate
-                                    to={`/settings/${workspace.id}/general`}
-                                />
-                            )}
-                        />
-                    </Routes>
-                </div>
-            </WorkspaceContext.Provider>
+            <div className={styles.content}>
+                <Routes>
+                    <Route path={`/general`} element={<General />} />
+                    <Route path={`/users`} element={<Users />} />
+                    <Route path={`/import`} element={<Import />} />
+                    <Route path={`/apps`} element={<Apps />} />
+                    <Route path={`/integrations`} element={<Integrations />} />
+                    <Route path={`/billing`} element={<Billing />} />
+                    <Route path={`/trash`} element={<Trash />} />
+                    <Route path={`/permissions`} element={<Permissions />} />
+                    <Route
+                        path={`/`}
+                        element={() => (
+                            <Navigate
+                                to={`/settings/${workspace.id}/general`}
+                            />
+                        )}
+                    />
+                </Routes>
+            </div>
         </div>
     )
 }

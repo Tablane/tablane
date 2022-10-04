@@ -1,14 +1,18 @@
 import { Popover } from '@mui/material'
 import { toast } from 'react-hot-toast'
-import axios from 'axios'
-import { useContext } from 'react'
-import WorkspaceContext from '../../../modules/context/WorkspaceContext'
 import styles from '../../../styles/UserPopup.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useParams } from 'react-router-dom'
+import {
+    useFetchWorkspaceQuery,
+    useRemoveUserMutation
+} from '../../../modules/services/workspaceSlice'
 
 function UserPopup(props) {
-    const { workspace, getData } = useContext(WorkspaceContext)
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const [removeUser] = useRemoveUserMutation()
 
     const copyId = () => {
         navigator.clipboard.writeText(props.member.user._id)
@@ -16,21 +20,8 @@ function UserPopup(props) {
         props.close()
     }
 
-    const removeUser = () => {
-        axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}/${props.member.user._id}`
-        })
-            .then(res => {
-                toast('User removed')
-                getData()
-            })
-            .catch(err => {
-                if (err.response && err.response.data.error) {
-                    toast(err.response.data.error)
-                }
-            })
+    const handleRemoveUser = () => {
+        removeUser({ workspace, userId: props.member.user._id })
         props.close()
     }
 
@@ -59,7 +50,7 @@ function UserPopup(props) {
                                 <p>Copy Member ID</p>
                             </div>
                             {props.member.role !== 'owner' && (
-                                <div onClick={removeUser}>
+                                <div onClick={handleRemoveUser}>
                                     <div>
                                         <FontAwesomeIcon
                                             icon={solid('times')}

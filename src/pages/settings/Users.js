@@ -1,52 +1,38 @@
 import React, { Fragment, useState } from 'react'
 import useInputState from '../../modules/hooks/useInputState'
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
 import usePopoverState from '../../modules/hooks/usePopoverState'
 import UserPopup from './users/UserPopup'
-import { useContext } from 'react'
-import WorkspaceContext from '../../modules/context/WorkspaceContext'
 import RolePopup from './users/RolePopup'
 import styles from '../../styles/Users.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import {
+    useAddUserMutation,
+    useFetchWorkspaceQuery
+} from '../../modules/services/workspaceSlice'
+import { useParams } from 'react-router-dom'
 
-function Users(props) {
-    const { workspace, getData } = useContext(WorkspaceContext)
+function Users() {
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [email, changeEmail, resetEmail] = useInputState('')
     const [role, setRole] = useState('Member')
     const [anchor, open, close] = usePopoverState(false)
     const [addRoleAnchor, addRoleOpen, addRoleClose] = usePopoverState(false)
     const [roleAnchor, roleOpen, roleClose] = usePopoverState(false)
+    const [addUser] = useAddUserMutation()
 
-    const addUser = e => {
+    const handleAddUser = async e => {
         e.preventDefault()
         resetEmail()
-        axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                email: email,
-                role: role
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/user/${workspace._id}`
-        })
-            .then(res => {
-                toast('User invited')
-                getData()
-            })
-            .catch(err => {
-                if (err.response && err.response.data.error) {
-                    toast(err.response.data.error)
-                }
-            })
+        await addUser({ workspace, email, role })
     }
 
     return (
         <div className={styles.container}>
             <p className={styles.title}>Manage People</p>
             <div className={styles.invite}>
-                <form onSubmit={addUser}>
+                <form onSubmit={handleAddUser}>
                     <input
                         placeholder="Invite by Email"
                         value={email}

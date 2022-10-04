@@ -58,6 +58,7 @@ export const workspaceApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchWorkspace: builder.query({
             query: workspaceId => `workspace/${workspaceId}`,
+            providesTags: workspace => [workspace._id],
             async onCacheEntryAdded(
                 workspaceId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
@@ -327,6 +328,84 @@ export const workspaceApi = api.injectEndpoints({
                     patchResult.undo()
                 }
             }
+        }),
+        // workspace settings
+        deleteWorkspace: builder.mutation({
+            query: ({ workspace }) => ({
+                url: `workspace/${workspace._id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['User'],
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                }
+            }
+        }),
+        renameWorkspace: builder.mutation({
+            query: ({ workspace, name }) => ({
+                url: `workspace/${workspace._id}`,
+                method: 'PATCH',
+                body: { name }
+            }),
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                }
+            }
+        }),
+        addUser: builder.mutation({
+            query: ({ workspace, email, role }) => ({
+                url: `workspace/user/${workspace._id}`,
+                method: 'POST',
+                body: { email, role }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.workspace._id],
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                    toast('User invited')
+                } catch ({ error }) {
+                    if (error?.data?.message) toast(error.data.message)
+                    else toast('Something went wrong')
+                }
+            }
+        }),
+        removeUser: builder.mutation({
+            query: ({ workspace, userId }) => ({
+                url: `workspace/user/${workspace._id}/${userId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: (result, error, arg) => [arg.workspace._id],
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                    toast('User removed')
+                } catch ({ error }) {
+                    if (error?.data?.message) toast(error.data.message)
+                    else toast('Something went wrong')
+                }
+            }
+        }),
+        changeRole: builder.mutation({
+            query: ({ workspace, userId, role }) => ({
+                url: `workspace/user/${workspace._id}/${userId}`,
+                method: 'PATCH',
+                body: { role }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.workspace._id],
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch ({ error }) {
+                    if (error?.data?.message) toast(error.data.message)
+                    else toast('Something went wrong')
+                }
+            }
         })
     })
 })
@@ -340,5 +419,10 @@ export const {
     useAddSpaceMutation,
     useEditSpaceNameMutation,
     useDeleteSpaceMutation,
-    useSortSpaceMutation
+    useSortSpaceMutation,
+    useDeleteWorkspaceMutation,
+    useRenameWorkspaceMutation,
+    useAddUserMutation,
+    useRemoveUserMutation,
+    useChangeRoleMutation
 } = workspaceApi

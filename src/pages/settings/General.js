@@ -9,54 +9,33 @@ import {
 import Button from '@mui/material/Button'
 import useInputState from '../../modules/hooks/useInputState'
 import { toast } from 'react-hot-toast'
-import { useContext, useState } from 'react'
-import axios from 'axios'
-import WorkspaceContext from '../../modules/context/WorkspaceContext'
 import useToggleState from '../../modules/hooks/useToggleState'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styles from '../../styles/General.module.scss'
+import {
+    useDeleteWorkspaceMutation,
+    useFetchWorkspaceQuery,
+    useRenameWorkspaceMutation
+} from '../../modules/services/workspaceSlice'
 
-function General(props) {
-    const { workspace, getData } = useContext(WorkspaceContext)
+function General() {
     const [deleting, setDeleting] = useToggleState(false)
+    const navigate = useNavigate()
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [name, changeName] = useInputState(workspace.name)
     const nameEdited = name !== workspace.name
-    const [saving, setSaving] = useState(false)
-    const navigate = useNavigate()
+    const [deleteWorkspace, { isLoading: isDeleting }] =
+        useDeleteWorkspaceMutation()
+    const [renameWorkspace, { isLoading }] = useRenameWorkspaceMutation()
 
-    const handleDelete = () => {
-        axios({
-            method: 'DELETE',
-            withCredentials: true,
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
-        })
-            .then(() => {
-                toast('Workspace successfully deleted')
-                navigate('/')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+    const handleDelete = async () => {
+        await deleteWorkspace({ workspace })
+        navigate('/')
     }
 
     const handleRename = () => {
-        setSaving(true)
-        axios({
-            method: 'PATCH',
-            withCredentials: true,
-            data: {
-                name: name
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/${workspace._id}`
-        })
-            .then(res => {
-                getData()
-                setSaving(false)
-            })
-            .catch(err => {
-                setSaving(false)
-                console.log(err)
-            })
+        renameWorkspace({ workspace, name })
     }
 
     return (
@@ -89,12 +68,12 @@ function General(props) {
                         <Button
                             variant="outlined"
                             color="primary"
-                            disabled={!nameEdited}
+                            disabled={!nameEdited || isLoading}
                             onClick={handleRename}
                         >
                             {nameEdited ? 'Save' : 'Saved'}
                         </Button>
-                        {saving && (
+                        {isLoading && (
                             <CircularProgress
                                 size={24}
                                 className="buttonProgress"
@@ -122,13 +101,22 @@ function General(props) {
                     <Button onClick={setDeleting} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        onClick={handleDelete}
-                        color="primary"
-                        variant="contained"
-                    >
-                        Delete
-                    </Button>
+                    <div style={{ position: 'relative' }}>
+                        <Button
+                            onClick={handleDelete}
+                            color="primary"
+                            variant="contained"
+                            disabled={isDeleting}
+                        >
+                            Delete
+                        </Button>
+                        {isDeleting && (
+                            <CircularProgress
+                                size={24}
+                                className="buttonProgress"
+                            />
+                        )}
+                    </div>
                 </DialogActions>
             </Dialog>
         </>
