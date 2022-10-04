@@ -1,7 +1,7 @@
 import { api } from './api'
 import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
-import { io } from 'socket.io-client'
+import socket from '../../socket/socket'
 
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
@@ -168,9 +168,6 @@ export const boardApi = api.injectEndpoints({
                 boardId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
             ) {
-                const socket = io(process.env.REACT_APP_BACKEND_HOST, {
-                    withCredentials: true
-                })
                 try {
                     await cacheDataLoaded
                     socket.emit('subscribe', boardId)
@@ -263,7 +260,7 @@ export const boardApi = api.injectEndpoints({
                     })
                 } catch {}
                 await cacheEntryRemoved
-                socket.disconnect()
+                socket.emit('unsubscribe', boardId)
             }
         }),
         setGroupBy: builder.mutation({
