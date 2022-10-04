@@ -22,7 +22,9 @@ function General() {
     const [deleting, setDeleting] = useToggleState(false)
     const navigate = useNavigate()
     const params = useParams()
-    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const { data: workspace, isFetching } = useFetchWorkspaceQuery(
+        params.workspace
+    )
     const [name, changeName] = useInputState(workspace.name)
     const nameEdited = name !== workspace.name
     const [deleteWorkspace, { isLoading: isDeleting }] =
@@ -68,12 +70,12 @@ function General() {
                         <Button
                             variant="outlined"
                             color="primary"
-                            disabled={!nameEdited || isLoading}
+                            disabled={!nameEdited || isLoading || isFetching}
                             onClick={handleRename}
                         >
                             {nameEdited ? 'Save' : 'Saved'}
                         </Button>
-                        {isLoading && (
+                        {(isLoading || isFetching) && (
                             <CircularProgress
                                 size={24}
                                 className="buttonProgress"

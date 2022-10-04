@@ -350,6 +350,7 @@ export const workspaceApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: { name }
             }),
+            invalidatesTags: (result, error, arg) => [arg.workspace._id],
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     await queryFulfilled
