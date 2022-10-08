@@ -243,11 +243,18 @@ function Task(props) {
                             <div>
                                 <p className="taskName">{props.task.name}</p>
                                 <QuickActionsToolbar
+                                    taskGroupId={props.taskGroupId}
+                                    groupedTasks={props.groupedTasks}
+                                    board={props.board}
+                                    task={props.task}
                                     handleTaskEdit={handleTaskEdit}
                                 />
                             </div>
                         )}
-                        <div onClick={e => e.stopPropagation()}>
+                        <div
+                            onClick={e => e.stopPropagation()}
+                            className="taskAttr"
+                        >
                             {props.board.attributes.map(attribute => {
                                 if (attribute.type === 'status')
                                     return getStatusLabel(attribute)
@@ -267,10 +274,7 @@ function Task(props) {
                                 )
                             })}
 
-                            <div
-                                className="moreButton"
-                                onClick={handleMoreClick}
-                            >
+                            <div onClick={handleMoreClick}>
                                 <FontAwesomeIcon icon={solid('ellipsis-h')} />
                             </div>
                         </div>
