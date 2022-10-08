@@ -15,6 +15,7 @@ import {
 } from '../../../../modules/services/boardSlice'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import QuickActionsToolbar from './QuickActionsToolbar'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -239,7 +240,12 @@ function Task(props) {
                                 />
                             </form>
                         ) : (
-                            <p>{props.task.name}</p>
+                            <div>
+                                <p className="taskName">{props.task.name}</p>
+                                <QuickActionsToolbar
+                                    handleTaskEdit={handleTaskEdit}
+                                />
+                            </div>
                         )}
                         <div onClick={e => e.stopPropagation()}>
                             {props.board.attributes.map(attribute => {
@@ -261,7 +267,10 @@ function Task(props) {
                                 )
                             })}
 
-                            <div onClick={handleMoreClick}>
+                            <div
+                                className="moreButton"
+                                onClick={handleMoreClick}
+                            >
                                 <FontAwesomeIcon icon={solid('ellipsis-h')} />
                             </div>
                         </div>
