@@ -15,6 +15,7 @@ import {
 } from '../../../../modules/services/boardSlice'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import QuickActionsToolbar from './QuickActionsToolbar'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -239,9 +240,21 @@ function Task(props) {
                                 />
                             </form>
                         ) : (
-                            <p>{props.task.name}</p>
+                            <div>
+                                <p className="taskName">{props.task.name}</p>
+                                <QuickActionsToolbar
+                                    taskGroupId={props.taskGroupId}
+                                    groupedTasks={props.groupedTasks}
+                                    board={props.board}
+                                    task={props.task}
+                                    handleTaskEdit={handleTaskEdit}
+                                />
+                            </div>
                         )}
-                        <div onClick={e => e.stopPropagation()}>
+                        <div
+                            onClick={e => e.stopPropagation()}
+                            className="taskAttr"
+                        >
                             {props.board.attributes.map(attribute => {
                                 if (attribute.type === 'status')
                                     return getStatusLabel(attribute)

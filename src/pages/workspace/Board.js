@@ -20,7 +20,7 @@ function Board(props) {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
 
-    const [groupedTasks, setGroupedTasks] = useState(false)
+    const [groupedTasks, setGroupedTasks] = useState([])
 
     const findBoardId = useCallback(() => {
         const space = params.space.replaceAll('-', ' ')
@@ -71,6 +71,7 @@ function Board(props) {
 
         return labels.map(label => (
             <TaskGroup
+                groupedTasks={labels}
                 board={board}
                 color={label.color}
                 key={label._id}

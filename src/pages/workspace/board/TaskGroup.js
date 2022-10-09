@@ -126,6 +126,7 @@ function TaskGroup(props) {
                         {props.tasks.map((task, i) => {
                             return (
                                 <Task
+                                    groupedTasks={props.groupedTasks}
                                     board={props.board}
                                     key={task._id}
                                     task={task}

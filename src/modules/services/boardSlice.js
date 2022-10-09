@@ -399,8 +399,7 @@ export const boardApi = api.injectEndpoints({
                                 board,
                                 result,
                                 destinationIndex,
-                                sourceIndex,
-                                boardId
+                                sourceIndex
                             })
                     )
                 )

@@ -29,7 +29,7 @@
   color: #4169e1;
 }
 
-.Task > p {
+.taskName {
   margin: 0 0 0 15px;
 }
 
@@ -59,7 +59,7 @@
   align-items: center;
 }
 
-.Task > div > div {
+.Task > div.taskAttr > div {
   cursor: pointer;
   border-right: 1px solid white;
   background-color: rgb(196, 196, 196);
@@ -109,20 +109,24 @@
   padding: 0 3px;
 }
 
-.Task > div > div:last-of-type {
+.Task:hover .quickActionItem {
+  opacity: 1;
+}
+
+.Task > div.taskAttr > div:last-of-type {
   width: 40px;
 }
 
-.Task > div > div:last-of-type svg {
+.Task > div.taskAttr > div:last-of-type svg {
   color: rgba(0, 0, 0, 0.6);
   display: none;
 }
 
-.Task > div > div:last-of-type:hover svg {
+.Task > div.taskAttr > div:last-of-type:hover svg {
   display: inline;
 }
 
-.Task > div > div:last-of-type {
+.Task > div.taskAttr > div:last-of-type {
   border-right: none;
 }
 
