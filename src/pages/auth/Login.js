@@ -12,7 +12,7 @@ function Login() {
     const [loginUser, { isLoading }] = useLoginUserMutation()
     const [validate, setValidate] = useState(false)
 
-    const [username, changeUsername] = useInputState()
+    const [email, changeEmail] = useInputState()
     const [password, changePassword] = useInputState()
 
     const [errors, setErrors] = useState({})
@@ -20,9 +20,9 @@ function Login() {
     const validateInput = useCallback(() => {
         let errors = {}
 
-        if (username === '') errors.username = 'This field is required'
-        else if (username.length < 3)
-            errors.username = 'Username must be longer than 3 characters'
+        if (email === '') errors.email = 'This field is required'
+        else if (email.length < 3)
+            errors.email = 'Username must be longer than 3 characters'
 
         if (password === '') errors.password = 'This field is required'
         else if (password.length < 3)
@@ -30,17 +30,17 @@ function Login() {
 
         setErrors(errors)
         return Object.keys(errors).length === 0
-    }, [username, password])
+    }, [email, password])
 
     useEffect(() => {
         if (validate) validateInput()
-    }, [username, password, validate, validateInput])
+    }, [email, password, validate, validateInput])
 
     const handleSubmit = e => {
         e.preventDefault()
         setValidate(true)
         if (validateInput()) {
-            loginUser({ username, password })
+            loginUser({ email, password })
         }
     }
 
@@ -52,14 +52,14 @@ function Login() {
                         <div className="inputs">
                             <TextField
                                 variant="standard"
-                                id="username"
-                                name="username"
-                                label="Username"
-                                autoComplete="username"
-                                value={username}
-                                onChange={changeUsername}
-                                error={Boolean(errors.username)}
-                                helperText={errors.username}
+                                id="email"
+                                name="email"
+                                label="email"
+                                autoComplete="email"
+                                value={email}
+                                onChange={changeEmail}
+                                error={Boolean(errors.email)}
+                                helperText={errors.email}
                                 required
                             />
                             <TextField

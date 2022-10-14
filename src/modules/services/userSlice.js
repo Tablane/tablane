@@ -8,10 +8,10 @@ export const userApi = api.injectEndpoints({
             providesTags: ['User']
         }),
         loginUser: builder.mutation({
-            query: ({ username, password }) => ({
+            query: ({ email, password }) => ({
                 url: 'user/login',
                 method: 'POST',
-                body: { username, password }
+                body: { email, password }
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
@@ -84,6 +84,10 @@ export const userApi = api.injectEndpoints({
                     console.log(e)
                 }
             }
+        }),
+        fetchWorkspaces: builder.query({
+            query: () => 'user/workspaces',
+            providesTags: ['User']
         })
     })
 })
@@ -92,5 +96,6 @@ export const {
     useFetchUserQuery,
     useLoginUserMutation,
     useRegisterUserMutation,
-    useLogoutUserMutation
+    useLogoutUserMutation,
+    useFetchWorkspacesQuery
 } = userApi

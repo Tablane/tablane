@@ -1,4 +1,5 @@
 import {
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -14,11 +15,24 @@ import useToggleState from '../modules/hooks/useToggleState'
 import styles from '../styles/WorkspaceSelector.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useFetchWorkspacesQuery } from '../modules/services/userSlice'
+import ErrorPage from '../utils/ErrorPage'
 
-function WorkspaceSelector(props) {
+function WorkspaceSelector() {
     const navigate = useNavigate()
     const [name, changeName, resetName] = useInputState()
     const [dialogOpen, toggleDialogOpen] = useToggleState(false)
+    const { data: workspaces, isLoading, error } = useFetchWorkspacesQuery()
+
+    if (isLoading)
+        return (
+            <div className="loading">
+                <CircularProgress />
+            </div>
+        )
+    if (error) {
+        return <ErrorPage error={error} />
+    }
 
     const handleCreate = () => {
         axios({
@@ -45,7 +59,7 @@ function WorkspaceSelector(props) {
             <div className={styles.container}>
                 <p className={styles.title}>My Workspaces</p>
                 <div className={styles.workspaces}>
-                    {props.workspaces.map(x => (
+                    {workspaces.map(x => (
                         <Link to={`/${x.id}`} key={x._id}>
                             <div className={styles.workspace}>
                                 <div className={styles.avatar}>
