@@ -17,7 +17,7 @@ import TotpCode from './login/TotpCode'
 
 function Login() {
     const [loginUser, { isLoading }] = useLoginUserMutation()
-    const [step, setStep] = useState('totp')
+    const [step, setStep] = useState('email')
     const form = useForm({
         initialValues: {
             email: '',
@@ -43,10 +43,16 @@ function Login() {
             const { data } = await loginUser({ ...form.values })
             setStep(data.nextStep)
         } else if (step === 'password' && !form.isValid().hasErrors) {
-            loginUser({ ...form.values })
-        } else if (step === 'totp') {
+            const { data } = await loginUser({ ...form.values })
+            if (data.nextStep) setStep(data.nextStep)
+        } else if (step === 'mfa') {
             loginUser({ ...form.values, ...values })
         }
+    }
+
+    const handleChange = e => {
+        form.getInputProps('password').onChange(e)
+        setStep('password')
     }
 
     const googleIcon = (
@@ -91,13 +97,14 @@ function Login() {
         </svg>
     )
 
-    return (
-        <TotpCode
-            form={form}
-            isLoading={isLoading}
-            handleSubmit={handleSubmit}
-        />
-    )
+    if (step === 'mfa')
+        return (
+            <TotpCode
+                form={form}
+                isLoading={isLoading}
+                handleSubmit={handleSubmit}
+            />
+        )
     return (
         <div className={styles.root}>
             <div className={styles.container}>
@@ -150,6 +157,7 @@ function Login() {
                         {...form.getInputProps('password')}
                         placeholder="Enter your password"
                         id="password"
+                        onChange={handleChange}
                         autoComplete="password"
                         style={
                             step === 'email'
