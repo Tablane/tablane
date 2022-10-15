@@ -15,14 +15,14 @@ import useToggleState from '../modules/hooks/useToggleState'
 import styles from '../styles/WorkspaceSelector.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useFetchWorkspacesQuery } from '../modules/services/userSlice'
 import ErrorPage from '../utils/ErrorPage'
+import { useFetchUserQuery } from '../modules/services/userSlice'
 
 function WorkspaceSelector() {
     const navigate = useNavigate()
     const [name, changeName, resetName] = useInputState()
     const [dialogOpen, toggleDialogOpen] = useToggleState(false)
-    const { data: workspaces, isLoading, error } = useFetchWorkspacesQuery()
+    const { data: user, isLoading, error } = useFetchUserQuery()
 
     if (isLoading)
         return (
@@ -59,7 +59,7 @@ function WorkspaceSelector() {
             <div className={styles.container}>
                 <p className={styles.title}>My Workspaces</p>
                 <div className={styles.workspaces}>
-                    {workspaces.map(x => (
+                    {user.workspaces.map(x => (
                         <Link to={`/${x.id}`} key={x._id}>
                             <div className={styles.workspace}>
                                 <div className={styles.avatar}>

@@ -1,22 +1,32 @@
 import './App.css'
 import Workspace from './pages/Workspace'
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Outlet, Route, Routes, Navigate } from 'react-router-dom'
 import WorkspaceSelector from './pages/WorkspaceSelector'
 import SharedBoard from './pages/SharedBoard'
 import Settings from './pages/Settings'
 import PrivateRoutes from './utils/PrivateRoute'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
+import { useFetchUserQuery } from './modules/services/userSlice'
+import { CircularProgress } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { selectCurrentToken } from './modules/services/authReducer'
 
 function App() {
+    const token = useSelector(selectCurrentToken)
+    const { data: user, isLoading } = useFetchUserQuery()
+
+    if (isLoading)
+        return (
+            <div className="loading">
+                <CircularProgress />
+            </div>
+        )
+
     return (
         <Routes>
             <Route path="/share/:boardId" element={<SharedBoard />} />
-            <Route
-                element={
-                    'user'?.username === 'x' ? <Navigate to="/" /> : <Outlet />
-                }
-            >
+            <Route element={token ? <Navigate to="/" /> : <Outlet />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
             </Route>

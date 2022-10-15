@@ -1,5 +1,6 @@
 import { api } from './api'
 import { toast } from 'react-hot-toast'
+import { setCurrentToken } from './authReducer'
 
 export const userApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -16,20 +17,21 @@ export const userApi = api.injectEndpoints({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled
-                    toast('Successfully logged in')
-                    const patchResult = dispatch(
-                        userApi.util.updateQueryData(
-                            'fetchUser',
-                            undefined,
-                            user => {
-                                return { ...data.user }
-                            }
+                    if (data?.success) {
+                        localStorage.setItem('access_token', data.accessToken)
+                        dispatch(setCurrentToken(data.accessToken))
+                        dispatch(
+                            userApi.util.updateQueryData(
+                                'fetchUser',
+                                undefined,
+                                user => data.user
+                            )
                         )
-                    )
+                    }
                 } catch (error) {
                     if (error?.error?.data?.message)
                         toast(error.error.data.message)
-                    else if (error.error.status === 'FETCH_ERROR') {
+                    else if (error?.error?.status === 'FETCH_ERROR') {
                         toast('Cannot connect to server')
                     }
                 }
@@ -70,8 +72,8 @@ export const userApi = api.injectEndpoints({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled
-                    toast('Successfully logged out')
-                    const patchResult = dispatch(
+                    localStorage.removeItem('access_token')
+                    dispatch(
                         userApi.util.updateQueryData(
                             'fetchUser',
                             undefined,
@@ -84,10 +86,6 @@ export const userApi = api.injectEndpoints({
                     console.log(e)
                 }
             }
-        }),
-        fetchWorkspaces: builder.query({
-            query: () => 'user/workspaces',
-            providesTags: ['User']
         })
     })
 })
@@ -96,6 +94,5 @@ export const {
     useFetchUserQuery,
     useLoginUserMutation,
     useRegisterUserMutation,
-    useLogoutUserMutation,
-    useFetchWorkspacesQuery
+    useLogoutUserMutation
 } = userApi

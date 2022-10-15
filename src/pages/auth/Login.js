@@ -10,13 +10,13 @@ import {
 } from '@mantine/core'
 import { useState } from 'react'
 import { useForm } from '@mantine/form'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
+import { useLoginUserMutation } from '../../modules/services/userSlice'
 
-function TotpCode() {
-    const [step, setStep] = useState(1)
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
+function Login() {
+    const [loginUser, { isLoading }] = useLoginUserMutation()
+    const [step, setStep] = useState('email')
     const form = useForm({
         initialValues: {
             email: '',
@@ -24,7 +24,7 @@ function TotpCode() {
         },
         validate: {
             email: value =>
-                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                     value
                 )
                     ? null
@@ -35,17 +35,13 @@ function TotpCode() {
         validateInputOnBlur: true
     })
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        if (step === 1 && !form.validateField('email').hasError) {
-            setLoading(true)
-            setTimeout(() => setStep(2), 5000)
-            console.log('checking ', form.values.email)
-        } else if (step === 2) {
-            console.log('checking ', form.validate())
-            if (form.isValid()) {
-                console.log('sending...')
-            }
+        if (step === 'email' && !form.validateField('email').hasError) {
+            const { data } = await loginUser({ ...form.values })
+            setStep(data.nextStep)
+        } else if (step === 'password' && !form.isValid().hasErrors) {
+            loginUser({ ...form.values })
         }
     }
 
@@ -107,7 +103,7 @@ function TotpCode() {
                         mt={25}
                         mb={5}
                         style={
-                            step === 1
+                            step === 'email'
                                 ? {
                                       position: 'absolute',
                                       opacity: 0
@@ -145,7 +141,7 @@ function TotpCode() {
                         id="password"
                         autoComplete="password"
                         style={
-                            step === 1
+                            step === 'email'
                                 ? {
                                       position: 'absolute',
                                       opacity: 0
@@ -153,19 +149,29 @@ function TotpCode() {
                                 : {}
                         }
                     />
-                    <div style={{ position: 'relative' }}>
+                    <div
+                        style={{
+                            position: 'relative'
+                        }}
+                    >
                         <Button
                             mt={20}
                             fullWidth
                             type="submit"
-                            disabled={loading}
+                            disabled={isLoading}
                         >
                             Continue
                         </Button>
-                        {loading && (
+                        {isLoading && (
                             <CircularProgress
                                 size={24}
-                                className="buttonProgress"
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginTop: '-12px',
+                                    marginLeft: '-12px'
+                                }}
                             />
                         )}
                     </div>
@@ -206,17 +212,13 @@ function TotpCode() {
             <div className={styles.registerText}>
                 <span className={styles.text}>
                     <span>Don't have an account? </span>
-                    <a
-                        className={styles.link}
-                        href=""
-                        onClick={() => navigate('/register')}
-                    >
+                    <Link className={styles.link} to="/register">
                         Sign up
-                    </a>
+                    </Link>
                 </span>
             </div>
         </div>
     )
 }
 
-export default TotpCode
+export default Login
