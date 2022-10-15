@@ -9,10 +9,10 @@ export const userApi = api.injectEndpoints({
             providesTags: ['User']
         }),
         loginUser: builder.mutation({
-            query: ({ email, password }) => ({
+            query: args => ({
                 url: 'user/login',
                 method: 'POST',
-                body: { email, password }
+                body: { ...args }
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {

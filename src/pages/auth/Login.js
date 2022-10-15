@@ -13,14 +13,16 @@ import { useForm } from '@mantine/form'
 import { Link } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import { useLoginUserMutation } from '../../modules/services/userSlice'
+import TotpCode from './login/TotpCode'
 
 function Login() {
     const [loginUser, { isLoading }] = useLoginUserMutation()
-    const [step, setStep] = useState('email')
+    const [step, setStep] = useState('totp')
     const form = useForm({
         initialValues: {
             email: '',
-            password: ''
+            password: '',
+            totp: ''
         },
         validate: {
             email: value =>
@@ -35,13 +37,15 @@ function Login() {
         validateInputOnBlur: true
     })
 
-    const handleSubmit = async e => {
-        e.preventDefault()
+    const handleSubmit = async (e, values) => {
+        e?.preventDefault()
         if (step === 'email' && !form.validateField('email').hasError) {
             const { data } = await loginUser({ ...form.values })
             setStep(data.nextStep)
         } else if (step === 'password' && !form.isValid().hasErrors) {
             loginUser({ ...form.values })
+        } else if (step === 'totp') {
+            loginUser({ ...form.values, ...values })
         }
     }
 
@@ -87,6 +91,13 @@ function Login() {
         </svg>
     )
 
+    return (
+        <TotpCode
+            form={form}
+            isLoading={isLoading}
+            handleSubmit={handleSubmit}
+        />
+    )
     return (
         <div className={styles.root}>
             <div className={styles.container}>

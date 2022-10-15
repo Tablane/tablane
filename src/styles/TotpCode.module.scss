@@ -1,0 +1,83 @@
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container {
+  margin-top: 80px;
+  width: 450px;
+  border: 1px solid #d6d6d7;
+  border-radius: 6px;
+  padding: 32px;
+  box-sizing: border-box;
+
+  .header {
+    font-weight: 500;
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 0;
+    color: #292932;
+    width: 100%;
+    text-align: center;
+  }
+
+  .form {
+    margin-top: 12px;
+
+    .label {
+      margin-bottom: 12px;
+      color: rgb(117 117 128/1);
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .totpInput {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      & > input {
+        background-clip: padding-box;
+        background-color: #ffffff;
+        border: 1px solid #d6d6d6;
+        border-radius: 4px;
+        color: #494949;
+        font-size: 24px;
+        height: 45px;
+        margin-right: 12px;
+        padding: 0;
+        text-align: center;
+        text-transform: uppercase;
+        width: 45px;
+
+        &:focus {
+          appearance: none;
+          box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+          outline: 0;
+        }
+      }
+    }
+  }
+}
+
+.registerText {
+  margin-top: 16px;
+}
+
+.text {
+  margin-top: 24px;
+  font-size: 14px;
+  text-align: center;
+  color: #757580;
+}
+
+.link {
+  color: blue;
+}

@@ -30,6 +30,7 @@
     "react-animate-height": "^3.0.4",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
+    "react-pin-field": "^3.0.16",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
