@@ -1,4 +1,5 @@
 import { Button } from '@mantine/core'
+import { startAuthentication, startRegistration } from '@simplewebauthn/browser'
 
 function AppleLogin() {
     const appleIcon = (
@@ -16,19 +17,101 @@ function AppleLogin() {
         </svg>
     )
 
-    const handleClick = () => {}
+    const handleClick = async () => {
+        const backend = process.env.REACT_APP_BACKEND_HOST + '/api/user'
+        const resp = await fetch(`${backend}/generateRegistrationOptions`)
+        let attResp
+        try {
+            // Pass the options to the authenticator and wait for a response
+            attResp = await startRegistration(await resp.json())
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+
+        // POST the response to the endpoint that calls
+        // @simplewebauthn/server -> verifyRegistrationResponse()
+        const verificationResp = await fetch(`${backend}/verifyRegistration`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(attResp)
+        })
+
+        // Wait for the results of verification
+        const verificationJSON = await verificationResp.json()
+
+        // Show UI appropriate for the `verified` status
+        if (verificationJSON && verificationJSON.verified) {
+            console.log('success')
+        } else {
+            console.log(JSON.stringify(verificationJSON))
+        }
+    }
+
+    const handleClick2 = async () => {
+        const backend = process.env.REACT_APP_BACKEND_HOST + '/api/user'
+        // GET authentication options from the endpoint that calls
+        // @simplewebauthn/server -> generateAuthenticationOptions()
+        const resp = await fetch(`${backend}/generateAuthenticationOptions`)
+
+        let asseResp
+        try {
+            // Pass the options to the authenticator and wait for a response
+            asseResp = await startAuthentication(await resp.json())
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+
+        // POST the response to the endpoint that calls
+        // @simplewebauthn/server -> verifyAuthenticationResponse()
+        const verificationResp = await fetch(
+            `${backend}/verifyAuthentication`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(asseResp)
+            }
+        )
+
+        // Wait for the results of verification
+        const verificationJSON = await verificationResp.json()
+
+        // Show UI appropriate for the `verified` status
+        if (verificationJSON && verificationJSON.verified) {
+            console.log('success')
+        } else {
+            console.log(verificationJSON)
+        }
+    }
 
     return (
-        <Button
-            leftIcon={appleIcon}
-            variant="default"
-            color="gray"
-            mt={12}
-            fullWidth
-            onClick={handleClick}
-        >
-            Sign in with Apple
-        </Button>
+        <>
+            <Button
+                leftIcon={appleIcon}
+                variant="default"
+                color="gray"
+                mt={12}
+                fullWidth
+                onClick={handleClick}
+            >
+                Sign up with Apple
+            </Button>
+            <Button
+                leftIcon={appleIcon}
+                variant="default"
+                color="gray"
+                mt={12}
+                fullWidth
+                onClick={handleClick2}
+            >
+                Sign in with Apple
+            </Button>
+        </>
     )
 }
 

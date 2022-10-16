@@ -16,6 +16,7 @@
     "@mantine/hooks": "^5.5.5",
     "@mui/material": "^5.10.9",
     "@reduxjs/toolkit": "^1.8.6",
+    "@simplewebauthn/browser": "^6.3.0-alpha.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

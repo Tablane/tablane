@@ -157,7 +157,7 @@ function Login() {
                 </form>
                 <Divider my={20} label="OR" labelPosition="center" />
                 <GoogleLogin />
-                {/*<AppleLogin />*/}
+                <AppleLogin />
                 <div className={styles.text}>
                     <p style={{ marginBottom: '0' }}>
                         By signing in, you agree to our
