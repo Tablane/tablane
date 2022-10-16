@@ -11,6 +11,7 @@ import { useFetchUserQuery } from './modules/services/userSlice'
 import { CircularProgress } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from './modules/services/authReducer'
+import ErrorPage from './utils/ErrorPage'
 
 function App() {
     const token = useSelector(selectCurrentToken)
@@ -26,6 +27,7 @@ function App() {
     return (
         <Routes>
             <Route path="/share/:boardId" element={<SharedBoard />} />
+            <Route path="/error" element={<ErrorPage />} />
             <Route element={token ? <Navigate to="/" /> : <Outlet />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

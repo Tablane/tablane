@@ -1,6 +1,9 @@
 import styles from '../styles/ErrorPage.module.scss'
+import { useSearchParams } from 'react-router-dom'
 
-function ErrorPage({ error }) {
+function ErrorPage(props) {
+    const [searchParams] = useSearchParams()
+    const error = props.error || { message: searchParams.get('error') } || {}
     return (
         <div className={styles.container}>
             <p className={styles.title}>Something went wrong</p>
