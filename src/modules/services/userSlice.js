@@ -71,8 +71,9 @@ export const userApi = api.injectEndpoints({
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    const { data } = await queryFulfilled
+                    await queryFulfilled
                     localStorage.removeItem('access_token')
+                    dispatch(setCurrentToken(null))
                     dispatch(
                         userApi.util.updateQueryData(
                             'fetchUser',
