@@ -1,22 +1,53 @@
 import { Button, Divider } from '@mantine/core'
-import { CircularProgress } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { startAuthentication } from '@simplewebauthn/browser'
 import styles from '../../../styles/TotpCode.module.scss'
-import { PinField } from 'react-pin-field'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { Link } from 'react-router-dom'
+import { useLoginUserMutation } from '../../../modules/services/userSlice'
+import { toast } from 'react-hot-toast'
+import { CircularProgress } from '@mui/material'
 
-function TotpCode({ form, handleSubmit, isLoading }) {
-    const handleChange = value => {
-        form.setFieldValue('totp', value)
-    }
+function SecurityKeyLogin({ form }) {
+    const [loginUser, { isLoading }] = useLoginUserMutation()
 
-    const handleComplete = totp => {
-        handleSubmit(null, { totp })
-    }
+    const phoneIcon = (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="feather feather-smartphone"
+        >
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+    )
 
-    const handleSwitchType = type => {
-        form.setFieldValue('type', type)
+    const handleSubmit = async e => {
+        e.preventDefault()
+        form.setFieldValue('request_security_key_challenge', true)
+        const { options } = await loginUser({
+            ...form.values,
+            request_security_key_challenge: true
+        }).unwrap()
+
+        let authenticatorResponse
+        try {
+            authenticatorResponse = await startAuthentication(options)
+        } catch (err) {
+            console.log(err)
+            toast('Authentication failed')
+        }
+
+        form.setFieldValue('authenticatorResponse', authenticatorResponse)
+        loginUser({
+            ...form.values,
+            authenticatorResponse
+        })
     }
 
     return (
@@ -27,18 +58,10 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                 </p>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <span className={styles.label}>
-                        Enter the passcode from your authenticator app:
+                        Use Fingerprint or Face Recognition to Verify your
+                        Identity
                     </span>
-                    <div className={styles.totpInput}>
-                        <PinField
-                            autoFocus
-                            length={6}
-                            onChange={handleChange}
-                            onComplete={handleComplete}
-                            disabled={isLoading}
-                            validate={/^\d$/}
-                        />
-                    </div>
+                    <div className={styles.totpInput}></div>
                     <div
                         style={{
                             position: 'relative'
@@ -50,7 +73,7 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                             type="submit"
                             disabled={isLoading}
                         >
-                            Continue
+                            Verify
                         </Button>
                         {isLoading && (
                             <CircularProgress
@@ -68,14 +91,14 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                 </form>
                 <Divider my={20} label="OR" labelPosition="center" />
                 <Button
-                    leftIcon={<FontAwesomeIcon icon={solid('key')} />}
+                    leftIcon={phoneIcon}
                     variant="default"
                     color="gray"
                     mt={12}
                     fullWidth
-                    onClick={() => handleSwitchType('security_key')}
+                    onClick={() => form.setFieldValue('type', 'totp')}
                 >
-                    Verify with a Security Key
+                    Verify with Authenticator App
                 </Button>
                 <div className={styles.text}>
                     <p style={{ marginBottom: '0' }}>
@@ -104,4 +127,4 @@ function TotpCode({ form, handleSubmit, isLoading }) {
     )
 }
 
-export default TotpCode
+export default SecurityKeyLogin

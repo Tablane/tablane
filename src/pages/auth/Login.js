@@ -8,20 +8,22 @@ import {
     Button,
     Divider
 } from '@mantine/core'
-import { useState } from 'react'
 import { useForm } from '@mantine/form'
 import { Link } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import { useLoginUserMutation } from '../../modules/services/userSlice'
 import TotpCode from './login/TotpCode'
 import GoogleLogin from './login/GoogleLogin'
-import AppleLogin from './login/AppleLogin'
+import SecurityKeyLogin from './login/SecurityKeyLogin'
 
 function Login() {
     const [loginUser, { isLoading }] = useLoginUserMutation()
-    const [step, setStep] = useState('email')
     const form = useForm({
         initialValues: {
+            step: 'email',
+            type: '',
+            request_security_key_challenge: false,
+
             email: '',
             password: '',
             totp: ''
@@ -38,15 +40,19 @@ function Login() {
         },
         validateInputOnBlur: true
     })
+    const { step, type } = form.values
 
     const handleSubmit = async (e, values) => {
         e?.preventDefault()
         if (step === 'email' && !form.validateField('email').hasError) {
             const { data } = await loginUser({ ...form.values })
-            setStep(data.nextStep)
+            form.setFieldValue('step', data.nextStep)
         } else if (step === 'password' && !form.isValid().hasErrors) {
             const { data } = await loginUser({ ...form.values })
-            if (data.nextStep) setStep(data.nextStep)
+            if (data.nextStep) {
+                form.setFieldValue('step', data.nextStep)
+                form.setFieldValue('type', data.methods[0])
+            }
         } else if (step === 'mfa') {
             loginUser({ ...form.values, ...values })
         }
@@ -54,17 +60,25 @@ function Login() {
 
     const handleChange = e => {
         form.getInputProps('password').onChange(e)
-        setStep('password')
+        form.setFieldValue('step', 'password')
     }
 
-    if (step === 'mfa')
-        return (
-            <TotpCode
-                form={form}
-                isLoading={isLoading}
-                handleSubmit={handleSubmit}
-            />
-        )
+    if (step === 'mfa') {
+        if (type === 'totp') {
+            return (
+                <TotpCode
+                    form={form}
+                    isLoading={isLoading}
+                    handleSubmit={handleSubmit}
+                />
+            )
+        } else if (type === 'security_key') {
+            return <SecurityKeyLogin form={form} handleSubmit={handleSubmit} />
+        } else if (type === 'email') {
+            return <p>currently not available</p>
+        }
+    }
+
     return (
         <div className={styles.root}>
             <div className={styles.container}>
@@ -157,7 +171,6 @@ function Login() {
                 </form>
                 <Divider my={20} label="OR" labelPosition="center" />
                 <GoogleLogin />
-                <AppleLogin />
                 <div className={styles.text}>
                     <p style={{ marginBottom: '0' }}>
                         By signing in, you agree to our
