@@ -19,13 +19,19 @@ function TotpCode({ form, handleSubmit, isLoading }) {
         form.setFieldValue('type', type)
     }
 
+    const handleTOTPSubmit = e => {
+        e.preventDefault()
+        if (form.values['totp'] === '') return
+        handleSubmit()
+    }
+
     return (
         <div className={styles.root}>
             <div className={styles.container}>
                 <p className={styles.header}>
                     Multi-factor authentication (MFA) required
                 </p>
-                <form onSubmit={handleSubmit} className={styles.form}>
+                <form onSubmit={handleTOTPSubmit} className={styles.form}>
                     <span className={styles.label}>
                         Enter the passcode from your authenticator app:
                     </span>

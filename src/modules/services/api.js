@@ -25,10 +25,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
     if (
         result?.error?.status === 403 &&
-        result?.error?.data?.message === 'Invalid access token' &&
-        !['/login', '/register', '/error', '/share/'].includes(
-            window.location.pathname
-        )
+        result?.error?.data?.message === 'Invalid access token'
     ) {
         if (!mutex.isLocked()) {
             const release = await mutex.acquire()

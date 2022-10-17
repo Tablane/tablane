@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { useFetchUserQuery } from '../modules/services/userSlice'
+import { useSelector } from 'react-redux'
+import { selectCurrentToken } from '../modules/services/authReducer'
 
 const PrivateRoutes = () => {
-    const { data: user } = useFetchUserQuery()
-    return user?._id ? <Outlet /> : <Navigate to="/login" />
+    const token = useSelector(selectCurrentToken)
+    return token ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default PrivateRoutes
