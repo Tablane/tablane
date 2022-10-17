@@ -6,14 +6,11 @@ const authReducer = createSlice({
     reducers: {
         setCurrentToken: (state, action) => {
             state.token = action.payload
-        },
-        logOut: (state, action) => {
-            state.token = null
         }
     }
 })
 
-export const { setCurrentToken, logOut } = authReducer.actions
+export const { setCurrentToken } = authReducer.actions
 
 export default authReducer.reducer
 

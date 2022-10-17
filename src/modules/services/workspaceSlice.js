@@ -122,6 +122,13 @@ export const workspaceApi = api.injectEndpoints({
                 socket.emit('unsubscribe', workspaceId)
             }
         }),
+        addWorkspace: builder.mutation({
+            query: ({ name }) => ({
+                url: `workspace`,
+                method: 'POST',
+                body: { name }
+            })
+        }),
         addBoard: builder.mutation({
             query: ({ workspaceId, spaceId, name, _id }) => ({
                 url: `board/${workspaceId}/${spaceId}`,
@@ -413,6 +420,7 @@ export const workspaceApi = api.injectEndpoints({
 
 export const {
     useFetchWorkspaceQuery,
+    useAddWorkspaceMutation,
     useAddBoardMutation,
     useEditBoardNameMutation,
     useDeleteBoardMutation,

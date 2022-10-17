@@ -9,7 +9,6 @@ import {
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import useInputState from '../modules/hooks/useInputState'
-import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import useToggleState from '../modules/hooks/useToggleState'
 import styles from '../styles/WorkspaceSelector.module.scss'
@@ -17,9 +16,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import ErrorPage from '../utils/ErrorPage'
 import { useFetchUserQuery } from '../modules/services/userSlice'
+import { useAddWorkspaceMutation } from '../modules/services/workspaceSlice'
 
 function WorkspaceSelector() {
     const navigate = useNavigate()
+    const [addWorkspace] = useAddWorkspaceMutation()
     const [name, changeName, resetName] = useInputState()
     const [dialogOpen, toggleDialogOpen] = useToggleState(false)
     const { data: user, isLoading, error } = useFetchUserQuery()
@@ -35,17 +36,11 @@ function WorkspaceSelector() {
     }
 
     const handleCreate = () => {
-        axios({
-            method: 'POST',
-            withCredentials: true,
-            data: {
-                name
-            },
-            url: `${process.env.REACT_APP_BACKEND_HOST}/api/workspace/`
-        })
-            .then(res => {
+        addWorkspace({ name })
+            .unwrap()
+            .then(({ id }) => {
                 toast('Workspace has been successfully created')
-                navigate(`/${res.data.id}`)
+                navigate(`/${id}`)
             })
             .catch(err => {
                 console.log(err)

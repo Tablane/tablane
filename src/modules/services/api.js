@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
 import { history } from '../../utils/history'
-import { logOut } from './authReducer'
+import { setCurrentToken } from './authReducer'
 
 const mutex = new Mutex()
 
@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_BACKEND_HOST}/api`,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-        const token = localStorage.getItem('access_token')
+        const token = getState().auth.token
 
         if (token) {
             headers.set('Authorization', `Bearer ${token}`)
@@ -41,6 +41,9 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
                 )
 
                 if (refreshResult.data) {
+                    api.dispatch(
+                        setCurrentToken(refreshResult.data.accessToken)
+                    )
                     localStorage.setItem(
                         'access_token',
                         refreshResult.data.accessToken
@@ -48,7 +51,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
                     // Retry the initial query
                     result = await baseQuery(args, api, extraOptions)
                 } else {
-                    api.dispatch(logOut())
+                    api.dispatch(setCurrentToken(null))
                     localStorage.removeItem('access_token')
                     history.push('/login')
                 }
