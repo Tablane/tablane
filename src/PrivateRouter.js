@@ -8,12 +8,13 @@ import { useSelector } from 'react-redux'
 import { selectCurrentToken } from './modules/services/authReducer'
 import { useFetchUserQuery } from './modules/services/userSlice'
 import { CircularProgress } from '@mui/material'
+import ErrorPage from './utils/ErrorPage'
 const WorkspaceSelector = lazy(() => import('./pages/WorkspaceSelector'))
 const Settings = lazy(() => import('./pages/Settings'))
 const Workspace = lazy(() => import('./pages/Workspace'))
 
 function PrivateRouter() {
-    const { isLoading } = useFetchUserQuery()
+    const { isLoading, error } = useFetchUserQuery()
     const token = useSelector(selectCurrentToken)
 
     if (isLoading) {
@@ -22,6 +23,8 @@ function PrivateRouter() {
                 <CircularProgress />
             </div>
         )
+    } else if (error?.status) {
+        if (error.status === 'FETCH_ERROR') return <ErrorPage error={error} />
     }
 
     const loading = (
