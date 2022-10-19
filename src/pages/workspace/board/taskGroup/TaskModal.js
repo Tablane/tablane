@@ -11,6 +11,7 @@ import {
 import { useFetchUserQuery } from '../../../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import Editor from '../../../../utils/Editor'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -161,12 +162,13 @@ function TaskModal(props) {
                             onSubmit={handleDescriptionChange}
                             className={styles.description}
                         >
-                            <textarea
-                                placeholder="Description"
-                                value={description}
-                                onChange={changeDescription}
-                                onBlur={handleDescriptionChange}
-                            />
+                            {/*<textarea*/}
+                            {/*    placeholder="Description"*/}
+                            {/*    value={description}*/}
+                            {/*    onChange={changeDescription}*/}
+                            {/*    onBlur={handleDescriptionChange}*/}
+                            {/*/>*/}
+                            <Editor />
                         </form>
                     </div>
                     <div className={styles.divider}></div>
