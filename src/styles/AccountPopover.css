@@ -9,6 +9,11 @@
   margin: 0;
 }
 
+.popover a {
+  text-decoration: none;
+  color: black;
+}
+
 .popover > div:first-of-type {
   display: flex;
   flex-direction: row;
