@@ -11,6 +11,10 @@
 .workspaces {
   & > a {
     cursor: auto;
+
+    &:active {
+      color: inherit;
+    }
   }
 }
 .workspace {
