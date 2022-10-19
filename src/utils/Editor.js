@@ -1,5 +1,4 @@
 import styles from '../styles/Editor.module.scss'
-
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React, { useEffect } from 'react'
@@ -11,7 +10,7 @@ import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 
-export default () => {
+function Editor() {
     const editor = useEditor({
         extensions: [StarterKit, Link, Underline, Color, Highlight],
         editorProps: {
@@ -43,8 +42,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('bold')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleBold().run()
@@ -57,8 +56,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('italic')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleItalic().run()
@@ -71,8 +70,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('underline')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleUnderline().run()
@@ -85,8 +84,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('strike')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleStrike().run()
@@ -99,8 +98,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('code')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleCode().run()
@@ -113,8 +112,8 @@ export default () => {
                         <div
                             className={
                                 editor.isActive('color')
-                                    ? `${styles.bold} ${styles.active}`
-                                    : styles.bold
+                                    ? `${styles.textTransformButton} ${styles.active}`
+                                    : styles.textTransformButton
                             }
                             onClick={() =>
                                 editor.chain().focus().toggleCode().run()
@@ -129,3 +128,5 @@ export default () => {
         </>
     )
 }
+
+export default Editor

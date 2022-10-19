@@ -11,13 +11,13 @@
     rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
   pointer-events: auto;
 
-  .bold {
+  .textTransformButton {
     user-select: none;
     transition: background 20ms ease-in 0s;
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 0px 8px;
+    padding: 0 8px;
     color: rgb(55, 53, 47);
 
     &:hover {
@@ -30,8 +30,34 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      padding: 0px 8px;
+      padding: 0 8px;
       color: rgb(35, 131, 226);
+    }
+  }
+
+  .textEditMenuButton {
+    user-select: none;
+    transition: background 20ms ease-in 0s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    white-space: nowrap;
+    box-shadow: rgb(55 53 47 / 9%) 1px 0 0;
+    margin-right: 1px;
+
+    & > svg {
+      width: 10px;
+      height: 100%;
+      display: block;
+      fill: rgba(55, 53, 47, 0.35);
+      flex-shrink: 0;
+      backface-visibility: hidden;
+      margin-left: 4px;
+    }
+
+    &:hover {
+      background: rgba(55, 53, 47, 0.08);
     }
   }
 }
@@ -54,6 +80,32 @@
 
 /* Basic editor styles */
 .ProseMirror {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  font-size: 14px;
+  resize: none;
+  border-radius: 4px;
+  font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Helvetica",
+    "Apple Color Emoji", "Arial", sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+
+  &:hover,
+  &:focus {
+    border: 1px solid #e4e4e4;
+  }
+
+  a {
+    border-bottom: 0.05em solid;
+    border-color: rgba(55, 53, 47, 0.4);
+    opacity: 0.7;
+    color: #73726e;
+    text-decoration: none;
+  }
+
   > * + * {
     margin-top: 0.75em;
   }
