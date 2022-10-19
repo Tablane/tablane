@@ -19,9 +19,6 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
 
     return (
         <Popover
-            classes={{
-                paper: styles.popover
-            }}
             id={'groupBySelector'}
             open={Boolean(groupByOpen)}
             anchorEl={groupByOpen}
