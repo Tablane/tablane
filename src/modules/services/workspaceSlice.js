@@ -414,6 +414,22 @@ export const workspaceApi = api.injectEndpoints({
                     else toast('Something went wrong')
                 }
             }
+        }),
+        changePermission: builder.mutation({
+            query: ({ workspace, roleId, key }) => ({
+                url: `workspace/permission/${workspace._id}/${roleId}`,
+                method: 'PATCH',
+                body: { key }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.workspace._id],
+            async onQueryStarted(arg, { queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch ({ error }) {
+                    if (error?.data?.message) toast(error.data.message)
+                    else toast('Something went wrong')
+                }
+            }
         })
     })
 })
@@ -433,5 +449,6 @@ export const {
     useRenameWorkspaceMutation,
     useAddUserMutation,
     useRemoveUserMutation,
-    useChangeRoleMutation
+    useChangeRoleMutation,
+    useChangePermissionMutation
 } = workspaceApi

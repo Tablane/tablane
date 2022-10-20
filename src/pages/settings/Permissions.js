@@ -1,11 +1,16 @@
 import styles from '../../styles/Permissions.module.scss'
 import { Switch } from '@mui/material'
-import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
+import {
+    useChangePermissionMutation,
+    useFetchWorkspaceQuery
+} from '../../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
 
 function Permissions() {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const [changePermission] = useChangePermissionMutation()
+
     const permissions = [
         {
             name: 'Add/Remove Members',
@@ -14,12 +19,26 @@ function Permissions() {
             key: 'MODIFY:MEMBERS'
         },
         {
-            name: 'Add/Remove Members',
+            name: 'Git',
             description:
-                'Gives the user the permission to add or remove members to the Workspace.',
-            key: 'create:field'
+                'Allows the user to see and open the Github/Bitbucket/Gitlab modal on tasks and use all the features within it.',
+            key: 'USE:GIT'
+        },
+        {
+            name: 'Edit Statuses',
+            description:
+                'Gives the user the permission to create, edit, and delete statuses. If you have Edit Statuses toggled on, but Delete Items off, you will not be able to delete statuses.',
+            key: 'MODIFY:STATUS'
         }
     ]
+
+    const handleChange = (roleId, key) => {
+        changePermission({
+            workspace,
+            roleId,
+            key
+        })
+    }
 
     return (
         <div className={styles.root}>
@@ -49,53 +68,17 @@ function Permissions() {
                             <div key={role._id}>
                                 <Switch
                                     size="small"
-                                    defaultChecked={role.permissions.includes(
+                                    checked={role.permissions.includes(
                                         permission.key
                                     )}
+                                    onClick={() =>
+                                        handleChange(role._id, permission.key)
+                                    }
                                 />
                             </div>
                         ))}
                     </div>
                 ))}
-                <div>
-                    <div className={styles.action}>
-                        <p className={styles.actionTitle}>Manage Fields</p>
-                        <span className={styles.actionDescription}>
-                            Allows the user to see and open the
-                            Github/Bitbucket/Gitlab modal on tasks and use all
-                            the features within it.
-                        </span>
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                </div>
-                <div>
-                    <div className={styles.action}>
-                        <p className={styles.actionTitle}>Invite Guests</p>
-                        <span className={styles.actionDescription}>
-                            Gives the user the permission to create, edit, and
-                            delete statuses. If you have Edit Statuses toggled
-                            on, but Delete Items off, you will not be able to
-                            delete statuses.
-                        </span>
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                </div>
             </div>
         </div>
     )
