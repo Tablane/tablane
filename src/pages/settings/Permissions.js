@@ -1,7 +1,26 @@
 import styles from '../../styles/Permissions.module.scss'
 import { Switch } from '@mui/material'
+import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
+import { useParams } from 'react-router-dom'
 
 function Permissions() {
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const permissions = [
+        {
+            name: 'Add/Remove Members',
+            description:
+                'Gives the user the permission to add or remove members to the Workspace.',
+            key: 'MODIFY:MEMBERS'
+        },
+        {
+            name: 'Add/Remove Members',
+            description:
+                'Gives the user the permission to add or remove members to the Workspace.',
+            key: 'create:field'
+        }
+    ]
+
     return (
         <div className={styles.root}>
             <p className={styles.title}>Advanced permissions</p>
@@ -10,34 +29,34 @@ function Permissions() {
                     <div>
                         <p>Actions</p>
                     </div>
-                    <div>
-                        <p>Guest</p>
-                    </div>
-                    <div>
-                        <p>Member</p>
-                    </div>
-                    <div>
-                        <p>Admin</p>
-                    </div>
+                    {workspace.roles.map(role => (
+                        <div key={role._id}>
+                            <p>{role.name}</p>
+                        </div>
+                    ))}
                 </div>
-                <div>
-                    <div className={styles.action}>
-                        <p className={styles.actionTitle}>Add/Remove Members</p>
-                        <span className={styles.actionDescription}>
-                            Gives the user the permission to add or remove
-                            members to the Workspace.
-                        </span>
+                {permissions.map(permission => (
+                    <div key={permission.key}>
+                        <div className={styles.action}>
+                            <p className={styles.actionTitle}>
+                                {permission.name}
+                            </p>
+                            <span className={styles.actionDescription}>
+                                {permission.description}
+                            </span>
+                        </div>
+                        {workspace.roles.map(role => (
+                            <div key={role._id}>
+                                <Switch
+                                    size="small"
+                                    defaultChecked={role.permissions.includes(
+                                        permission.key
+                                    )}
+                                />
+                            </div>
+                        ))}
                     </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                    <div>
-                        <Switch size="small" />
-                    </div>
-                </div>
+                ))}
                 <div>
                     <div className={styles.action}>
                         <p className={styles.actionTitle}>Manage Fields</p>
