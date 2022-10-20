@@ -23,6 +23,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
+import Profile from './settings/Profile'
 
 function Settings() {
     const [logoutUser] = useLogoutUserMutation()
@@ -178,13 +179,15 @@ function Settings() {
                     <Route path={`/billing`} element={<Billing />} />
                     <Route path={`/trash`} element={<Trash />} />
                     <Route path={`/permissions`} element={<Permissions />} />
+
+                    <Route path={`/profile`} element={<Profile />} />
                     <Route
-                        path={`/`}
-                        element={() => (
+                        path="*"
+                        element={
                             <Navigate
                                 to={`/settings/${workspace.id}/general`}
                             />
-                        )}
+                        }
                     />
                 </Routes>
             </div>
