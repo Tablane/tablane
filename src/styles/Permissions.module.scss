@@ -1,0 +1,79 @@
+.root {
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  margin-top: 30px;
+  color: #505050;
+}
+
+.permissionList {
+  flex-grow: 1;
+  display: grid;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e9ebf0;
+  max-width: 100%;
+  overflow-x: auto;
+  background: #fff;
+
+  .tableHead {
+    text-transform: uppercase;
+    align-items: center;
+    height: 43px;
+    background: #fafbfc;
+    border-bottom: 1px solid #e9ebf0;
+
+    & > div > p {
+      font-size: 12px;
+      font-weight: 600;
+      color: #7c828d;
+    }
+  }
+
+  & > div {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+
+    & > div {
+      display: flex;
+      flex: 0 0 0;
+      flex-basis: 100px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    & > div:first-of-type {
+      display: flex;
+      flex: 1 0 400px;
+    }
+
+    .action {
+      align-items: flex-start;
+      margin-left: 20px;
+      flex-direction: column;
+
+      .actionTitle {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        color: #292d34;
+        padding-bottom: 7px;
+        margin: 0;
+      }
+
+      .actionDescription {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        color: #7c828d;
+        padding-right: 17px;
+      }
+    }
+  }
+}
