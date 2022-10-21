@@ -72,14 +72,13 @@ function Users() {
                                     close={close}
                                 />
                             )}
-                            {roleAnchor.id === x.user._id &&
-                                x.role !== 'owner' && (
-                                    <RolePopup
-                                        anchor={roleAnchor}
-                                        close={roleClose}
-                                        cRole={x.role}
-                                    />
-                                )}
+                            {roleAnchor.id === x.user._id && !x.isOwner && (
+                                <RolePopup
+                                    anchor={roleAnchor}
+                                    close={roleClose}
+                                    cRole={x.role}
+                                />
+                            )}
                             <div className={styles.row} key={x.email}>
                                 <div>
                                     <div>
@@ -93,7 +92,7 @@ function Users() {
                                                     {label}
                                                 </span>
                                             ))}
-                                            {x.role === 'owner' && (
+                                            {x.isOwner && (
                                                 <span className={styles.owner}>
                                                     Owner
                                                 </span>
@@ -110,8 +109,14 @@ function Users() {
                                     <span>{x.user.email}</span>
                                 </div>
                                 <div>
-                                    <span id={x.user._id} onClick={roleOpen}>
-                                        {x.role}
+                                    <span
+                                        id={x.user._id}
+                                        onClick={roleOpen}
+                                        className={
+                                            x.isOwner ? styles.noPointer : null
+                                        }
+                                    >
+                                        {x.isOwner ? 'Owner' : x.role.name}
                                     </span>
                                     <span onClick={open} id={x.user._id}>
                                         <FontAwesomeIcon
