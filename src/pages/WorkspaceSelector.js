@@ -18,7 +18,7 @@ import ErrorPage from '../utils/ErrorPage'
 import { useFetchUserQuery } from '../modules/services/userSlice'
 import { useAddWorkspaceMutation } from '../modules/services/workspaceSlice'
 
-function WorkspaceSelector() {
+function WorkspaceSelector({ noPadding }) {
     const navigate = useNavigate()
     const [addWorkspace] = useAddWorkspaceMutation()
     const [name, changeName, resetName] = useInputState()
@@ -51,7 +51,7 @@ function WorkspaceSelector() {
 
     return (
         <>
-            <div className={styles.container}>
+            <div className={noPadding ? null : styles.container}>
                 <p className={styles.title}>My Workspaces</p>
                 <div className={styles.workspaces}>
                     {user.workspaces.map(x => (
