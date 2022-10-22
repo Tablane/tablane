@@ -141,6 +141,24 @@ export const userApi = api.injectEndpoints({
                     }
                 }
             }
+        }),
+        sudoMode: builder.mutation({
+            query: args => ({
+                url: `user/sudoMode`,
+                method: 'POST',
+                body: { ...args }
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
         })
     })
 })
@@ -154,5 +172,6 @@ export const {
     useRevokeSessionMutation,
     useUpdateProfileMutation,
     useSetupTotpMutation,
-    useDisableTotpMutation
+    useDisableTotpMutation,
+    useSudoModeMutation
 } = userApi

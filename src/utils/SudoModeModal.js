@@ -1,4 +1,4 @@
-import { Button, Modal, TextInput } from '@mantine/core'
+import { Modal } from '@mantine/core'
 import styles from '../styles/SudoModeModal.module.scss'
 import SudoModeModalContent from './sudoModeModal/SudoModeModalContent'
 

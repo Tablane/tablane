@@ -17,7 +17,6 @@ import SudoModeModal from '../../utils/SudoModeModal'
 import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
 import TOTPManageModal from './profile/TOTPManageModal'
-import { CircularProgress } from '@mui/material'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
@@ -29,7 +28,6 @@ function Profile() {
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
         useState(false)
     const { data: user } = useFetchUserQuery()
-    const { data: profile, isLoading } = useFetchProfileQuery()
 
     const form = useForm({
         initialValues: {
@@ -39,14 +37,6 @@ function Profile() {
         }
     })
     const { values } = form
-
-    if (isLoading) {
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
-    }
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -69,18 +59,12 @@ function Profile() {
 
     const handleTOTPManage = async method => {
         if (!user.multiFactorMethods.totp.enabled) {
-            setupTotp()
-        }
-        // if (!method.enabled) {
-        //     const { success, message } = await updateProfile({
-        //         ...form.values
-        //     }).unwrap()
-        //     if (!success && message === 'sudo mode required') {
-        //         setSudoConfirmFn(() => () => handleProfileUpdate())
-        //         setSudoModeModalOpen(true)
-        //     }
-        // }
-        setTotpManageModalOpen(true)
+            const { success, message } = await setupTotp().unwrap()
+            if (!success && message === 'sudo mode required') {
+                setSudoConfirmFn(() => () => handleTOTPManage())
+                setSudoModeModalOpen(true)
+            } else setTotpManageModalOpen(true)
+        } else setTotpManageModalOpen(true)
     }
 
     const handleRevoke = async _id => {
