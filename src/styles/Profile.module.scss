@@ -77,9 +77,12 @@
 
   .methods {
     display: grid;
-    grid-template:
-      1fr 1fr /
-      1fr 1fr;
+
+    @media (min-width: 992px) {
+      grid-template:
+        1fr 1fr /
+        1fr 1fr;
+    }
     grid-gap: 25px;
 
     & > div {
