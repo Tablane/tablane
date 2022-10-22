@@ -64,6 +64,9 @@ function Profile() {
                                 {...form.getInputProps('password')}
                             />
                         </div>
+                        <div>
+                            <Button>Update</Button>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.multiFactorAuth}>
