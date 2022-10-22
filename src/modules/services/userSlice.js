@@ -87,6 +87,19 @@ export const userApi = api.injectEndpoints({
                     console.log(e)
                 }
             }
+        }),
+        revokeSession: builder.mutation({
+            query: ({ sessionId }) => ({
+                url: `user/session/${sessionId}`,
+                method: 'DELETE'
+            })
+        }),
+        updateProfile: builder.mutation({
+            query: ({ name, email, password }) => ({
+                url: `user/profile`,
+                method: 'PATCH',
+                body: { name, email, password }
+            })
         })
     })
 })
@@ -95,5 +108,7 @@ export const {
     useFetchUserQuery,
     useLoginUserMutation,
     useRegisterUserMutation,
-    useLogoutUserMutation
+    useLogoutUserMutation,
+    useRevokeSessionMutation,
+    useUpdateProfileMutation
 } = userApi

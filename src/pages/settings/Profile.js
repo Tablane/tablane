@@ -1,5 +1,9 @@
 import styles from '../../styles/Profile.module.scss'
-import { useFetchUserQuery } from '../../modules/services/userSlice'
+import {
+    useFetchUserQuery,
+    useRevokeSessionMutation,
+    useUpdateProfileMutation
+} from '../../modules/services/userSlice'
 import { useForm } from '@mantine/form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -10,8 +14,14 @@ import PinIcon from '../../styles/assets/PinIcon'
 import SudoModeModal from '../../utils/SudoModeModal'
 import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
+import TOTPManageModal from './profile/TOTPManageModal'
 
 function Profile() {
+    const [updateProfile] = useUpdateProfileMutation()
+    const [revokeSession] = useRevokeSessionMutation()
+    const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
+    const [totpManageModalOpen, setTotpManageModalOpen] = useState(false)
+    const [sudoConfirmFn, setSudoConfirmFn] = useState(() => () => {})
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
         useState(false)
     const { data: user } = useFetchUserQuery()
@@ -34,7 +44,38 @@ function Profile() {
         setAccountDeletionModalOpen(true)
     }
 
-    const handleSudoConfirm = () => {}
+    const handleProfileUpdate = async () => {
+        const { success, message } = await updateProfile({
+            ...form.values
+        }).unwrap()
+        if (!success && message === 'sudo mode required') {
+            setSudoConfirmFn(() => () => handleProfileUpdate())
+            setSudoModeModalOpen(true)
+        }
+    }
+
+    const handleTOTPManage = async method => {
+        // if (!method.enabled) {
+        //     const { success, message } = await updateProfile({
+        //         ...form.values
+        //     }).unwrap()
+        //     if (!success && message === 'sudo mode required') {
+        //         setSudoConfirmFn(() => () => handleProfileUpdate())
+        //         setSudoModeModalOpen(true)
+        //     }
+        // }
+        setTotpManageModalOpen(true)
+    }
+
+    const handleRevoke = async _id => {
+        const { success, message } = await revokeSession({
+            sessionId: 'test'
+        }).unwrap()
+        if (!success && message === 'sudo mode required') {
+            setSudoConfirmFn(() => () => handleRevoke(_id))
+            setSudoModeModalOpen(true)
+        }
+    }
 
     return (
         <div className={styles.root}>
@@ -77,7 +118,9 @@ function Profile() {
                             />
                         </div>
                         <div>
-                            <Button onClick={openDeleteModal}>Update</Button>
+                            <Button onClick={handleProfileUpdate}>
+                                Update
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -94,6 +137,7 @@ function Profile() {
                             {
                                 name: 'Backup Codes',
                                 enabled: false,
+                                onClick: () => {},
                                 icon: <PinIcon />,
                                 description:
                                     'A recovery code allows you to access your account in the event that you you lose your device.'
@@ -101,6 +145,7 @@ function Profile() {
                             {
                                 name: 'Security Key',
                                 enabled: false,
+                                onClick: () => {},
                                 icon: <SecurityKeyIcon />,
                                 description:
                                     'Use any WebAuthn enabled security key to access your account.'
@@ -108,6 +153,7 @@ function Profile() {
                             {
                                 name: 'Email',
                                 enabled: true,
+                                onClick: () => {},
                                 icon: (
                                     <FontAwesomeIcon
                                         size={'xl'}
@@ -120,6 +166,7 @@ function Profile() {
                             {
                                 name: 'Authenticator App',
                                 enabled: false,
+                                onClick: handleTOTPManage,
                                 icon: <PhoneIcon />,
                                 description:
                                     'Use an authenticator app (such as Authy or Google Authenticator) to generate time-based verification codes.'
@@ -148,7 +195,11 @@ function Profile() {
                                         </span>
                                     </div>
                                 </div>
-                                <Button variant="outline" color="gray">
+                                <Button
+                                    variant="outline"
+                                    color="gray"
+                                    onClick={() => method.onClick(method)}
+                                >
                                     Manage
                                 </Button>
                             </div>
@@ -207,6 +258,9 @@ function Profile() {
                                             color="gray"
                                             compact
                                             loading={Math.random() * 10 > 8}
+                                            onClick={() =>
+                                                handleRevoke(device._id)
+                                            }
                                         >
                                             Revoke
                                         </Button>
@@ -232,7 +286,15 @@ function Profile() {
                 accountDeletionModalOpen={accountDeletionModalOpen}
                 setAccountDeletionModalOpen={setAccountDeletionModalOpen}
             />
-            <SudoModeModal onConfirm={handleSudoConfirm} />
+            <SudoModeModal
+                open={sudoModeModalOpen}
+                setOpen={setSudoModeModalOpen}
+                onConfirm={sudoConfirmFn}
+            />
+            <TOTPManageModal
+                open={totpManageModalOpen}
+                setOpen={setTotpManageModalOpen}
+            />
         </div>
     )
 }
