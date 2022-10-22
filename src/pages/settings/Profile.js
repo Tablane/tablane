@@ -2,10 +2,11 @@ import styles from '../../styles/Profile.module.scss'
 import { useFetchUserQuery } from '../../modules/services/userSlice'
 import { useForm } from '@mantine/form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { Button, Badge } from '@mantine/core'
 import PhoneIcon from '../../styles/assets/PhoneIcon'
 import SecurityKeyIcon from '../../styles/assets/SecurityKeyIcon'
+import PinIcon from '../../styles/assets/PinIcon'
 
 function Profile() {
     const { data: user } = useFetchUserQuery()
@@ -82,12 +83,7 @@ function Profile() {
                             {
                                 name: 'Backup Codes',
                                 enabled: false,
-                                icon: (
-                                    <FontAwesomeIcon
-                                        size={'xl'}
-                                        icon={solid('key')}
-                                    />
-                                ),
+                                icon: <PinIcon />,
                                 description:
                                     'A recovery code allows you to access your account in the event that you you lose your device.'
                             },
