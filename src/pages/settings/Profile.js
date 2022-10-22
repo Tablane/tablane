@@ -7,8 +7,13 @@ import { Button, Badge } from '@mantine/core'
 import PhoneIcon from '../../styles/assets/PhoneIcon'
 import SecurityKeyIcon from '../../styles/assets/SecurityKeyIcon'
 import PinIcon from '../../styles/assets/PinIcon'
+import SudoModeModal from '../../utils/SudoModeModal'
+import AccountDeleteModal from './profile/AccountDeleteModal'
+import { useState } from 'react'
 
 function Profile() {
+    const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
+        useState(false)
     const { data: user } = useFetchUserQuery()
 
     const handleSubmit = e => {
@@ -24,6 +29,12 @@ function Profile() {
         }
     })
     const { values } = form
+
+    const openDeleteModal = () => {
+        setAccountDeletionModalOpen(true)
+    }
+
+    const handleSudoConfirm = () => {}
 
     return (
         <div className={styles.root}>
@@ -66,7 +77,7 @@ function Profile() {
                             />
                         </div>
                         <div>
-                            <Button>Update</Button>
+                            <Button onClick={openDeleteModal}>Update</Button>
                         </div>
                     </div>
                 </div>
@@ -211,9 +222,17 @@ function Profile() {
                         Once you delete your account, there is no going back.
                         Please be certain.
                     </span>
-                    <Button color="red">Delete Account</Button>
+                    <Button color="red" onClick={openDeleteModal}>
+                        Delete Account
+                    </Button>
                 </div>
             </form>
+
+            <AccountDeleteModal
+                accountDeletionModalOpen={accountDeletionModalOpen}
+                setAccountDeletionModalOpen={setAccountDeletionModalOpen}
+            />
+            <SudoModeModal onConfirm={handleSudoConfirm} />
         </div>
     )
 }
