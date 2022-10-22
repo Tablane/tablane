@@ -40,6 +40,7 @@ function Profile() {
                                 type="text"
                                 value={values.username}
                                 placeholder="Enter Username"
+                                autoComplete="name"
                                 {...form.getInputProps('username')}
                             />
                         </div>
@@ -49,6 +50,7 @@ function Profile() {
                                 type="text"
                                 value={values.email}
                                 placeholder="Enter Email"
+                                autoComplete="email"
                                 {...form.getInputProps('email')}
                             />
                         </div>
@@ -58,6 +60,7 @@ function Profile() {
                                 type="password"
                                 value={values.password}
                                 placeholder="Enter New Password"
+                                autoComplete="new-password"
                                 {...form.getInputProps('password')}
                             />
                         </div>
@@ -112,7 +115,7 @@ function Profile() {
                                     'Use an authenticator app (such as Authy or Google Authenticator) to generate time-based verification codes.'
                             }
                         ].map(method => (
-                            <div>
+                            <div key={method.name}>
                                 <div>
                                     <div className={styles.icon}>
                                         {method.icon}
@@ -146,7 +149,9 @@ function Profile() {
                     <div className={styles.title}>Devices</div>
                     <span className={styles.subtitle}>
                         Here are all the devices that are currently logged in
-                        with your account.
+                        with your account. If you see an entry you don't
+                        recognize, log out of that device and change your
+                        password immediately.
                     </span>
                     <div className={styles.devices}>
                         <div className={styles.headRow}>
@@ -161,17 +166,29 @@ function Profile() {
                             </div>
                         </div>
                         {[
-                            'Chrome on macOS',
-                            'Chrome on Windows',
-                            'Firefox on Android'
-                        ].map(x => {
+                            {
+                                _id: '63528285b1b94e481ca680cc',
+                                device: 'Chrome on Windows',
+                                lastActive: 1666351749143
+                            },
+                            {
+                                _id: '63528285b1b94e481ca680cb',
+                                device: 'Chrome on macOS',
+                                lastActive: 1666351949143
+                            },
+                            {
+                                _id: '63528285b1b94e481ca680ca',
+                                device: 'Firefox on Android',
+                                lastActive: 1666352749143
+                            }
+                        ].map(device => {
                             return (
-                                <div>
+                                <div key={device._id}>
                                     <div>
-                                        <p>{x}</p>
+                                        <p>{device.device}</p>
                                     </div>
                                     <div>
-                                        <p>Aug 26, 2022, 11:12 AM</p>
+                                        <p>{device.lastActive}</p>
                                     </div>
                                     <div className={styles.action}>
                                         <Button
@@ -179,6 +196,7 @@ function Profile() {
                                             variant="light"
                                             color="gray"
                                             compact
+                                            loading={Math.random() * 10 > 8}
                                         >
                                             Revoke
                                         </Button>
@@ -187,6 +205,14 @@ function Profile() {
                             )
                         })}
                     </div>
+                </div>
+                <div className={styles.deleteAccount}>
+                    <div className={styles.title}>Delete account</div>
+                    <span className={styles.subtitle}>
+                        Once you delete your account, there is no going back.
+                        Please be certain.
+                    </span>
+                    <Button color="red">Delete Account</Button>
                 </div>
             </form>
         </div>
