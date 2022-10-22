@@ -3,8 +3,7 @@ import { CircularProgress } from '@mui/material'
 import { Link } from 'react-router-dom'
 import styles from '../../../styles/TotpCode.module.scss'
 import { PinField } from 'react-pin-field'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import SecurityKeyIcon from '../../../styles/assets/SecurityKeyIcon'
 
 function TotpCode({ form, handleSubmit, isLoading }) {
     const handleChange = value => {
@@ -74,7 +73,7 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                 </form>
                 <Divider my={20} label="OR" labelPosition="center" />
                 <Button
-                    leftIcon={<FontAwesomeIcon icon={solid('key')} />}
+                    leftIcon={<SecurityKeyIcon />}
                     variant="default"
                     color="gray"
                     mt={12}
