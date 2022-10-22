@@ -1,7 +1,9 @@
 import styles from '../../styles/Profile.module.scss'
 import {
+    useFetchProfileQuery,
     useFetchUserQuery,
     useRevokeSessionMutation,
+    useSetupTotpMutation,
     useUpdateProfileMutation
 } from '../../modules/services/userSlice'
 import { useForm } from '@mantine/form'
@@ -15,30 +17,41 @@ import SudoModeModal from '../../utils/SudoModeModal'
 import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
 import TOTPManageModal from './profile/TOTPManageModal'
+import { CircularProgress } from '@mui/material'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
     const [revokeSession] = useRevokeSessionMutation()
+    const [setupTotp, { data: totpSetupData }] = useSetupTotpMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [totpManageModalOpen, setTotpManageModalOpen] = useState(false)
     const [sudoConfirmFn, setSudoConfirmFn] = useState(() => () => {})
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
         useState(false)
     const { data: user } = useFetchUserQuery()
+    const { data: profile, isLoading } = useFetchProfileQuery()
+
+    const form = useForm({
+        initialValues: {
+            username: user?.username,
+            email: user?.email,
+            password: ''
+        }
+    })
+    const { values } = form
+
+    if (isLoading) {
+        return (
+            <div className="loading">
+                <CircularProgress />
+            </div>
+        )
+    }
 
     const handleSubmit = e => {
         e.preventDefault()
         console.log('submitting...')
     }
-
-    const form = useForm({
-        initialValues: {
-            username: user.username,
-            email: user.email,
-            password: ''
-        }
-    })
-    const { values } = form
 
     const openDeleteModal = () => {
         setAccountDeletionModalOpen(true)
@@ -55,6 +68,9 @@ function Profile() {
     }
 
     const handleTOTPManage = async method => {
+        if (!user.multiFactorMethods.totp.enabled) {
+            setupTotp()
+        }
         // if (!method.enabled) {
         //     const { success, message } = await updateProfile({
         //         ...form.values
@@ -136,7 +152,8 @@ function Profile() {
                         {[
                             {
                                 name: 'Backup Codes',
-                                enabled: false,
+                                enabled:
+                                    user.multiFactorMethods.backupCodes.enabled,
                                 onClick: () => {},
                                 icon: <PinIcon />,
                                 description:
@@ -144,7 +161,8 @@ function Profile() {
                             },
                             {
                                 name: 'Security Key',
-                                enabled: false,
+                                enabled:
+                                    user.multiFactorMethods.securityKey.enabled,
                                 onClick: () => {},
                                 icon: <SecurityKeyIcon />,
                                 description:
@@ -152,7 +170,7 @@ function Profile() {
                             },
                             {
                                 name: 'Email',
-                                enabled: true,
+                                enabled: user.multiFactorMethods.email.enabled,
                                 onClick: () => {},
                                 icon: (
                                     <FontAwesomeIcon
@@ -165,7 +183,7 @@ function Profile() {
                             },
                             {
                                 name: 'Authenticator App',
-                                enabled: false,
+                                enabled: user.multiFactorMethods.totp.enabled,
                                 onClick: handleTOTPManage,
                                 icon: <PhoneIcon />,
                                 description:
@@ -292,6 +310,8 @@ function Profile() {
                 onConfirm={sudoConfirmFn}
             />
             <TOTPManageModal
+                totpSetupData={totpSetupData}
+                enabled={user.multiFactorMethods.totp.enabled}
                 open={totpManageModalOpen}
                 setOpen={setTotpManageModalOpen}
             />

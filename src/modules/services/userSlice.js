@@ -8,6 +8,10 @@ export const userApi = api.injectEndpoints({
             query: () => 'user',
             providesTags: ['User']
         }),
+        fetchProfile: builder.query({
+            query: () => 'user/profile',
+            providesTags: ['UserProfile']
+        }),
         loginUser: builder.mutation({
             query: args => ({
                 url: 'user/login',
@@ -100,15 +104,55 @@ export const userApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: { name, email, password }
             })
+        }),
+        setupTotp: builder.mutation({
+            query: args => ({
+                url: `user/mfa/totp/setup`,
+                method: 'POST',
+                body: { ...args }
+            }),
+            invalidatesTags: ['User'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
+        disableTotp: builder.mutation({
+            query: args => ({
+                url: `user/mfa/totp`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['User'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
         })
     })
 })
 
 export const {
     useFetchUserQuery,
+    useFetchProfileQuery,
     useLoginUserMutation,
     useRegisterUserMutation,
     useLogoutUserMutation,
     useRevokeSessionMutation,
-    useUpdateProfileMutation
+    useUpdateProfileMutation,
+    useSetupTotpMutation,
+    useDisableTotpMutation
 } = userApi
