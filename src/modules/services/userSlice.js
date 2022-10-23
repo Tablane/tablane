@@ -142,6 +142,43 @@ export const userApi = api.injectEndpoints({
                 }
             }
         }),
+        setupEmail: builder.mutation({
+            query: args => ({
+                url: `user/mfa/totp/setup`,
+                method: 'POST',
+                body: { ...args }
+            }),
+            invalidatesTags: ['User'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
+        disableEmail: builder.mutation({
+            query: args => ({
+                url: `user/mfa/totp`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['User'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
         sudoMode: builder.mutation({
             query: args => ({
                 url: `user/sudoMode`,

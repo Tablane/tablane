@@ -16,6 +16,7 @@ import SudoModeModal from '../../utils/SudoModeModal'
 import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
 import TOTPManageModal from './profile/TOTPManageModal'
+import EmailManageModal from './profile/EmailManageModal'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
@@ -23,6 +24,7 @@ function Profile() {
     const [setupTotp, { data: totpSetupData }] = useSetupTotpMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [totpManageModalOpen, setTotpManageModalOpen] = useState(false)
+    const [emailManageModalOpen, setEmailManageModalOpen] = useState(false)
     const [sudoConfirmFn, setSudoConfirmFn] = useState(() => () => {})
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
         useState(false)
@@ -64,6 +66,16 @@ function Profile() {
         //         setSudoModeModalOpen(true)
         //     } else setTotpManageModalOpen(true)
         // } else setTotpManageModalOpen(true)
+    }
+
+    const handleEmailManage = async method => {
+        if (!user.multiFactorMethods.email.enabled) {
+            const { success, message } = await setupTotp().unwrap()
+            if (!success && message === 'sudo mode required') {
+                setSudoConfirmFn(() => () => handleEmailManage())
+                setSudoModeModalOpen(true)
+            } else setEmailManageModalOpen(true)
+        } else setEmailManageModalOpen(true)
     }
 
     const handleTOTPManage = async method => {
@@ -164,7 +176,7 @@ function Profile() {
                             {
                                 name: 'Email',
                                 enabled: user.multiFactorMethods.email.enabled,
-                                onClick: () => {},
+                                onClick: handleEmailManage,
                                 icon: (
                                     <FontAwesomeIcon
                                         size={'xl'}
@@ -307,6 +319,11 @@ function Profile() {
                 enabled={user.multiFactorMethods.totp.enabled}
                 open={totpManageModalOpen}
                 setOpen={setTotpManageModalOpen}
+            />
+            <EmailManageModal
+                enabled={user.multiFactorMethods.email.enabled}
+                open={emailManageModalOpen}
+                setOpen={setEmailManageModalOpen}
             />
         </div>
     )
