@@ -1,6 +1,5 @@
 import styles from '../../styles/Profile.module.scss'
 import {
-    useFetchProfileQuery,
     useFetchUserQuery,
     useRevokeSessionMutation,
     useSetupTotpMutation,
@@ -55,6 +54,16 @@ function Profile() {
             setSudoConfirmFn(() => () => handleProfileUpdate())
             setSudoModeModalOpen(true)
         }
+    }
+
+    const handleBackupCodesManage = async method => {
+        // if (!user.multiFactorMethods.totp.enabled) {
+        //     const { success, message } = await setupTotp().unwrap()
+        //     if (!success && message === 'sudo mode required') {
+        //         setSudoConfirmFn(() => () => handleTOTPManage())
+        //         setSudoModeModalOpen(true)
+        //     } else setTotpManageModalOpen(true)
+        // } else setTotpManageModalOpen(true)
     }
 
     const handleTOTPManage = async method => {
@@ -138,7 +147,7 @@ function Profile() {
                                 name: 'Backup Codes',
                                 enabled:
                                     user.multiFactorMethods.backupCodes.enabled,
-                                onClick: () => {},
+                                onClick: handleBackupCodesManage,
                                 icon: <PinIcon />,
                                 description:
                                     'A recovery code allows you to access your account in the event that you you lose your device.'

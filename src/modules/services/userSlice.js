@@ -150,11 +150,13 @@ export const userApi = api.injectEndpoints({
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    await queryFulfilled
+                    const { data } = await queryFulfilled
+                    dispatch(setCurrentToken(data.accessToken))
+                    localStorage.setItem('access_token', data.accessToken)
                 } catch (error) {
                     if (error?.error?.data?.message)
                         toast(error.error.data.message)
-                    else if (error.error.status === 'FETCH_ERROR') {
+                    else if (error?.error?.status === 'FETCH_ERROR') {
                         toast('Cannot connect to server')
                     }
                 }
