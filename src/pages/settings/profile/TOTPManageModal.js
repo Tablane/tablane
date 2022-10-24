@@ -7,6 +7,8 @@ import {
 } from '../../../modules/services/userSlice'
 import { useState } from 'react'
 import SudoModeModal from '../../../utils/SudoModeModal'
+import QRCode from 'react-qr-code'
+import styles from '../../../styles/TOTPManageModal.module.scss'
 
 function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
     const [setupTotp] = useSetupTotpMutation()
@@ -52,8 +54,21 @@ function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
                     </>
                 ) : (
                     <div>
-                        <div>qr code of totp</div>
-                        <span>{totpSetupData?.secret}</span>
+                        <div className={styles.subtitle}>
+                            Scan the image below with the authenticator app on
+                            your phone or manually enter the text code instead.
+                        </div>
+                        <div>
+                            <QRCode
+                                size={256}
+                                className={styles.qrCode}
+                                value={`otpauth://totp/TaskBoard?secret=${totpSetupData?.secret}`}
+                                viewBox={`0 0 256 256`}
+                            />
+                        </div>
+                        <span className={styles.secret}>
+                            {totpSetupData?.secret}
+                        </span>
                         <form onSubmit={handleEnable}>
                             <TextInput
                                 onChange={changeToken}
