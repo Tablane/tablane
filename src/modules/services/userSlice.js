@@ -191,6 +191,69 @@ export const userApi = api.injectEndpoints({
                 }
             }
         }),
+        setupBackupCodes: builder.mutation({
+            query: args => ({
+                url: `user/mfa/backupCodes/setup`,
+                method: 'POST',
+                body: { ...args }
+            }),
+            invalidatesTags: ['User', 'BackupCodes'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
+        disableBackupCodes: builder.mutation({
+            query: args => ({
+                url: `user/mfa/backupCodes`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['User', 'BackupCodes'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
+        regenerateBackupCodes: builder.mutation({
+            query: args => ({
+                url: `user/mfa/backupCodes`,
+                method: 'PUT'
+            }),
+            invalidatesTags: ['BackupCodes'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (error) {
+                    if (error?.error?.data?.message)
+                        toast(error.error.data.message)
+                    else if (error.error.status === 'FETCH_ERROR') {
+                        toast('Cannot connect to server')
+                    }
+                }
+            }
+        }),
+        fetchBackupCodes: builder.query({
+            query: args => ({
+                url: `user/mfa/backupCodes/codes`,
+                method: 'GET'
+            }),
+            providesTags: ['BackupCodes'],
+            transformResponse: response => response.message
+        }),
         sudoMode: builder.mutation({
             query: args => ({
                 url: `user/sudoMode`,
@@ -226,5 +289,9 @@ export const {
     useDisableTotpMutation,
     useSetupEmailMutation,
     useDisableEmailMutation,
-    useSudoModeMutation
+    useSudoModeMutation,
+    useSetupBackupCodesMutation,
+    useDisableBackupCodesMutation,
+    useRegenerateBackupCodesMutation,
+    useFetchBackupCodesQuery
 } = userApi

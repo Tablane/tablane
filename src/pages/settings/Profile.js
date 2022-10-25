@@ -18,12 +18,15 @@ import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
 import TOTPManageModal from './profile/TOTPManageModal'
 import EmailManageModal from './profile/EmailManageModal'
+import BackupManageModal from './profile/BackupManageModal'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
     const [revokeSession] = useRevokeSessionMutation()
     const [setupTotp, { data: totpSetupData }] = useSetupTotpMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
+    const [backupCodesManageModalOpen, setBackupCodesManageModalOpen] =
+        useState(false)
     const [totpManageModalOpen, setTotpManageModalOpen] = useState(false)
     const [emailManageModalOpen, setEmailManageModalOpen] = useState(false)
     const [sudoConfirmFn, setSudoConfirmFn] = useState(() => () => {})
@@ -60,13 +63,7 @@ function Profile() {
     }
 
     const handleBackupCodesManage = async method => {
-        // if (!user.multiFactorMethods.totp.enabled) {
-        //     const { success, message } = await setupTotp().unwrap()
-        //     if (!success && message === 'sudo mode required') {
-        //         setSudoConfirmFn(() => () => handleTOTPManage())
-        //         setSudoModeModalOpen(true)
-        //     } else setTotpManageModalOpen(true)
-        // } else setTotpManageModalOpen(true)
+        setBackupCodesManageModalOpen(true)
     }
 
     const handleEmailManage = async method => {
@@ -319,6 +316,11 @@ function Profile() {
                 enabled={user.multiFactorMethods.email.enabled}
                 open={emailManageModalOpen}
                 setOpen={setEmailManageModalOpen}
+            />
+            <BackupManageModal
+                enabled={user.multiFactorMethods.backupCodes.enabled}
+                open={backupCodesManageModalOpen}
+                setOpen={setBackupCodesManageModalOpen}
             />
         </div>
     )
