@@ -224,5 +224,7 @@ export const {
     useUpdateProfileMutation,
     useSetupTotpMutation,
     useDisableTotpMutation,
+    useSetupEmailMutation,
+    useDisableEmailMutation,
     useSudoModeMutation
 } = userApi

@@ -2,6 +2,7 @@ import styles from '../../styles/Profile.module.scss'
 import {
     useFetchUserQuery,
     useRevokeSessionMutation,
+    useSetupEmailMutation,
     useSetupTotpMutation,
     useUpdateProfileMutation
 } from '../../modules/services/userSlice'
@@ -69,13 +70,7 @@ function Profile() {
     }
 
     const handleEmailManage = async method => {
-        if (!user.multiFactorMethods.email.enabled) {
-            const { success, message } = await setupTotp().unwrap()
-            if (!success && message === 'sudo mode required') {
-                setSudoConfirmFn(() => () => handleEmailManage())
-                setSudoModeModalOpen(true)
-            } else setEmailManageModalOpen(true)
-        } else setEmailManageModalOpen(true)
+        setEmailManageModalOpen(true)
     }
 
     const handleTOTPManage = async method => {

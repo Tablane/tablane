@@ -39,7 +39,6 @@ function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
                 onClose={() => setOpen(false)}
                 title="Manage Authenticator App"
             >
-                {}
                 {enabled ? (
                     <>
                         <Alert title="Enabled" color="teal">
