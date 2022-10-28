@@ -2,32 +2,27 @@ import styles from '../../styles/Profile.module.scss'
 import {
     useFetchUserQuery,
     useRevokeSessionMutation,
-    useSetupEmailMutation,
-    useSetupTotpMutation,
     useUpdateProfileMutation
 } from '../../modules/services/userSlice'
 import { useForm } from '@mantine/form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { Button, Badge } from '@mantine/core'
-import PhoneIcon from '../../styles/assets/PhoneIcon'
-import SecurityKeyIcon from '../../styles/assets/SecurityKeyIcon'
-import PinIcon from '../../styles/assets/PinIcon'
+import { Button } from '@mantine/core'
 import SudoModeModal from '../../utils/SudoModeModal'
 import AccountDeleteModal from './profile/AccountDeleteModal'
 import { useState } from 'react'
 import TOTPManageModal from './profile/TOTPManageModal'
 import EmailManageModal from './profile/EmailManageModal'
 import BackupManageModal from './profile/BackupManageModal'
+import SecurityKeyManageModal from './profile/SecurityKeyManageModal'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
     const [revokeSession] = useRevokeSessionMutation()
-    const [setupTotp, { data: totpSetupData }] = useSetupTotpMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [backupCodesManageModalOpen, setBackupCodesManageModalOpen] =
         useState(false)
     const [totpManageModalOpen, setTotpManageModalOpen] = useState(false)
+    const [securityKeyManageModalOpen, setSecurityKeyManageModalOpen] =
+        useState(false)
     const [emailManageModalOpen, setEmailManageModalOpen] = useState(false)
     const [sudoConfirmFn, setSudoConfirmFn] = useState(() => () => {})
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
@@ -59,10 +54,6 @@ function Profile() {
                 setSudoConfirmFn(() => () => handleProfileUpdate())
                 setSudoModeModalOpen(true)
             })
-    }
-
-    const handleEmailManage = async method => {
-        setEmailManageModalOpen(true)
     }
 
     const handleRevoke = async _id => {
@@ -138,67 +129,18 @@ function Profile() {
                             open={backupCodesManageModalOpen}
                             setOpen={setBackupCodesManageModalOpen}
                         />
+                        <SecurityKeyManageModal
+                            enabled={
+                                user.multiFactorMethods.securityKey.enabled
+                            }
+                            open={securityKeyManageModalOpen}
+                            setOpen={setSecurityKeyManageModalOpen}
+                        />
                         <EmailManageModal
                             enabled={user.multiFactorMethods.email.enabled}
                             open={emailManageModalOpen}
                             setOpen={setEmailManageModalOpen}
                         />
-                        {[
-                            {
-                                name: 'Security Key',
-                                enabled:
-                                    user.multiFactorMethods.securityKey.enabled,
-                                onClick: () => {},
-                                icon: <SecurityKeyIcon />,
-                                description:
-                                    'Use any WebAuthn enabled security key to access your account.'
-                            },
-                            {
-                                name: 'Email',
-                                enabled: user.multiFactorMethods.email.enabled,
-                                onClick: handleEmailManage,
-                                icon: (
-                                    <FontAwesomeIcon
-                                        size={'xl'}
-                                        icon={regular('envelope')}
-                                    />
-                                ),
-                                description:
-                                    'Verification codes will be emailed to you.'
-                            }
-                        ].map(method => (
-                            <div key={method.name}>
-                                <div>
-                                    <div className={styles.icon}>
-                                        {method.icon}
-                                    </div>
-                                    <div>
-                                        <div className={styles.name}>
-                                            <span>{method.name}</span>
-                                            {method.enabled ? (
-                                                <Badge color="green">
-                                                    Enabled
-                                                </Badge>
-                                            ) : (
-                                                <Badge color="red">
-                                                    Disabled
-                                                </Badge>
-                                            )}
-                                        </div>
-                                        <span className={styles.description}>
-                                            {method.description}
-                                        </span>
-                                    </div>
-                                </div>
-                                <Button
-                                    variant="outline"
-                                    color="gray"
-                                    onClick={() => method.onClick(method)}
-                                >
-                                    Manage
-                                </Button>
-                            </div>
-                        ))}
                         <TOTPManageModal
                             enabled={user.multiFactorMethods.totp.enabled}
                             open={totpManageModalOpen}

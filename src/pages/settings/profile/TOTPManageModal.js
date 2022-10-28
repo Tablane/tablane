@@ -32,6 +32,7 @@ function TOTPManageModal({ open, setOpen, enabled }) {
         e.preventDefault()
         disableTotp()
             .unwrap()
+            .then(() => setOpen(true))
             .catch(err => {
                 setSudoFn(() => () => handleDisable(e))
                 setSudoModeModalOpen(true)
