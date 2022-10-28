@@ -62,10 +62,6 @@ function Profile() {
         }
     }
 
-    const handleBackupCodesManage = async method => {
-        setBackupCodesManageModalOpen(true)
-    }
-
     const handleEmailManage = async method => {
         setEmailManageModalOpen(true)
     }
@@ -154,15 +150,6 @@ function Profile() {
                             setOpen={setBackupCodesManageModalOpen}
                         />
                         {[
-                            {
-                                name: 'Backup Codes',
-                                enabled:
-                                    user.multiFactorMethods.backupCodes.enabled,
-                                onClick: handleBackupCodesManage,
-                                icon: <PinIcon />,
-                                description:
-                                    'A recovery code allows you to access your account in the event that you you lose your device.'
-                            },
                             {
                                 name: 'Security Key',
                                 enabled:

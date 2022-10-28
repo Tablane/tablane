@@ -13,8 +13,10 @@ import styles from '../../../styles/Profile.module.scss'
 import PinIcon from '../../../styles/assets/PinIcon'
 
 function BackupManageModal({ open, setOpen, enabled }) {
-    const [setupBackupCodes] = useSetupBackupCodesMutation()
-    const [disableBackupCodes] = useDisableBackupCodesMutation()
+    const [setupBackupCodes, { isLoading: isEnableLoading }] =
+        useSetupBackupCodesMutation()
+    const [disableBackupCodes, { isLoading: isDisableLoading }] =
+        useDisableBackupCodesMutation()
     const [regenerateBackupCodes, { isLoading: isLoadingRegenerate }] =
         useRegenerateBackupCodesMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
@@ -24,33 +26,39 @@ function BackupManageModal({ open, setOpen, enabled }) {
 
     const handleDisable = async e => {
         e.preventDefault()
-        const { success, message } = await disableBackupCodes().unwrap()
-        if (!success && message === 'sudo mode required') {
-            setSudoFn(() => () => handleDisable(e))
-            setSudoModeModalOpen(true)
-            setOpen(false)
-        } else setOpen(true)
+        disableBackupCodes()
+            .unwrap()
+            .then(() => setOpen(true))
+            .catch(err => {
+                setOpen(false)
+                setSudoModeModalOpen(true)
+                setSudoFn(() => () => handleDisable(e))
+            })
     }
 
     const handleEnable = async e => {
         e.preventDefault()
-        const { success, message } = await setupBackupCodes().unwrap()
-        if (!success && message === 'sudo mode required') {
-            setSudoFn(() => () => handleEnable(e))
-            setSudoModeModalOpen(true)
-            setOpen(false)
-        } else setOpen(true)
-    }
-
-    const handleOpen = e => {
-        e.preventDefault()
-        fetchCodes()
+        setupBackupCodes()
             .unwrap()
+            .then(() => handleOpen(e, true))
             .catch(err => {
                 setOpen(false)
                 setSudoModeModalOpen(true)
-                setSudoFn(() => () => handleOpen(e))
+                setSudoFn(() => () => handleEnable(e))
             })
+    }
+
+    const handleOpen = (e, override) => {
+        e.preventDefault()
+        if (enabled || override) {
+            fetchCodes()
+                .unwrap()
+                .catch(err => {
+                    setOpen(false)
+                    setSudoModeModalOpen(true)
+                    setSudoFn(() => () => handleOpen(e))
+                })
+        }
         setOpen(true)
     }
 
@@ -70,7 +78,10 @@ function BackupManageModal({ open, setOpen, enabled }) {
                                 <Badge color="red">Disabled</Badge>
                             )}
                         </div>
-                        <span className={styles.description}>descrrr</span>
+                        <span className={styles.description}>
+                            A recovery code allows you to access your account in
+                            the event that you you lose your device.
+                        </span>
                     </div>
                 </div>
                 <Button variant="outline" color="gray" onClick={handleOpen}>
@@ -104,7 +115,12 @@ function BackupManageModal({ open, setOpen, enabled }) {
                                     ))}
                                 </div>
                                 <form onSubmit={handleDisable}>
-                                    <Button mt="xl" color="red" type="submit">
+                                    <Button
+                                        mt="xl"
+                                        color="red"
+                                        type="submit"
+                                        loading={isDisableLoading}
+                                    >
                                         Disable
                                     </Button>
                                     <Button
@@ -127,7 +143,12 @@ function BackupManageModal({ open, setOpen, enabled }) {
                             account.
                         </Alert>
                         <form onSubmit={handleEnable}>
-                            <Button mt="xl" color="teal" type="submit">
+                            <Button
+                                mt="xl"
+                                color="teal"
+                                type="submit"
+                                loading={isEnableLoading}
+                            >
                                 Enable
                             </Button>
                         </form>
