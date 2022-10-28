@@ -9,9 +9,12 @@ function SudoModeModal({ open, setOpen, onConfirm }) {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        await sudoMode({ password })
-        setOpen(false)
-        onConfirm()
+        e.stopPropagation()
+        const { error } = await sudoMode({ password })
+        if (error?.data?.message !== 'Invalid password') {
+            setOpen(false)
+            onConfirm()
+        }
     }
 
     return (

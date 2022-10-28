@@ -1,21 +1,26 @@
-import { Alert, Modal } from '@mantine/core'
+import { Alert, Badge, Modal } from '@mantine/core'
 import { Button } from '@mantine/core'
 import {
     useDisableBackupCodesMutation,
-    useFetchBackupCodesQuery,
+    useLazyFetchBackupCodesQuery,
     useRegenerateBackupCodesMutation,
     useSetupBackupCodesMutation
 } from '../../../modules/services/userSlice'
 import { useState } from 'react'
 import SudoModeModal from '../../../utils/SudoModeModal'
+import { CircularProgress } from '@mui/material'
+import styles from '../../../styles/Profile.module.scss'
+import PinIcon from '../../../styles/assets/PinIcon'
 
 function BackupManageModal({ open, setOpen, enabled }) {
     const [setupBackupCodes] = useSetupBackupCodesMutation()
     const [disableBackupCodes] = useDisableBackupCodesMutation()
-    const [regenerateBackupCodes] = useRegenerateBackupCodesMutation()
+    const [regenerateBackupCodes, { isLoading: isLoadingRegenerate }] =
+        useRegenerateBackupCodesMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [sudoFn, setSudoFn] = useState(() => () => {})
-    const { data: codes, error, refetch } = useFetchBackupCodesQuery()
+    const [fetchCodes, { data: codes, isUninitialized, isFetching }] =
+        useLazyFetchBackupCodesQuery()
 
     const handleDisable = async e => {
         e.preventDefault()
@@ -37,8 +42,42 @@ function BackupManageModal({ open, setOpen, enabled }) {
         } else setOpen(true)
     }
 
+    const handleOpen = e => {
+        e.preventDefault()
+        fetchCodes()
+            .unwrap()
+            .catch(err => {
+                setOpen(false)
+                setSudoModeModalOpen(true)
+                setSudoFn(() => () => handleOpen(e))
+            })
+        setOpen(true)
+    }
+
     return (
         <>
+            <div>
+                <div>
+                    <div className={styles.icon}>
+                        <PinIcon />
+                    </div>
+                    <div>
+                        <div className={styles.name}>
+                            <span>Backup Codes</span>
+                            {enabled ? (
+                                <Badge color="green">Enabled</Badge>
+                            ) : (
+                                <Badge color="red">Disabled</Badge>
+                            )}
+                        </div>
+                        <span className={styles.description}>descrrr</span>
+                    </div>
+                </div>
+                <Button variant="outline" color="gray" onClick={handleOpen}>
+                    Manage
+                </Button>
+            </div>
+
             <Modal
                 opened={open}
                 onClose={() => setOpen(false)}
@@ -46,16 +85,40 @@ function BackupManageModal({ open, setOpen, enabled }) {
             >
                 {enabled ? (
                     <>
-                        <Alert title="Enabled" color="teal">
-                            This two-step login provider is enabled on your
-                            account.
-                        </Alert>
-                        <form onSubmit={handleDisable}>
-                            <Button mt="xl" color="red" type="submit">
-                                Disable
-                            </Button>
-                        </form>
-                        <p>{JSON.stringify(codes)}</p>
+                        {isUninitialized || isFetching ? (
+                            <CircularProgress />
+                        ) : (
+                            <>
+                                <Alert title="Enabled" color="teal">
+                                    This two-step login provider is enabled on
+                                    your account.
+                                </Alert>
+                                <div className={styles.codes}>
+                                    {codes?.map(code => (
+                                        <span
+                                            key={code}
+                                            className={styles.code}
+                                        >
+                                            {code}
+                                        </span>
+                                    ))}
+                                </div>
+                                <form onSubmit={handleDisable}>
+                                    <Button mt="xl" color="red" type="submit">
+                                        Disable
+                                    </Button>
+                                    <Button
+                                        ml="md"
+                                        mt="xl"
+                                        color="gray"
+                                        loading={isLoadingRegenerate}
+                                        onClick={regenerateBackupCodes}
+                                    >
+                                        Regenerate
+                                    </Button>
+                                </form>
+                            </>
+                        )}
                     </>
                 ) : (
                     <>

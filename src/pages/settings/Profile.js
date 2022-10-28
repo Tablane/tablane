@@ -146,6 +146,13 @@ function Profile() {
                         logging in.
                     </span>
                     <div className={styles.methods}>
+                        <BackupManageModal
+                            enabled={
+                                user.multiFactorMethods.backupCodes.enabled
+                            }
+                            open={backupCodesManageModalOpen}
+                            setOpen={setBackupCodesManageModalOpen}
+                        />
                         {[
                             {
                                 name: 'Backup Codes',
@@ -316,11 +323,6 @@ function Profile() {
                 enabled={user.multiFactorMethods.email.enabled}
                 open={emailManageModalOpen}
                 setOpen={setEmailManageModalOpen}
-            />
-            <BackupManageModal
-                enabled={user.multiFactorMethods.backupCodes.enabled}
-                open={backupCodesManageModalOpen}
-                setOpen={setBackupCodesManageModalOpen}
             />
         </div>
     )

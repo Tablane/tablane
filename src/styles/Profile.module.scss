@@ -140,6 +140,17 @@
   }
 }
 
+.codes {
+  margin: 30px 0;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+
+  .code {
+    text-align: center;
+    padding: 5px;
+  }
+}
+
 .loggedInDevices {
   margin: 40px 0;
 

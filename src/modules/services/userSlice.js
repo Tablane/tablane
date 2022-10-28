@@ -230,7 +230,7 @@ export const userApi = api.injectEndpoints({
         }),
         regenerateBackupCodes: builder.mutation({
             query: args => ({
-                url: `user/mfa/backupCodes`,
+                url: `user/mfa/backupCodes/regenerate`,
                 method: 'PUT'
             }),
             invalidatesTags: ['BackupCodes'],
@@ -252,7 +252,7 @@ export const userApi = api.injectEndpoints({
                 method: 'GET'
             }),
             providesTags: ['BackupCodes'],
-            transformResponse: response => response.message
+            transformResponse: response => response.codes
         }),
         sudoMode: builder.mutation({
             query: args => ({
@@ -293,5 +293,5 @@ export const {
     useSetupBackupCodesMutation,
     useDisableBackupCodesMutation,
     useRegenerateBackupCodesMutation,
-    useFetchBackupCodesQuery
+    useLazyFetchBackupCodesQuery
 } = userApi
