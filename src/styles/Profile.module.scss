@@ -151,6 +151,26 @@
   }
 }
 
+.totpModal {
+  .subtitle {
+    color: #7c828d;
+  }
+
+  .qrCode {
+    height: 200px;
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .secret {
+    width: 100%;
+    text-align: center;
+    display: block;
+    font-weight: 300;
+    font-size: 11px;
+  }
+}
+
 .loggedInDevices {
   margin: 40px 0;
 

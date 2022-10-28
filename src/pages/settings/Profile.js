@@ -53,27 +53,16 @@ function Profile() {
     }
 
     const handleProfileUpdate = async () => {
-        const { success, message } = await updateProfile({
-            ...form.values
-        }).unwrap()
-        if (!success && message === 'sudo mode required') {
-            setSudoConfirmFn(() => () => handleProfileUpdate())
-            setSudoModeModalOpen(true)
-        }
+        updateProfile({ ...form.values })
+            .unwrap()
+            .catch(err => {
+                setSudoConfirmFn(() => () => handleProfileUpdate())
+                setSudoModeModalOpen(true)
+            })
     }
 
     const handleEmailManage = async method => {
         setEmailManageModalOpen(true)
-    }
-
-    const handleTOTPManage = async method => {
-        if (!user.multiFactorMethods.totp.enabled) {
-            const { success, message } = await setupTotp().unwrap()
-            if (!success && message === 'sudo mode required') {
-                setSudoConfirmFn(() => () => handleTOTPManage())
-                setSudoModeModalOpen(true)
-            } else setTotpManageModalOpen(true)
-        } else setTotpManageModalOpen(true)
     }
 
     const handleRevoke = async _id => {
@@ -149,6 +138,11 @@ function Profile() {
                             open={backupCodesManageModalOpen}
                             setOpen={setBackupCodesManageModalOpen}
                         />
+                        <EmailManageModal
+                            enabled={user.multiFactorMethods.email.enabled}
+                            open={emailManageModalOpen}
+                            setOpen={setEmailManageModalOpen}
+                        />
                         {[
                             {
                                 name: 'Security Key',
@@ -171,14 +165,6 @@ function Profile() {
                                 ),
                                 description:
                                     'Verification codes will be emailed to you.'
-                            },
-                            {
-                                name: 'Authenticator App',
-                                enabled: user.multiFactorMethods.totp.enabled,
-                                onClick: handleTOTPManage,
-                                icon: <PhoneIcon />,
-                                description:
-                                    'Use an authenticator app (such as Authy or Google Authenticator) to generate time-based verification codes.'
                             }
                         ].map(method => (
                             <div key={method.name}>
@@ -213,6 +199,11 @@ function Profile() {
                                 </Button>
                             </div>
                         ))}
+                        <TOTPManageModal
+                            enabled={user.multiFactorMethods.totp.enabled}
+                            open={totpManageModalOpen}
+                            setOpen={setTotpManageModalOpen}
+                        />
                     </div>
                 </div>
                 <div className={styles.loggedInDevices}>
@@ -299,17 +290,6 @@ function Profile() {
                 open={sudoModeModalOpen}
                 setOpen={setSudoModeModalOpen}
                 onConfirm={sudoConfirmFn}
-            />
-            <TOTPManageModal
-                totpSetupData={totpSetupData}
-                enabled={user.multiFactorMethods.totp.enabled}
-                open={totpManageModalOpen}
-                setOpen={setTotpManageModalOpen}
-            />
-            <EmailManageModal
-                enabled={user.multiFactorMethods.email.enabled}
-                open={emailManageModalOpen}
-                setOpen={setEmailManageModalOpen}
             />
         </div>
     )

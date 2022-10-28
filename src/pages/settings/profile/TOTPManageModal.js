@@ -1,6 +1,5 @@
-import { Alert, Modal, TextInput } from '@mantine/core'
+import { Alert, Badge, Modal, TextInput } from '@mantine/core'
 import { Button } from '@mantine/core'
-import useInputState from '../../../modules/hooks/useInputState'
 import {
     useDisableTotpMutation,
     useSetupTotpMutation
@@ -8,33 +7,91 @@ import {
 import { useState } from 'react'
 import SudoModeModal from '../../../utils/SudoModeModal'
 import QRCode from 'react-qr-code'
-import styles from '../../../styles/TOTPManageModal.module.scss'
+import styles from '../../../styles/Profile.module.scss'
+import PhoneIcon from '../../../styles/assets/PhoneIcon'
+import { useForm } from '@mantine/form'
 
-function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
-    const [setupTotp] = useSetupTotpMutation()
-    const [disableTotp] = useDisableTotpMutation()
-    const [token, changeToken] = useInputState('')
+function TOTPManageModal({ open, setOpen, enabled }) {
+    const [setupTotp, { isLoading: isSetupLoading }] = useSetupTotpMutation()
+    const [disableTotp, { isLoading: isDisableLoading }] =
+        useDisableTotpMutation()
+    const [secret, setSecret] = useState('')
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [sudoFn, setSudoFn] = useState(() => () => {})
 
+    const form = useForm({
+        initialValues: {
+            token: ''
+        },
+        validate: {
+            token: value => (/^\d{6}$/.test(value) ? null : 'Invalid token')
+        }
+    })
+
     const handleDisable = async e => {
         e.preventDefault()
-        const { success, message } = await disableTotp().unwrap()
-        if (!success && message === 'sudo mode required') {
-            setSudoFn(() => () => handleDisable(e))
-            setSudoModeModalOpen(true)
-        }
+        disableTotp()
+            .unwrap()
+            .catch(err => {
+                setSudoFn(() => () => handleDisable(e))
+                setSudoModeModalOpen(true)
+            })
         setOpen(false)
     }
 
-    const handleEnable = e => {
+    const handleOpen = async method => {
+        if (!enabled) {
+            setupTotp()
+                .unwrap()
+                .then(({ secret }) => {
+                    setSecret(secret)
+                    setOpen(true)
+                })
+                .catch(err => {
+                    setSudoFn(() => () => handleOpen())
+                    setSudoModeModalOpen(true)
+                })
+        } else setOpen(true)
+    }
+
+    const handleEnable = async e => {
         e.preventDefault()
-        setupTotp({ token })
+        e.stopPropagation()
+        if (!form.validate().hasErrors) {
+            setupTotp({ token: form.values.token })
+        }
     }
 
     return (
         <>
+            <div>
+                <div>
+                    <div className={styles.icon}>
+                        <PhoneIcon />
+                    </div>
+                    <div>
+                        <div className={styles.name}>
+                            <span>Authenticator App</span>
+                            {enabled ? (
+                                <Badge color="green">Enabled</Badge>
+                            ) : (
+                                <Badge color="red">Disabled</Badge>
+                            )}
+                        </div>
+                        <span className={styles.description}>
+                            Use an authenticator app (such as Authy or Google
+                            Authenticator) to generate time-based verification
+                            codes.
+                        </span>
+                    </div>
+                </div>
+                <Button variant="outline" color="gray" onClick={handleOpen}>
+                    Manage
+                </Button>
+            </div>
+
             <Modal
+                className={styles.totpModal}
                 opened={open}
                 onClose={() => setOpen(false)}
                 title="Manage Authenticator App"
@@ -46,7 +103,12 @@ function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
                             account.
                         </Alert>
                         <form onSubmit={handleDisable}>
-                            <Button mt="xl" color="red" type="submit">
+                            <Button
+                                mt="xl"
+                                color="red"
+                                type="submit"
+                                loading={isDisableLoading}
+                            >
                                 Disable
                             </Button>
                         </form>
@@ -61,21 +123,21 @@ function TOTPManageModal({ open, setOpen, enabled, totpSetupData }) {
                             <QRCode
                                 size={256}
                                 className={styles.qrCode}
-                                value={`otpauth://totp/TaskBoard?secret=${totpSetupData?.secret}`}
+                                value={`otpauth://totp/TaskBoard?secret=${secret}`}
                                 viewBox={`0 0 256 256`}
                             />
                         </div>
-                        <span className={styles.secret}>
-                            {totpSetupData?.secret}
-                        </span>
+                        <span className={styles.secret}>{secret}</span>
                         <form onSubmit={handleEnable}>
                             <TextInput
-                                onChange={changeToken}
                                 my="xl"
                                 type="text"
                                 placeholder="Enter authenticator Code"
+                                {...form.getInputProps('token')}
                             />
-                            <Button type="submit">Enable</Button>
+                            <Button type="submit" loading={isSetupLoading}>
+                                Enable
+                            </Button>
                         </form>
                     </div>
                 )}

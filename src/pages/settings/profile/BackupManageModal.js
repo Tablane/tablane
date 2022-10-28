@@ -21,7 +21,7 @@ function BackupManageModal({ open, setOpen, enabled }) {
         useRegenerateBackupCodesMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [sudoFn, setSudoFn] = useState(() => () => {})
-    const [fetchCodes, { data: codes, isUninitialized, isFetching }] =
+    const [fetchCodes, { data: codes, isUninitialized, isLoading }] =
         useLazyFetchBackupCodesQuery()
 
     const handleDisable = async e => {
@@ -96,7 +96,7 @@ function BackupManageModal({ open, setOpen, enabled }) {
             >
                 {enabled ? (
                     <>
-                        {isUninitialized || isFetching ? (
+                        {isUninitialized || isLoading ? (
                             <CircularProgress />
                         ) : (
                             <>
