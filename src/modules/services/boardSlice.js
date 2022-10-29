@@ -11,7 +11,10 @@ const addTask = ({ board, newTaskName, taskGroupId, _id, author }) => {
         _id,
         name: newTaskName,
         options: [],
+        board: board._id,
+        description: '',
         watcher: [],
+        workspace: board._id,
         history: [
             {
                 type: 'activity',
