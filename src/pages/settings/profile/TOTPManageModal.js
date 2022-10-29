@@ -86,7 +86,12 @@ function TOTPManageModal({ open, setOpen, enabled }) {
                         </span>
                     </div>
                 </div>
-                <Button variant="outline" color="gray" onClick={handleOpen}>
+                <Button
+                    variant="outline"
+                    color="gray"
+                    onClick={handleOpen}
+                    loading={isSetupLoading}
+                >
                     Manage
                 </Button>
             </div>
