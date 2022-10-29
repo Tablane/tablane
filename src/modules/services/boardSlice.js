@@ -262,10 +262,7 @@ export const boardApi = api.injectEndpoints({
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', boardId)
             },
-            async onQueryStarted(
-                { taskId, workspaceId, condition },
-                { dispatch, queryFulfilled }
-            ) {
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled
                 } catch {
