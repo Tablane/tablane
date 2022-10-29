@@ -1,5 +1,6 @@
 import styles from '../../styles/Profile.module.scss'
 import {
+    useFetchSessionQuery,
     useFetchUserQuery,
     useRevokeSessionMutation,
     useUpdateProfileMutation
@@ -13,10 +14,12 @@ import TOTPManageModal from './profile/TOTPManageModal'
 import EmailManageModal from './profile/EmailManageModal'
 import BackupManageModal from './profile/BackupManageModal'
 import SecurityKeyManageModal from './profile/SecurityKeyManageModal'
+import { CircularProgress } from '@mui/material'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
-    const [revokeSession] = useRevokeSessionMutation()
+    const [revokeSession, { isLoading: isLoadingRevoke }] =
+        useRevokeSessionMutation()
     const [sudoModeModalOpen, setSudoModeModalOpen] = useState(false)
     const [backupCodesManageModalOpen, setBackupCodesManageModalOpen] =
         useState(false)
@@ -28,6 +31,8 @@ function Profile() {
     const [accountDeletionModalOpen, setAccountDeletionModalOpen] =
         useState(false)
     const { data: user } = useFetchUserQuery()
+    const { data: sessions, isLoading: isLoadingSession } =
+        useFetchSessionQuery()
 
     const form = useForm({
         initialValues: {
@@ -56,14 +61,15 @@ function Profile() {
             })
     }
 
-    const handleRevoke = async _id => {
-        const { success, message } = await revokeSession({
-            sessionId: 'test'
-        }).unwrap()
-        if (!success && message === 'sudo mode required') {
-            setSudoConfirmFn(() => () => handleRevoke(_id))
-            setSudoModeModalOpen(true)
-        }
+    const handleRevoke = async sessionId => {
+        revokeSession({
+            sessionId
+        })
+            .unwrap()
+            .catch(err => {
+                setSudoConfirmFn(() => () => handleRevoke(sessionId))
+                setSudoModeModalOpen(true)
+            })
     }
 
     return (
@@ -168,48 +174,45 @@ function Profile() {
                                 <p>Action</p>
                             </div>
                         </div>
-                        {[
-                            {
-                                _id: '63528285b1b94e481ca680cc',
-                                device: 'Chrome on Windows',
-                                lastActive: 1666351749143
-                            },
-                            {
-                                _id: '63528285b1b94e481ca680cb',
-                                device: 'Chrome on macOS',
-                                lastActive: 1666351949143
-                            },
-                            {
-                                _id: '63528285b1b94e481ca680ca',
-                                device: 'Firefox on Android',
-                                lastActive: 1666352749143
-                            }
-                        ].map(device => {
-                            return (
-                                <div key={device._id}>
-                                    <div>
-                                        <p>{device.device}</p>
+                        {!isLoadingSession ? (
+                            sessions?.map(session => {
+                                return (
+                                    <div key={session._id}>
+                                        <div>
+                                            <p>{session.device}</p>
+                                        </div>
+                                        <div>
+                                            <p>{session.lastActive}</p>
+                                        </div>
+                                        <div className={styles.action}>
+                                            <Button
+                                                style={{ margin: 'auto 0' }}
+                                                variant="light"
+                                                color="gray"
+                                                compact
+                                                onClick={() =>
+                                                    handleRevoke(session._id)
+                                                }
+                                                loading={isLoadingRevoke}
+                                            >
+                                                Revoke
+                                            </Button>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>{device.lastActive}</p>
-                                    </div>
-                                    <div className={styles.action}>
-                                        <Button
-                                            style={{ margin: 'auto 0' }}
-                                            variant="light"
-                                            color="gray"
-                                            compact
-                                            loading={Math.random() * 10 > 8}
-                                            onClick={() =>
-                                                handleRevoke(device._id)
-                                            }
-                                        >
-                                            Revoke
-                                        </Button>
-                                    </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })
+                        ) : (
+                            <div
+                                style={{
+                                    marginTop: '20px',
+                                    border: 'none',
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <CircularProgress size={32} />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={styles.deleteAccount}>

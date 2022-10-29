@@ -96,7 +96,8 @@ export const userApi = api.injectEndpoints({
             query: ({ sessionId }) => ({
                 url: `user/session/${sessionId}`,
                 method: 'DELETE'
-            })
+            }),
+            invalidatesTags: ['Session']
         }),
         updateProfile: builder.mutation({
             query: ({ name, email, password }) => ({
@@ -254,6 +255,14 @@ export const userApi = api.injectEndpoints({
             providesTags: ['BackupCodes'],
             transformResponse: response => response.codes
         }),
+        fetchSession: builder.query({
+            query: args => ({
+                url: `user/session`,
+                method: 'GET'
+            }),
+            providesTags: ['Session'],
+            transformResponse: response => response.sessions
+        }),
         sudoMode: builder.mutation({
             query: args => ({
                 url: `user/sudoMode`,
@@ -293,5 +302,6 @@ export const {
     useSetupBackupCodesMutation,
     useDisableBackupCodesMutation,
     useRegenerateBackupCodesMutation,
-    useLazyFetchBackupCodesQuery
+    useLazyFetchBackupCodesQuery,
+    useFetchSessionQuery
 } = userApi
