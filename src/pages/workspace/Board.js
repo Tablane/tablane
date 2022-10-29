@@ -132,7 +132,6 @@ function Board(props) {
     }
 
     if (error) {
-        toast('Could not find that Board')
         return <Navigate to={`/${workspace.id}`} />
     }
     return (

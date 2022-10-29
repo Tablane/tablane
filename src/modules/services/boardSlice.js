@@ -261,6 +261,16 @@ export const boardApi = api.injectEndpoints({
                 } catch {}
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', boardId)
+            },
+            async onQueryStarted(
+                { taskId, workspaceId, condition },
+                { dispatch, queryFulfilled }
+            ) {
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Could not find that Board')
+                }
             }
         }),
         setGroupBy: builder.mutation({

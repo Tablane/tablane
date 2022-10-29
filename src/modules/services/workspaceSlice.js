@@ -58,7 +58,7 @@ export const workspaceApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchWorkspace: builder.query({
             query: workspaceId => `workspace/${workspaceId}`,
-            providesTags: workspace => [workspace._id],
+            providesTags: workspace => (workspace ? [workspace._id] : []),
             async onCacheEntryAdded(
                 workspaceId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
