@@ -17,6 +17,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import ErrorPage from '../utils/ErrorPage'
 import { useFetchUserQuery } from '../modules/services/userSlice'
 import { useAddWorkspaceMutation } from '../modules/services/workspaceSlice'
+import { useEffect } from 'react'
 
 function WorkspaceSelector({ noPadding }) {
     const navigate = useNavigate()
@@ -24,6 +25,13 @@ function WorkspaceSelector({ noPadding }) {
     const [name, changeName, resetName] = useInputState()
     const [dialogOpen, toggleDialogOpen] = useToggleState(false)
     const { data: user, isLoading, error } = useFetchUserQuery()
+
+    useEffect(() => {
+        const lastVisitedBoard = localStorage.getItem('lastVisitedBoard')
+        if (window.location.pathname === '/' && lastVisitedBoard) {
+            navigate(lastVisitedBoard)
+        }
+    }, [])
 
     if (isLoading)
         return (

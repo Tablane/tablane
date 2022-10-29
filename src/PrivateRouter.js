@@ -2,13 +2,13 @@ import './App.css'
 import { lazy, Suspense } from 'react'
 import { Outlet, Route, Navigate, Routes } from 'react-router-dom'
 import PrivateRoutes from './utils/PrivateRoute'
-import Register from './pages/auth/Register'
-import Login from './pages/auth/Login'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from './modules/services/authReducer'
 import { useFetchUserQuery } from './modules/services/userSlice'
 import { CircularProgress } from '@mui/material'
 import ErrorPage from './utils/ErrorPage'
+const Register = lazy(() => import('./pages/auth/Register'))
+const Login = lazy(() => import('./pages/auth/Login'))
 const WorkspaceSelector = lazy(() => import('./pages/WorkspaceSelector'))
 const Settings = lazy(() => import('./pages/Settings'))
 const Workspace = lazy(() => import('./pages/Workspace'))
@@ -37,8 +37,22 @@ function PrivateRouter() {
         <>
             <Routes>
                 <Route element={token ? <Navigate to="/" /> : <Outlet />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/login"
+                        element={
+                            <Suspense fallback={loading}>
+                                <Login />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <Suspense fallback={loading}>
+                                <Register />
+                            </Suspense>
+                        }
+                    />
                 </Route>
                 <Route element={<PrivateRoutes />}>
                     <Route

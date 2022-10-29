@@ -265,6 +265,10 @@ export const boardApi = api.injectEndpoints({
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled
+                    localStorage.setItem(
+                        'lastVisitedBoard',
+                        window.location.pathname
+                    )
                 } catch {
                     toast('Could not find that Board')
                 }
