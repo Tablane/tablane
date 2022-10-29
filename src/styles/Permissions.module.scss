@@ -28,6 +28,8 @@
     height: 43px;
     background: #fafbfc;
     border-bottom: 1px solid #e9ebf0;
+    padding: 0;
+    margin-bottom: 8px;
 
     & > div > p {
       font-size: 12px;
@@ -37,9 +39,9 @@
   }
 
   & > div {
-    margin-bottom: 16px;
     display: flex;
     flex-direction: row;
+    padding: 8px 0;
 
     & > div {
       display: flex;
@@ -47,6 +49,10 @@
       flex-basis: 100px;
       justify-content: center;
       align-items: center;
+    }
+
+    &:hover {
+      background-color: #fafbfc;
     }
 
     & > div:first-of-type {
