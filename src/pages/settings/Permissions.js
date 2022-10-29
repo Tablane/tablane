@@ -20,8 +20,14 @@ function Permissions() {
         },
         {
             name: 'Create Tasks',
-            description: 'Gives the user the permission to add Tasks.',
+            description: 'Gives the user the permission to create Tasks.',
             key: 'CREATE:TASK'
+        },
+        {
+            name: 'Create Comments',
+            description:
+                'Gives the user the permission to create, edit and delete comments.',
+            key: 'CREATE:COMMENT'
         },
         {
             name: 'Delete Tasks',
@@ -29,9 +35,21 @@ function Permissions() {
             key: 'DELETE:TASK'
         },
         {
-            name: 'Edit Columns',
-            description: 'Gives the user the permission to edit Column values.',
-            key: 'MANAGE:COLUMN_VALUE'
+            name: 'Manage Tasks',
+            description:
+                'Gives the user the permission to modify watchers, drag and drop tasks, or edit Column values.',
+            key: 'MANAGE:TASK'
+        },
+        {
+            name: 'Sharing',
+            description: 'Gives the user the permission to share Boards.',
+            key: 'MANAGE:SHARING'
+        },
+        {
+            name: 'Manage Views',
+            description:
+                'Gives the user the permission to create and edit views.',
+            key: 'MANAGE:VIEW'
         },
         {
             name: 'Manage Boards',
