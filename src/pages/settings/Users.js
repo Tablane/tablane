@@ -16,7 +16,7 @@ function Users() {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [email, changeEmail, resetEmail] = useInputState('')
-    const [role, setRole] = useState('Member')
+    const [roleId, setRoleId] = useState(workspace.roles[0]._id)
     const [anchor, open, close] = usePopoverState(false)
     const [addRoleAnchor, addRoleOpen, addRoleClose] = usePopoverState(false)
     const [roleAnchor, roleOpen, roleClose] = usePopoverState(false)
@@ -25,7 +25,7 @@ function Users() {
     const handleAddUser = async e => {
         e.preventDefault()
         resetEmail()
-        await addUser({ workspace, email, role })
+        await addUser({ workspace, email, roleId })
     }
 
     return (
@@ -40,7 +40,13 @@ function Users() {
                         type="text"
                     />
                     <div onClick={addRoleOpen}>
-                        <span>{role}</span>
+                        <span>
+                            {
+                                workspace.roles.find(
+                                    x => x._id.toString() === roleId
+                                ).name
+                            }
+                        </span>
                         <FontAwesomeIcon
                             className={
                                 Boolean(addRoleAnchor) ? styles.menuOpen : ''
@@ -131,7 +137,7 @@ function Users() {
             </div>
             <RolePopup
                 anchor={addRoleAnchor}
-                setRole={setRole}
+                setRole={setRoleId}
                 close={addRoleClose}
             />
         </div>

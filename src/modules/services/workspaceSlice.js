@@ -367,10 +367,10 @@ export const workspaceApi = api.injectEndpoints({
             }
         }),
         addUser: builder.mutation({
-            query: ({ workspace, email, role }) => ({
+            query: ({ workspace, email, roleId }) => ({
                 url: `workspace/user/${workspace._id}`,
                 method: 'POST',
-                body: { email, role }
+                body: { email, roleId }
             }),
             invalidatesTags: (result, error, arg) => [arg.workspace._id],
             async onQueryStarted(arg, { queryFulfilled }) {

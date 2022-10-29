@@ -14,7 +14,6 @@ function RolePopup(props) {
     const [changeRole] = useChangeRoleMutation()
 
     const handleChangeRole = (userId, role) => {
-        console.log(role)
         changeRole({ workspace, userId, role })
     }
 
@@ -44,25 +43,16 @@ function RolePopup(props) {
                 }}
             >
                 <div className={styles.container}>
-                    <div onClick={setRole} id="Guest">
-                        <p>Guest</p>
-                        {props.cRole === 'guest' && (
-                            <FontAwesomeIcon icon={solid('check')} />
-                        )}
-                    </div>
-                    <div onClick={setRole} id="Member">
-                        <p>Member</p>
-                        {props.cRole === 'member' && (
-                            <FontAwesomeIcon icon={solid('check')} />
-                        )}
-                    </div>
-                    <div onClick={setRole} id="Admin">
-                        <p>Admin</p>
-                        {(props.cRole === 'admin' ||
-                            props.cRole === 'owner') && (
-                            <FontAwesomeIcon icon={solid('check')} />
-                        )}
-                    </div>
+                    {workspace.roles.map(role => {
+                        return (
+                            <div onClick={setRole} id={role._id} key={role._id}>
+                                <p>{role.name}</p>
+                                {props.cRole === role._id && (
+                                    <FontAwesomeIcon icon={solid('check')} />
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             </Popover>
         </div>
