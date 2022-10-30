@@ -12,6 +12,7 @@ import { useFetchUserQuery } from '../../../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Editor from '../../../../utils/Editor'
+import Comment from './taskModal/Comment'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -193,44 +194,9 @@ function TaskModal(props) {
                                             </p>
                                         </div>
                                     )
-                                } else if (log.type === 'comment') {
-                                    return (
-                                        <div
-                                            className={styles.comment}
-                                            key={log.timestamp}
-                                        >
-                                            <div className={styles.author}>
-                                                <div>
-                                                    {log.author
-                                                        .substring(0, 2)
-                                                        .toUpperCase()}
-                                                </div>
-                                            </div>
-                                            <div className={styles.commentBody}>
-                                                <div
-                                                    className={
-                                                        styles.commentHeader
-                                                    }
-                                                >
-                                                    <p>
-                                                        <span
-                                                            className={
-                                                                styles.authorSpan
-                                                            }
-                                                        >
-                                                            {log.author}
-                                                        </span>{' '}
-                                                        commented
-                                                    </p>
-                                                    <p className={styles.date}>
-                                                        {getTime(log.timestamp)}
-                                                    </p>
-                                                </div>
-                                                <p>{log.text}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                }
+                                } else if (log.type === 'comment')
+                                    return <Comment comment={log} />
+
                                 return null
                             })}
                             <div ref={commentsEnd}></div>
