@@ -23,7 +23,7 @@ function AttributePopover(props) {
     const [editAttributeName] = useEditAttributeNameMutation()
 
     useEffect(() => {
-        setName(props.attr.name)
+        setName(props.attr.name || '')
     }, [props.attr.name])
 
     const handleAttributeDeleteClick = () => {
