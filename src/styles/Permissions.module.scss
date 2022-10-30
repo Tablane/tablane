@@ -1,5 +1,12 @@
 .root {
   width: 100%;
+
+  &:after {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 100%;
+  }
 }
 
 .title {
@@ -11,16 +18,12 @@
 }
 
 .permissionList {
-  flex-grow: 1;
   display: grid;
   flex-direction: column;
-  margin-bottom: 20px;
   border-radius: 6px;
-  overflow: hidden;
   border: 1px solid #e9ebf0;
-  max-width: 100%;
-  overflow-x: auto;
   background: #fff;
+  overflow-x: scroll;
 
   .tableHead {
     text-transform: uppercase;
@@ -45,10 +48,10 @@
 
     & > div {
       display: flex;
-      flex: 0 0 0;
-      flex-basis: 100px;
+      flex: 0 0 100px;
       justify-content: center;
       align-items: center;
+      min-width: 100px;
     }
 
     &:hover {
@@ -58,11 +61,13 @@
     & > div:first-of-type {
       display: flex;
       flex: 1 0 400px;
+      min-width: 400px;
+      padding-left: 20px;
+      box-sizing: border-box;
     }
 
     .action {
       align-items: flex-start;
-      margin-left: 20px;
       flex-direction: column;
 
       .actionTitle {
