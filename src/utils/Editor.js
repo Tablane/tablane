@@ -11,7 +11,7 @@ import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Placeholder } from '@tiptap/extension-placeholder'
 
-function Editor() {
+function Editor({ type }) {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -20,20 +20,26 @@ function Editor() {
             Color,
             Highlight,
             Placeholder.configure({
-                placeholder: "Description or Type '/' for commands",
+                placeholder:
+                    type === 'description'
+                        ? "Description or Type '/' for commands"
+                        : "Comment or Type '/' for commands",
                 emptyEditorClass: styles.showEmptyEditorPlaceHolder,
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             })
         ],
         editorProps: {
             attributes: {
-                class: styles.ProseMirror
+                class:
+                    type === 'description'
+                        ? `${styles.ProseMirror} ${styles.description}`
+                        : `${styles.ProseMirror} ${styles.comment}`
             }
         },
         content: `
-      <strong>Try React</strong>
-      <p>React has been designed from the start for gradual adoption, and you can use as little or as much React as you need. Whether you want to get a taste of React, add some interactivity to a simple HTML page, or start a complex React-powered app, the links in this section will help you get started.</p>
-    `
+            <strong>Try React</strong>
+            <p>React has been designed from the start for gradual adoption, and you can use as little or as much React as you need. Whether you want to get a taste of React, add some interactivity to a simple HTML page, or start a complex React-powered app, the links in this section will help you get started.</p>
+        `
     })
 
     useEffect(() => {

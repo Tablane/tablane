@@ -80,52 +80,53 @@ function TaskModal(props) {
 
     // TODO: replace this with relativeDate component
     const getTime = timestamp => {
-        const delta = Math.round((+new Date() - new Date(timestamp)) / 1000)
-
-        const minute = 60,
-            hour = minute * 60,
-            day = hour * 24
-
-        let timeString
-
-        if (delta < 60) {
-            timeString = 'Just now' + delta
-        } else if (delta < 2 * minute) {
-            timeString = '1 min'
-        } else if (delta < hour) {
-            timeString = Math.floor(delta / minute) + ' mins'
-        } else if (Math.floor(delta / hour) === 1) {
-            timeString = '1 hour ago'
-        } else if (delta < day) {
-            timeString = Math.floor(delta / hour) + ' hours ago'
-        } else if (delta < day * 2) {
-            timeString = 'yesterday'
-        } else if (delta < day * 7) {
-            timeString = Math.floor(delta / day) + ' days ago'
-        } else {
-            const date = new Date(timestamp)
-            const months = [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ]
-            timeString =
-                `${
-                    months[date.getMonth()]
-                } ${date.getDay()} ${date.getFullYear()} ` +
-                `at ${date.toLocaleTimeString().substring(0, 5)}`
-        }
-
-        return timeString
+        return timestamp
+        // const delta = Math.round((+new Date() - new Date(timestamp)) / 1000)
+        //
+        // const minute = 60,
+        //     hour = minute * 60,
+        //     day = hour * 24
+        //
+        // let timeString
+        //
+        // if (delta < 60) {
+        //     timeString = 'Just now' + delta
+        // } else if (delta < 2 * minute) {
+        //     timeString = '1 min'
+        // } else if (delta < hour) {
+        //     timeString = Math.floor(delta / minute) + ' mins'
+        // } else if (Math.floor(delta / hour) === 1) {
+        //     timeString = '1 hour ago'
+        // } else if (delta < day) {
+        //     timeString = Math.floor(delta / hour) + ' hours ago'
+        // } else if (delta < day * 2) {
+        //     timeString = 'yesterday'
+        // } else if (delta < day * 7) {
+        //     timeString = Math.floor(delta / day) + ' days ago'
+        // } else {
+        //     const date = new Date(timestamp)
+        //     const months = [
+        //         'Jan',
+        //         'Feb',
+        //         'Mar',
+        //         'Apr',
+        //         'May',
+        //         'Jun',
+        //         'Jul',
+        //         'Aug',
+        //         'Sep',
+        //         'Oct',
+        //         'Nov',
+        //         'Dec'
+        //     ]
+        //     timeString =
+        //         `${
+        //             months[date.getMonth()]
+        //         } ${date.getDay()} ${date.getFullYear()} ` +
+        //         `at ${date.toLocaleTimeString().substring(0, 5)}`
+        // }
+        //
+        // return timeString
     }
 
     return (
@@ -164,7 +165,7 @@ function TaskModal(props) {
                             onSubmit={handleDescriptionChange}
                             className={styles.description}
                         >
-                            <Editor />
+                            <Editor type="description" />
                         </form>
                     </div>
                     <div className={styles.divider}></div>
@@ -235,13 +236,14 @@ function TaskModal(props) {
                             <div ref={commentsEnd}></div>
                         </div>
                         <div className={styles.commentingBar}>
-                            <form onSubmit={handleAddComment}>
-                                <input
-                                    type="text"
-                                    onChange={changeNewComment}
-                                    value={newComment}
-                                />
-                            </form>
+                            <Editor type="comment" />
+                            {/*<form onSubmit={handleAddComment}>*/}
+                            {/*    <input*/}
+                            {/*        type="text"*/}
+                            {/*        onChange={changeNewComment}*/}
+                            {/*        value={newComment}*/}
+                            {/*    />*/}
+                            {/*</form>*/}
                         </div>
                     </div>
                 </div>
