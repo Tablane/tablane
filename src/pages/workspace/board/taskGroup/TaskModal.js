@@ -162,12 +162,6 @@ function TaskModal(props) {
                             onSubmit={handleDescriptionChange}
                             className={styles.description}
                         >
-                            {/*<textarea*/}
-                            {/*    placeholder="Description"*/}
-                            {/*    value={description}*/}
-                            {/*    onChange={changeDescription}*/}
-                            {/*    onBlur={handleDescriptionChange}*/}
-                            {/*/>*/}
                             <Editor />
                         </form>
                     </div>

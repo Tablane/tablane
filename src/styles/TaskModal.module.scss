@@ -105,6 +105,7 @@
   flex: 1 1 0;
   box-sizing: border-box;
   padding: 0 0 32px 0;
+  overflow-x: scroll;
 
   .name {
     width: 100%;
@@ -133,7 +134,6 @@
     padding: 10px 30px;
     width: 100%;
     box-sizing: border-box;
-    height: 250px;
   }
 }
 

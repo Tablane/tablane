@@ -9,10 +9,22 @@ import { Underline } from '@tiptap/extension-underline'
 import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
+import { Placeholder } from '@tiptap/extension-placeholder'
 
 function Editor() {
     const editor = useEditor({
-        extensions: [StarterKit, Link, Underline, Color, Highlight],
+        extensions: [
+            StarterKit,
+            Link,
+            Underline,
+            Color,
+            Highlight,
+            Placeholder.configure({
+                placeholder: "Description or Type '/' for commands",
+                emptyEditorClass: styles.showEmptyEditorPlaceHolder,
+                emptyNodeClass: styles.showEmptyNodePlaceHolder
+            })
+        ],
         editorProps: {
             attributes: {
                 class: styles.ProseMirror
