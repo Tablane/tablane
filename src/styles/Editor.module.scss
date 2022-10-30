@@ -141,22 +141,28 @@
   }
 
   code {
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
+    background-color: #6161611a;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 13px;
+    color: #343434;
   }
 
   pre {
-    background: #0d0d0d;
-    color: #fff;
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 150%;
+    background: #f7f7f7;
+    color: #343434;
+    margin: 5px 0;
+    padding: 5px 10px;
     font-family: "JetBrainsMono", monospace;
-    padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
     code {
-      color: inherit;
       padding: 0;
       background: none;
-      font-size: 0.8rem;
+      font-size: 13px;
     }
   }
 
