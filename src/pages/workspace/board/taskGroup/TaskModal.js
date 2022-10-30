@@ -1,7 +1,7 @@
 import styles from '../../../../styles/TaskModal.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useInputState from '../../../../modules/hooks/useInputState'
 import WatcherPopover from './taskModal/WatcherPopover'
 import {
@@ -24,6 +24,7 @@ function TaskModal(props) {
     const [newComment, changeNewComment, resetNewComment] = useInputState('')
     const [addTaskComment] = useAddTaskCommentMutation()
     const [editTaskField] = useEditTaskFieldMutation()
+    const commentsEnd = useRef(null)
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
@@ -34,10 +35,11 @@ function TaskModal(props) {
 
     useEffect(() => {
         document.addEventListener('keydown', handleClose, false)
+        commentsEnd.current.scrollIntoView()
         return () => {
             document.removeEventListener('keydown', handleClose, false)
         }
-    })
+    }, [])
 
     const handleNameChange = e => {
         e?.preventDefault()
@@ -230,6 +232,7 @@ function TaskModal(props) {
                                 }
                                 return null
                             })}
+                            <div ref={commentsEnd}></div>
                         </div>
                         <div className={styles.commentingBar}>
                             <form onSubmit={handleAddComment}>
