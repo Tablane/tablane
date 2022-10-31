@@ -61,7 +61,9 @@ function CommentPopover({ taskId, commentId }) {
                                 <div className="w-4 mr-2 flex content-center justify-center">
                                     {item.icon}
                                 </div>
-                                <p className="text-sm leading-2">{item.name}</p>
+                                <p className="leading-4 text-sm leading-2">
+                                    {item.name}
+                                </p>
                             </div>
                         </div>
                     ))}
