@@ -591,7 +591,7 @@ export const boardApi = api.injectEndpoints({
         editReply: builder.mutation({
             query: ({ taskId, commentId }) => ({
                 url: `comment/reply/${taskId}/${commentId}`,
-                method: 'DELETE'
+                method: 'PUT'
             }),
             async onQueryStarted(
                 { content, author, taskId, boardId },
@@ -620,8 +620,8 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         deleteReply: builder.mutation({
-            query: ({ taskId, commentId }) => ({
-                url: `comment/reply/${taskId}/${commentId}`,
+            query: ({ taskId, commentId, replyId }) => ({
+                url: `comment/reply/${taskId}/${commentId}/${replyId}`,
                 method: 'DELETE'
             }),
             async onQueryStarted(

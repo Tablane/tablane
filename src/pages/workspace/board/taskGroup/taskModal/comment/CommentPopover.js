@@ -3,11 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useEffect, useRef, useState } from 'react'
 import LinkIcon from '../../../../../../styles/assets/LinkIcon'
-import { useDeleteTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
+import {
+    useDeleteReplyMutation,
+    useDeleteTaskCommentMutation
+} from '../../../../../../modules/services/boardSlice'
 
-function CommentPopover({ taskId, commentId }) {
+function CommentPopover({ taskId, commentId, type, replyId }) {
     const [open, setOpen] = useState(null)
     const [deleteComment] = useDeleteTaskCommentMutation()
+    const [deleteReply] = useDeleteReplyMutation()
     const lastEl = useRef()
 
     const items = [
@@ -28,7 +32,8 @@ function CommentPopover({ taskId, commentId }) {
     ]
 
     const handleDelete = () => {
-        deleteComment({ taskId, commentId })
+        if (type === 'comment') deleteComment({ taskId, commentId })
+        else if (type === 'reply') deleteReply({ taskId, commentId, replyId })
         setOpen(false)
     }
 

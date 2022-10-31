@@ -6,12 +6,12 @@ function CommentReplySection({ taskId, commentId, replies }) {
     const [addReply] = useAddReplyMutation()
 
     const handleAddComment = editor => {
-        console.log('add reply to comment')
         addReply({
             taskId,
             commentId,
             content: editor.getJSON()
         })
+        editor.commands.clearContent()
     }
 
     return (
@@ -19,7 +19,12 @@ function CommentReplySection({ taskId, commentId, replies }) {
             <div className="px-4 pt-7 pb-2">
                 {replies.map(reply => {
                     return (
-                        <Reply reply={reply} key={reply._id} taskId={taskId} />
+                        <Reply
+                            commentId={commentId}
+                            reply={reply}
+                            key={reply._id}
+                            taskId={taskId}
+                        />
                     )
                 })}
             </div>

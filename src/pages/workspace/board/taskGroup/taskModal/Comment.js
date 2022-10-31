@@ -56,6 +56,7 @@ function Comment({ comment, taskId }) {
                                     <span>Edit</span>
                                 </div>
                                 <CommentPopover
+                                    type="comment"
                                     taskId={taskId}
                                     commentId={comment._id}
                                 />

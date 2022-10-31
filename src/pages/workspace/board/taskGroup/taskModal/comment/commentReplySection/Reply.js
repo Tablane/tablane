@@ -5,7 +5,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
 
-function Reply({ reply, taskId }) {
+function Reply({ commentId, reply, taskId }) {
     const [editing, setEditing] = useState(false)
 
     const handleSave = () => {
@@ -47,8 +47,10 @@ function Reply({ reply, taskId }) {
                                     <span>Edit</span>
                                 </div>
                                 <CommentPopover
+                                    type="reply"
                                     taskId={taskId}
-                                    commentId={reply._id}
+                                    commentId={commentId}
+                                    replyId={reply._id}
                                 />
                             </div>
                         </div>
