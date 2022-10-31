@@ -97,6 +97,9 @@
 
   &.comment {
     border-radius: 0 0 12px 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
   }
 
   &.commendEdit {

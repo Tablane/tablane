@@ -16,14 +16,16 @@ function CommentReplySection({ taskId, commentId, replies }) {
 
     return (
         <div className="border-neutral-200 border-t border-solid">
-            <div className="px-4 py-8">
+            <div className="px-4 pt-7 pb-2">
                 {replies.map(reply => {
                     return (
                         <Reply reply={reply} key={reply._id} taskId={taskId} />
                     )
                 })}
             </div>
-            <Editor type="comment" saveComment={handleAddComment} />
+            <div className="overlapShadow relative">
+                <Editor type="comment" saveComment={handleAddComment} />
+            </div>
         </div>
     )
 }
