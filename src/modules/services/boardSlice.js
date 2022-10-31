@@ -556,6 +556,100 @@ export const boardApi = api.injectEndpoints({
                 }
             }
         }),
+        addReply: builder.mutation({
+            query: ({ taskId, commentId, content }) => ({
+                url: `comment/reply/${taskId}/${commentId}`,
+                method: 'POST',
+                body: { content }
+            }),
+            async onQueryStarted(
+                { content, author, taskId, boardId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board =>
+                            addTaskComment({
+                                board,
+                                content,
+                                author,
+                                taskId,
+                                boardId
+                            })
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
+        }),
+        editReply: builder.mutation({
+            query: ({ taskId, commentId }) => ({
+                url: `comment/reply/${taskId}/${commentId}`,
+                method: 'DELETE'
+            }),
+            async onQueryStarted(
+                { content, author, taskId, boardId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board =>
+                            addTaskComment({
+                                board,
+                                content,
+                                author,
+                                taskId,
+                                boardId
+                            })
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
+        }),
+        deleteReply: builder.mutation({
+            query: ({ taskId, commentId }) => ({
+                url: `comment/reply/${taskId}/${commentId}`,
+                method: 'DELETE'
+            }),
+            async onQueryStarted(
+                { content, author, taskId, boardId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board =>
+                            addTaskComment({
+                                board,
+                                content,
+                                author,
+                                taskId,
+                                boardId
+                            })
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
+        }),
         clearStatusTask: builder.mutation({
             query: ({ boardId, taskId, optionId }) => ({
                 url: `task/${boardId}/${taskId}/${optionId}`,
@@ -793,6 +887,9 @@ export const {
     useAddTaskCommentMutation,
     useEditTaskCommentMutation,
     useDeleteTaskCommentMutation,
+    useAddReplyMutation,
+    useEditReplyMutation,
+    useDeleteReplyMutation,
     useClearStatusTaskMutation,
     useAddAttributeMutation,
     useEditAttributeNameMutation,

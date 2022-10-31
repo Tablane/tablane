@@ -5,9 +5,11 @@ import { useState } from 'react'
 import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../modules/services/boardSlice'
 import Editor from '../../../../../utils/Editor'
+import CommentReplySection from './comment/CommentReplySection'
 
 function Comment({ comment, taskId }) {
     const [editing, setEditing] = useState(false)
+    const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
 
     const getTime = x => x
@@ -18,7 +20,6 @@ function Comment({ comment, taskId }) {
             commentId: comment._id,
             content: editor.getJSON()
         })
-        editor.commands.clearContent()
         setEditing(false)
     }
 
@@ -60,15 +61,45 @@ function Comment({ comment, taskId }) {
                                 />
                             </div>
                         </div>
-                        <Editor
-                            type="comment"
-                            readOnly={true}
-                            content={comment.content}
-                        />
-                        <div className={styles.commentFooter}>
-                            <div className={styles.like}>Like</div>
-                            <div className={styles.reply}>Reply</div>
+                        <div>
+                            <Editor
+                                type="comment"
+                                readOnly={true}
+                                content={comment.content}
+                            />
                         </div>
+                        {replySectionOpen ? (
+                            <>
+                                <CommentReplySection
+                                    replies={comment.replies}
+                                    taskId={taskId}
+                                    commentId={comment._id}
+                                />
+                                <div className="h-10 border-solid border-t flex items-center justify-center py-0 px-4 border-gray-200">
+                                    <div
+                                        className="cursor-pointer font-medium text-gray-500 text-xs"
+                                        onClick={() =>
+                                            setReplySectionOpen(false)
+                                        }
+                                    >
+                                        Collapse
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className={styles.commentFooter}>
+                                <div className={styles.like}>Like</div>
+                                <div
+                                    className={styles.reply}
+                                    onClick={() => setReplySectionOpen(true)}
+                                >
+                                    {comment.replies.length === 0 && 'Reply'}
+                                    {comment.replies.length === 1 && `1 Reply`}
+                                    {comment.replies.length > 1 &&
+                                        `${comment.replies.length} Replies`}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
