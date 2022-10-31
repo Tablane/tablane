@@ -101,7 +101,7 @@ const addTaskComment = ({ board, text, author, taskId }) => {
         text
     }
 
-    board.tasks.find(task => task._id === taskId).history.push(comment)
+    board.tasks.find(task => task._id === taskId).history.unshift(comment)
 }
 const clearStatusTask = ({ board, taskId, optionId }) => {
     const options = board.tasks.find(x => x._id.toString() === taskId).options

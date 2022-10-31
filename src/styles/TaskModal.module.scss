@@ -158,11 +158,14 @@
   box-sizing: border-box;
   padding: 0 32px;
 
+  display: flex;
+  flex-direction: column-reverse;
+
   .authorSpan {
     color: rgb(65, 105, 225);
   }
 
-  > div:first-child {
+  > div:last-child {
     margin-top: 20px;
   }
 

@@ -22,10 +22,8 @@ function TaskModal(props) {
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
     const [description, changeDescription] = useInputState(task.description)
-    const [newComment, changeNewComment, resetNewComment] = useInputState('')
     const [addTaskComment] = useAddTaskCommentMutation()
     const [editTaskField] = useEditTaskFieldMutation()
-    const commentsEnd = useRef(null)
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
@@ -36,7 +34,6 @@ function TaskModal(props) {
 
     useEffect(() => {
         document.addEventListener('keydown', handleClose, false)
-        commentsEnd.current.scrollIntoView()
         return () => {
             document.removeEventListener('keydown', handleClose, false)
         }
@@ -68,7 +65,6 @@ function TaskModal(props) {
 
     const handleAddComment = async content => {
         if (content === '') return
-        resetNewComment()
 
         await addTaskComment({
             boardId,
@@ -76,7 +72,6 @@ function TaskModal(props) {
             taskId: task._id,
             author: user.username
         }).unwrap()
-        commentsEnd.current.scrollIntoView()
     }
 
     // TODO: replace this with relativeDate component
@@ -205,20 +200,12 @@ function TaskModal(props) {
 
                                 return null
                             })}
-                            <div ref={commentsEnd}></div>
                         </div>
                         <div className={styles.commentingBar}>
                             <Editor
                                 type="comment"
                                 saveComment={handleAddComment}
                             />
-                            {/*<form onSubmit={handleAddComment}>*/}
-                            {/*    <input*/}
-                            {/*        type="text"*/}
-                            {/*        onChange={changeNewComment}*/}
-                            {/*        value={newComment}*/}
-                            {/*    />*/}
-                            {/*</form>*/}
                         </div>
                     </div>
                 </div>
