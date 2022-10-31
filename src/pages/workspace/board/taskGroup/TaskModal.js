@@ -68,7 +68,7 @@ function TaskModal(props) {
 
         await addTaskComment({
             boardId,
-            text: content,
+            content,
             taskId: task._id,
             author: user.username
         }).unwrap()
@@ -189,14 +189,16 @@ function TaskModal(props) {
                                             </p>
                                         </div>
                                     )
-                                } else if (log.type === 'comment')
+                                } else if (log.type === 'comment') {
                                     return (
                                         <Comment
+                                            taskId={task._id}
                                             key={log.timestamp}
                                             comment={log}
                                             saveComment={handleAddComment}
                                         />
                                     )
+                                }
 
                                 return null
                             })}

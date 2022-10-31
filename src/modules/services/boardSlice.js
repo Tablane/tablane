@@ -93,12 +93,12 @@ const editOptionsTask = ({ board, column, value, type, taskId }) => {
         else options.push({ column, value })
     }
 }
-const addTaskComment = ({ board, text, author, taskId }) => {
+const addTaskComment = ({ board, content, author, taskId }) => {
     const comment = {
         type: 'comment',
         author,
         timestamp: new Date().getTime(),
-        text
+        content
     }
 
     board.tasks.find(task => task._id === taskId).history.unshift(comment)
@@ -462,15 +462,13 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         addTaskComment: builder.mutation({
-            query: ({ taskId, text, boardId }) => ({
-                url: `task/${boardId}/${taskId}`,
+            query: ({ taskId, content, boardId }) => ({
+                url: `comment/${taskId}`,
                 method: 'POST',
-                body: {
-                    text
-                }
+                body: { content }
             }),
             async onQueryStarted(
-                { text, author, taskId, boardId },
+                { content, author, taskId, boardId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -480,7 +478,70 @@ export const boardApi = api.injectEndpoints({
                         board =>
                             addTaskComment({
                                 board,
-                                text,
+                                content,
+                                author,
+                                taskId,
+                                boardId
+                            })
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
+        }),
+        editTaskComment: builder.mutation({
+            query: ({ taskId, content, commentId }) => ({
+                url: `comment/${taskId}/${commentId}`,
+                method: 'PUT',
+                body: { content }
+            }),
+            async onQueryStarted(
+                { content, author, taskId, boardId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board =>
+                            addTaskComment({
+                                board,
+                                content,
+                                author,
+                                taskId,
+                                boardId
+                            })
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch {
+                    toast('Something went wrong')
+                    patchResult.undo()
+                }
+            }
+        }),
+        deleteTaskComment: builder.mutation({
+            query: ({ taskId, commentId }) => ({
+                url: `comment/${taskId}/${commentId}`,
+                method: 'DELETE'
+            }),
+            async onQueryStarted(
+                { content, author, taskId, boardId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board =>
+                            addTaskComment({
+                                board,
+                                content,
                                 author,
                                 taskId,
                                 boardId
@@ -730,6 +791,8 @@ export const {
     useSortTaskMutation,
     useEditOptionsTaskMutation,
     useAddTaskCommentMutation,
+    useEditTaskCommentMutation,
+    useDeleteTaskCommentMutation,
     useClearStatusTaskMutation,
     useAddAttributeMutation,
     useEditAttributeNameMutation,

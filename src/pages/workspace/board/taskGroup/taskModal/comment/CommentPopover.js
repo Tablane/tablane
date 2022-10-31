@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useEffect, useRef, useState } from 'react'
 import LinkIcon from '../../../../../../styles/assets/LinkIcon'
+import { useDeleteTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
 
-function CommentPopover() {
+function CommentPopover({ taskId, commentId }) {
     const [open, setOpen] = useState(null)
+    const [deleteComment] = useDeleteTaskCommentMutation()
     const lastEl = useRef()
 
     const items = [
@@ -20,9 +22,15 @@ function CommentPopover() {
                     icon={regular('trash-alt')}
                     className="text-pink-400"
                 />
-            )
+            ),
+            props: { onClick: () => handleDelete() }
         }
     ]
+
+    const handleDelete = () => {
+        deleteComment({ taskId, commentId })
+        setOpen(false)
+    }
 
     useEffect(() => {
         if (open) {
@@ -48,7 +56,7 @@ function CommentPopover() {
             >
                 <div className="py-2">
                     {items.map(item => (
-                        <div className="h-8" key={item.name}>
+                        <div className="h-8" key={item.name} {...item.props}>
                             <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
                                 <div className="w-4 mr-2 flex content-center justify-center">
                                     {item.icon}

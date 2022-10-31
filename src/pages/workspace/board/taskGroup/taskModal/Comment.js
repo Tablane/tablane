@@ -5,13 +5,20 @@ import { useState } from 'react'
 import Editor from '../../../../../utils/Editor'
 import { Button } from '@mantine/core'
 import CommentPopover from './comment/CommentPopover'
+import { useEditTaskCommentMutation } from '../../../../../modules/services/boardSlice'
 
-function Comment({ comment }) {
+function Comment({ comment, taskId }) {
     const [editing, setEditing] = useState(false)
+    const [editTaskComment] = useEditTaskCommentMutation()
 
     const getTime = x => x
 
-    const handleSave = () => {
+    const handleSave = content => {
+        editTaskComment({
+            taskId,
+            commentId: comment._id,
+            content
+        })
         setEditing(false)
     }
 
@@ -25,8 +32,9 @@ function Comment({ comment }) {
                     <>
                         <div>
                             <Editor
+                                saveComment={handleSave}
                                 type="comment-edit"
-                                content={comment.text}
+                                content={comment.content}
                             />
                         </div>
                         <div className={styles.commentEditingButtons}>
@@ -66,13 +74,16 @@ function Comment({ comment }) {
                                     <FontAwesomeIcon icon={solid('pen')} />
                                     <span>Edit</span>
                                 </div>
-                                <CommentPopover />
+                                <CommentPopover
+                                    taskId={taskId}
+                                    commentId={comment._id}
+                                />
                             </div>
                         </div>
                         <Editor
                             type="comment"
                             readOnly={true}
-                            content={comment.text}
+                            content={comment.content}
                         />
                         <div className={styles.commentFooter}>
                             <div className={styles.like}>Like</div>
