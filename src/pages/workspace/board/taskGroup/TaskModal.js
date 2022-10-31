@@ -66,17 +66,17 @@ function TaskModal(props) {
         })
     }
 
-    const handleAddComment = e => {
-        e?.preventDefault()
-        if (newComment === '') return
+    const handleAddComment = async content => {
+        if (content === '') return
         resetNewComment()
 
-        addTaskComment({
+        await addTaskComment({
             boardId,
-            text: newComment,
+            text: content,
             taskId: task._id,
             author: user.username
-        })
+        }).unwrap()
+        commentsEnd.current.scrollIntoView()
     }
 
     // TODO: replace this with relativeDate component
@@ -195,14 +195,23 @@ function TaskModal(props) {
                                         </div>
                                     )
                                 } else if (log.type === 'comment')
-                                    return <Comment comment={log} />
+                                    return (
+                                        <Comment
+                                            key={log.timestamp}
+                                            comment={log}
+                                            saveComment={handleAddComment}
+                                        />
+                                    )
 
                                 return null
                             })}
                             <div ref={commentsEnd}></div>
                         </div>
                         <div className={styles.commentingBar}>
-                            <Editor type="comment" />
+                            <Editor
+                                type="comment"
+                                saveComment={handleAddComment}
+                            />
                             {/*<form onSubmit={handleAddComment}>*/}
                             {/*    <input*/}
                             {/*        type="text"*/}

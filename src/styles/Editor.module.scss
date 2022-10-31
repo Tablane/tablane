@@ -84,6 +84,13 @@
     }
   }
 
+  &.comment {
+  }
+
+  &.commendEdit {
+    padding: 25px;
+  }
+
   &:focus p.showEmptyNodePlaceHolder::before {
     color: #adb5bd;
     content: "Type '/' for commands";

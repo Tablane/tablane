@@ -220,7 +220,6 @@
         display: flex;
         justify-content: space-between;
         flex-direction: row;
-        margin-bottom: 20px;
 
         .actions {
           display: none;
@@ -276,6 +275,17 @@
           font-size: 11px;
           color: #7c828d;
           font-weight: 500;
+        }
+      }
+
+      .commentEditingButtons {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px;
+        border-top: 1px solid #f5f5f5;
+
+        > button {
+          margin-left: 10px;
         }
       }
     }

@@ -10,51 +10,72 @@ import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Placeholder } from '@tiptap/extension-placeholder'
+import DisableEnter from './editor/Extensions'
 
-function Editor({ type }) {
+function Editor({ type, content = '', saveComment, readOnly = false }) {
+    const getPlaceholder = x => {
+        switch (x) {
+            case 'description':
+                return "Description or Type '/' for commands"
+            case 'comment':
+                return "Comment or Type '/' for commands"
+            default:
+                return ''
+        }
+    }
+    const getClass = x => {
+        switch (x) {
+            case 'description':
+                return `${styles.ProseMirror} ${styles.description}`
+            case 'comment':
+                return `${styles.ProseMirror} ${styles.comment}`
+            case 'comment-edit':
+                return `${styles.ProseMirror} ${styles.commendEdit}`
+            default:
+                return ''
+        }
+    }
+
     const editor = useEditor({
         extensions: [
             StarterKit,
+            DisableEnter.configure({
+                type,
+                saveComment
+            }),
             Link,
             Underline,
             Color,
             Highlight,
             Placeholder.configure({
-                placeholder:
-                    type === 'description'
-                        ? "Description or Type '/' for commands"
-                        : "Comment or Type '/' for commands",
-                emptyEditorClass: styles.showEmptyEditorPlaceHolder,
+                placeholder: getPlaceholder(type),
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             })
         ],
         editorProps: {
             attributes: {
-                class:
-                    type === 'description'
-                        ? `${styles.ProseMirror} ${styles.description}`
-                        : `${styles.ProseMirror} ${styles.comment}`
+                class: getClass(type)
             }
         },
-        content: `
-            <strong>Try React</strong>
-            <p>React has been designed from the start for gradual adoption, and you can use as little or as much React as you need. Whether you want to get a taste of React, add some interactivity to a simple HTML page, or start a complex React-powered app, the links in this section will help you get started.</p>
-        `
+        content
     })
 
     useEffect(() => {
         if (editor) {
             editor.setEditable(true)
+            if (readOnly) editor.setEditable(false)
         }
     }, [editor])
 
     return (
-        <>
-            {editor && (
+        <div>
+            {editor && !readOnly && (
                 <BubbleMenu
                     className={styles.bubbleMenu}
                     editor={editor}
-                    tippyOptions={{ duration: 100 }}
+                    tippyOptions={{
+                        duration: 100
+                    }}
                 >
                     <Tooltip title="Bold" placement="top" arrow>
                         <div
@@ -126,24 +147,10 @@ function Editor({ type }) {
                             <FontAwesomeIcon icon={solid('code')} />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Text color" placement="top" arrow>
-                        <div
-                            className={
-                                editor.isActive('color')
-                                    ? `${styles.textTransformButton} ${styles.active}`
-                                    : styles.textTransformButton
-                            }
-                            onClick={() =>
-                                editor.chain().focus().toggleCode().run()
-                            }
-                        >
-                            <FontAwesomeIcon icon={solid('a')} />
-                        </div>
-                    </Tooltip>
                 </BubbleMenu>
             )}
             <EditorContent editor={editor} />
-        </>
+        </div>
     )
 }
 
