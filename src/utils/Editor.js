@@ -11,8 +11,15 @@ import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import DisableEnter from './editor/Extensions'
+import { Button } from '@mantine/core'
 
-function Editor({ type, content = '', saveComment, readOnly = false }) {
+function Editor({
+    type,
+    content = '',
+    saveComment,
+    readOnly = false,
+    cancelEditing
+}) {
     const getPlaceholder = x => {
         switch (x) {
             case 'description':
@@ -150,6 +157,27 @@ function Editor({ type, content = '', saveComment, readOnly = false }) {
                 </BubbleMenu>
             )}
             <EditorContent editor={editor} />
+            {type === 'comment-edit' && (
+                <div className={styles.commentEditingButtons}>
+                    <Button
+                        size="xs"
+                        variant="outline"
+                        color="gray"
+                        uppercase
+                        onClick={cancelEditing}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        size="xs"
+                        color="indigo"
+                        uppercase
+                        onClick={() => saveComment(editor)}
+                    >
+                        Save
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

@@ -7,7 +7,6 @@ const DisableEnter = Extension.create({
                 if (['comment', 'comment-edit'].includes(this.options.type)) {
                     if (!this.editor.isEmpty) {
                         this.options.saveComment(this.editor.getJSON())
-                        this.editor.commands.clearContent()
                     }
                     return true
                 }

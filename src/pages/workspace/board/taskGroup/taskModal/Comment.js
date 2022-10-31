@@ -2,10 +2,9 @@ import styles from '../../../../../styles/TaskModal.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from 'react'
-import Editor from '../../../../../utils/Editor'
-import { Button } from '@mantine/core'
 import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../modules/services/boardSlice'
+import Editor from '../../../../../utils/Editor'
 
 function Comment({ comment, taskId }) {
     const [editing, setEditing] = useState(false)
@@ -13,12 +12,13 @@ function Comment({ comment, taskId }) {
 
     const getTime = x => x
 
-    const handleSave = content => {
+    const handleSave = editor => {
         editTaskComment({
             taskId,
             commentId: comment._id,
-            content
+            content: editor.getJSON()
         })
+        editor.commands.clearContent()
         setEditing(false)
     }
 
@@ -29,34 +29,14 @@ function Comment({ comment, taskId }) {
             </div>
             <div className={styles.commentBody}>
                 {editing ? (
-                    <>
-                        <div>
-                            <Editor
-                                saveComment={handleSave}
-                                type="comment-edit"
-                                content={comment.content}
-                            />
-                        </div>
-                        <div className={styles.commentEditingButtons}>
-                            <Button
-                                size="xs"
-                                variant="outline"
-                                color="gray"
-                                uppercase
-                                onClick={() => setEditing(false)}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                size="xs"
-                                color="indigo"
-                                uppercase
-                                onClick={handleSave}
-                            >
-                                Save
-                            </Button>
-                        </div>
-                    </>
+                    <div>
+                        <Editor
+                            saveComment={handleSave}
+                            cancelEditing={() => setEditing(false)}
+                            type="comment-edit"
+                            content={comment.content}
+                        />
+                    </div>
                 ) : (
                     <div>
                         <div className={styles.commentHeader}>

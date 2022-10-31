@@ -15,3 +15,7 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+button.mantine-UnstyledButton-root.mantine-Button-root.mantine-qo7f2y {
+  background: #4c6ef5;
+}

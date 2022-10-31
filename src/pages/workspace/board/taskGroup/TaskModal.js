@@ -1,7 +1,7 @@
 import styles from '../../../../styles/TaskModal.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useInputState from '../../../../modules/hooks/useInputState'
 import WatcherPopover from './taskModal/WatcherPopover'
 import {
@@ -11,8 +11,8 @@ import {
 import { useFetchUserQuery } from '../../../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import Editor from '../../../../utils/Editor'
 import Comment from './taskModal/Comment'
+import Editor from '../../../../utils/Editor'
 
 function TaskModal(props) {
     const navigate = useNavigate()
