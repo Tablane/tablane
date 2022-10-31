@@ -291,14 +291,15 @@
           margin-left: 10px;
         }
       }
-    }
 
-    &:hover {
-      .date {
-        display: none;
-      }
-      .commentHeader .actions {
-        display: flex;
+      &:focus,
+      &:hover {
+        .date {
+          display: none;
+        }
+        .commentHeader .actions {
+          display: flex;
+        }
       }
     }
   }

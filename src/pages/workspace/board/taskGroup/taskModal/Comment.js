@@ -4,6 +4,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from 'react'
 import Editor from '../../../../../utils/Editor'
 import { Button } from '@mantine/core'
+import CommentPopover from './comment/CommentPopover'
 
 function Comment({ comment }) {
     const [editing, setEditing] = useState(false)
@@ -65,9 +66,7 @@ function Comment({ comment }) {
                                     <FontAwesomeIcon icon={solid('pen')} />
                                     <span>Edit</span>
                                 </div>
-                                <div>
-                                    <FontAwesomeIcon icon={solid('ellipsis')} />
-                                </div>
+                                <CommentPopover />
                             </div>
                         </div>
                         <Editor
