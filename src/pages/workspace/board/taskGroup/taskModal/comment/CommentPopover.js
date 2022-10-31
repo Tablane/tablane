@@ -1,11 +1,12 @@
 import { Popover } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LinkIcon from '../../../../../../styles/assets/LinkIcon'
 
 function CommentPopover() {
     const [open, setOpen] = useState(null)
+    const lastEl = useRef()
 
     const items = [
         {
@@ -22,6 +23,14 @@ function CommentPopover() {
             )
         }
     ]
+
+    useEffect(() => {
+        if (open) {
+            open.parentNode.parentNode.dataset.active = Boolean(open)
+            lastEl.current = open
+        } else if (lastEl.current)
+            lastEl.current.parentNode.parentNode.dataset.active = Boolean(open)
+    }, [open])
 
     return (
         <>
