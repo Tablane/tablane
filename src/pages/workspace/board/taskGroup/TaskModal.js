@@ -63,15 +63,16 @@ function TaskModal(props) {
         })
     }
 
-    const handleAddComment = async content => {
-        if (content === '') return
+    const handleAddComment = async editor => {
+        if (editor.getJSON() === '') return
 
         await addTaskComment({
             boardId,
-            content,
+            content: editor.getJSON(),
             taskId: task._id,
             author: user.username
         }).unwrap()
+        editor.commands.clearContent()
     }
 
     // TODO: replace this with relativeDate component
