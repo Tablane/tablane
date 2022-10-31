@@ -4,12 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
+import { useEditReplyMutation } from '../../../../../../../modules/services/boardSlice'
 
 function Reply({ commentId, reply, taskId }) {
     const [editing, setEditing] = useState(false)
+    const [editReply] = useEditReplyMutation()
 
-    const handleSave = () => {
-        console.log('save reply edit')
+    const handleSave = editor => {
+        editReply({
+            taskId,
+            commentId,
+            replyId: reply._id,
+            content: editor.getJSON()
+        })
+        setEditing(false)
     }
 
     const getTime = x => x

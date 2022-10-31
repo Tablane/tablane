@@ -589,9 +589,10 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         editReply: builder.mutation({
-            query: ({ taskId, commentId }) => ({
-                url: `comment/reply/${taskId}/${commentId}`,
-                method: 'PUT'
+            query: ({ taskId, replyId, content }) => ({
+                url: `comment/reply/${taskId}/${replyId}`,
+                method: 'PUT',
+                body: { content }
             }),
             async onQueryStarted(
                 { content, author, taskId, boardId },
