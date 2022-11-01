@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Comment from './taskModal/Comment'
 import Editor from '../../../../utils/Editor'
+import DescriptionEditor from '../../../../utils/DescriptionEditor'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -162,7 +163,7 @@ function TaskModal(props) {
                             onSubmit={handleDescriptionChange}
                             className={styles.description}
                         >
-                            <Editor type="description" />
+                            <DescriptionEditor taskId={task._id} />
                         </form>
                     </div>
                     <div className={styles.divider}></div>
