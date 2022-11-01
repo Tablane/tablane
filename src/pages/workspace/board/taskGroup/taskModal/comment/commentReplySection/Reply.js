@@ -12,6 +12,7 @@ function Reply({ commentId, reply, taskId, boardId }) {
 
     const handleSave = editor => {
         editReply({
+            boardId,
             taskId,
             commentId,
             replyId: reply._id,

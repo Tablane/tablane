@@ -114,6 +114,32 @@ const deleteTaskComment = ({ board, taskId, commentId }) => {
     const task = board.tasks.find(task => task._id === taskId)
     task.history = task.history.filter(x => x._id !== commentId)
 }
+const addReply = ({ board, content, author, taskId, commentId }) => {
+    const reply = {
+        type: 'reply',
+        author,
+        timestamp: new Date().getTime(),
+        content
+    }
+
+    board.tasks
+        .find(task => task._id === taskId)
+        .history.find(x => x._id === commentId)
+        .replies.push(reply)
+}
+const editReply = ({ board, content, taskId, commentId, replyId }) => {
+    const reply = board.tasks
+        .find(task => task._id === taskId)
+        .history.find(x => x._id === commentId)
+        .replies.find(x => x._id === replyId)
+    reply.content = content
+}
+const deleteReply = ({ board, taskId, commentId, replyId }) => {
+    const comment = board.tasks
+        .find(task => task._id === taskId)
+        .history.find(x => x._id === commentId)
+    comment.replies = comment.replies.filter(x => x._id !== replyId)
+}
 const clearStatusTask = ({ board, taskId, optionId }) => {
     const options = board.tasks.find(x => x._id.toString() === taskId).options
 
@@ -571,7 +597,7 @@ export const boardApi = api.injectEndpoints({
                 body: { content }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { content, author, taskId, boardId, commentId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -579,12 +605,13 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board =>
-                            addTaskComment({
+                            addReply({
                                 board,
                                 content,
                                 author,
                                 taskId,
-                                boardId
+                                boardId,
+                                commentId
                             })
                     )
                 )
@@ -603,7 +630,7 @@ export const boardApi = api.injectEndpoints({
                 body: { content }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { content, taskId, boardId, commentId, replyId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -611,12 +638,12 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board =>
-                            addTaskComment({
+                            editReply({
                                 board,
                                 content,
-                                author,
                                 taskId,
-                                boardId
+                                commentId,
+                                replyId
                             })
                     )
                 )
@@ -634,7 +661,7 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { taskId, boardId, replyId, commentId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -642,12 +669,12 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board =>
-                            addTaskComment({
+                            deleteReply({
                                 board,
-                                content,
-                                author,
+                                commentId,
                                 taskId,
-                                boardId
+                                boardId,
+                                replyId
                             })
                     )
                 )

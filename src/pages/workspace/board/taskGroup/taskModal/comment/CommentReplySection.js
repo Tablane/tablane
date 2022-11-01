@@ -1,13 +1,17 @@
 import Editor from '../../../../../../utils/Editor'
 import { useAddReplyMutation } from '../../../../../../modules/services/boardSlice'
 import Reply from './commentReplySection/Reply'
+import { useFetchUserQuery } from '../../../../../../modules/services/userSlice'
 
 function CommentReplySection({ taskId, commentId, replies, boardId }) {
+    const { data: user } = useFetchUserQuery()
     const [addReply] = useAddReplyMutation()
 
     const handleAddComment = editor => {
         addReply({
+            boardId,
             taskId,
+            author: user.username,
             commentId,
             content: editor.getJSON()
         })
