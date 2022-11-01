@@ -98,10 +98,21 @@ const addTaskComment = ({ board, content, author, taskId }) => {
         type: 'comment',
         author,
         timestamp: new Date().getTime(),
-        content
+        content,
+        replies: []
     }
 
     board.tasks.find(task => task._id === taskId).history.unshift(comment)
+}
+const editTaskComment = ({ board, content, taskId, commentId }) => {
+    const comment = board.tasks
+        .find(task => task._id === taskId)
+        .history.find(x => x._id === commentId)
+    comment.content = content
+}
+const deleteTaskComment = ({ board, taskId, commentId }) => {
+    const task = board.tasks.find(task => task._id === taskId)
+    task.history = task.history.filter(x => x._id !== commentId)
 }
 const clearStatusTask = ({ board, taskId, optionId }) => {
     const options = board.tasks.find(x => x._id.toString() === taskId).options
@@ -500,7 +511,7 @@ export const boardApi = api.injectEndpoints({
                 body: { content }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { content, taskId, boardId, commentId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -508,12 +519,11 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board =>
-                            addTaskComment({
+                            editTaskComment({
                                 board,
                                 content,
-                                author,
                                 taskId,
-                                boardId
+                                commentId
                             })
                     )
                 )
@@ -531,7 +541,7 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { taskId, boardId, commentId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -539,12 +549,10 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board =>
-                            addTaskComment({
+                            deleteTaskComment({
                                 board,
-                                content,
-                                author,
                                 taskId,
-                                boardId
+                                commentId
                             })
                     )
                 )

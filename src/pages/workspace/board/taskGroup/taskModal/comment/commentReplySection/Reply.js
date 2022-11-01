@@ -6,7 +6,7 @@ import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
 import { useEditReplyMutation } from '../../../../../../../modules/services/boardSlice'
 
-function Reply({ commentId, reply, taskId }) {
+function Reply({ commentId, reply, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
     const [editReply] = useEditReplyMutation()
 
@@ -55,6 +55,7 @@ function Reply({ commentId, reply, taskId }) {
                                     <span>Edit</span>
                                 </div>
                                 <CommentPopover
+                                    boardId={boardId}
                                     type="reply"
                                     taskId={taskId}
                                     commentId={commentId}

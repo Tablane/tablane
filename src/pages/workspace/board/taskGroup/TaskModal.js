@@ -193,6 +193,7 @@ function TaskModal(props) {
                                 } else if (log.type === 'comment') {
                                     return (
                                         <Comment
+                                            boardId={boardId}
                                             taskId={task._id}
                                             key={log.timestamp}
                                             comment={log}

@@ -7,7 +7,7 @@ import { useEditTaskCommentMutation } from '../../../../../modules/services/boar
 import Editor from '../../../../../utils/Editor'
 import CommentReplySection from './comment/CommentReplySection'
 
-function Comment({ comment, taskId }) {
+function Comment({ comment, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
@@ -16,6 +16,7 @@ function Comment({ comment, taskId }) {
 
     const handleSave = editor => {
         editTaskComment({
+            boardId,
             taskId,
             commentId: comment._id,
             content: editor.getJSON()
@@ -56,6 +57,7 @@ function Comment({ comment, taskId }) {
                                     <span>Edit</span>
                                 </div>
                                 <CommentPopover
+                                    boardId={boardId}
                                     type="comment"
                                     taskId={taskId}
                                     commentId={comment._id}
@@ -72,6 +74,7 @@ function Comment({ comment, taskId }) {
                         {replySectionOpen ? (
                             <>
                                 <CommentReplySection
+                                    boardId={boardId}
                                     replies={comment.replies}
                                     taskId={taskId}
                                     commentId={comment._id}

@@ -2,7 +2,7 @@ import Editor from '../../../../../../utils/Editor'
 import { useAddReplyMutation } from '../../../../../../modules/services/boardSlice'
 import Reply from './commentReplySection/Reply'
 
-function CommentReplySection({ taskId, commentId, replies }) {
+function CommentReplySection({ taskId, commentId, replies, boardId }) {
     const [addReply] = useAddReplyMutation()
 
     const handleAddComment = editor => {
@@ -20,6 +20,7 @@ function CommentReplySection({ taskId, commentId, replies }) {
                 {replies.map(reply => {
                     return (
                         <Reply
+                            boardId={boardId}
                             commentId={commentId}
                             reply={reply}
                             key={reply._id}

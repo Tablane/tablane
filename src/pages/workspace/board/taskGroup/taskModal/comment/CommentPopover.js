@@ -8,7 +8,7 @@ import {
     useDeleteTaskCommentMutation
 } from '../../../../../../modules/services/boardSlice'
 
-function CommentPopover({ taskId, commentId, type, replyId }) {
+function CommentPopover({ taskId, commentId, type, replyId, boardId }) {
     const [open, setOpen] = useState(null)
     const [deleteComment] = useDeleteTaskCommentMutation()
     const [deleteReply] = useDeleteReplyMutation()
@@ -32,8 +32,9 @@ function CommentPopover({ taskId, commentId, type, replyId }) {
     ]
 
     const handleDelete = () => {
-        if (type === 'comment') deleteComment({ taskId, commentId })
-        else if (type === 'reply') deleteReply({ taskId, commentId, replyId })
+        if (type === 'comment') deleteComment({ boardId, taskId, commentId })
+        else if (type === 'reply')
+            deleteReply({ boardId, taskId, commentId, replyId })
         setOpen(false)
     }
 
