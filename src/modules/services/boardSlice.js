@@ -2,6 +2,7 @@ import { api } from './api'
 import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
 import socket from '../../socket/socket'
+import handleQueryError from '../../utils/handleQueryError'
 
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
@@ -333,9 +334,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -369,9 +369,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -397,9 +396,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -421,9 +419,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -456,9 +453,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -492,9 +488,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -524,9 +519,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -555,9 +549,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -584,9 +577,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -617,9 +609,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -649,9 +640,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -680,9 +670,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -704,9 +693,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -729,9 +717,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -754,9 +741,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -778,9 +764,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -803,9 +788,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -828,9 +812,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -853,9 +836,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -878,9 +860,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -903,9 +884,8 @@ export const boardApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         })
