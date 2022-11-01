@@ -1,5 +1,5 @@
 import { api } from './api'
-import { toast } from 'react-hot-toast'
+import handleQueryError from '../../utils/handleQueryError'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -36,9 +36,8 @@ export const notificationApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -66,9 +65,8 @@ export const notificationApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         })

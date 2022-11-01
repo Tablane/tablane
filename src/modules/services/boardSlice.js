@@ -299,7 +299,9 @@ export const boardApi = api.injectEndpoints({
                                 console.log('unknown update:', event)
                         }
                     })
-                } catch {}
+                } catch (err) {
+                    handleQueryError({ err })
+                }
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', boardId)
             },

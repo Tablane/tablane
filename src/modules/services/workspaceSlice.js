@@ -1,6 +1,7 @@
 import { api } from './api'
 import { toast } from 'react-hot-toast'
 import socket from '../../socket/socket'
+import handleQueryError from '../../utils/handleQueryError'
 
 const addBoard = data => {
     const { workspace, workspaceId, spaceId, name, _id } = data
@@ -117,7 +118,9 @@ export const workspaceApi = api.injectEndpoints({
                                 console.log('unknown update:', event)
                         }
                     })
-                } catch {}
+                } catch (err) {
+                    handleQueryError({ err })
+                }
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', workspaceId)
             }
@@ -156,8 +159,7 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch (err) {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -181,9 +183,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -206,9 +207,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -231,9 +231,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -256,9 +255,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -281,9 +279,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -305,9 +302,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -330,9 +326,8 @@ export const workspaceApi = api.injectEndpoints({
                 )
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
-                    patchResult.undo()
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
                 }
             }
         }),
@@ -346,8 +341,8 @@ export const workspaceApi = api.injectEndpoints({
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         }),
@@ -361,8 +356,8 @@ export const workspaceApi = api.injectEndpoints({
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     await queryFulfilled
-                } catch {
-                    toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         }),
@@ -377,9 +372,8 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                     toast('User invited')
-                } catch ({ error }) {
-                    if (error?.data?.message) toast(error.data.message)
-                    else toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         }),
@@ -393,9 +387,8 @@ export const workspaceApi = api.injectEndpoints({
                 try {
                     await queryFulfilled
                     toast('User removed')
-                } catch ({ error }) {
-                    if (error?.data?.message) toast(error.data.message)
-                    else toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         }),
@@ -409,9 +402,8 @@ export const workspaceApi = api.injectEndpoints({
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     await queryFulfilled
-                } catch ({ error }) {
-                    if (error?.data?.message) toast(error.data.message)
-                    else toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         }),
@@ -425,9 +417,8 @@ export const workspaceApi = api.injectEndpoints({
             async onQueryStarted(arg, { queryFulfilled }) {
                 try {
                     await queryFulfilled
-                } catch ({ error }) {
-                    if (error?.data?.message) toast(error.data.message)
-                    else toast('Something went wrong')
+                } catch (err) {
+                    handleQueryError({ err })
                 }
             }
         })
