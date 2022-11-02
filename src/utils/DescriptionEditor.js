@@ -13,9 +13,13 @@ import { Placeholder } from '@tiptap/extension-placeholder'
 import { Button } from '@mantine/core'
 import Collaboration from '@tiptap/extension-collaboration'
 import { HocuspocusProvider } from '@hocuspocus/provider'
-import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor'
 import { useFetchUserQuery } from '../modules/services/userSlice'
 import * as Y from 'yjs'
+import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor'
+import { Mention } from '@tiptap/extension-mention'
+import suggestion from './editor/suggestion'
+import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
+import { useParams } from 'react-router-dom'
 
 function Editor({
     taskId,
@@ -25,7 +29,9 @@ function Editor({
     readOnly = false,
     cancelEditing
 }) {
+    const params = useParams()
     const { data: user } = useFetchUserQuery()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
 
     const [document] = useState(() => {
         return new Y.Doc()
@@ -53,7 +59,7 @@ function Editor({
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             }),
             Collaboration.configure({
-                document: document
+                document
             }),
             CollaborationCursor.configure({
                 provider,
@@ -61,6 +67,12 @@ function Editor({
                     name: user.username,
                     color: '#4169e1'
                 }
+            }),
+            Mention.configure({
+                HTMLAttributes: {
+                    class: styles.mention
+                },
+                suggestion: suggestion(workspace.members)
             })
         ],
         editorProps: {
