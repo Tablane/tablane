@@ -98,14 +98,14 @@ function Settings() {
                     >
                         Integrations
                     </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/billing`}
-                    >
-                        Upgrade
-                    </NavLink>
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/billing`}*/}
+                    {/*>*/}
+                    {/*    Upgrade*/}
+                    {/*</NavLink>*/}
                     <NavLink
                         className={({ isActive }) =>
                             isActive ? styles.active : ''
@@ -177,7 +177,7 @@ function Settings() {
                     <Route path={`/import`} element={<Import />} />
                     <Route path={`/apps`} element={<Apps />} />
                     <Route path={`/integrations`} element={<Integrations />} />
-                    <Route path={`/billing`} element={<Billing />} />
+                    {/*<Route path={`/billing`} element={<Billing />} />*/}
                     <Route path={`/trash`} element={<Trash />} />
                     <Route path={`/permissions`} element={<Permissions />} />
 
