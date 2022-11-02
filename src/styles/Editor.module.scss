@@ -138,6 +138,15 @@
   ul,
   ol {
     padding: 0 1rem;
+    list-style-position: outside;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
   }
 
   h1,

@@ -32,36 +32,12 @@ function Editor({
     })
 
     const [provider] = useState(() => {
-        const provider = new HocuspocusProvider({
+        return new HocuspocusProvider({
             document,
             url: process.env.REACT_APP_REALTIME_EDITING_WEBSOCKET,
             name: taskId
         })
-        return provider
     })
-
-    const getPlaceholder = x => {
-        switch (x) {
-            case 'description':
-                return "Description or Type '/' for commands"
-            case 'comment':
-                return "Comment or Type '/' for commands"
-            default:
-                return ''
-        }
-    }
-    const getClass = x => {
-        switch (x) {
-            case 'description':
-                return `${styles.ProseMirror} ${styles.description}`
-            case 'comment':
-                return `${styles.ProseMirror} ${styles.comment}`
-            case 'comment-edit':
-                return `${styles.ProseMirror} ${styles.commendEdit}`
-            default:
-                return ''
-        }
-    }
 
     const editor = useEditor({
         extensions: [
@@ -73,7 +49,7 @@ function Editor({
             Color,
             Highlight,
             Placeholder.configure({
-                placeholder: getPlaceholder(type),
+                placeholder: "Description or Type '/' for commands",
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             }),
             Collaboration.configure({
@@ -89,7 +65,7 @@ function Editor({
         ],
         editorProps: {
             attributes: {
-                class: getClass(type)
+                class: `${styles.ProseMirror} ${styles.description}`
             }
         },
         content
