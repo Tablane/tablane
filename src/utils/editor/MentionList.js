@@ -1,3 +1,4 @@
+import styles from '../../styles/Editor.module.scss'
 import React, {
     forwardRef,
     useEffect,
@@ -12,7 +13,7 @@ export default forwardRef((props, ref) => {
         const item = props.items[index]
 
         if (item) {
-            props.command({ id: item })
+            props.command({ id: item.username })
         }
     }
 
@@ -54,21 +55,31 @@ export default forwardRef((props, ref) => {
     }))
 
     return (
-        <div className="items">
+        <div
+            className={`bg-white rounded overflow-hidden px-0 py-1 w-80 ${styles.mentionItemsShadow}`}
+        >
             {props.items.length ? (
-                props.items.map((item, index) => (
-                    <button
-                        className={`item ${
-                            index === selectedIndex ? 'is-selected' : ''
-                        }`}
-                        key={index}
-                        onClick={() => selectItem(index)}
-                    >
-                        {item.username}
-                    </button>
-                ))
+                <>
+                    <div className="flex px-3 mt-1 mb-2 leading-4 text-black-200 text-xs font-medium tracking-widest">
+                        <span className="uppercase">People</span>
+                    </div>
+                    {props.items.map((item, index) => (
+                        <div
+                            className={`h-7 cursor-pointer mx-1 text-left rounded hover:bg-stone-700/10 text-sm flex items-center ${
+                                index === selectedIndex ? 'bg-stone-700/10' : ''
+                            }`}
+                            key={index}
+                            onClick={() => selectItem(index)}
+                            onMouseEnter={() => setSelectedIndex(index)}
+                        >
+                            <span className="ml-2">{item.username}</span>
+                        </div>
+                    ))}
+                </>
             ) : (
-                <div className="item">No result</div>
+                <div className="flex px-3 mt-1 mb-2 leading-4 text-black-200 text-xs font-medium tracking-widest">
+                    <span className="uppercase">No Results</span>
+                </div>
             )}
         </div>
     )

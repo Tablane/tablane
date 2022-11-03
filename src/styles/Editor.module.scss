@@ -97,9 +97,11 @@
 
   &.comment {
     border-radius: 0 0 12px 0;
-    height: 60px;
     display: flex;
     align-items: center;
+    min-height: 60px;
+    max-height: 600px;
+    overflow-y: auto;
   }
 
   &.commendEdit {
@@ -202,8 +204,19 @@
 }
 
 .mention {
-  border: 1px solid #000;
-  border-radius: 0.4rem;
-  box-decoration-break: clone;
-  padding: 0.1rem 0.3rem;
+  color: #4169e1;
+  margin: 0 1px;
+  font-weight: 400;
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+
+  &:hover {
+    background: #f2f2f2;
+  }
+}
+
+.mentionItemsShadow {
+  box-shadow: rgb(15 15 15 / 5%) 0 0 0 1px, rgb(15 15 15 / 10%) 0 3px 6px,
+    rgb(15 15 15 / 20%) 0 9px 24px;
 }
