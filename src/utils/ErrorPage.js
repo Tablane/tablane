@@ -8,9 +8,9 @@ function ErrorPage(props) {
         <div className={styles.container}>
             <p className={styles.title}>Something went wrong</p>
             {error.status === 'FETCH_ERROR' ? (
-                <p>Cannot connect to server</p>
+                <p className="m-4">Cannot connect to server</p>
             ) : (
-                <p>{JSON.stringify(error, null, 2)}</p>
+                <p className="m-4">{JSON.stringify(error, null, 2)}</p>
             )}
         </div>
     )
