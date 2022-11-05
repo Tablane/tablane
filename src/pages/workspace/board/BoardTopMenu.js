@@ -24,7 +24,7 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
     return (
         <div className="TopMenu">
             <div>
-                <div className="details">
+                <div className="details flex justify-start items-center h-full pl-4">
                     {sideBarClosed && (
                         <FontAwesomeIcon
                             icon={solid('angle-double-right')}
@@ -38,7 +38,7 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
                         <h1>{board?.name || '...'}</h1>
                     </div>
                 </div>
-                <div>
+                <div className="pr-4">
                     <button className="share" onClick={toggleShareDialogOpen}>
                         <FontAwesomeIcon icon={solid('share-alt')} />
                         <p>Share</p>
