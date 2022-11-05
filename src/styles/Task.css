@@ -229,17 +229,17 @@
 }
 
 .task-popover .colors {
-  display: flex;
+  display: grid;
+  grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
   background-color: #f5f6f8;
-  flex-wrap: wrap;
   padding: 8px 16px;
 }
 
 .task-popover .colors > div {
   cursor: pointer;
   padding: 4px;
-  width: 18px;
-  height: 18px;
+  width: 26px;
+  height: 26px;
 }
 
 .task-popover .colors > div > div {
@@ -254,7 +254,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 31px;
+  height: 47px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
