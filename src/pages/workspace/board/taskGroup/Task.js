@@ -301,6 +301,20 @@ function Task(props) {
                     task={props.task}
                 />
             )}
+            <div className="ml-5">
+                {props.task?.subtasks.map((subtask, i) => {
+                    return (
+                        <Task
+                            groupedTasks={props.groupedTasks}
+                            board={props.board}
+                            key={subtask._id}
+                            task={subtask}
+                            index={i}
+                            taskGroupId={props.taskGroupId}
+                        />
+                    )
+                })}
+            </div>
         </>
     )
 }
