@@ -1,15 +1,31 @@
 .Task {
-  background-color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid white;
+  justify-content: flex-start;
   cursor: pointer !important;
 }
 
-.Task:hover {
-  background-color: #fafbfc;
+.Task:hover .batch-select-checkbox {
+  opacity: 1;
+}
+
+.batch-select-checkbox:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background: #4169e1;
+  opacity: 0;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.batch-select-checkbox:checked,
+.batch-select-checkbox:checked:after {
+  opacity: 1;
 }
 
 .Task[data-rbd-drag-handle-context-id] {
@@ -54,7 +70,6 @@
 .Task > div {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
 }
 

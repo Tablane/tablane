@@ -52,7 +52,7 @@ function TaskGroup(props) {
     return (
         <div className="task my-7 font-normal">
             <div className="title ml-4">
-                <div>
+                <div className="flex-grow flex-shrink-0 basis-[400px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
                             !collapsed ? '-rotate-90' : ''
@@ -134,7 +134,7 @@ function TaskGroup(props) {
             <Droppable droppableId={props.taskGroupId} type="task">
                 {provided => (
                     <div
-                        className="tasks ml-4 bg-white"
+                        className="tasks ml-4"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
@@ -154,7 +154,7 @@ function TaskGroup(props) {
                     </div>
                 )}
             </Droppable>
-            <form onSubmit={handleAddTask} className="ml-4">
+            <form onSubmit={handleAddTask} className="ml-9">
                 <div className="new-task">
                     <input
                         type="text"

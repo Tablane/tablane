@@ -28,6 +28,7 @@ function Task(props) {
     const [moreDialogOpen, setMoreDialogOpen] = useState(false)
     const [editOptionsTask] = useEditOptionsTaskMutation()
     const [editTaskField] = useEditTaskFieldMutation()
+    const [batchSelect, setBatchSelect] = useState(false)
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -216,46 +217,89 @@ function Task(props) {
             >
                 {provided => (
                     <div
-                        className={`Task ${taskEditing ? 'editing' : ''}`}
+                        className={`Task border-r-2 border-white ${
+                            taskEditing ? 'editing' : ''
+                        } ${
+                            props.task.level === 0 && props.index === 0
+                                ? 'rounded-sm'
+                                : ''
+                        } ${props.task.level}`}
                         {...provided.draggableProps}
                         onClick={openTaskModal}
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                     >
-                        {taskEditing ? (
-                            <form
-                                onSubmit={handleTaskEdit}
-                                onBlur={handleTaskEdit}
-                            >
-                                <input
-                                    type={taskName}
-                                    onKeyUp={e => {
-                                        if (e.key === 'Escape')
-                                            e.currentTarget.blur()
+                        <div
+                            className="self-stretch"
+                            onClick={() => setBatchSelect(!batchSelect)}
+                        >
+                            <input
+                                type="checkbox"
+                                defaultValue={batchSelect}
+                                className="opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle"
+                            />
+                        </div>
+                        <div
+                            style={{
+                                flex: '1 0 400px',
+                                textOverflow: 'ellipsis',
+                                minWidth: '400px'
+                            }}
+                            className={`bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start ${
+                                props.task.level === 0 && props.index === 0
+                                    ? 'border-t-2 border-white'
+                                    : ''
+                            }`}
+                        >
+                            {taskEditing ? (
+                                <form
+                                    onSubmit={handleTaskEdit}
+                                    onBlur={handleTaskEdit}
+                                    style={{
+                                        paddingLeft:
+                                            props.task.level * 32 + 'px'
                                     }}
-                                    value={taskName}
-                                    onChange={changeTaskName}
-                                    name="taskName"
-                                    autoFocus
-                                />
-                            </form>
-                        ) : (
-                            <div>
-                                <p className="taskName text-sm">
-                                    {props.task.name}
-                                </p>
-                                <QuickActionsToolbar
-                                    taskGroupId={props.taskGroupId}
-                                    groupedTasks={props.groupedTasks}
-                                    board={props.board}
-                                    task={props.task}
-                                    handleTaskEdit={handleTaskEdit}
-                                />
-                            </div>
-                        )}
+                                >
+                                    <input
+                                        type={taskName}
+                                        onKeyUp={e => {
+                                            if (e.key === 'Escape')
+                                                e.currentTarget.blur()
+                                        }}
+                                        value={taskName}
+                                        onChange={changeTaskName}
+                                        name="taskName"
+                                        autoFocus
+                                    />
+                                </form>
+                            ) : (
+                                <div
+                                    className="flex flex-row"
+                                    style={{
+                                        paddingLeft:
+                                            props.task.level * 32 + 'px'
+                                    }}
+                                >
+                                    <p className="taskName text-sm">
+                                        {props.task.name}
+                                    </p>
+                                    <QuickActionsToolbar
+                                        taskGroupId={props.taskGroupId}
+                                        groupedTasks={props.groupedTasks}
+                                        board={props.board}
+                                        task={props.task}
+                                        handleTaskEdit={handleTaskEdit}
+                                    />
+                                </div>
+                            )}
+                        </div>
                         <div
                             onClick={e => e.stopPropagation()}
-                            className="taskAttr"
+                            className={`taskAttr ml-auto border-b border-white ${
+                                props.task.level === 0 && props.index === 0
+                                    ? 'border-t-2'
+                                    : ''
+                            }`}
                         >
                             {props.board.attributes.map(attribute => {
                                 if (attribute.type === 'status')
@@ -303,7 +347,7 @@ function Task(props) {
                     task={props.task}
                 />
             )}
-            <div className="ml-5">
+            <div className="">
                 {props.task?.subtasks.map((subtask, i) => {
                     return (
                         <Task

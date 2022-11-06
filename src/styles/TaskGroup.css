@@ -36,7 +36,7 @@
   display: none;
 }
 
-.task .title div,
+.task .title .attributes div,
 .task .title .attributes {
   display: flex;
   justify-content: center;
@@ -73,12 +73,6 @@
   cursor: auto;
   display: flex;
   flex-direction: row;
-}
-
-.tasks {
-  border: 2px solid white;
-  border-bottom: none;
-  border-radius: 0 2px 0 0;
 }
 
 .task .new-task {

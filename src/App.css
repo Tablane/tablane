@@ -8,6 +8,7 @@
 .App > div:last-of-type {
   flex-grow: 1;
   transition: 0.2s ease-in-out;
+  overflow: auto;
 }
 
 .App > div {
