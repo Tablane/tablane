@@ -61,14 +61,16 @@ function TaskGroup(props) {
                         onClick={() => setCollapsed(!collapsed)}
                     />
                     <div
-                        className="taskGroup-title"
+                        className="taskGroup-title h-6"
                         style={{ backgroundColor: props.color }}
                     >
                         <p style={{ color: !props.name && '' }}>
                             {props.name || 'Empty'}
                         </p>
                     </div>
-                    <p className="task-amount">{props.tasks.length} TASKS</p>
+                    <p className="task-amount font-medium text-xs text-adb3bd">
+                        {props.tasks.length} TASKS
+                    </p>
                 </div>
                 <Droppable
                     droppableId={props.taskGroupId + 'attribute'}
@@ -103,6 +105,7 @@ function TaskGroup(props) {
                                                 </p>
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
+                                                    className="cursor-pointer"
                                                     onClick={e =>
                                                         handleAttributePopover(
                                                             e,
@@ -131,7 +134,7 @@ function TaskGroup(props) {
             <Droppable droppableId={props.taskGroupId} type="task">
                 {provided => (
                     <div
-                        className="tasks ml-4"
+                        className="tasks ml-4 bg-white"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
