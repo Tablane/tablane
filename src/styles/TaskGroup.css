@@ -1,15 +1,7 @@
-.task {
-  margin-bottom: 25px;
-}
-
 .task .title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.task .title p {
-  margin: 0;
 }
 
 .task .title .taskGroup-title {

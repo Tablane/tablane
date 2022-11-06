@@ -241,7 +241,9 @@ function Task(props) {
                             </form>
                         ) : (
                             <div>
-                                <p className="taskName">{props.task.name}</p>
+                                <p className="taskName text-sm">
+                                    {props.task.name}
+                                </p>
                                 <QuickActionsToolbar
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}

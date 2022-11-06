@@ -19,7 +19,7 @@ function Board(props) {
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [groupedTasks, setGroupedTasks] = useState([])
     const { data: board, error, isFetching } = useFetchBoardQuery(props.boardId)
-    const [collapsed, setCollapsed] = useState(false)
+    const [collapsed, setCollapsed] = useState(true)
 
     const groupTasks = useMemo(() => {
         if (!board) return
@@ -137,10 +137,9 @@ function Board(props) {
                                 onClick={() => setCollapsed(!collapsed)}
                             >
                                 <ExpandCircleIcon
-                                    className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform ${
+                                    className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform fill-bcc0c7 ${
                                         !collapsed ? '-rotate-90' : ''
                                     }`}
-                                    style={{ fill: '#bcc0c7' }}
                                 />
                                 <span>{board.name}</span>
                                 <span className="text-xs ml-2 text-bcc0c7 font-normal uppercase">

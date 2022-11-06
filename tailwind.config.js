@@ -9,7 +9,8 @@ module.exports = {
                 backgroundGrey: '#eee',
                 borderGrey: '#7f7f7f0f',
                 bcc0c7: '#bcc0c7',
-                bcc0c74d: '#bcc0c74d'
+                bcc0c74d: '#bcc0c74d',
+                adb3bd: '#adb3bd'
             }
         }
     },

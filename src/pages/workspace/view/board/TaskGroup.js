@@ -10,10 +10,12 @@ import { useFetchUserQuery } from '../../../../modules/services/userSlice'
 import { useAddTaskMutation } from '../../../../modules/services/boardSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
 
 function TaskGroup(props) {
     const { data: user } = useFetchUserQuery()
     const [addTask] = useAddTaskMutation()
+    const [collapsed, setCollapsed] = useState(false)
 
     // new task input
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
@@ -47,9 +49,16 @@ function TaskGroup(props) {
     }
 
     return (
-        <div className="task">
-            <div className="title">
+        <div className="task my-7 font-normal">
+            <div className="title ml-4">
                 <div>
+                    <ExpandCircleIcon
+                        className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
+                            !collapsed ? '-rotate-90' : ''
+                        }`}
+                        style={{ fill: props.color }}
+                        onClick={() => setCollapsed(!collapsed)}
+                    />
                     <div
                         className="taskGroup-title"
                         style={{ backgroundColor: props.color }}
@@ -80,7 +89,7 @@ function TaskGroup(props) {
                                     >
                                         {provided => (
                                             <div
-                                                className="attribute"
+                                                className="attribute font-medium"
                                                 ref={provided.innerRef}
                                                 {...provided.dragHandleProps}
                                                 {...provided.draggableProps}
@@ -88,7 +97,9 @@ function TaskGroup(props) {
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
                                                 />
-                                                <p>{x.name}</p>
+                                                <p className="text-xs text-adb3bd">
+                                                    {x.name}
+                                                </p>
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
                                                     onClick={e =>
@@ -119,7 +130,7 @@ function TaskGroup(props) {
             <Droppable droppableId={props.taskGroupId} type="task">
                 {provided => (
                     <div
-                        className="tasks"
+                        className="tasks ml-4"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
@@ -139,7 +150,7 @@ function TaskGroup(props) {
                     </div>
                 )}
             </Droppable>
-            <form onSubmit={handleAddTask}>
+            <form onSubmit={handleAddTask} className="ml-4">
                 <div className="new-task">
                     <input
                         type="text"
