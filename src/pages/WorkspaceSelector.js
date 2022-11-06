@@ -68,7 +68,7 @@ function WorkspaceSelector({ noPadding }) {
                                 <div className={styles.avatar}>
                                     <p>{x.name.charAt(0).toUpperCase()}</p>
                                 </div>
-                                <p>{x.name}</p>
+                                <p className={styles.name}>{x.name}</p>
                             </div>
                         </Link>
                     ))}
