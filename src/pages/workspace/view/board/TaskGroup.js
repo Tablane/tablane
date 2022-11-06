@@ -11,6 +11,7 @@ import { useAddTaskMutation } from '../../../../modules/services/boardSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
+import PlusIcon from '../../../../styles/assets/PlusIcon'
 
 function TaskGroup(props) {
     const { data: user } = useFetchUserQuery()
@@ -116,11 +117,11 @@ function TaskGroup(props) {
                             })}
                             {provided.placeholder}
                             <div className="attribute">
-                                <p>
-                                    <FontAwesomeIcon
-                                        icon={solid('plus-circle')}
-                                        onClick={handleAddNewAttribute}
-                                    />
+                                <p
+                                    onClick={handleAddNewAttribute}
+                                    className="cursor-pointer"
+                                >
+                                    <PlusIcon className="h-4 text-adb3bd" />
                                 </p>
                             </div>
                         </div>
