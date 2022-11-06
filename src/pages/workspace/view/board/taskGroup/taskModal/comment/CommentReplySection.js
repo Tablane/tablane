@@ -1,7 +1,7 @@
-import Editor from '../../../../../../utils/Editor'
-import { useAddReplyMutation } from '../../../../../../modules/services/boardSlice'
+import Editor from '../../../../../../../utils/Editor'
+import { useAddReplyMutation } from '../../../../../../../modules/services/boardSlice'
 import Reply from './commentReplySection/Reply'
-import { useFetchUserQuery } from '../../../../../../modules/services/userSlice'
+import { useFetchUserQuery } from '../../../../../../../modules/services/userSlice'
 
 function CommentReplySection({ taskId, commentId, replies, boardId }) {
     const { data: user } = useFetchUserQuery()

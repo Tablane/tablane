@@ -1,36 +1,25 @@
-import { useCallback, useMemo, useState } from 'react'
-import '../../styles/Board.css'
+import { useMemo, useState } from 'react'
+import '../../../styles/Board.css'
 import TaskGroup from './board/TaskGroup'
 import { DragDropContext } from '@hello-pangea/dnd'
-import { LinearProgress } from '@mui/material'
 import _ from 'lodash'
 import { Navigate, useParams } from 'react-router-dom'
-import BoardTopMenu from './board/BoardTopMenu'
-import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
+import { useFetchWorkspaceQuery } from '../../../modules/services/workspaceSlice'
 import {
     useFetchBoardQuery,
     useSortAttributeMutation,
     useSortTaskMutation
-} from '../../modules/services/boardSlice'
-import { toast } from 'react-hot-toast'
+} from '../../../modules/services/boardSlice'
+import ExpandCircleIcon from '../../../styles/assets/ExpandCircleIcon'
 
 function Board(props) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-
     const [groupedTasks, setGroupedTasks] = useState([])
-
-    const findBoardId = useCallback(() => {
-        const space = params.space.replaceAll('-', ' ')
-        const board = params.board.replaceAll('-', ' ')
-        return workspace?.spaces
-            .find(x => x.name === space)
-            ?.boards.find(x => x.name === board)?._id
-    }, [params.space, params.board, workspace?.spaces, workspace])
-    const boardId = findBoardId()
-    const { data: board, error, isFetching } = useFetchBoardQuery(boardId)
+    const { data: board, error, isFetching } = useFetchBoardQuery(props.boardId)
+    const [collapsed, setCollapsed] = useState(false)
 
     const groupTasks = useMemo(() => {
         if (!board) return
@@ -131,34 +120,39 @@ function Board(props) {
         }
     }
 
-    if (error) {
+    if (error && !isFetching) {
         return <Navigate to={`/${workspace.id}`} />
     }
     return (
-        <>
-            <BoardTopMenu
-                board={board}
-                toggleSideBar={props.toggleSideBar}
-                sideBarClosed={!props.sidebarOpen}
-            />
-            <div className="Board">
-                <div>
-                    {isFetching ? (
-                        <LinearProgress />
-                    ) : (
-                        <div className="loading-placeholder"></div>
-                    )}
-                    {!isFetching && board && (
-                        <DragDropContext
-                            onDragEnd={handleDragEnd}
-                            onDragStart={onDragStart}
-                        >
-                            <div className="task-group">{groupTasks}</div>
-                        </DragDropContext>
-                    )}
-                </div>
-            </div>
-        </>
+        <div className="pb-0 pt-2 pr-6 pl-8">
+            {!isFetching && board && (
+                <DragDropContext
+                    onDragEnd={handleDragEnd}
+                    onDragStart={onDragStart}
+                >
+                    <div className="border border-borderGrey rounded-md font-medium">
+                        <div className="px-4 h-9 flex justify-content items-center">
+                            <div
+                                className="flex justify-content items-center px-1 rounded cursor-pointer hover:bg-bcc0c74d"
+                                onClick={() => setCollapsed(!collapsed)}
+                            >
+                                <ExpandCircleIcon
+                                    className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform ${
+                                        !collapsed ? '-rotate-90' : ''
+                                    }`}
+                                    style={{ fill: '#bcc0c7' }}
+                                />
+                                <span>{board.name}</span>
+                                <span className="text-xs ml-2 text-bcc0c7 font-normal uppercase">
+                                    {board.tasks.length} tasks
+                                </span>
+                            </div>
+                        </div>
+                        {collapsed && <div className="px-4">{groupTasks}</div>}
+                    </div>
+                </DragDropContext>
+            )}
+        </div>
     )
 }
 

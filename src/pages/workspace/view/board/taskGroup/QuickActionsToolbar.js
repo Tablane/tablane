@@ -1,7 +1,7 @@
-import styles from '../../../../styles/QuickActionsToolBar.module.scss'
+import styles from '../../../../../styles/QuickActionsToolBar.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useSortTaskMutation } from '../../../../modules/services/boardSlice'
+import { useSortTaskMutation } from '../../../../../modules/services/boardSlice'
 
 function QuickActionsToolbar({
     handleTaskEdit,

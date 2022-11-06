@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
-import { ObjectId } from '../../../../../utils'
+import { ObjectId } from '../../../../../../utils'
 import _ from 'lodash'
 import {
     useClearStatusTaskMutation,
     useEditAttributeLabelsMutation,
     useEditOptionsTaskMutation
-} from '../../../../../modules/services/boardSlice'
+} from '../../../../../../modules/services/boardSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 

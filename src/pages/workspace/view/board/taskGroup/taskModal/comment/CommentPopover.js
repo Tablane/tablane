@@ -2,11 +2,11 @@ import { Popover } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useEffect, useRef, useState } from 'react'
-import LinkIcon from '../../../../../../styles/assets/LinkIcon'
+import LinkIcon from '../../../../../../../styles/assets/LinkIcon'
 import {
     useDeleteReplyMutation,
     useDeleteTaskCommentMutation
-} from '../../../../../../modules/services/boardSlice'
+} from '../../../../../../../modules/services/boardSlice'
 
 function CommentPopover({ taskId, commentId, type, replyId, boardId }) {
     const [open, setOpen] = useState(null)

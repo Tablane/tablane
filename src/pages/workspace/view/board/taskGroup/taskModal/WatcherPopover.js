@@ -1,12 +1,12 @@
 import { Popover } from '@mui/material'
-import styles from '../../../../../styles/WatcherPopover.module.scss'
-import useInputState from '../../../../../modules/hooks/useInputState'
+import styles from '../../../../../../styles/WatcherPopover.module.scss'
+import useInputState from '../../../../../../modules/hooks/useInputState'
 import {
     useAddWatcherMutation,
     useRemoveWatcherMutation
-} from '../../../../../modules/services/boardSlice'
-import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
-import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
+} from '../../../../../../modules/services/boardSlice'
+import { useFetchUserQuery } from '../../../../../../modules/services/userSlice'
+import { useFetchWorkspaceQuery } from '../../../../../../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'

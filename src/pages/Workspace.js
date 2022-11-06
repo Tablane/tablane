@@ -1,6 +1,6 @@
 import { Route, Routes, useParams } from 'react-router-dom'
 import SideBar from './workspace/SideBar'
-import Board from './workspace/Board'
+import Board from './workspace/view/Board'
 import Home from './workspace/Home'
 import { CircularProgress } from '@mui/material'
 import useLocalStorageState from '../modules/hooks/useLocalStorageState'
@@ -9,6 +9,7 @@ import WorkspaceNotFound from './workspace/WorkspaceNotFound'
 import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import FunctionAndNavigate from '../utils/FunctionAndNavigate'
 import { toast } from 'react-hot-toast'
+import View from './workspace/View'
 
 function Workspace(props) {
     const params = useParams()
@@ -48,7 +49,9 @@ function Workspace(props) {
                     <Route
                         path="/:space/:board"
                         element={
-                            <Board
+                            <View
+                                view="list"
+                                level="list"
                                 sidebarOpen={sidebarOpen}
                                 toggleSideBar={toggleSideBar}
                             />
@@ -57,7 +60,9 @@ function Workspace(props) {
                     <Route
                         path="/:space/:board/:taskId"
                         element={
-                            <Board
+                            <View
+                                view="list"
+                                level="list"
                                 sidebarOpen={sidebarOpen}
                                 toggleSideBar={toggleSideBar}
                             />

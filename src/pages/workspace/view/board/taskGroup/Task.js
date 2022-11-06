@@ -1,18 +1,18 @@
 import { Fragment, useState } from 'react'
-import '../../../../styles/Task.css'
+import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
 import { Draggable } from '@hello-pangea/dnd'
 import TaskPopover from './task/TaskPopover'
-import useInputState from '../../../../modules/hooks/useInputState'
+import useInputState from '../../../../../modules/hooks/useInputState'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import PersonColumnPopover from './task/PersonColumnPopover'
 import { Tooltip } from '@mui/material'
-import { useFetchWorkspaceQuery } from '../../../../modules/services/workspaceSlice'
+import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import {
     useEditOptionsTaskMutation,
     useEditTaskFieldMutation
-} from '../../../../modules/services/boardSlice'
+} from '../../../../../modules/services/boardSlice'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import QuickActionsToolbar from './QuickActionsToolbar'

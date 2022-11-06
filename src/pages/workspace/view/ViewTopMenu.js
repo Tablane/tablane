@@ -5,8 +5,10 @@ import GroupByPopover from '../topMenu/GroupByPopover'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useFetchBoardQuery } from '../../../modules/services/boardSlice'
 
-function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
+function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
+    const { data: board } = useFetchBoardQuery(boardId)
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
 
@@ -73,4 +75,4 @@ function BoardTopMenu({ board, sideBarClosed, toggleSideBar }) {
     )
 }
 
-export default BoardTopMenu
+export default ViewTopMenu

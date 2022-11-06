@@ -1,10 +1,10 @@
-import styles from '../../../../../../../styles/TaskModal.module.scss'
-import Editor from '../../../../../../../utils/Editor'
+import styles from '../../../../../../../../styles/TaskModal.module.scss'
+import Editor from '../../../../../../../../utils/Editor'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
-import { useEditReplyMutation } from '../../../../../../../modules/services/boardSlice'
+import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice'
 
 function Reply({ commentId, reply, taskId, boardId }) {
     const [editing, setEditing] = useState(false)

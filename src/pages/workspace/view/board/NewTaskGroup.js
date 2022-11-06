@@ -1,9 +1,9 @@
 import { Component } from 'react'
-import '../../../styles/TaskGroup.css'
+import '../../../../styles/TaskGroup.css'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import { connect } from 'react-redux'
 import { addTaskGroup } from '../../../modules/state/reducers/boardReducer'
-import { ObjectId } from '../../../utils'
+import { ObjectId } from '../../../../utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 

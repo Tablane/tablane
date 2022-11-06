@@ -1,10 +1,10 @@
-import styles from '../../../../../styles/TaskModal.module.scss'
+import styles from '../../../../../../styles/TaskModal.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from 'react'
 import CommentPopover from './comment/CommentPopover'
-import { useEditTaskCommentMutation } from '../../../../../modules/services/boardSlice'
-import Editor from '../../../../../utils/Editor'
+import { useEditTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
+import Editor from '../../../../../../utils/Editor'
 import CommentReplySection from './comment/CommentReplySection'
 
 function Comment({ comment, taskId, boardId }) {

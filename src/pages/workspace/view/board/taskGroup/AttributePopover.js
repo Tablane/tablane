@@ -8,11 +8,11 @@ import {
     DialogTitle
 } from '@mui/material'
 import Button from '@mui/material/Button'
-import '../../../../styles/AttributePopover.css'
+import '../../../../../styles/AttributePopover.css'
 import {
     useDeleteAttributeMutation,
     useEditAttributeNameMutation
-} from '../../../../modules/services/boardSlice'
+} from '../../../../../modules/services/boardSlice'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
