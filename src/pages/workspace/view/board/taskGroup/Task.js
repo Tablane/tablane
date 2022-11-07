@@ -225,7 +225,6 @@ function Task(props) {
                                 : ''
                         } ${props.task.level}`}
                         {...provided.draggableProps}
-                        onClick={openTaskModal}
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                     >
@@ -245,7 +244,8 @@ function Task(props) {
                                 textOverflow: 'ellipsis',
                                 minWidth: '400px'
                             }}
-                            className={`bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start ${
+                            onClick={openTaskModal}
+                            className={`bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2 border-white'
                                     : ''
