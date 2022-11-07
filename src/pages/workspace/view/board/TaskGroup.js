@@ -105,7 +105,7 @@ function TaskGroup(props) {
                                                 </p>
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
-                                                    className="cursor-pointer"
+                                                    className="cursor-pointer text-[#b9bec7] hover:text-[#7c828d]"
                                                     onClick={e =>
                                                         handleAttributePopover(
                                                             e,
