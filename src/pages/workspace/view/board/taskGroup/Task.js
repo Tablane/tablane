@@ -234,7 +234,8 @@ function Task(props) {
                         >
                             <input
                                 type="checkbox"
-                                defaultValue={batchSelect}
+                                checked={batchSelect}
+                                readOnly
                                 className="opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle"
                             />
                         </div>
