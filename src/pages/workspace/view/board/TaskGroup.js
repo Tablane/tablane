@@ -52,7 +52,7 @@ function TaskGroup(props) {
     return (
         <div className="task my-7 font-normal">
             <div className="title ml-4">
-                <div className="flex-grow flex-shrink-0 basis-[400px] flex justify-start items-center">
+                <div className="sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[400px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
                             !collapsed ? '-rotate-90' : ''
@@ -154,8 +154,11 @@ function TaskGroup(props) {
                     </div>
                 )}
             </Droppable>
-            <form onSubmit={handleAddTask} className="ml-9">
-                <div className="new-task">
+            <form
+                onSubmit={handleAddTask}
+                className="ml-9 sticky left-0 new-task-form"
+            >
+                <div className="new-task w-full">
                     <input
                         type="text"
                         placeholder="+ New Task"

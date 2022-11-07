@@ -75,6 +75,11 @@
   flex-direction: row;
 }
 
+.task .new-task-form {
+  /*max-width: calc(100vw - 41px);*/
+  /*width: 100%;*/
+}
+
 .task .new-task {
   border: 2px solid white;
   background-color: #eee;

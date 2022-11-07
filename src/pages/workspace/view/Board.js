@@ -124,7 +124,7 @@ function Board(props) {
         return <Navigate to={`/${workspace.id}`} />
     }
     return (
-        <div className="pb-0 pt-2 pl-8">
+        <div className="min-w-fit pb-0 pt-2 pl-8">
             {!isFetching && board && (
                 <DragDropContext
                     onDragEnd={handleDragEnd}
@@ -133,7 +133,7 @@ function Board(props) {
                     <div className="border border-borderGrey rounded-md font-medium mr-6">
                         <div className="px-4 h-9 flex justify-content items-center">
                             <div
-                                className="flex justify-content items-center px-1 rounded cursor-pointer hover:bg-bcc0c74d"
+                                className="left-0 sticky flex justify-content items-center px-1 rounded cursor-pointer hover:bg-bcc0c74d"
                                 onClick={() => setCollapsed(!collapsed)}
                             >
                                 <ExpandCircleIcon
