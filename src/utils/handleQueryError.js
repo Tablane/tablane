@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast'
 
-function handleQueryError({ err }) {
+function handleQueryError({ err, silent = false }) {
     if (err.error.status === 'FETCH_ERROR') {
         toast('Cannot connect to server')
     } else if (
@@ -12,7 +12,7 @@ function handleQueryError({ err }) {
         toast(err.error.data.message)
     } else if (err.error.data.silentError) {
         return true
-    } else {
+    } else if (!silent) {
         console.log(err)
         toast('Something went wrong')
     }

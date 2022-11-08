@@ -890,6 +890,16 @@ export const boardApi = api.injectEndpoints({
                     if (handleQueryError({ err })) patchResult.undo()
                 }
             }
+        }),
+        fetchSharedBoard: builder.query({
+            query: boardId => `board/share/${boardId}`,
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    handleQueryError({ err, silent: true })
+                }
+            }
         })
     })
 })
@@ -916,5 +926,6 @@ export const {
     useEditAttributeLabelsMutation,
     useAddWatcherMutation,
     useRemoveWatcherMutation,
-    useSetSharingMutation
+    useSetSharingMutation,
+    useFetchSharedBoardQuery
 } = boardApi
