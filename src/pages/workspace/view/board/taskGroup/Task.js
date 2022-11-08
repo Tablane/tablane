@@ -228,32 +228,35 @@ function Task(props) {
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                     >
-                        <div
-                            className="self-stretch"
-                            onClick={() => setBatchSelect(!batchSelect)}
-                        >
-                            <input
-                                type="checkbox"
-                                checked={batchSelect}
-                                readOnly
-                                className="opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle"
-                            />
-                        </div>
+                        {!taskEditing && (
+                            <div
+                                className={`self-stretch`}
+                                onClick={() => setBatchSelect(!batchSelect)}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={batchSelect}
+                                    readOnly
+                                    className="opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle"
+                                />
+                            </div>
+                        )}
                         <div
                             onClick={openTaskModal}
                             className={`min-w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2 border-white'
                                     : ''
-                            }`}
+                            } ${taskEditing ? 'ml-[20px]' : ''}`}
                         >
                             {taskEditing ? (
                                 <form
                                     onSubmit={handleTaskEdit}
                                     onBlur={handleTaskEdit}
+                                    className="text-[14px] border-t border-white"
                                     style={{
                                         paddingLeft:
-                                            props.task.level * 32 + 'px'
+                                            props.task.level * 32 + 15 + 'px'
                                     }}
                                 >
                                     <input

@@ -36,12 +36,17 @@
   border-bottom: none;
 }
 
-.Task.editing {
-  background-color: #fafbfc;
+.Task.editing form {
+  height: 100%;
+  width: 100%;
 }
 
 .Task.editing input {
   color: #4169e1;
+  background: #fafbfc;
+  height: 100%;
+  width: 100%;
+  outline: none;
 }
 
 .taskName {
