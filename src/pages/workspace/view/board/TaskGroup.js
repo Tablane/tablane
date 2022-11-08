@@ -158,16 +158,17 @@ function TaskGroup(props) {
                 onSubmit={handleAddTask}
                 className="ml-9 sticky left-0 new-task-form"
             >
-                <div className="new-task w-full">
+                <div className="new-task w-full justify-between">
                     <input
                         type="text"
                         placeholder="+ New Task"
                         value={newTaskName}
                         name="newTask"
+                        className="sticky left-0 w-[calc(100vw_-_200px)]"
                         onChange={changeNewTaskName}
                     />
                     <button
-                        className={`opacity-0 ${
+                        className={`opacity-0 sticky right-[25px] ${
                             newTaskName ? 'opacity-100' : ''
                         }`}
                     >

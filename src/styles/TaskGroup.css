@@ -98,8 +98,6 @@
 .task .new-task input {
   background-color: transparent;
   outline: none;
-  border: none;
-  flex-grow: 1;
   padding: 0 20px;
 }
 
