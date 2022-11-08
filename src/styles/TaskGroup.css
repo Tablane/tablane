@@ -6,7 +6,6 @@
 
 .task .title .taskGroup-title {
   background-color: #579bfc;
-  border-radius: 3px 3px 0 0;
   color: white;
   padding: 4px 8px;
   font-size: 0.8em;
@@ -36,8 +35,7 @@
   display: none;
 }
 
-.task .title .attributes div,
-.task .title .attributes {
+.task .title .attributes div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,17 +65,6 @@
 
 .task .title .attributes > div:last-of-type {
   width: 40px;
-}
-
-.task .title > div {
-  cursor: auto;
-  display: flex;
-  flex-direction: row;
-}
-
-.task .new-task-form {
-  /*max-width: calc(100vw - 41px);*/
-  /*width: 100%;*/
 }
 
 .task .new-task {

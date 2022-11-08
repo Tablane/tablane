@@ -55,13 +55,15 @@ function TaskGroup(props) {
                 <div className="sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[220px] sm:basis-[420px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
-                            !collapsed ? '-rotate-90' : ''
+                            collapsed ? '-rotate-90' : ''
                         }`}
                         style={{ fill: props.color }}
                         onClick={() => setCollapsed(!collapsed)}
                     />
                     <div
-                        className="taskGroup-title h-6"
+                        className={`taskGroup-title h-6 rounded-[3px] ${
+                            collapsed ? '' : 'rounded-b-none'
+                        }`}
                         style={{ backgroundColor: props.color }}
                     >
                         <p style={{ color: !props.name && '' }}>
@@ -79,7 +81,9 @@ function TaskGroup(props) {
                 >
                     {provided => (
                         <div
-                            className="attributes"
+                            className={`attributes flex justify-center items-center ${
+                                collapsed ? 'hidden' : ''
+                            }`}
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
@@ -131,51 +135,55 @@ function TaskGroup(props) {
                     )}
                 </Droppable>
             </div>
-            <Droppable droppableId={props.taskGroupId} type="task">
-                {provided => (
-                    <div
-                        className="tasks ml-4"
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
+            {!collapsed && (
+                <>
+                    <Droppable droppableId={props.taskGroupId} type="task">
+                        {provided => (
+                            <div
+                                className="tasks ml-4"
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {props.tasks.map((task, i) => {
+                                    return (
+                                        <Task
+                                            groupedTasks={props.groupedTasks}
+                                            board={props.board}
+                                            key={task._id}
+                                            task={task}
+                                            index={i}
+                                            taskGroupId={props.taskGroupId}
+                                        />
+                                    )
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                    <form
+                        onSubmit={handleAddTask}
+                        className="ml-9 sticky left-0 new-task-form"
                     >
-                        {props.tasks.map((task, i) => {
-                            return (
-                                <Task
-                                    groupedTasks={props.groupedTasks}
-                                    board={props.board}
-                                    key={task._id}
-                                    task={task}
-                                    index={i}
-                                    taskGroupId={props.taskGroupId}
-                                />
-                            )
-                        })}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-            <form
-                onSubmit={handleAddTask}
-                className="ml-9 sticky left-0 new-task-form"
-            >
-                <div className="new-task w-full justify-between">
-                    <input
-                        type="text"
-                        placeholder="+ New Task"
-                        value={newTaskName}
-                        name="newTask"
-                        className="sticky left-0 w-[calc(100vw_-_200px)]"
-                        onChange={changeNewTaskName}
-                    />
-                    <button
-                        className={`opacity-0 sticky right-[25px] ${
-                            newTaskName ? 'opacity-100' : ''
-                        }`}
-                    >
-                        SAVE
-                    </button>
-                </div>
-            </form>
+                        <div className="new-task w-full justify-between">
+                            <input
+                                type="text"
+                                placeholder="+ New Task"
+                                value={newTaskName}
+                                name="newTask"
+                                className="sticky left-0 w-[calc(100vw_-_200px)]"
+                                onChange={changeNewTaskName}
+                            />
+                            <button
+                                className={`opacity-0 sticky right-[25px] ${
+                                    newTaskName ? 'opacity-100' : ''
+                                }`}
+                            >
+                                SAVE
+                            </button>
+                        </div>
+                    </form>
+                </>
+            )}
 
             <AttributePopover
                 boardId={props.board._id}
