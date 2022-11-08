@@ -63,13 +63,22 @@ function QuickActionsToolbar({
 
     return (
         <div className={styles.quickActionsToolbar}>
-            <div className="quickActionItem" onClick={handleEditClick}>
+            <div
+                className="quickActionItem text-[#7c828d]"
+                onClick={handleEditClick}
+            >
                 <FontAwesomeIcon icon={solid('pen')} />
             </div>
-            <div className="quickActionItem" onClick={handleMoveTopClick}>
+            <div
+                className="quickActionItem text-[#7c828d]"
+                onClick={handleMoveTopClick}
+            >
                 <FontAwesomeIcon icon={solid('arrow-up')} />
             </div>
-            <div className="quickActionItem" onClick={handleMoveBottomClick}>
+            <div
+                className="quickActionItem text-[#7c828d]"
+                onClick={handleMoveBottomClick}
+            >
                 <FontAwesomeIcon icon={solid('arrow-down')} />
             </div>
         </div>
