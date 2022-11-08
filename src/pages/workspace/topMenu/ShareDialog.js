@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTitle, Switch } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { toast } from 'react-hot-toast'
-import axios from 'axios'
 import styles from '../../../styles/ShareDialog.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
