@@ -50,8 +50,8 @@ function TaskGroup(props) {
     }
 
     return (
-        <div className="task my-7 font-normal">
-            <div className="title ml-4">
+        <div className="task mb-7 font-normal">
+            <div className="title ml-4 sticky top-0 z-10 pt-6 bg-[#eee]">
                 <div className="sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[420px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
