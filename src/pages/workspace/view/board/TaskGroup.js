@@ -170,7 +170,7 @@ function TaskGroup(props) {
                                 placeholder="+ New Task"
                                 value={newTaskName}
                                 name="newTask"
-                                className="sticky left-0 w-[calc(100vw_-_200px)]"
+                                className="sticky left-0 w-[calc(100vw_-_380px)]"
                                 onChange={changeNewTaskName}
                             />
                             <button
