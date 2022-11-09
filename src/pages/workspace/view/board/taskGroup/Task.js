@@ -404,6 +404,8 @@ function Task(props) {
                 })}
                 {newTaskOpen && (
                     <NewTaskForm
+                        board={props.board}
+                        taskId={props.task._id}
                         setNewTaskOpen={setNewTaskOpen}
                         level={props.task.level}
                     />

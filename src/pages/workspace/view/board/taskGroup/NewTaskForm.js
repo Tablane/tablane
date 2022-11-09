@@ -1,11 +1,21 @@
 import { ObjectId } from '../../../../../utils'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
-import { useAddTaskMutation } from '../../../../../modules/services/boardSlice'
+import {
+    useAddSubtaskMutation,
+    useAddTaskMutation
+} from '../../../../../modules/services/boardSlice'
 
-function NewTaskForm({ board, taskGroupId, level = -1, setNewTaskOpen }) {
+function NewTaskForm({
+    board,
+    taskGroupId,
+    level = -1,
+    setNewTaskOpen,
+    taskId
+}) {
     const { data: user } = useFetchUserQuery()
     const [addTask] = useAddTaskMutation()
+    const [addSubtask] = useAddSubtaskMutation()
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
 
     const handleAddTask = async e => {
@@ -22,7 +32,11 @@ function NewTaskForm({ board, taskGroupId, level = -1, setNewTaskOpen }) {
     }
 
     const handleSubTask = () => {
-        console.log('add subtask')
+        addSubtask({
+            boardId: board._id,
+            newTaskName,
+            taskId
+        })
     }
 
     const handleBlur = () => {

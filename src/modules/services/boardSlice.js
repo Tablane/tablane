@@ -306,6 +306,7 @@ export const boardApi = api.injectEndpoints({
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', boardId)
             },
+            providesTags: board => (board ? [board._id] : []),
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled
@@ -901,6 +902,31 @@ export const boardApi = api.injectEndpoints({
                     handleQueryError({ err, silent: true })
                 }
             }
+        }),
+        addSubtask: builder.mutation({
+            query: ({ boardId, newTaskName, taskId }) => ({
+                url: `task/${boardId}/${taskId}`,
+                method: 'POST',
+                body: { name: newTaskName }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.boardId],
+            async onQueryStarted(
+                { boardId, newTaskName, taskGroupId, _id, author },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board => {}
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
+                }
+            }
         })
     })
 })
@@ -928,5 +954,6 @@ export const {
     useAddWatcherMutation,
     useRemoveWatcherMutation,
     useSetSharingMutation,
-    useFetchSharedBoardQuery
+    useFetchSharedBoardQuery,
+    useAddSubtaskMutation
 } = boardApi
