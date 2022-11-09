@@ -251,14 +251,18 @@ function Task(props) {
                         <div
                             onClick={openTaskModal}
                             className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
-                                props.task.level > 0 ? 'subtask' : ''
+                                props.task.level > 0
+                                    ? `subtask before:ml-[${
+                                          12 + props.task.level * 32 - 32
+                                      }px]`
+                                    : ''
                             } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2 border-white'
                                     : ''
                             } ${
                                 props.task.subtasks.length > 0
-                                    ? 'subtaskCollapse'
+                                    ? 'subtaskWithSubtasks'
                                     : ''
                             } ${taskEditing ? 'ml-[20px]' : ''}`}
                         >
@@ -269,11 +273,18 @@ function Task(props) {
                                         ? 'cursor-pointer'
                                         : 'hidden'
                                 }`}
+                                style={{
+                                    marginLeft: props.task.level * 32 + 'px'
+                                }}
                             >
                                 <FontAwesomeIcon
                                     icon={solid('caret-down')}
                                     className={`transition-transform ${
                                         collapsed ? '-rotate-90' : ''
+                                    } ${
+                                        props.task.subtasks.length > 0
+                                            ? 'subtaskWithSubtasks'
+                                            : ''
                                     }`}
                                 />
                             </div>

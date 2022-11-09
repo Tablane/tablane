@@ -71,7 +71,6 @@
   border-bottom-left-radius: 6px;
   border-left: 1px solid #e9ebf0;
   border-bottom: 1px solid #e9ebf0;
-  margin-left: 12px;
   z-index: 5;
   margin-top: 0;
   bottom: 50%;
@@ -81,6 +80,10 @@
 
 .subtask.subtaskNotFirst::before {
   height: 150%;
+}
+
+.subtask.subtaskWithSubtasks::before {
+  width: 20px;
 }
 
 .Task > form > input {
