@@ -72,7 +72,7 @@ function QuickActionsToolbar({
     return (
         <div className={styles.quickActionsToolbar}>
             {level <= 7 && (
-                <Tooltip title="Create subtask">
+                <Tooltip title="Create subtask" placement="top" arrow>
                     <div
                         className="quickActionItem text-[#7c828d]"
                         onClick={handleSubtaskClick}
@@ -81,7 +81,7 @@ function QuickActionsToolbar({
                     </div>
                 </Tooltip>
             )}
-            <Tooltip title="Rename">
+            <Tooltip title="Rename" placement="top" arrow>
                 <div
                     className="quickActionItem text-[#7c828d]"
                     onClick={handleEditClick}
@@ -89,7 +89,7 @@ function QuickActionsToolbar({
                     <FontAwesomeIcon icon={solid('pen')} />
                 </div>
             </Tooltip>
-            <Tooltip title="Move up">
+            <Tooltip title="Move up" placement="top" arrow>
                 <div
                     className="quickActionItem text-[#7c828d]"
                     onClick={handleMoveTopClick}
@@ -97,7 +97,7 @@ function QuickActionsToolbar({
                     <FontAwesomeIcon icon={solid('arrow-up')} />
                 </div>
             </Tooltip>
-            <Tooltip title="Move down">
+            <Tooltip title="Move down" placement="top" arrow>
                 <div
                     className="quickActionItem text-[#7c828d]"
                     onClick={handleMoveBottomClick}
