@@ -90,6 +90,7 @@ function SideBar(props) {
 
     const spaceClick = (space, e) => {
         e.preventDefault()
+        e.stopPropagation()
         setSpacePopoverAnchor(e.currentTarget)
         setPopoverSpace(space)
     }
@@ -102,7 +103,9 @@ function SideBar(props) {
         setSpacePopoverAnchor(null)
     }
 
-    const handleNewBoardClick = space => {
+    const handleNewBoardClick = (space, e) => {
+        e.stopPropagation()
+        if (spacesClosed.includes(space._id)) toggleClosed(space._id)
         setNewBoardSpace(space._id)
         resetNewBoardName()
     }
@@ -223,6 +226,7 @@ function SideBar(props) {
                         <div
                             className="space-title"
                             {...provided.dragHandleProps}
+                            onClick={() => toggleClosed(space._id)}
                         >
                             <div>
                                 <FontAwesomeIcon
@@ -234,7 +238,7 @@ function SideBar(props) {
                                     icon={solid('caret-right')}
                                 />
                             </div>
-                            <div onClick={() => toggleClosed(space._id)}>
+                            <div>
                                 <div className="space-icon">
                                     {space.name.charAt(0).toUpperCase()}
                                 </div>
@@ -259,15 +263,21 @@ function SideBar(props) {
                                     <p>{space.name}</p>
                                 )}
                             </div>
-                            <div>
-                                <FontAwesomeIcon
-                                    onClick={e => spaceClick(space, e)}
-                                    icon={solid('ellipsis-h')}
-                                />
-                                <FontAwesomeIcon
-                                    onClick={() => handleNewBoardClick(space)}
-                                    icon={solid('plus')}
-                                />
+                            <div className="flex flex-row">
+                                <div className="h-full w-5 flex justify-center items-center">
+                                    <FontAwesomeIcon
+                                        onClick={e => spaceClick(space, e)}
+                                        icon={solid('ellipsis-h')}
+                                    />
+                                </div>
+                                <div className="h-full w-5 flex justify-center items-center">
+                                    <FontAwesomeIcon
+                                        onClick={e =>
+                                            handleNewBoardClick(space, e)
+                                        }
+                                        icon={solid('plus')}
+                                    />
+                                </div>
                             </div>
                         </div>
 
