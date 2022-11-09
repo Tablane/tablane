@@ -39,6 +39,10 @@ function NewTaskForm({
         })
     }
 
+    const handleKeyUp = e => {
+        if (['Escape'].includes(e.key)) handleBlur()
+    }
+
     const handleBlur = () => {
         if (level >= 0) setNewTaskOpen(false)
     }
@@ -46,6 +50,7 @@ function NewTaskForm({
     return (
         <form
             onSubmit={handleAddTask}
+            onKeyUp={handleKeyUp}
             onBlur={handleBlur}
             style={{
                 marginLeft: level === -1 ? '36px' : '20px',
