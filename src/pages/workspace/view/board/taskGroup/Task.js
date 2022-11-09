@@ -251,11 +251,7 @@ function Task(props) {
                         <div
                             onClick={openTaskModal}
                             className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
-                                props.task.level > 0
-                                    ? `subtask before:ml-[${
-                                          12 + props.task.level * 32 - 32
-                                      }px]`
-                                    : ''
+                                props.task.level > 0 ? 'subtask' : ''
                             } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2 border-white'
@@ -265,6 +261,10 @@ function Task(props) {
                                     ? 'subtaskWithSubtasks'
                                     : ''
                             } ${taskEditing ? 'ml-[20px]' : ''}`}
+                            style={{
+                                '--total-margin-left':
+                                    props.task.level * 32 - 32 + 12 + 'px'
+                            }}
                         >
                             <div
                                 onClick={handleCollapse}
