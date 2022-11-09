@@ -55,6 +55,7 @@ function RelativeDate(props) {
     }
 
     useEffect(() => {
+        console.log('doing something again')
         const interval = setInterval(() => setTime(Date.now()), 60000)
         return () => {
             clearInterval(interval)

@@ -6,13 +6,12 @@ import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
 import Editor from '../../../../../../utils/Editor'
 import CommentReplySection from './comment/CommentReplySection'
+import RelativeDate from '../../../../../../utils/RelativeDate'
 
 function Comment({ comment, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
-
-    const getTime = x => x
 
     const handleSave = editor => {
         editTaskComment({
@@ -49,7 +48,7 @@ function Comment({ comment, taskId, boardId }) {
                                 <span> commented</span>
                             </p>
                             <p className={styles.date}>
-                                {getTime(comment.timestamp)}
+                                <RelativeDate timestamp={comment.timestamp} />
                             </p>
                             <div className={styles.actions}>
                                 <div onClick={() => setEditing(true)}>
