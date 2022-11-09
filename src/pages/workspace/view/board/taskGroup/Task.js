@@ -34,10 +34,6 @@ function Task(props) {
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
 
-    const setTaskEditings = () => {
-        setTaskEditings(true)
-    }
-
     const openTaskModal = () => {
         if (taskEditing) return
         navigate(`${location.pathname}/${props.task._id}`)

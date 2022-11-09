@@ -4,22 +4,14 @@ import Task from '../board/taskGroup/Task'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import AttributePopover from '../board/taskGroup/AttributePopover'
 import AddAttributePopover from '../board/taskGroup/AddAttributePopover'
-import useInputState from '../../../../modules/hooks/useInputState'
-import { ObjectId } from '../../../../utils'
-import { useFetchUserQuery } from '../../../../modules/services/userSlice'
-import { useAddTaskMutation } from '../../../../modules/services/boardSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
 import PlusIcon from '../../../../styles/assets/PlusIcon'
+import NewTaskForm from './taskGroup/NewTaskForm'
 
 function TaskGroup(props) {
-    const { data: user } = useFetchUserQuery()
-    const [addTask] = useAddTaskMutation()
     const [collapsed, setCollapsed] = useState(false)
-
-    // new task input
-    const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
 
     // attribute popover
     const [popoverOpen, setPopoverOpen] = useState(false)
@@ -30,18 +22,6 @@ function TaskGroup(props) {
 
     const handleAddNewAttribute = (e = false) => {
         setNewAttributeOpen(e ? e.target.parentNode.parentNode : false)
-    }
-
-    const handleAddTask = async e => {
-        e.preventDefault()
-        resetNewTaskName()
-        addTask({
-            author: user.username,
-            boardId: props.board._id,
-            taskGroupId: props.taskGroupId,
-            newTaskName,
-            _id: ObjectId()
-        })
     }
 
     const handleAttributePopover = (e, id = null) => {
@@ -160,28 +140,10 @@ function TaskGroup(props) {
                             </div>
                         )}
                     </Droppable>
-                    <form
-                        onSubmit={handleAddTask}
-                        className="ml-9 sticky left-0 new-task-form"
-                    >
-                        <div className="new-task w-full justify-between">
-                            <input
-                                type="text"
-                                placeholder="+ New Task"
-                                value={newTaskName}
-                                name="newTask"
-                                className="sticky left-0 w-[calc(100vw_-_380px)]"
-                                onChange={changeNewTaskName}
-                            />
-                            <button
-                                className={`opacity-0 sticky right-[25px] ${
-                                    newTaskName ? 'opacity-100' : ''
-                                }`}
-                            >
-                                SAVE
-                            </button>
-                        </div>
-                    </form>
+                    <NewTaskForm
+                        board={props.board}
+                        taskGroupId={props.taskGroupId}
+                    />
                 </>
             )}
 
