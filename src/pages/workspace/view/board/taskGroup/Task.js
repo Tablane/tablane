@@ -55,6 +55,11 @@ function Task(props) {
         setMoreDialogOpen(!moreDialogOpen)
     }
 
+    const handleCollapse = e => {
+        e.preventDefault()
+        e.stopPropagation()
+    }
+
     const handleTextEdit = async e => {
         const { task } = props
         if (
@@ -223,7 +228,7 @@ function Task(props) {
                             props.task.level === 0 && props.index === 0
                                 ? 'rounded-sm'
                                 : ''
-                        } ${props.task.level}`}
+                        }`}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
@@ -244,11 +249,27 @@ function Task(props) {
                         <div
                             onClick={openTaskModal}
                             className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
+                                props.task.level > 0 ? 'subtask' : ''
+                            } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2 border-white'
                                     : ''
+                            } ${
+                                props.task.subtasks.length > 0
+                                    ? 'subtaskCollapse'
+                                    : ''
                             } ${taskEditing ? 'ml-[20px]' : ''}`}
                         >
+                            <div
+                                onClick={handleCollapse}
+                                className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
+                                    props.task.subtasks.length > 0
+                                        ? 'cursor-pointer'
+                                        : 'hidden'
+                                }`}
+                            >
+                                <FontAwesomeIcon icon={solid('caret-down')} />
+                            </div>
                             {taskEditing ? (
                                 <form
                                     onSubmit={handleTaskEdit}
