@@ -9,7 +9,9 @@ function QuickActionsToolbar({
     board,
     groupedTasks,
     taskGroupId,
-    task
+    task,
+    setNewTaskOpen,
+    level
 }) {
     const [sortTask] = useSortTaskMutation()
 
@@ -20,7 +22,7 @@ function QuickActionsToolbar({
 
     const handleSubtaskClick = e => {
         e.stopPropagation()
-        console.log('open new-subtask menu')
+        setNewTaskOpen(true)
     }
 
     const handleMoveTopClick = e => {
@@ -69,14 +71,16 @@ function QuickActionsToolbar({
 
     return (
         <div className={styles.quickActionsToolbar}>
-            <Tooltip title="Create subtask">
-                <div
-                    className="quickActionItem text-[#7c828d]"
-                    onClick={handleSubtaskClick}
-                >
-                    <FontAwesomeIcon icon={solid('code-branch')} />
-                </div>
-            </Tooltip>
+            {level <= 7 && (
+                <Tooltip title="Create subtask">
+                    <div
+                        className="quickActionItem text-[#7c828d]"
+                        onClick={handleSubtaskClick}
+                    >
+                        <FontAwesomeIcon icon={solid('code-branch')} />
+                    </div>
+                </Tooltip>
+            )}
             <Tooltip title="Rename">
                 <div
                     className="quickActionItem text-[#7c828d]"

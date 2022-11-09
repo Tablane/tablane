@@ -16,6 +16,7 @@ import {
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import QuickActionsToolbar from './QuickActionsToolbar'
+import NewTaskForm from './NewTaskForm'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -30,6 +31,7 @@ function Task(props) {
     const [editTaskField] = useEditTaskFieldMutation()
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
+    const [newTaskOpen, setNewTaskOpen] = useState(false)
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -322,11 +324,13 @@ function Task(props) {
                                         {props.task.name}
                                     </p>
                                     <QuickActionsToolbar
+                                        level={props.task.level}
                                         taskGroupId={props.taskGroupId}
                                         groupedTasks={props.groupedTasks}
                                         board={props.board}
                                         task={props.task}
                                         handleTaskEdit={handleTaskEdit}
+                                        setNewTaskOpen={setNewTaskOpen}
                                     />
                                 </div>
                             )}
@@ -398,6 +402,12 @@ function Task(props) {
                         />
                     )
                 })}
+                {newTaskOpen && (
+                    <NewTaskForm
+                        setNewTaskOpen={setNewTaskOpen}
+                        level={props.task.level}
+                    />
+                )}
             </div>
         </>
     )
