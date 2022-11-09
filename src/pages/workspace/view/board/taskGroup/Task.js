@@ -29,6 +29,7 @@ function Task(props) {
     const [editOptionsTask] = useEditOptionsTaskMutation()
     const [editTaskField] = useEditTaskFieldMutation()
     const [batchSelect, setBatchSelect] = useState(false)
+    const [collapsed, setCollapsed] = useState(false)
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -58,6 +59,7 @@ function Task(props) {
     const handleCollapse = e => {
         e.preventDefault()
         e.stopPropagation()
+        setCollapsed(!collapsed)
     }
 
     const handleTextEdit = async e => {
@@ -268,7 +270,12 @@ function Task(props) {
                                         : 'hidden'
                                 }`}
                             >
-                                <FontAwesomeIcon icon={solid('caret-down')} />
+                                <FontAwesomeIcon
+                                    icon={solid('caret-down')}
+                                    className={`transition-transform ${
+                                        collapsed ? '-rotate-90' : ''
+                                    }`}
+                                />
                             </div>
                             {taskEditing ? (
                                 <form
@@ -367,7 +374,7 @@ function Task(props) {
                     task={props.task}
                 />
             )}
-            <div className="">
+            <div className={`${collapsed ? 'hidden' : ''}`}>
                 {props.task?.subtasks.map((subtask, i) => {
                     return (
                         <Task
