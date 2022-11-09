@@ -2,6 +2,7 @@ import styles from '../../../../../styles/QuickActionsToolBar.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useSortTaskMutation } from '../../../../../modules/services/boardSlice'
+import { Tooltip } from '@mui/material'
 
 function QuickActionsToolbar({
     handleTaskEdit,
@@ -15,6 +16,11 @@ function QuickActionsToolbar({
     const handleEditClick = e => {
         e.stopPropagation()
         handleTaskEdit(e)
+    }
+
+    const handleSubtaskClick = e => {
+        e.stopPropagation()
+        console.log('open new-subtask menu')
     }
 
     const handleMoveTopClick = e => {
@@ -63,24 +69,38 @@ function QuickActionsToolbar({
 
     return (
         <div className={styles.quickActionsToolbar}>
-            <div
-                className="quickActionItem text-[#7c828d]"
-                onClick={handleEditClick}
-            >
-                <FontAwesomeIcon icon={solid('pen')} />
-            </div>
-            <div
-                className="quickActionItem text-[#7c828d]"
-                onClick={handleMoveTopClick}
-            >
-                <FontAwesomeIcon icon={solid('arrow-up')} />
-            </div>
-            <div
-                className="quickActionItem text-[#7c828d]"
-                onClick={handleMoveBottomClick}
-            >
-                <FontAwesomeIcon icon={solid('arrow-down')} />
-            </div>
+            <Tooltip title="Create subtask">
+                <div
+                    className="quickActionItem text-[#7c828d]"
+                    onClick={handleSubtaskClick}
+                >
+                    <FontAwesomeIcon icon={solid('code-branch')} />
+                </div>
+            </Tooltip>
+            <Tooltip title="Rename">
+                <div
+                    className="quickActionItem text-[#7c828d]"
+                    onClick={handleEditClick}
+                >
+                    <FontAwesomeIcon icon={solid('pen')} />
+                </div>
+            </Tooltip>
+            <Tooltip title="Move up">
+                <div
+                    className="quickActionItem text-[#7c828d]"
+                    onClick={handleMoveTopClick}
+                >
+                    <FontAwesomeIcon icon={solid('arrow-up')} />
+                </div>
+            </Tooltip>
+            <Tooltip title="Move down">
+                <div
+                    className="quickActionItem text-[#7c828d]"
+                    onClick={handleMoveBottomClick}
+                >
+                    <FontAwesomeIcon icon={solid('arrow-down')} />
+                </div>
+            </Tooltip>
         </div>
     )
 }
