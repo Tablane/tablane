@@ -1,12 +1,16 @@
 import { useParams } from 'react-router-dom'
-import Board from './workspace/view/Board'
 import { useFetchSharedBoardQuery } from '../modules/services/boardSlice'
 import styles from '../styles/SharedBoard.module.scss'
 import { CircularProgress } from '@mui/material'
+import BoardView from './workspace/view/board/BoardView'
 
 function SharedBoard() {
     const { boardId } = useParams()
-    const { isError, isLoading } = useFetchSharedBoardQuery(boardId)
+    const {
+        data: board,
+        isError,
+        isLoading
+    } = useFetchSharedBoardQuery(boardId)
 
     if (isLoading) {
         return (
@@ -31,8 +35,8 @@ function SharedBoard() {
 
     return (
         <div className="bg-[#eee] overflow-auto h-[100vh]">
-            <Board
-                boardId={boardId}
+            <BoardView
+                board={board}
                 sidebarOpen={false}
                 toggleSideBar={() => {}}
             />

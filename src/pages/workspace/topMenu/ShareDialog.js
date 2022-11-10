@@ -45,7 +45,8 @@ function ShareDialog({ handleClose, open, board }) {
                         </div>
                         <input
                             type="text"
-                            value={`${window.location.origin}/share/${board._id}`}
+                            className="text-sm"
+                            value={`${window.location.origin}/shared/board/${board._id}`}
                             onClick={copy}
                             readOnly
                         />
