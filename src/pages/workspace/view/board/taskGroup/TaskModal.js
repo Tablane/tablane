@@ -16,11 +16,10 @@ import Editor from '../../../../../utils/Editor'
 import DescriptionEditor from '../../../../../utils/DescriptionEditor'
 import Activity from './taskModal/Activity'
 
-function TaskModal(props) {
+function TaskModal({ task, boardId }) {
     const navigate = useNavigate()
     const params = useParams()
     const { data: user } = useFetchUserQuery()
-    const { task, boardId } = props
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
     const [description, changeDescription] = useInputState(task.description)
@@ -119,29 +118,34 @@ function TaskModal(props) {
                     <div className={styles.divider}></div>
                     <div className={styles.attributeTab}>
                         <div className={styles.historyLog}>
-                            {task.history.map(log => {
-                                if (log.type === 'activity') {
-                                    return (
-                                        <Activity
-                                            timestamp={log.timestamp}
-                                            activity={log}
-                                            saveComment={handleAddComment}
-                                        />
-                                    )
-                                } else if (log.type === 'comment') {
-                                    return (
-                                        <Comment
-                                            boardId={boardId}
-                                            taskId={task._id}
-                                            key={log.timestamp}
-                                            comment={log}
-                                            saveComment={handleAddComment}
-                                        />
-                                    )
-                                }
+                            {[...task.history, ...task.comments]
+                                .sort(
+                                    ({ timestamp: a }, { timestamp: b }) =>
+                                        b - a
+                                )
+                                .map(log => {
+                                    if (log.type === 'activity') {
+                                        return (
+                                            <Activity
+                                                timestamp={log.timestamp}
+                                                activity={log}
+                                                saveComment={handleAddComment}
+                                            />
+                                        )
+                                    } else if (log.type === 'comment') {
+                                        return (
+                                            <Comment
+                                                boardId={boardId}
+                                                taskId={task._id}
+                                                key={log.timestamp}
+                                                comment={log}
+                                                saveComment={handleAddComment}
+                                            />
+                                        )
+                                    }
 
-                                return null
-                            })}
+                                    return null
+                                })}
                         </div>
                         <div className={styles.commentingBar}>
                             <Editor
