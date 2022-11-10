@@ -114,7 +114,7 @@ const editTaskComment = ({ board, content, taskId, commentId }) => {
 }
 const deleteTaskComment = ({ board, taskId, commentId }) => {
     const task = board.tasks.find(task => task._id === taskId)
-    task.history = task.history.filter(x => x._id !== commentId)
+    task.comments = task.comments.filter(x => x._id !== commentId)
 }
 const addReply = ({ board, content, author, taskId, commentId }) => {
     const reply = {
