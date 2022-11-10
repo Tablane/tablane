@@ -127,6 +127,7 @@ function TaskModal({ task, boardId }) {
                                     if (log.type === 'activity') {
                                         return (
                                             <Activity
+                                                key={log.timestamp}
                                                 timestamp={log.timestamp}
                                                 activity={log}
                                                 saveComment={handleAddComment}

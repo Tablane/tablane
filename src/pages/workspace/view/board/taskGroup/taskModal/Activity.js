@@ -3,13 +3,13 @@ import RelativeDate from '../../../../../../utils/RelativeDate'
 
 function Activity({ timestamp, activity }) {
     return (
-        <div className={styles.activity} key={timestamp}>
+        <div className={styles.activity}>
             <p>
                 <span className="text-primary rounded px-1 py-[2px] hover:bg-[#f2f2f2]">
                     {activity.author}
                 </span>
                 {activity.change.type === 'creation' && (
-                    <span>created this task</span>
+                    <span key={timestamp}>created this task</span>
                 )}
             </p>
             <p className={styles.date}>
