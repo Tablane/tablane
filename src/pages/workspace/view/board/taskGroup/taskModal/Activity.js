@@ -1,7 +1,33 @@
 import styles from '../../../../../../styles/TaskModal.module.scss'
 import RelativeDate from '../../../../../../utils/RelativeDate'
+import { diffWords } from 'diff'
 
 function Activity({ timestamp, activity }) {
+    const getDiff = () => {
+        const groups = diffWords(activity.change.from, activity.change.to)
+        const mappedNodes = groups.map(({ value, added, removed }, i) => {
+            if (added)
+                return (
+                    <span key={i} className="font-medium">
+                        {value}
+                    </span>
+                )
+            else if (removed)
+                return (
+                    <span key={i} className="line-through opacity-50">
+                        {value}
+                    </span>
+                )
+            else
+                return (
+                    <span key={i} className="">
+                        {value}
+                    </span>
+                )
+        })
+        return <span>{mappedNodes}</span>
+    }
+
     return (
         <div className={styles.activity}>
             <p>
@@ -10,6 +36,12 @@ function Activity({ timestamp, activity }) {
                 </span>
                 {activity.change.type === 'creation' && (
                     <span key={timestamp}>created this task</span>
+                )}
+                {activity.change.type === 'name' && (
+                    <>
+                        <span>changed name: </span>
+                        <span className="text-[#2a2e34]">{getDiff()}</span>
+                    </>
                 )}
             </p>
             <p className={styles.date}>
