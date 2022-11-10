@@ -14,6 +14,7 @@ import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Comment from './taskModal/Comment'
 import Editor from '../../../../../utils/Editor'
 import DescriptionEditor from '../../../../../utils/DescriptionEditor'
+import Activity from './taskModal/Activity'
 
 function TaskModal(props) {
     const navigate = useNavigate()
@@ -76,57 +77,6 @@ function TaskModal(props) {
         editor.commands.clearContent()
     }
 
-    // TODO: replace this with relativeDate component
-    const getTime = timestamp => {
-        return timestamp
-        // const delta = Math.round((+new Date() - new Date(timestamp)) / 1000)
-        //
-        // const minute = 60,
-        //     hour = minute * 60,
-        //     day = hour * 24
-        //
-        // let timeString
-        //
-        // if (delta < 60) {
-        //     timeString = 'Just now' + delta
-        // } else if (delta < 2 * minute) {
-        //     timeString = '1 min'
-        // } else if (delta < hour) {
-        //     timeString = Math.floor(delta / minute) + ' mins'
-        // } else if (Math.floor(delta / hour) === 1) {
-        //     timeString = '1 hour ago'
-        // } else if (delta < day) {
-        //     timeString = Math.floor(delta / hour) + ' hours ago'
-        // } else if (delta < day * 2) {
-        //     timeString = 'yesterday'
-        // } else if (delta < day * 7) {
-        //     timeString = Math.floor(delta / day) + ' days ago'
-        // } else {
-        //     const date = new Date(timestamp)
-        //     const months = [
-        //         'Jan',
-        //         'Feb',
-        //         'Mar',
-        //         'Apr',
-        //         'May',
-        //         'Jun',
-        //         'Jul',
-        //         'Aug',
-        //         'Sep',
-        //         'Oct',
-        //         'Nov',
-        //         'Dec'
-        //     ]
-        //     timeString =
-        //         `${
-        //             months[date.getMonth()]
-        //         } ${date.getDay()} ${date.getFullYear()} ` +
-        //         `at ${date.toLocaleTimeString().substring(0, 5)}`
-        // }
-        //
-        // return timeString
-    }
-
     return (
         <div className={styles.root}>
             <div onClick={handleClose} className={styles.background}></div>
@@ -172,24 +122,11 @@ function TaskModal(props) {
                             {task.history.map(log => {
                                 if (log.type === 'activity') {
                                     return (
-                                        <div
-                                            className={styles.activity}
-                                            key={log.timestamp}
-                                        >
-                                            <p>
-                                                <span
-                                                    className={
-                                                        styles.authorSpan
-                                                    }
-                                                >
-                                                    {log.author}
-                                                </span>
-                                                {log.text}
-                                            </p>
-                                            <p className={styles.date}>
-                                                {getTime(log.timestamp)}
-                                            </p>
-                                        </div>
+                                        <Activity
+                                            timestamp={log.timestamp}
+                                            activity={log}
+                                            saveComment={handleAddComment}
+                                        />
                                     )
                                 } else if (log.type === 'comment') {
                                     return (
