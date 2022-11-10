@@ -2,7 +2,7 @@ import styles from '../styles/RelativeDate.module.scss'
 import { useEffect, useState } from 'react'
 import { Tooltip } from '@mui/material'
 
-function RelativeDate(props) {
+function RelativeDate({ timestamp }) {
     const [time, setTime] = useState(Date.now())
 
     const getTime = (timestamp, relative = true) => {
@@ -55,7 +55,6 @@ function RelativeDate(props) {
     }
 
     useEffect(() => {
-        console.log('doing something again')
         const interval = setInterval(() => setTime(Date.now()), 60000)
         return () => {
             clearInterval(interval)
@@ -64,11 +63,11 @@ function RelativeDate(props) {
 
     return (
         <Tooltip
-            title={getTime(props.timestamp, false)}
+            title={getTime(parseInt(timestamp), false)}
             placement={'top'}
             arrow
         >
-            <span className={styles.date}>{getTime(props.timestamp)}</span>
+            <span className={styles.date}>{getTime(parseInt(timestamp))}</span>
         </Tooltip>
     )
 }
