@@ -20,8 +20,8 @@ function NewTaskForm({
 
     const handleAddTask = async e => {
         e.preventDefault()
-        if (level >= 0) return handleSubTask()
         resetNewTaskName()
+        if (level >= 0) return handleSubTask()
         addTask({
             author: user.username,
             boardId: board._id,
