@@ -22,7 +22,7 @@
 .panel {
   background-color: #eee;
   overflow: auto;
-  height: 100%;
+  height: calc(100% - 61px);
 
   .notifications {
     max-width: 1100px;
