@@ -37,7 +37,7 @@ function AttributePopover(props) {
     }
 
     const updateName = async () => {
-        if (props.attr.name === name) return
+        if (props.attr.name === name || name === '') return
         editAttributeName({
             attributeId: props.attr._id,
             name,
@@ -48,6 +48,10 @@ function AttributePopover(props) {
     const handleClose = e => {
         updateName()
         props.close()
+    }
+
+    const handleKeyUp = e => {
+        if (['Enter'].includes(e.key)) handleClose()
     }
 
     return (
@@ -69,6 +73,7 @@ function AttributePopover(props) {
                 <div className="content">
                     <div className="name">
                         <input
+                            onKeyUp={handleKeyUp}
                             onChange={e => setName(e.target.value)}
                             value={name}
                         />
