@@ -147,6 +147,7 @@ function SideBar(props) {
     }
 
     const handleBoardEdit = async () => {
+        setEditingBoard('')
         if (editingBoardName === '') return
         editBoardName({
             ...editingBoard,
@@ -154,7 +155,6 @@ function SideBar(props) {
             workspaceIdFriendly: workspace.id,
             workspaceId: workspace._id
         })
-        setEditingBoard('')
     }
 
     const handleSpaceEdit = async () => {
