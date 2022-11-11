@@ -43,6 +43,22 @@ function Activity({ timestamp, activity }) {
                         <span className="text-[#2a2e34]">{getDiff()}</span>
                     </>
                 )}
+                {activity.change.type === 'add_watcher' && (
+                    <>
+                        <span>added watcher: </span>
+                        <span className="text-primary rounded px-1 py-[2px] hover:bg-[#f2f2f2]">
+                            {activity.referencedUser}
+                        </span>
+                    </>
+                )}
+                {activity.change.type === 'remove_watcher' && (
+                    <>
+                        <span>removed watcher: </span>
+                        <span className="text-primary rounded px-1 py-[2px] hover:bg-[#f2f2f2]">
+                            {activity.referencedUser}
+                        </span>
+                    </>
+                )}
             </p>
             <p className={styles.date}>
                 <RelativeDate timestamp={timestamp} />
