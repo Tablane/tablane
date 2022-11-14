@@ -8,9 +8,11 @@ import styles from '../../styles/Login.module.scss'
 import { Divider, PasswordInput, TextInput } from '@mantine/core'
 import GoogleLogin from './login/GoogleLogin'
 import { useForm } from '@mantine/form'
+import { useState } from 'react'
 
 function Login() {
     const [registerUser, { isLoading }] = useRegisterUserMutation()
+    const [completed, setCompleted] = useState(false)
 
     const form = useForm({
         initialValues: {
@@ -45,79 +47,94 @@ function Login() {
     const handleSubmit = async e => {
         e.preventDefault()
         if (!form.validate().hasErrors) {
-            registerUser(form.values)
+            const response = await registerUser(form.values).unwrap()
+            if (response.success) setCompleted(true)
         }
     }
 
     return (
         <div className={styles.root}>
             <div className={styles.container}>
-                <p className={styles.header}>Create your Account</p>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <TextInput
-                        autoComplete="username"
-                        {...form.getInputProps('username')}
-                        label="Username"
-                        placeholder="Enter your username"
-                        mb={25}
-                    />
-                    <TextInput
-                        autoComplete="email"
-                        {...form.getInputProps('email')}
-                        label="Email"
-                        placeholder="Enter your email"
-                        mb={25}
-                    />
-                    <PasswordInput
-                        placeholder="Enter your password"
-                        {...form.getInputProps('password')}
-                        id="password"
-                        autoComplete="password"
-                        label="Password"
-                    />
-                    <div
-                        style={{
-                            position: 'relative'
-                        }}
-                    >
-                        <Button
-                            mt={20}
-                            fullWidth
-                            type="submit"
-                            disabled={isLoading}
-                        >
-                            Continue
-                        </Button>
-                        {isLoading && (
-                            <CircularProgress
-                                size={24}
-                                style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    marginTop: '-12px',
-                                    marginLeft: '-12px'
-                                }}
+                {!completed ? (
+                    <>
+                        <p className={styles.header}>Create your Account</p>
+                        <form onSubmit={handleSubmit} className={styles.form}>
+                            <TextInput
+                                autoComplete="username"
+                                {...form.getInputProps('username')}
+                                label="Username"
+                                placeholder="Enter your username"
+                                mb={25}
                             />
-                        )}
+                            <TextInput
+                                autoComplete="email"
+                                {...form.getInputProps('email')}
+                                label="Email"
+                                placeholder="Enter your email"
+                                mb={25}
+                            />
+                            <PasswordInput
+                                placeholder="Enter your password"
+                                {...form.getInputProps('password')}
+                                id="password"
+                                autoComplete="password"
+                                label="Password"
+                            />
+                            <div
+                                style={{
+                                    position: 'relative'
+                                }}
+                            >
+                                <Button
+                                    mt={20}
+                                    fullWidth
+                                    type="submit"
+                                    disabled={isLoading}
+                                >
+                                    Continue
+                                </Button>
+                                {isLoading && (
+                                    <CircularProgress
+                                        size={24}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            marginTop: '-12px',
+                                            marginLeft: '-12px'
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </form>
+                        <Divider my={20} label="OR" labelPosition="center" />
+                        <GoogleLogin />
+                        <div className={styles.text}>
+                            <p style={{ marginBottom: '0' }}>
+                                By signing in, you agree to our
+                            </p>
+                            <p style={{ marginTop: '5px', marginBottom: '0' }}>
+                                <a className={styles.link} href="#">
+                                    Terms of Service
+                                </a>
+                                <span> and </span>
+                                <a className={styles.link} href="#">
+                                    Privacy Policy
+                                </a>
+                            </p>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-sm text-center text-[#757580]">
+                        <p className="font-medium text-lg mx-0 mb-4 text-center w-full text-[#292932]">
+                            Successfully registered
+                        </p>
+                        <p className="m-0">
+                            Please check your email and follow the instructions
+                            to verify your account.
+                        </p>
                     </div>
-                </form>
-                <Divider my={20} label="OR" labelPosition="center" />
-                <GoogleLogin />
-                <div className={styles.text}>
-                    <p style={{ marginBottom: '0' }}>
-                        By signing in, you agree to our
-                    </p>
-                    <p style={{ marginTop: '5px', marginBottom: '0' }}>
-                        <a className={styles.link} href="#">
-                            Terms of Service
-                        </a>
-                        <span> and </span>
-                        <a className={styles.link} href="#">
-                            Privacy Policy
-                        </a>
-                    </p>
-                </div>
+                )}
             </div>
             <div className={styles.registerText}>
                 <span className={styles.text}>
