@@ -1,120 +1,131 @@
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import { Button } from '@mantine/core'
 import { Link } from 'react-router-dom'
-import { useCallback, useEffect, useState } from 'react'
 import { CircularProgress } from '@mui/material'
 import '../../styles/LoginOld.css'
-import useInputState from '../../modules/hooks/useInputState'
 import '../../styles/Auth.css'
 import { useRegisterUserMutation } from '../../modules/services/userSlice'
+import styles from '../../styles/Login.module.scss'
+import { Divider, PasswordInput, TextInput } from '@mantine/core'
+import GoogleLogin from './login/GoogleLogin'
+import { useForm } from '@mantine/form'
 
 function Login() {
     const [registerUser, { isLoading }] = useRegisterUserMutation()
 
-    const [validate, setValidate] = useState(false)
+    const form = useForm({
+        initialValues: {
+            username: '',
+            email: '',
+            password: ''
+        },
+        validate: {
+            username: value => {
+                if (value.length < 3)
+                    return 'Name has to be atleast 8 characters long'
+                if (value.length > 32)
+                    return 'Name has to be cannot be longer than 8 characters'
+                return /^([a-zA-Z1-9_\-]){3,32}$/.test(value)
+                    ? null
+                    : 'The name can only contain _, -, numbers and alphanumeric characters'
+            },
+            email: value =>
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                    value
+                )
+                    ? null
+                    : 'This email is invalid',
+            password: value =>
+                value.length >= 8
+                    ? null
+                    : 'Password has to be atleast 8 characters long'
+        },
+        validateInputOnBlur: true
+    })
 
-    const [username, changeUsername] = useInputState()
-    const [password, changePassword] = useInputState()
-    const [email, changeEmail] = useInputState()
-
-    const [errors, setErrors] = useState({})
-
-    const validateInput = useCallback(() => {
-        let errors = {}
-
-        if (username === '') errors.username = 'This field is required'
-        else if (username.length < 3)
-            errors.username = 'Username must be longer than 3 characters'
-
-        if (email === '') errors.email = 'This field is required'
-        else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))
-            errors.email = 'Email is invalid'
-
-        if (password === '') errors.password = 'This field is required'
-        else if (password.length < 3)
-            errors.password = 'Password must be longer than 3 characters'
-
-        setErrors(errors)
-        return Object.keys(errors).length === 0
-    }, [username, email, password])
-
-    useEffect(() => {
-        if (validate) validateInput()
-    }, [username, password, email, validate, validateInput])
-
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        setValidate(true)
-        if (validateInput()) {
-            registerUser({ username, password, email })
+        if (!form.validate().hasErrors) {
+            registerUser(form.values)
         }
     }
 
     return (
-        <div className="Auth">
-            <div className="form">
-                <div>
-                    <form action="" onSubmit={handleSubmit} noValidate>
-                        <div className="inputs">
-                            <TextField
-                                variant="standard"
-                                id="username"
-                                name="username"
-                                label="Username"
-                                autoComplete="username"
-                                value={username}
-                                onChange={changeUsername}
-                                error={Boolean(errors.username)}
-                                helperText={errors.username}
-                                required
+        <div className={styles.root}>
+            <div className={styles.container}>
+                <p className={styles.header}>Create your Account</p>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    <TextInput
+                        autoComplete="username"
+                        {...form.getInputProps('username')}
+                        label="Username"
+                        placeholder="Enter your username"
+                        mb={25}
+                    />
+                    <TextInput
+                        autoComplete="email"
+                        {...form.getInputProps('email')}
+                        label="Email"
+                        placeholder="Enter your email"
+                        mb={25}
+                    />
+                    <PasswordInput
+                        placeholder="Enter your password"
+                        {...form.getInputProps('password')}
+                        id="password"
+                        autoComplete="password"
+                        label="Password"
+                    />
+                    <div
+                        style={{
+                            position: 'relative'
+                        }}
+                    >
+                        <Button
+                            mt={20}
+                            fullWidth
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            Continue
+                        </Button>
+                        {isLoading && (
+                            <CircularProgress
+                                size={24}
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginTop: '-12px',
+                                    marginLeft: '-12px'
+                                }}
                             />
-                            <TextField
-                                variant="standard"
-                                id="email"
-                                name="email"
-                                label="Email"
-                                autoComplete="email"
-                                value={email}
-                                onChange={changeEmail}
-                                error={Boolean(errors.email)}
-                                helperText={errors.email}
-                                required
-                            />
-                            <TextField
-                                variant="standard"
-                                id="password"
-                                name="password"
-                                label="Password"
-                                type="password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={changePassword}
-                                error={Boolean(errors.password)}
-                                helperText={errors.password}
-                                required
-                            />
-                        </div>
-                        <div className="progressWrapper">
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={isLoading}
-                            >
-                                Register
-                            </Button>
-                            {isLoading && (
-                                <CircularProgress
-                                    size={24}
-                                    className="buttonProgress"
-                                />
-                            )}
-                        </div>
-                    </form>
+                        )}
+                    </div>
+                </form>
+                <Divider my={20} label="OR" labelPosition="center" />
+                <GoogleLogin />
+                <div className={styles.text}>
+                    <p style={{ marginBottom: '0' }}>
+                        By signing in, you agree to our
+                    </p>
+                    <p style={{ marginTop: '5px', marginBottom: '0' }}>
+                        <a className={styles.link} href="#">
+                            Terms of Service
+                        </a>
+                        <span> and </span>
+                        <a className={styles.link} href="#">
+                            Privacy Policy
+                        </a>
+                    </p>
                 </div>
-                <p>
-                    or <Link to="/login">login</Link>
-                </p>
+            </div>
+            <div className={styles.registerText}>
+                <span className={styles.text}>
+                    <span>Already have an account? </span>
+                    <Link className={styles.link} to="/login">
+                        Sign in
+                    </Link>
+                </span>
             </div>
         </div>
     )
