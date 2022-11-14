@@ -129,26 +129,22 @@ function Profile() {
                     </span>
                     <div className={styles.methods}>
                         <BackupManageModal
-                            enabled={
-                                user.multiFactorMethods.backupCodes.enabled
-                            }
+                            enabled={user.mfa_methods.backupCodes.enabled}
                             open={backupCodesManageModalOpen}
                             setOpen={setBackupCodesManageModalOpen}
                         />
                         <SecurityKeyManageModal
-                            enabled={
-                                user.multiFactorMethods.securityKey.enabled
-                            }
+                            enabled={user.mfa_methods.securityKey.enabled}
                             open={securityKeyManageModalOpen}
                             setOpen={setSecurityKeyManageModalOpen}
                         />
                         <EmailManageModal
-                            enabled={user.multiFactorMethods.email.enabled}
+                            enabled={user.mfa_methods.email.enabled}
                             open={emailManageModalOpen}
                             setOpen={setEmailManageModalOpen}
                         />
                         <TOTPManageModal
-                            enabled={user.multiFactorMethods.totp.enabled}
+                            enabled={user.mfa_methods.totp.enabled}
                             open={totpManageModalOpen}
                             setOpen={setTotpManageModalOpen}
                         />
