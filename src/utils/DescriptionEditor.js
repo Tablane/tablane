@@ -2,7 +2,7 @@ import styles from '../styles/Editor.module.scss'
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React, { useEffect, useState } from 'react'
-import { Tooltip } from '@mui/material'
+import { CircularProgress, Tooltip } from '@mui/material'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Underline } from '@tiptap/extension-underline'
@@ -80,8 +80,7 @@ function Editor({
             attributes: {
                 class: `${styles.ProseMirror} ${styles.description}`
             }
-        },
-        content
+        }
     })
 
     useEffect(() => {
@@ -173,7 +172,14 @@ function Editor({
                     </Tooltip>
                 </BubbleMenu>
             )}
-            <EditorContent editor={editor} />
+
+            {provider.isAuthenticated ? (
+                <EditorContent editor={editor} />
+            ) : (
+                <div className="flex justify-center items-center border-white rounded border-solid border box-border text-sm p-2 resize-none w-full border-[#e4e4e4] hover:border focus:border min-h-[250px]">
+                    <CircularProgress size="15px" />
+                </div>
+            )}
             {type === 'comment-edit' && (
                 <div className={styles.commentEditingButtons}>
                     <Button
