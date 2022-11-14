@@ -41,7 +41,8 @@ function Editor({
         return new HocuspocusProvider({
             document,
             url: process.env.REACT_APP_REALTIME_EDITING_WEBSOCKET,
-            name: taskId
+            name: taskId,
+            token: localStorage.getItem('access_token')
         })
     })
 
