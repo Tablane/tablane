@@ -66,7 +66,10 @@ export const workspaceApi = api.injectEndpoints({
             ) {
                 try {
                     const { data } = await cacheDataLoaded
-                    socket.emit('subscribe', workspaceId)
+                    socket.emit('subscribe', {
+                        room: workspaceId,
+                        type: 'workspace'
+                    })
 
                     socket.on(workspaceId, ({ event, body }) => {
                         switch (event) {

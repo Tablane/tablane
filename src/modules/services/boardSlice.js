@@ -212,7 +212,7 @@ export const boardApi = api.injectEndpoints({
             ) {
                 try {
                     await cacheDataLoaded
-                    socket.emit('subscribe', boardId)
+                    socket.emit('subscribe', { room: boardId, type: 'board' })
 
                     socket.on(boardId, ({ event, body }) => {
                         switch (event) {
