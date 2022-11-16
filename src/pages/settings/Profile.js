@@ -129,12 +129,12 @@ function Profile() {
                     </span>
                     <div className={styles.methods}>
                         <BackupManageModal
-                            enabled={user.mfa_methods.backupCodes.enabled}
+                            enabled={user.mfa_methods.backup_codes.enabled}
                             open={backupCodesManageModalOpen}
                             setOpen={setBackupCodesManageModalOpen}
                         />
                         <SecurityKeyManageModal
-                            enabled={user.mfa_methods.securityKey.enabled}
+                            enabled={user.mfa_methods.security_key.enabled}
                             open={securityKeyManageModalOpen}
                             setOpen={setSecurityKeyManageModalOpen}
                         />
