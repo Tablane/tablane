@@ -8,6 +8,11 @@ import { Provider } from 'react-redux'
 import { store } from './modules/state/store'
 import { history } from './utils/history'
 import { HistoryRouter } from './utils/history'
+import posthog from 'posthog-js'
+
+posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
+    api_host: 'https://eu.posthog.com'
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
