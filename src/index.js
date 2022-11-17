@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
@@ -9,9 +9,32 @@ import { store } from './modules/state/store'
 import { history } from './utils/history'
 import { HistoryRouter } from './utils/history'
 import posthog from 'posthog-js'
+import {
+    useLocation,
+    useNavigationType,
+    createRoutesFromChildren,
+    matchRoutes
+} from 'react-router-dom'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 
 posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
     api_host: 'https://eu.posthog.com'
+})
+Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    integrations: [
+        new BrowserTracing({
+            routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+                useEffect,
+                useLocation,
+                useNavigationType,
+                createRoutesFromChildren,
+                matchRoutes
+            )
+        })
+    ],
+    tracesSampleRate: 1.0
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
