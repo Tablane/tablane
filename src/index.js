@@ -32,7 +32,12 @@ Sentry.init({
                 createRoutesFromChildren,
                 matchRoutes
             )
-        })
+        }),
+        new posthog.SentryIntegration(
+            posthog,
+            'tablane',
+            process.env.REACT_APP_SENTRY_PROJECT_ID
+        )
     ],
     tracesSampleRate: 1.0
 })
