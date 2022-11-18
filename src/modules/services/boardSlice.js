@@ -893,16 +893,6 @@ export const boardApi = api.injectEndpoints({
                 }
             }
         }),
-        fetchSharedBoard: builder.query({
-            query: boardId => `board/share/${boardId}`,
-            async onQueryStarted(args, { dispatch, queryFulfilled }) {
-                try {
-                    await queryFulfilled
-                } catch (err) {
-                    handleQueryError({ err, silent: true })
-                }
-            }
-        }),
         addSubtask: builder.mutation({
             query: ({ boardId, newTaskName, taskId }) => ({
                 url: `task/${boardId}/${taskId}`,
@@ -954,6 +944,5 @@ export const {
     useAddWatcherMutation,
     useRemoveWatcherMutation,
     useSetSharingMutation,
-    useFetchSharedBoardQuery,
     useAddSubtaskMutation
 } = boardApi

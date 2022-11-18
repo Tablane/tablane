@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom'
-import { useFetchSharedBoardQuery } from '../modules/services/boardSlice'
 import styles from '../styles/SharedBoard.module.scss'
 import { CircularProgress } from '@mui/material'
 import BoardView from './workspace/view/board/BoardView'
+import { useFetchSharedBoardQuery } from '../modules/services/sharedContentSlice'
 
 function SharedBoard() {
     const { boardId } = useParams()
