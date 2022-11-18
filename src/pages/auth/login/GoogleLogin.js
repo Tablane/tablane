@@ -30,7 +30,6 @@ function GoogleLogin() {
             leftIcon={<GoogleIcon />}
             variant="default"
             color="gray"
-            className="bg-[#868e96]"
             fullWidth
         >
             Sign in with Google
