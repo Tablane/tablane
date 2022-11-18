@@ -111,6 +111,7 @@ function TOTPManageModal({ open, setOpen, enabled }) {
                         <form onSubmit={handleDisable}>
                             <Button
                                 mt="xl"
+                                className="bg-[#fa5252]"
                                 color="red"
                                 type="submit"
                                 loading={isDisableLoading}
@@ -141,7 +142,11 @@ function TOTPManageModal({ open, setOpen, enabled }) {
                                 placeholder="Enter authenticator Code"
                                 {...form.getInputProps('token')}
                             />
-                            <Button type="submit" loading={isSetupLoading}>
+                            <Button
+                                type="submit"
+                                loading={isSetupLoading}
+                                className="bg-[#228be6]"
+                            >
                                 Enable
                             </Button>
                         </form>

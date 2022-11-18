@@ -74,6 +74,7 @@ function SecurityKeyManageModal({ open, setOpen, enabled }) {
                             <Button
                                 mt="xl"
                                 color="red"
+                                className="bg-[#fa5252]"
                                 type="submit"
                                 loading={isDisableLoading}
                             >

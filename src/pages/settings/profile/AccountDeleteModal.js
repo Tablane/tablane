@@ -26,7 +26,7 @@ function AccountDeleteModal({
                     placeholder="Enter your Password"
                     autoComplete="current-password"
                 />
-                <Button color="red" type="submit">
+                <Button className="bg-[#fa5252]" color="red" type="submit">
                     Confirm
                 </Button>
             </form>

@@ -86,6 +86,7 @@ function Login() {
                                 }}
                             >
                                 <Button
+                                    className="bg-[#228be6]"
                                     mt={20}
                                     fullWidth
                                     type="submit"

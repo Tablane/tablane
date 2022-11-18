@@ -54,6 +54,7 @@ function SecurityKeyLogin({ form }) {
                             mt={20}
                             fullWidth
                             type="submit"
+                            className="bg-[#228be6]"
                             disabled={isLoading}
                         >
                             Verify
@@ -77,6 +78,7 @@ function SecurityKeyLogin({ form }) {
                     leftIcon={<PhoneIcon />}
                     variant="default"
                     color="gray"
+                    className="bg-[#868e96]"
                     mt={12}
                     fullWidth
                     onClick={() => form.setFieldValue('type', 'totp')}

@@ -113,7 +113,10 @@ function Profile() {
                             />
                         </div>
                         <div>
-                            <Button onClick={handleProfileUpdate}>
+                            <Button
+                                className="bg-[#228be6]"
+                                onClick={handleProfileUpdate}
+                            >
                                 Update
                             </Button>
                         </div>
@@ -185,6 +188,7 @@ function Profile() {
                                                 style={{ margin: 'auto 0' }}
                                                 variant="light"
                                                 color="gray"
+                                                className="bg-[#f8f9fa]"
                                                 compact
                                                 onClick={() =>
                                                     handleRevoke(session._id)
@@ -217,7 +221,11 @@ function Profile() {
                         Once you delete your account, there is no going back.
                         Please be certain.
                     </span>
-                    <Button color="red" onClick={openDeleteModal}>
+                    <Button
+                        className="bg-[#fa5252]"
+                        color="red"
+                        onClick={openDeleteModal}
+                    >
                         Delete Account
                     </Button>
                 </div>

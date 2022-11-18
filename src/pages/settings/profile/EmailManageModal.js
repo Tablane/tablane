@@ -89,6 +89,7 @@ function EmailManageModal({ open, setOpen, enabled }) {
                             <Button
                                 mt="xl"
                                 color="red"
+                                className="bg-[#fa5252]"
                                 type="submit"
                                 loading={isDisableLoading}
                             >
@@ -107,6 +108,7 @@ function EmailManageModal({ open, setOpen, enabled }) {
                                 mt="xl"
                                 color="teal"
                                 type="submit"
+                                className="bg-[#12b886]"
                                 loading={isSetupLoading}
                             >
                                 Enable

@@ -118,6 +118,7 @@ function BackupManageModal({ open, setOpen, enabled }) {
                                     <Button
                                         mt="xl"
                                         color="red"
+                                        className="bg-[#fa5252]"
                                         type="submit"
                                         loading={isDisableLoading}
                                     >
@@ -127,6 +128,7 @@ function BackupManageModal({ open, setOpen, enabled }) {
                                         ml="md"
                                         mt="xl"
                                         color="gray"
+                                        className="bg-[#868e96]"
                                         loading={isLoadingRegenerate}
                                         onClick={regenerateBackupCodes}
                                     >
@@ -147,6 +149,7 @@ function BackupManageModal({ open, setOpen, enabled }) {
                                 mt="xl"
                                 color="teal"
                                 type="submit"
+                                className="bg-[#12b886]"
                                 loading={isEnableLoading}
                             >
                                 Enable

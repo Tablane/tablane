@@ -113,7 +113,7 @@ function Login() {
                         </Text>
 
                         <Anchor
-                            tabindex="1"
+                            tabIndex="1"
                             href="#"
                             onClick={event => event.preventDefault()}
                             sx={theme => ({
@@ -151,6 +151,7 @@ function Login() {
                         <Button
                             mt={20}
                             fullWidth
+                            className="bg-[#228be6]"
                             type="submit"
                             disabled={isLoading}
                         >

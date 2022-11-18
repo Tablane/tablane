@@ -50,6 +50,7 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                         }}
                     >
                         <Button
+                            className="bg-[#228be6]"
                             mt={20}
                             fullWidth
                             type="submit"
@@ -76,6 +77,7 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                     leftIcon={<SecurityKeyIcon />}
                     variant="default"
                     color="gray"
+                    className="bg-[#868e96]"
                     mt={12}
                     fullWidth
                     onClick={() => handleSwitchType('security_key')}

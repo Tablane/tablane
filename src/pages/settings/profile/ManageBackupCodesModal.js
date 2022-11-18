@@ -17,7 +17,12 @@ function ManageBackupCodesModal({ open, setOpen }) {
                 This two-step login provider is enabled on your account.
             </Alert>
             <form onSubmit={handleSubmit}>
-                <Button mt="xl" color="red" type="submit">
+                <Button
+                    className="bg-[#fa5252]"
+                    mt="xl"
+                    color="red"
+                    type="submit"
+                >
                     Disable
                 </Button>
             </form>
