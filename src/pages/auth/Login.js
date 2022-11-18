@@ -113,6 +113,7 @@ function Login() {
                         </Text>
 
                         <Anchor
+                            tabindex="1"
                             href="#"
                             onClick={event => event.preventDefault()}
                             sx={theme => ({
