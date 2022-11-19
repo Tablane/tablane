@@ -39,8 +39,7 @@ Sentry.init({
             process.env.REACT_APP_SENTRY_PROJECT_ID
         )
     ],
-    tracesSampleRate: 1.0,
-    enabled: process.env.NODE_ENV !== 'development'
+    tracesSampleRate: 1.0
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
