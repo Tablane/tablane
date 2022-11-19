@@ -78,27 +78,12 @@ function SecurityKeyLogin({ form }) {
                     leftIcon={<PhoneIcon />}
                     variant="default"
                     color="gray"
-                    className="bg-[#868e96]"
                     mt={12}
                     fullWidth
                     onClick={() => form.setFieldValue('type', 'totp')}
                 >
                     Verify with Authenticator App
                 </Button>
-                <div className={styles.text}>
-                    <p style={{ marginBottom: '0' }}>
-                        By signing in, you agree to our
-                    </p>
-                    <p style={{ marginTop: '5px', marginBottom: '0' }}>
-                        <a className={styles.link} href="#">
-                            Terms of Service
-                        </a>
-                        <span> and </span>
-                        <a className={styles.link} href="#">
-                            Privacy Policy
-                        </a>
-                    </p>
-                </div>
             </div>
             <div className={styles.registerText}>
                 <span className={styles.text}>

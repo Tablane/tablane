@@ -115,11 +115,17 @@ function Login() {
                                 By signing in, you agree to our
                             </p>
                             <p style={{ marginTop: '5px', marginBottom: '0' }}>
-                                <a className={styles.link} href="#">
+                                <a
+                                    className={styles.link}
+                                    href={`${process.env.REACT_APP_LANDING_HOST}/legal/terms`}
+                                >
                                     Terms of Service
                                 </a>
                                 <span> and </span>
-                                <a className={styles.link} href="#">
+                                <a
+                                    className={styles.link}
+                                    href={`${process.env.REACT_APP_LANDING_HOST}/legal/privacy-policy`}
+                                >
                                     Privacy Policy
                                 </a>
                             </p>

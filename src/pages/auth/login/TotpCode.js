@@ -77,27 +77,12 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                     leftIcon={<SecurityKeyIcon />}
                     variant="default"
                     color="gray"
-                    className="bg-[#868e96]"
                     mt={12}
                     fullWidth
                     onClick={() => handleSwitchType('security_key')}
                 >
                     Verify with a Security Key
                 </Button>
-                <div className={styles.text}>
-                    <p style={{ marginBottom: '0' }}>
-                        By signing in, you agree to our
-                    </p>
-                    <p style={{ marginTop: '5px', marginBottom: '0' }}>
-                        <a className={styles.link} href="#">
-                            Terms of Service
-                        </a>
-                        <span> and </span>
-                        <a className={styles.link} href="#">
-                            Privacy Policy
-                        </a>
-                    </p>
-                </div>
             </div>
             <div className={styles.registerText}>
                 <span className={styles.text}>
