@@ -17,7 +17,7 @@ import GoogleLogin from './login/GoogleLogin'
 import SecurityKeyLogin from './login/SecurityKeyLogin'
 
 function Login() {
-    const [loginUser, { isLoading }] = useLoginUserMutation()
+    const [loginUser, { isLoading, data }] = useLoginUserMutation()
     const form = useForm({
         initialValues: {
             step: 'email',
@@ -49,7 +49,7 @@ function Login() {
             form.setFieldValue('step', data.nextStep)
         } else if (step === 'password' && !form.isValid().hasErrors) {
             const { data } = await loginUser({ ...form.values })
-            if (data.nextStep) {
+            if (data?.nextStep) {
                 form.setFieldValue('step', data.nextStep)
                 form.setFieldValue('type', data.methods[0])
             }
@@ -67,13 +67,20 @@ function Login() {
         if (type === 'totp') {
             return (
                 <TotpCode
+                    methods={data?.methods || []}
                     form={form}
                     isLoading={isLoading}
                     handleSubmit={handleSubmit}
                 />
             )
         } else if (type === 'security_key') {
-            return <SecurityKeyLogin form={form} handleSubmit={handleSubmit} />
+            return (
+                <SecurityKeyLogin
+                    methods={data?.methods || []}
+                    form={form}
+                    handleSubmit={handleSubmit}
+                />
+            )
         } else if (type === 'email') {
             return <p>currently not available</p>
         }

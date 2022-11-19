@@ -5,7 +5,7 @@ import styles from '../../../styles/TotpCode.module.scss'
 import { PinField } from 'react-pin-field'
 import SecurityKeyIcon from '../../../styles/assets/SecurityKeyIcon'
 
-function TotpCode({ form, handleSubmit, isLoading }) {
+function TotpCode({ form, handleSubmit, isLoading, methods }) {
     const handleChange = value => {
         form.setFieldValue('totp', value)
     }
@@ -72,17 +72,21 @@ function TotpCode({ form, handleSubmit, isLoading }) {
                         )}
                     </div>
                 </form>
-                <Divider my={20} label="OR" labelPosition="center" />
-                <Button
-                    leftIcon={<SecurityKeyIcon />}
-                    variant="default"
-                    color="gray"
-                    mt={12}
-                    fullWidth
-                    onClick={() => handleSwitchType('security_key')}
-                >
-                    Verify with a Security Key
-                </Button>
+                {methods.length > 1 && (
+                    <Divider my={20} label="OR" labelPosition="center" />
+                )}
+                {methods.includes('security_key') && (
+                    <Button
+                        leftIcon={<SecurityKeyIcon />}
+                        variant="default"
+                        color="gray"
+                        mt={12}
+                        fullWidth
+                        onClick={() => handleSwitchType('security_key')}
+                    >
+                        Verify with a Security Key
+                    </Button>
+                )}
             </div>
             <div className={styles.registerText}>
                 <span className={styles.text}>

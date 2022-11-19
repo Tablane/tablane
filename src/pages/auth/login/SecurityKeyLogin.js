@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast'
 import { CircularProgress } from '@mui/material'
 import PhoneIcon from '../../../styles/assets/PhoneIcon'
 
-function SecurityKeyLogin({ form }) {
+function SecurityKeyLogin({ form, methods }) {
     const [loginUser, { isLoading }] = useLoginUserMutation()
 
     const handleSubmit = async e => {
@@ -73,17 +73,21 @@ function SecurityKeyLogin({ form }) {
                         )}
                     </div>
                 </form>
-                <Divider my={20} label="OR" labelPosition="center" />
-                <Button
-                    leftIcon={<PhoneIcon />}
-                    variant="default"
-                    color="gray"
-                    mt={12}
-                    fullWidth
-                    onClick={() => form.setFieldValue('type', 'totp')}
-                >
-                    Verify with Authenticator App
-                </Button>
+                {methods.length > 1 && (
+                    <Divider my={20} label="OR" labelPosition="center" />
+                )}
+                {methods.includes('security_key') && (
+                    <Button
+                        leftIcon={<PhoneIcon />}
+                        variant="default"
+                        color="gray"
+                        mt={12}
+                        fullWidth
+                        onClick={() => form.setFieldValue('type', 'totp')}
+                    >
+                        Verify with Authenticator App
+                    </Button>
+                )}
             </div>
             <div className={styles.registerText}>
                 <span className={styles.text}>
