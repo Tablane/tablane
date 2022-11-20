@@ -25,14 +25,14 @@ function SharedBoard() {
                 <div>
                     <p className="my-3">This page is currently unavailable</p>
                     <p className="my-3">
-                        To create your own public tasks or views,
+                        <span>To create your own public tasks or views, </span>
                         <Link
                             className="pointer underline text-[#4169e1]"
                             to="/login"
                         >
                             create an account
                         </Link>
-                        for free!
+                        <span> for free!</span>
                     </p>
                 </div>
             </div>
