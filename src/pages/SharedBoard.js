@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styles from '../styles/SharedBoard.module.scss'
 import { CircularProgress } from '@mui/material'
 import BoardView from './workspace/view/board/BoardView'
@@ -25,8 +25,14 @@ function SharedBoard() {
                 <div>
                     <p className="my-3">This page is currently unavailable</p>
                     <p className="my-3">
-                        To create your own public tasks or views,{' '}
-                        <span>create an account</span> for free!
+                        To create your own public tasks or views,
+                        <Link
+                            className="pointer underline text-[#4169e1]"
+                            to="/login"
+                        >
+                            create an account
+                        </Link>
+                        for free!
                     </p>
                 </div>
             </div>
