@@ -260,7 +260,9 @@ function SideBar(props) {
                                         autoFocus
                                     />
                                 ) : (
-                                    <p>{space.name}</p>
+                                    <p className="text-[13px] text-[#292d34] font-semibold">
+                                        {space.name}
+                                    </p>
                                 )}
                             </div>
                             <div className="flex flex-row">
@@ -354,7 +356,7 @@ function SideBar(props) {
                                                                     autoFocus
                                                                 />
                                                             ) : (
-                                                                <p>
+                                                                <p className="text-[12px] text-[#292d34] ">
                                                                     {board.name}
                                                                 </p>
                                                             )}
@@ -416,8 +418,15 @@ function SideBar(props) {
         <div className={`SideBar ${props.sideBarClosed ? 'closed' : ''}`}>
             <div className="header">
                 <div className="logo">
-                    <Link to={props.url}>
-                        <p>Task Board</p>
+                    <Link
+                        to={props.url}
+                        className="flex flex-row justify-center items-center"
+                    >
+                        <img
+                            src="/assets/favicon-96x96.png"
+                            className="h-6 w-6 mr-2"
+                        />
+                        <p>Tablane</p>
                     </Link>
                 </div>
                 <div className="icons">
@@ -440,10 +449,10 @@ function SideBar(props) {
                     to={`/${workspace.id}`}
                     end
                 >
-                    <div className="icon">
+                    <div className="icon text-[#53575e]">
                         <FontAwesomeIcon icon={solid('house')} />
                     </div>
-                    <span>Home</span>
+                    <span className="text-[13px] text-[#53575e]">Home</span>
                 </NavLink>
                 <NavLink
                     className={({ isActive }) =>
@@ -451,7 +460,7 @@ function SideBar(props) {
                     }
                     to={`/${workspace.id}/notifications`}
                 >
-                    <div className="icon">
+                    <div className="icon text-[#53575e]">
                         <FontAwesomeIcon icon={solid('bell')} />
                         {user?.newNotifications > 0 && (
                             <span className="indicator">
@@ -459,7 +468,9 @@ function SideBar(props) {
                             </span>
                         )}
                     </div>
-                    <span>Notifications</span>
+                    <span className="text-[13px] text-[#53575e]">
+                        Notifications
+                    </span>
                 </NavLink>
             </div>
             <div className="boards">
@@ -481,7 +492,7 @@ function SideBar(props) {
                     duration={200}
                     height={spaceTabOpen ? 'auto' : 0}
                 >
-                    <div className="new-btn">
+                    <div className="new-btn text-[11px] font-semibold text-[#7c828d]">
                         <button onClick={changeNewSpaceDialogOpen}>
                             <FontAwesomeIcon icon={solid('plus')} />
                             New Space
@@ -494,7 +505,7 @@ function SideBar(props) {
                                 <div className="space-icon">
                                     <FontAwesomeIcon icon={solid('th-large')} />
                                 </div>
-                                <p>Everything</p>
+                                <p className="text-[13px]">Everything</p>
                             </div>
                         </div>
                     </div>
