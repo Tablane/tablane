@@ -89,7 +89,7 @@ function Login() {
     return (
         <div className={styles.root}>
             <div className={styles.container}>
-                <p className={styles.header}>Sign in to TaskBoard</p>
+                <p className={styles.header}>Sign in to Tablane</p>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <TextInput
                         autoComplete="email"
