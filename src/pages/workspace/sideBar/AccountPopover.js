@@ -139,6 +139,11 @@ function AccountPopover() {
                                     My Settings
                                 </Link>
                                 <Link
+                                    to={`/settings/${workspaceId}/workspaces`}
+                                >
+                                    Workspaces
+                                </Link>
+                                <Link
                                     to={`/settings/${workspaceId}/notifications`}
                                 >
                                     Notifications
