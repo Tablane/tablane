@@ -2,6 +2,7 @@ import { Alert, Badge, Modal, TextInput } from '@mantine/core'
 import { Button } from '@mantine/core'
 import {
     useDisableTotpMutation,
+    useFetchUserQuery,
     useSetupTotpMutation
 } from '../../../modules/services/userSlice'
 import { useState } from 'react'
@@ -12,6 +13,7 @@ import PhoneIcon from '../../../styles/assets/PhoneIcon'
 import { useForm } from '@mantine/form'
 
 function TOTPManageModal({ open, setOpen, enabled }) {
+    const { data: user } = useFetchUserQuery()
     const [setupTotp, { isLoading: isSetupLoading }] = useSetupTotpMutation()
     const [disableTotp, { isLoading: isDisableLoading }] =
         useDisableTotpMutation()
@@ -130,7 +132,7 @@ function TOTPManageModal({ open, setOpen, enabled }) {
                             <QRCode
                                 size={256}
                                 className={styles.qrCode}
-                                value={`otpauth://totp/TaskBoard?secret=${secret}`}
+                                value={`otpauth://totp/${user.email}?secret=${secret}&issuer=Tablane`}
                                 viewBox={`0 0 256 256`}
                             />
                         </div>
