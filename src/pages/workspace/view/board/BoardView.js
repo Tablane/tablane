@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { DragDropContext } from '@hello-pangea/dnd'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
 
-function BoardView({ board }) {
+function BoardView({ board, hasPerms }) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
@@ -19,6 +19,7 @@ function BoardView({ board }) {
         if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
+                    hasPerms={hasPerms}
                     board={board}
                     color={'rgb(196, 196, 196)'}
                     name=""
@@ -53,6 +54,7 @@ function BoardView({ board }) {
 
         return labels.map(label => (
             <TaskGroup
+                hasPerms={hasPerms}
                 groupedTasks={labels}
                 board={board}
                 color={label.color}

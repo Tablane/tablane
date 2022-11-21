@@ -11,6 +11,7 @@ import PlusIcon from '../../../../styles/assets/PlusIcon'
 import NewTaskForm from './taskGroup/NewTaskForm'
 
 function TaskGroup(props) {
+    const { hasPerms } = props
     const [collapsed, setCollapsed] = useState(false)
 
     // attribute popover
@@ -71,6 +72,9 @@ function TaskGroup(props) {
                                 return (
                                     <Draggable
                                         draggableId={props.taskGroupId + x._id}
+                                        isDragDisabled={
+                                            !hasPerms('MANAGE:TASK')
+                                        }
                                         index={i}
                                         key={props.taskGroupId + x._id}
                                     >
@@ -106,7 +110,9 @@ function TaskGroup(props) {
                             <div className="attribute">
                                 <p
                                     onClick={handleAddNewAttribute}
-                                    className="cursor-pointer"
+                                    className={`cursor-pointer ${
+                                        hasPerms('MANAGE:TASK') ? '' : 'hidden'
+                                    }`}
                                 >
                                     <PlusIcon className="h-4 text-adb3bd" />
                                 </p>

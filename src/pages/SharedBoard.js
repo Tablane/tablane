@@ -42,6 +42,7 @@ function SharedBoard() {
     return (
         <div className="bg-[#eee] overflow-auto h-[100vh]">
             <BoardView
+                hasPerms={() => false}
                 board={board}
                 sidebarOpen={false}
                 toggleSideBar={() => {}}
