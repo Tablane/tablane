@@ -73,7 +73,7 @@ function TaskGroup(props) {
                                     <Draggable
                                         draggableId={props.taskGroupId + x._id}
                                         isDragDisabled={
-                                            !hasPerms('MANAGE:TASK')
+                                            !hasPerms('MANAGE:COLUMN')
                                         }
                                         index={i}
                                         key={props.taskGroupId + x._id}
@@ -87,13 +87,26 @@ function TaskGroup(props) {
                                             >
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
+                                                    className={`${
+                                                        hasPerms(
+                                                            'MANAGE:COLUMN'
+                                                        )
+                                                            ? ''
+                                                            : 'hidden'
+                                                    }`}
                                                 />
                                                 <p className="text-xs text-adb3bd">
                                                     {x.name}
                                                 </p>
                                                 <FontAwesomeIcon
                                                     icon={solid('caret-down')}
-                                                    className="cursor-pointer text-[#b9bec7] hover:text-[#7c828d]"
+                                                    className={`cursor-pointer text-[#b9bec7] hover:text-[#7c828d] ${
+                                                        hasPerms(
+                                                            'MANAGE:COLUMN'
+                                                        )
+                                                            ? ''
+                                                            : 'hidden'
+                                                    }`}
                                                     onClick={e =>
                                                         handleAttributePopover(
                                                             e,
