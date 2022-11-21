@@ -147,6 +147,7 @@ function TaskGroup(props) {
                                     return (
                                         <Task
                                             groupedTasks={props.groupedTasks}
+                                            hasPerms={hasPerms}
                                             board={props.board}
                                             key={task._id}
                                             task={task}

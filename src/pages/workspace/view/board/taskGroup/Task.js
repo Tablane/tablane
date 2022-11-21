@@ -32,11 +32,13 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
+    const { hasPerms } = props
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
 
     const openTaskModal = () => {
+        if (!hasPerms('READ:PUBLIC')) return
         if (taskEditing) return
         navigate(`${location.pathname}/${props.task._id}`)
     }
@@ -48,12 +50,14 @@ function Task(props) {
     }
 
     const handleClick = (e, key) => {
+        if (!hasPerms('MANAGE:TASK')) return
         setAnchor(e.currentTarget)
         setActiveOption(key._id)
         setColumnDialogOpen(!columnDialogOpen)
     }
 
     const handleMoreClick = e => {
+        if (!(hasPerms('MANAGE:TASK') || hasPerms('DELETE:TASK'))) return
         setAnchor(e.currentTarget)
         setMoreDialogOpen(!moreDialogOpen)
     }
@@ -221,6 +225,7 @@ function Task(props) {
         <>
             <Draggable
                 draggableId={props.task._id}
+                isDragDisabled={!hasPerms('MANAGE:TASK')}
                 index={props.index}
                 type="task"
             >
@@ -239,14 +244,20 @@ function Task(props) {
                     >
                         {!taskEditing && (
                             <div
-                                className={`self-stretch`}
+                                className={`self-stretch w-[20px] ${
+                                    hasPerms('MANAGE:TASK')
+                                        ? ''
+                                        : '!cursor-auto '
+                                }`}
                                 onClick={() => setBatchSelect(!batchSelect)}
                             >
                                 <input
                                     type="checkbox"
                                     checked={batchSelect}
                                     readOnly
-                                    className="opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle"
+                                    className={`opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle ${
+                                        hasPerms('MANAGE:TASK') ? '' : 'hidden'
+                                    }`}
                                 />
                             </div>
                         )}
@@ -262,7 +273,9 @@ function Task(props) {
                                 props.task.subtasks.length > 0
                                     ? 'subtaskWithSubtasks'
                                     : ''
-                            } ${taskEditing ? 'ml-[20px]' : ''}`}
+                            } ${taskEditing ? 'ml-[20px]' : ''} ${
+                                hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'
+                            }`}
                             style={{
                                 '--total-margin-left':
                                     props.task.level * 32 - 32 + 12 + 'px'
@@ -323,15 +336,17 @@ function Task(props) {
                                     <p className="taskName text-sm">
                                         {props.task.name}
                                     </p>
-                                    <QuickActionsToolbar
-                                        level={props.task.level}
-                                        taskGroupId={props.taskGroupId}
-                                        groupedTasks={props.groupedTasks}
-                                        board={props.board}
-                                        task={props.task}
-                                        handleTaskEdit={handleTaskEdit}
-                                        setNewTaskOpen={setNewTaskOpen}
-                                    />
+                                    {hasPerms('MANAGE:TASK') && (
+                                        <QuickActionsToolbar
+                                            level={props.task.level}
+                                            taskGroupId={props.taskGroupId}
+                                            groupedTasks={props.groupedTasks}
+                                            board={props.board}
+                                            task={props.task}
+                                            handleTaskEdit={handleTaskEdit}
+                                            setNewTaskOpen={setNewTaskOpen}
+                                        />
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -341,6 +356,10 @@ function Task(props) {
                                 props.task.level === 0 && props.index === 0
                                     ? 'border-t-2'
                                     : ''
+                            } ${
+                                hasPerms('MANAGE:COLUMN')
+                                    ? 'cursor-pointer'
+                                    : 'cursor-auto'
                             }`}
                         >
                             {props.board.attributes.map(attribute => {
@@ -363,7 +382,12 @@ function Task(props) {
                             })}
 
                             <div onClick={handleMoreClick}>
-                                <FontAwesomeIcon icon={solid('ellipsis-h')} />
+                                {(hasPerms('MANAGE:TASK') ||
+                                    hasPerms('DELETE:TASK')) && (
+                                    <FontAwesomeIcon
+                                        icon={solid('ellipsis-h')}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
@@ -393,6 +417,7 @@ function Task(props) {
                 {props.task?.subtasks.map((subtask, i) => {
                     return (
                         <Task
+                            hasPerms={hasPerms}
                             groupedTasks={props.groupedTasks}
                             board={props.board}
                             key={subtask._id}

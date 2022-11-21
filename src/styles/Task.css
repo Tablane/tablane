@@ -105,7 +105,6 @@
 }
 
 .Task > div.taskAttr > div {
-  cursor: pointer;
   border-right: 1px solid white;
   background-color: rgb(196, 196, 196);
   height: 36px;
