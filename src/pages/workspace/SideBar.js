@@ -260,7 +260,7 @@ function SideBar(props) {
                                         autoFocus
                                     />
                                 ) : (
-                                    <p className="text-[13px] text-[#292d34] font-semibold">
+                                    <p className="text-[14px] text-[#292d34] font-semibold">
                                         {space.name}
                                     </p>
                                 )}
@@ -356,7 +356,7 @@ function SideBar(props) {
                                                                     autoFocus
                                                                 />
                                                             ) : (
-                                                                <p className="text-[12px] text-[#292d34] ">
+                                                                <p className="text-[13px] text-[#292d34] ">
                                                                     {board.name}
                                                                 </p>
                                                             )}
@@ -452,7 +452,7 @@ function SideBar(props) {
                     <div className="icon text-[#53575e]">
                         <FontAwesomeIcon icon={solid('house')} />
                     </div>
-                    <span className="text-[13px] text-[#53575e]">Home</span>
+                    <span className="text-[14px] text-[#53575e]">Home</span>
                 </NavLink>
                 <NavLink
                     className={({ isActive }) =>
@@ -468,7 +468,7 @@ function SideBar(props) {
                             </span>
                         )}
                     </div>
-                    <span className="text-[13px] text-[#53575e]">
+                    <span className="text-[14px] text-[#53575e]">
                         Notifications
                     </span>
                 </NavLink>
@@ -505,7 +505,7 @@ function SideBar(props) {
                                 <div className="space-icon">
                                     <FontAwesomeIcon icon={solid('th-large')} />
                                 </div>
-                                <p className="text-[13px]">Everything</p>
+                                <p className="text-[14px]">Everything</p>
                             </div>
                         </div>
                     </div>
