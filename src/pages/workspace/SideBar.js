@@ -360,18 +360,20 @@ function SideBar(props) {
                                                                     {board.name}
                                                                 </p>
                                                             )}
-                                                            <FontAwesomeIcon
-                                                                onClick={e =>
-                                                                    boardClick(
-                                                                        space,
-                                                                        board,
-                                                                        e
-                                                                    )
-                                                                }
-                                                                icon={solid(
-                                                                    'ellipsis-h'
-                                                                )}
-                                                            />
+                                                            <div className="flex justify-center items-center w-5 mr-5 ml-auto opacity-0 cursor-pointer text-[0.8rem]">
+                                                                <FontAwesomeIcon
+                                                                    onClick={e =>
+                                                                        boardClick(
+                                                                            space,
+                                                                            board,
+                                                                            e
+                                                                        )
+                                                                    }
+                                                                    icon={solid(
+                                                                        'ellipsis-h'
+                                                                    )}
+                                                                />
+                                                            </div>
                                                         </NavLink>
                                                     )}
                                                 </Draggable>

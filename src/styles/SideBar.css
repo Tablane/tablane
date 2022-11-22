@@ -298,8 +298,8 @@
   display: none;
 }
 
-.space .space-boards > div > div > a:hover > svg {
-  opacity: 1;
+.space .space-boards > div > div > a:hover > div {
+  opacity: 1 !important;
 }
 
 .SideBar input {
