@@ -248,7 +248,7 @@ function SideBar(props) {
                                 {space._id === editingSpace ? (
                                     <input
                                         type="text"
-                                        className="space"
+                                        className="space text-[13px] text-[#292d34]"
                                         defaultValue={space.name}
                                         onKeyUp={e => {
                                             if (
