@@ -30,7 +30,6 @@ import {
 import { useFetchUserQuery } from '../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { toast } from 'react-hot-toast'
 
 function SideBar(props) {
     const [addBoard] = useAddBoardMutation()
@@ -118,7 +117,7 @@ function SideBar(props) {
             workspaceId: workspace._id,
             workspaceIdFriendly: workspace.id,
             _id: ObjectId(),
-            name: newSpaceName
+            name: newSpaceName.replaceAll(/[^a-zA-Z0-9_$<>!=´`+*&() ]/g, '')
         })
     }
 
@@ -152,7 +151,10 @@ function SideBar(props) {
         if (editingBoardName === '') return
         editBoardName({
             ...editingBoard,
-            name: editingBoardName,
+            name: editingBoardName.replaceAll(
+                /[^a-zA-Z0-9_$<>!=´`+*&() ]/g,
+                ''
+            ),
             workspaceIdFriendly: workspace.id,
             workspaceId: workspace._id
         })
@@ -165,7 +167,7 @@ function SideBar(props) {
             workspaceId: workspace._id,
             workspaceIdFriendly: workspace.id,
             spaceId: editingSpace,
-            name: editingSpaceName
+            name: editingSpaceName.replaceAll(/[^a-zA-Z0-9_$<>!=´`+*&() ]/g, '')
         })
         setEditingSpace('')
     }
