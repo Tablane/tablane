@@ -333,7 +333,7 @@ function SideBar(props) {
                                                             editingBoard.boardId ? (
                                                                 <input
                                                                     type="text"
-                                                                    className="board"
+                                                                    className="board text-[13px] text-[#292d34]"
                                                                     defaultValue={
                                                                         board.name
                                                                     }
@@ -356,7 +356,7 @@ function SideBar(props) {
                                                                     autoFocus
                                                                 />
                                                             ) : (
-                                                                <p className="text-[13px] text-[#292d34] ">
+                                                                <p className="text-[13px] text-[#292d34]">
                                                                     {board.name}
                                                                 </p>
                                                             )}
@@ -383,7 +383,7 @@ function SideBar(props) {
                                                 <div> </div>
                                                 <input
                                                     type="text"
-                                                    className="board"
+                                                    className="board text-[13px] text-[#292d34]"
                                                     onKeyUp={e => {
                                                         if (
                                                             e.key ===
