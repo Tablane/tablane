@@ -30,6 +30,7 @@ import {
 import { useFetchUserQuery } from '../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { toast } from 'react-hot-toast'
 
 function SideBar(props) {
     const [addBoard] = useAddBoardMutation()
@@ -133,7 +134,7 @@ function SideBar(props) {
             workspaceId: workspace._id,
             workspaceIdFriendly: workspace.id,
             spaceId: newBoardSpace,
-            name: newBoardName,
+            name: newBoardName.replaceAll(/[^a-zA-Z0-9_$<>!=´`+*&() ]/g, ''),
             _id: ObjectId()
         })
     }
