@@ -139,7 +139,11 @@ function TaskGroup(props) {
                     <Droppable droppableId={props.taskGroupId} type="task">
                         {provided => (
                             <div
-                                className="tasks ml-9 border-2 border-b border-white rounded-t-sm box-border"
+                                className={`tasks ml-9 border-2 border-b border-white rounded-t-sm box-border ${
+                                    hasPerms('CREATE:TASK')
+                                        ? ''
+                                        : 'rounded-b-sm'
+                                }`}
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
@@ -160,10 +164,12 @@ function TaskGroup(props) {
                             </div>
                         )}
                     </Droppable>
-                    <NewTaskForm
-                        board={props.board}
-                        taskGroupId={props.taskGroupId}
-                    />
+                    {hasPerms('CREATE:TASK') && (
+                        <NewTaskForm
+                            board={props.board}
+                            taskGroupId={props.taskGroupId}
+                        />
+                    )}
                 </>
             )}
 
