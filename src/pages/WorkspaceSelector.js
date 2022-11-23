@@ -28,6 +28,7 @@ function WorkspaceSelector({ noPadding }) {
 
     useEffect(() => {
         const lastVisitedBoard = localStorage.getItem('lastVisitedBoard')
+        localStorage.removeItem('lastVisitedBoard')
         if (window.location.pathname === '/' && lastVisitedBoard) {
             navigate(lastVisitedBoard)
         }
