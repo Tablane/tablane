@@ -139,7 +139,7 @@ function TaskGroup(props) {
                     <Droppable droppableId={props.taskGroupId} type="task">
                         {provided => (
                             <div
-                                className="tasks ml-4"
+                                className="tasks ml-9 border-2 border-b border-white rounded-t-sm box-border"
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >

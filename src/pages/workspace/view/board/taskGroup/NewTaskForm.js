@@ -57,9 +57,9 @@ function NewTaskForm({
                 marginLeft: level === -1 ? '36px' : '20px',
                 paddingLeft: level * 32 + 'px'
             }}
-            className={`ml-9 sticky left-0 new-task-form bg-white ${level}`}
+            className={`ml-9 sticky left-0 new-task-form bg-white rounded-b-sm ${level}`}
         >
-            <div className="new-task w-full justify-between">
+            <div className="new-task w-full justify-between border-white border-2 border-t-0 rounded-b-sm">
                 <input
                     autoFocus={level !== -1}
                     type="text"

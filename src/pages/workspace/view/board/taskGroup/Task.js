@@ -231,12 +231,8 @@ function Task(props) {
             >
                 {provided => (
                     <div
-                        className={`Task border-r-2 border-white ${
+                        className={`Task border-b border-white ${
                             taskEditing ? 'editing' : ''
-                        } ${
-                            props.task.level === 0 && props.index === 0
-                                ? 'rounded-sm'
-                                : ''
                         }`}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
@@ -244,7 +240,7 @@ function Task(props) {
                     >
                         {!taskEditing && (
                             <div
-                                className={`self-stretch w-[20px] ${
+                                className={`absolute left-[-22px] h-full self-stretch w-[20px] ${
                                     hasPerms('MANAGE:TASK')
                                         ? ''
                                         : '!cursor-auto '
@@ -266,10 +262,6 @@ function Task(props) {
                             className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
                                 props.task.level > 0 ? 'subtask' : ''
                             } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
-                                props.task.level === 0 && props.index === 0
-                                    ? 'border-t-2 border-white'
-                                    : ''
-                            } ${
                                 props.task.subtasks.length > 0
                                     ? 'subtaskWithSubtasks'
                                     : ''
@@ -307,7 +299,7 @@ function Task(props) {
                                 <form
                                     onSubmit={handleTaskEdit}
                                     onBlur={handleTaskEdit}
-                                    className="text-[14px] border-t border-white"
+                                    className="text-[14px] border-t border-red-600"
                                     style={{
                                         paddingLeft:
                                             props.task.level * 32 + 25 + 'px'
@@ -352,11 +344,7 @@ function Task(props) {
                         </div>
                         <div
                             onClick={e => e.stopPropagation()}
-                            className={`taskAttr ml-auto border-b border-white ${
-                                props.task.level === 0 && props.index === 0
-                                    ? 'border-t-2'
-                                    : ''
-                            } ${
+                            className={`taskAttr ml-auto ${
                                 hasPerms('MANAGE:COLUMN')
                                     ? 'cursor-pointer'
                                     : 'cursor-auto'
