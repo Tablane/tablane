@@ -7,12 +7,34 @@ import TaskGroup from './TaskGroup'
 import _ from 'lodash'
 import { DragDropContext } from '@hello-pangea/dnd'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    useSensor,
+    useSensors,
+    MouseSensor
+} from '@dnd-kit/core'
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 
 function BoardView({ board, hasPerms }) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
     const [collapsed, setCollapsed] = useState(true)
+
+    const sensors = useSensors(
+        useSensor(MouseSensor, {
+            activationConstraint: {
+                distance: 10
+            }
+        }),
+        // useSensor(PointerSensor, { activationConstraint: 15 }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates
+        })
+    )
 
     const groupTasks = useMemo(() => {
         if (!board) return
@@ -122,25 +144,33 @@ function BoardView({ board, hasPerms }) {
                     onDragEnd={handleDragEnd}
                     onDragStart={onDragStart}
                 >
-                    <div className="border border-borderGrey rounded-md font-medium mr-6 mb-9">
-                        <div className="px-4 h-9 flex justify-content items-center">
-                            <div
-                                className="left-0 sticky flex justify-content items-center px-1 rounded cursor-pointer hover:bg-bcc0c74d"
-                                onClick={() => setCollapsed(!collapsed)}
-                            >
-                                <ExpandCircleIcon
-                                    className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform fill-bcc0c7 ${
-                                        !collapsed ? '-rotate-90' : ''
-                                    }`}
-                                />
-                                <span>{board.name}</span>
-                                <span className="text-xs ml-2 text-bcc0c7 font-normal uppercase">
-                                    {board.tasks.length} tasks
-                                </span>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={x => console.log(x)}
+                    >
+                        <div className="border border-borderGrey rounded-md font-medium mr-6 mb-9">
+                            <div className="px-4 h-9 flex justify-content items-center">
+                                <div
+                                    className="left-0 sticky flex justify-content items-center px-1 rounded cursor-pointer hover:bg-bcc0c74d"
+                                    onClick={() => setCollapsed(!collapsed)}
+                                >
+                                    <ExpandCircleIcon
+                                        className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform fill-bcc0c7 ${
+                                            !collapsed ? '-rotate-90' : ''
+                                        }`}
+                                    />
+                                    <span>{board.name}</span>
+                                    <span className="text-xs ml-2 text-bcc0c7 font-normal uppercase">
+                                        {board.tasks.length} tasks
+                                    </span>
+                                </div>
                             </div>
+                            {collapsed && (
+                                <div className="px-4">{groupTasks}</div>
+                            )}
                         </div>
-                        {collapsed && <div className="px-4">{groupTasks}</div>}
-                    </div>
+                    </DndContext>
                 </DragDropContext>
             )}
         </div>

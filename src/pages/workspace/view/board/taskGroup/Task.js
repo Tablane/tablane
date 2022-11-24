@@ -1,7 +1,6 @@
 import { Fragment, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
-import { Draggable } from '@hello-pangea/dnd'
 import TaskPopover from './task/TaskPopover'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -17,6 +16,8 @@ import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import QuickActionsToolbar from './QuickActionsToolbar'
 import NewTaskForm from './NewTaskForm'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -32,7 +33,16 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({
+            id: props.task._id
+        })
     const { hasPerms } = props
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition
+    }
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -223,164 +233,150 @@ function Task(props) {
 
     return (
         <>
-            <Draggable
-                draggableId={props.task._id}
-                isDragDisabled={!hasPerms('MANAGE:TASK')}
-                index={props.index}
-                type="task"
+            <div
+                className={`Task border-b border-white ${
+                    taskEditing ? 'editing' : ''
+                }`}
+                ref={setNodeRef}
+                style={style}
+                {...listeners}
+                {...attributes}
             >
-                {provided => (
+                {!taskEditing && (
                     <div
-                        className={`Task border-b border-white ${
-                            taskEditing ? 'editing' : ''
+                        className={`absolute left-[-22px] h-full self-stretch w-[20px] ${
+                            hasPerms('MANAGE:TASK') ? '' : '!cursor-auto '
                         }`}
-                        {...provided.draggableProps}
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
+                        onClick={() => setBatchSelect(!batchSelect)}
                     >
-                        {!taskEditing && (
-                            <div
-                                className={`absolute left-[-22px] h-full self-stretch w-[20px] ${
-                                    hasPerms('MANAGE:TASK')
-                                        ? ''
-                                        : '!cursor-auto '
-                                }`}
-                                onClick={() => setBatchSelect(!batchSelect)}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={batchSelect}
-                                    readOnly
-                                    className={`opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle ${
-                                        hasPerms('MANAGE:TASK') ? '' : 'hidden'
-                                    }`}
-                                />
-                            </div>
-                        )}
-                        <div
-                            onClick={openTaskModal}
-                            className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
-                                props.task.level > 0 ? 'subtask' : ''
-                            } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
+                        <input
+                            type="checkbox"
+                            checked={batchSelect}
+                            readOnly
+                            className={`opacity-0 batch-select-checkbox relative mr-1 w-4 h-4 rounded-full appearance-none bg-white border-solid border cursor-pointer align-middle ${
+                                hasPerms('MANAGE:TASK') ? '' : 'hidden'
+                            }`}
+                        />
+                    </div>
+                )}
+                <div
+                    onClick={openTaskModal}
+                    className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
+                        props.task.level > 0 ? 'subtask' : ''
+                    } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
+                        props.task.subtasks.length > 0
+                            ? 'subtaskWithSubtasks'
+                            : ''
+                    } ${taskEditing ? 'ml-[20px]' : ''} ${
+                        hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'
+                    }`}
+                    style={{
+                        '--total-margin-left':
+                            props.task.level * 32 - 32 + 12 + 'px'
+                    }}
+                >
+                    <div
+                        onClick={handleCollapse}
+                        className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
+                            props.task.subtasks.length > 0
+                                ? 'cursor-pointer'
+                                : 'hidden'
+                        }`}
+                        style={{
+                            marginLeft: props.task.level * 32 + 'px'
+                        }}
+                    >
+                        <FontAwesomeIcon
+                            icon={solid('caret-down')}
+                            className={`transition-transform ${
+                                collapsed ? '-rotate-90' : ''
+                            } ${
                                 props.task.subtasks.length > 0
                                     ? 'subtaskWithSubtasks'
                                     : ''
-                            } ${taskEditing ? 'ml-[20px]' : ''} ${
-                                hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'
                             }`}
+                        />
+                    </div>
+                    {taskEditing ? (
+                        <form
+                            onSubmit={handleTaskEdit}
+                            onBlur={handleTaskEdit}
+                            className="text-[14px] border-t border-red-600"
                             style={{
-                                '--total-margin-left':
-                                    props.task.level * 32 - 32 + 12 + 'px'
+                                paddingLeft: props.task.level * 32 + 25 + 'px'
                             }}
                         >
-                            <div
-                                onClick={handleCollapse}
-                                className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
-                                    props.task.subtasks.length > 0
-                                        ? 'cursor-pointer'
-                                        : 'hidden'
-                                }`}
-                                style={{
-                                    marginLeft: props.task.level * 32 + 'px'
+                            <input
+                                type={taskName}
+                                onKeyUp={e => {
+                                    if (e.key === 'Escape')
+                                        e.currentTarget.blur()
                                 }}
-                            >
-                                <FontAwesomeIcon
-                                    icon={solid('caret-down')}
-                                    className={`transition-transform ${
-                                        collapsed ? '-rotate-90' : ''
-                                    } ${
-                                        props.task.subtasks.length > 0
-                                            ? 'subtaskWithSubtasks'
-                                            : ''
-                                    }`}
+                                value={taskName}
+                                onChange={changeTaskName}
+                                name="taskName"
+                                autoFocus
+                            />
+                        </form>
+                    ) : (
+                        <div
+                            className="flex flex-row"
+                            style={{
+                                paddingLeft: props.task.level * 32 + 'px'
+                            }}
+                        >
+                            <p className="taskName text-sm">
+                                {props.task.name}
+                            </p>
+                            {hasPerms('MANAGE:TASK') && (
+                                <QuickActionsToolbar
+                                    level={props.task.level}
+                                    taskGroupId={props.taskGroupId}
+                                    groupedTasks={props.groupedTasks}
+                                    board={props.board}
+                                    task={props.task}
+                                    handleTaskEdit={handleTaskEdit}
+                                    setNewTaskOpen={setNewTaskOpen}
                                 />
-                            </div>
-                            {taskEditing ? (
-                                <form
-                                    onSubmit={handleTaskEdit}
-                                    onBlur={handleTaskEdit}
-                                    className="text-[14px] border-t border-red-600"
-                                    style={{
-                                        paddingLeft:
-                                            props.task.level * 32 + 25 + 'px'
-                                    }}
-                                >
-                                    <input
-                                        type={taskName}
-                                        onKeyUp={e => {
-                                            if (e.key === 'Escape')
-                                                e.currentTarget.blur()
-                                        }}
-                                        value={taskName}
-                                        onChange={changeTaskName}
-                                        name="taskName"
-                                        autoFocus
-                                    />
-                                </form>
-                            ) : (
-                                <div
-                                    className="flex flex-row"
-                                    style={{
-                                        paddingLeft:
-                                            props.task.level * 32 + 'px'
-                                    }}
-                                >
-                                    <p className="taskName text-sm">
-                                        {props.task.name}
-                                    </p>
-                                    {hasPerms('MANAGE:TASK') && (
-                                        <QuickActionsToolbar
-                                            level={props.task.level}
-                                            taskGroupId={props.taskGroupId}
-                                            groupedTasks={props.groupedTasks}
-                                            board={props.board}
-                                            task={props.task}
-                                            handleTaskEdit={handleTaskEdit}
-                                            setNewTaskOpen={setNewTaskOpen}
-                                        />
-                                    )}
-                                </div>
                             )}
                         </div>
-                        <div
-                            onClick={e => e.stopPropagation()}
-                            className={`taskAttr ml-auto ${
-                                hasPerms('MANAGE:COLUMN')
-                                    ? 'cursor-pointer'
-                                    : 'cursor-auto'
-                            }`}
-                        >
-                            {props.board.attributes.map(attribute => {
-                                if (attribute.type === 'status')
-                                    return getStatusLabel(attribute)
-                                if (attribute.type === 'text')
-                                    return getTextLabel(attribute)
-                                if (attribute.type === 'people') {
-                                    return getPersonLabel(attribute)
-                                }
+                    )}
+                </div>
+                <div
+                    onClick={e => e.stopPropagation()}
+                    className={`taskAttr ml-auto ${
+                        hasPerms('MANAGE:COLUMN')
+                            ? 'cursor-pointer'
+                            : 'cursor-auto'
+                    }`}
+                >
+                    {props.board.attributes.map(attribute => {
+                        if (attribute.type === 'status')
+                            return getStatusLabel(attribute)
+                        if (attribute.type === 'text')
+                            return getTextLabel(attribute)
+                        if (attribute.type === 'people') {
+                            return getPersonLabel(attribute)
+                        }
 
-                                return (
-                                    <div
-                                        style={{ backgroundColor: 'crimson' }}
-                                        key={Math.random()}
-                                    >
-                                        ERROR
-                                    </div>
-                                )
-                            })}
-
-                            <div onClick={handleMoreClick}>
-                                {(hasPerms('MANAGE:TASK') ||
-                                    hasPerms('DELETE:TASK')) && (
-                                    <FontAwesomeIcon
-                                        icon={solid('ellipsis-h')}
-                                    />
-                                )}
+                        return (
+                            <div
+                                style={{ backgroundColor: 'crimson' }}
+                                key={Math.random()}
+                            >
+                                ERROR
                             </div>
-                        </div>
+                        )
+                    })}
+
+                    <div onClick={handleMoreClick}>
+                        {(hasPerms('MANAGE:TASK') ||
+                            hasPerms('DELETE:TASK')) && (
+                            <FontAwesomeIcon icon={solid('ellipsis-h')} />
+                        )}
                     </div>
-                )}
-            </Draggable>
+                </div>
+            </div>
 
             {!taskEditing && (
                 <TaskPopover
