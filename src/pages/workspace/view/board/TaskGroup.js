@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import '../../../../styles/TaskGroup.css'
 import Task from '../board/taskGroup/Task'
-import { Draggable, Droppable } from '@hello-pangea/dnd'
 import AttributePopover from '../board/taskGroup/AttributePopover'
 import AddAttributePopover from '../board/taskGroup/AddAttributePopover'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,6 +8,8 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
 import PlusIcon from '../../../../styles/assets/PlusIcon'
 import NewTaskForm from './taskGroup/NewTaskForm'
+import { Draggable, Droppable } from '@hello-pangea/dnd'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 function TaskGroup(props) {
     const { hasPerms } = props
@@ -29,6 +30,11 @@ function TaskGroup(props) {
         setPopoverId(id ? id : popoverId)
         setPopoverOpen(e ? e.target.parentNode : null)
     }
+
+    const taskIds = useMemo(
+        () => props.tasks.map(task => task._id),
+        [props.tasks]
+    )
 
     return (
         <div className="task mb-7 font-normal">
@@ -136,40 +142,36 @@ function TaskGroup(props) {
             </div>
             {!collapsed && (
                 <>
-                    <Droppable droppableId={props.taskGroupId} type="task">
-                        {provided => (
-                            <div
-                                className={`tasks ml-9 border-2 border-b border-white rounded-t-sm box-border ${
-                                    hasPerms('CREATE:TASK')
-                                        ? ''
-                                        : 'rounded-b-sm'
-                                }`}
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                            >
-                                {props.tasks.map((task, i) => {
-                                    return (
-                                        <Task
-                                            groupedTasks={props.groupedTasks}
-                                            hasPerms={hasPerms}
-                                            board={props.board}
-                                            key={task._id}
-                                            task={task}
-                                            index={i}
-                                            taskGroupId={props.taskGroupId}
-                                        />
-                                    )
-                                })}
-                                {provided.placeholder}
-                            </div>
+                    <SortableContext
+                        items={taskIds}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        <div
+                            className={`tasks ml-9 border-2 border-b border-white rounded-t-sm box-border ${
+                                hasPerms('CREATE:TASK') ? '' : 'rounded-b-sm'
+                            }`}
+                        >
+                            {props.tasks.map((task, i) => {
+                                return (
+                                    <Task
+                                        groupedTasks={props.groupedTasks}
+                                        hasPerms={hasPerms}
+                                        board={props.board}
+                                        key={task._id}
+                                        task={task}
+                                        index={i}
+                                        taskGroupId={props.taskGroupId}
+                                    />
+                                )
+                            })}
+                        </div>
+                        {hasPerms('CREATE:TASK') && (
+                            <NewTaskForm
+                                board={props.board}
+                                taskGroupId={props.taskGroupId}
+                            />
                         )}
-                    </Droppable>
-                    {hasPerms('CREATE:TASK') && (
-                        <NewTaskForm
-                            board={props.board}
-                            taskGroupId={props.taskGroupId}
-                        />
-                    )}
+                    </SortableContext>
                 </>
             )}
 
