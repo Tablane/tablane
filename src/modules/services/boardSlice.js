@@ -3,6 +3,7 @@ import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
 import socket from '../../socket/socket'
 import handleQueryError from '../../utils/handleQueryError'
+import { flatten } from '../../utils/taskUtils'
 
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
@@ -206,6 +207,12 @@ export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchBoard: builder.query({
             query: boardId => `board/${boardId}`,
+            transformResponse: (response, meta, arg) => {
+                return {
+                    ...response,
+                    tasks: flatten(response.tasks)
+                }
+            },
             async onCacheEntryAdded(
                 boardId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
@@ -236,7 +243,7 @@ export const boardApi = api.injectEndpoints({
                                     deleteTask({ board, ...body })
                                 )
                                 break
-                            case 'sortTask':
+                            case 'sortTasks':
                                 updateCachedData(board =>
                                     sortTask({ board, ...body })
                                 )
@@ -430,7 +437,7 @@ export const boardApi = api.injectEndpoints({
         }),
         sortTask: builder.mutation({
             query: ({ result, destinationIndex, sourceIndex, boardId }) => ({
-                url: `task/${boardId}`,
+                url: `status`,
                 method: 'PATCH',
                 body: {
                     result,
@@ -439,20 +446,25 @@ export const boardApi = api.injectEndpoints({
                 }
             }),
             async onQueryStarted(
-                { result, destinationIndex, sourceIndex, boardId },
+                { result, destinationIndex, newItems, sourceIndex, boardId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board =>
-                            sortTask({
-                                board,
-                                result,
-                                destinationIndex,
-                                sourceIndex
-                            })
+                        board => {
+                            // sortTask({
+                            //     board,
+                            //     result,
+                            //     destinationIndex,
+                            //     sourceIndex
+                            // })
+                            return {
+                                ...board,
+                                tasks: newItems
+                            }
+                        }
                     )
                 )
                 try {

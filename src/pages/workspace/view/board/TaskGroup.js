@@ -10,10 +10,17 @@ import PlusIcon from '../../../../styles/assets/PlusIcon'
 import NewTaskForm from './taskGroup/NewTaskForm'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { createPortal } from 'react-dom'
+import { defaultDropAnimation, DragOverlay, useDndMonitor } from '@dnd-kit/core'
+import { useSortTaskMutation } from '../../../../modules/services/boardSlice'
+import _ from 'lodash'
+import { buildTree, flatten } from '../../../../utils/taskUtils'
 
 function TaskGroup(props) {
-    const { hasPerms } = props
+    const { hasPerms, tasks, board } = props
     const [collapsed, setCollapsed] = useState(false)
+    const [activeItem, setActiveItem] = useState(null)
+    const [sortTask] = useSortTaskMutation()
 
     // attribute popover
     const [popoverOpen, setPopoverOpen] = useState(false)
@@ -31,10 +38,170 @@ function TaskGroup(props) {
         setPopoverOpen(e ? e.target.parentNode : null)
     }
 
+    const removeChildrenOf = (items, ids) => {
+        const excludeParentIds = [...ids]
+
+        return items.filter(item => {
+            if (item.parentTask && excludeParentIds.includes(item.parentTask)) {
+                excludeParentIds.push(item._id)
+                return false
+            }
+
+            return true
+        })
+    }
+
+    const flattenedTasks = useMemo(() => {
+        const flattenedTasks = _.cloneDeep(tasks)
+        const collapsedItems = flattenedTasks.reduce(
+            (acc, { children, collapsed, id }) =>
+                collapsed && children.length ? [...acc, id] : acc,
+            []
+        )
+
+        return removeChildrenOf(
+            flattenedTasks,
+            activeItem?._id
+                ? [activeItem._id, ...collapsedItems]
+                : collapsedItems
+        )
+    }, [tasks, activeItem?._id])
+
     const taskIds = useMemo(
-        () => props.tasks.map(task => task._id),
-        [props.tasks]
+        () => flattenedTasks.map(task => task._id),
+        [flattenedTasks]
     )
+
+    const arrayMove = (array, from, to) => {
+        const newArray = array.slice()
+        newArray.splice(
+            to < 0 ? newArray.length + to : to,
+            0,
+            newArray.splice(from, 1)[0]
+        )
+
+        return newArray
+    }
+
+    const [overItem, setOverItem] = useState(null)
+    const [offsetLeft, setOffsetLeft] = useState(0)
+
+    const getDepth = () => {
+        const activeIndex = flattenedTasks.findIndex(
+            x => x._id === activeItem._id
+        )
+        const overIndex = flattenedTasks.indexOf(overItem)
+        const newItems = arrayMove(flattenedTasks, activeIndex, overIndex)
+
+        const prevTask = newItems[overIndex - 1]
+        const nextTask = newItems[overIndex + 1]
+
+        const maxDepth = prevTask ? prevTask.level + 1 : 0
+        const minDepth = nextTask ? nextTask.level : 0
+
+        let depth = Math.round(offsetLeft / 32)
+        if (depth > maxDepth) depth = maxDepth
+        if (depth < minDepth) depth = minDepth
+
+        return depth
+    }
+
+    function getParentId(level, overId, activeId) {
+        const overIndex = flattenedTasks.findIndex(x => x._id === overId)
+        const activeIndex = flattenedTasks.findIndex(x => x._id === activeId)
+        const newItems = arrayMove(flattenedTasks, activeIndex, overIndex)
+        const prevItem = newItems[overIndex - 1]
+
+        if (level === 0 || !prevItem) {
+            return null
+        }
+
+        if (level === prevItem.level) {
+            return prevItem.parentTask
+        }
+
+        if (level > prevItem.level) {
+            return prevItem._id
+        }
+
+        const newParent = flattenedTasks
+            .slice(0, overIndex)
+            .reverse()
+            .find(item => item.level === level)?.parentId
+
+        return newParent ?? null
+    }
+
+    useDndMonitor({
+        onDragStart({ active: { id } }) {
+            setOverItem(flattenedTasks.find(x => x._id === id))
+            setActiveItem(flattenedTasks.find(x => x._id === id))
+        },
+        onDragMove({ delta }) {
+            setOffsetLeft(delta.x)
+        },
+        onDragOver({ over }) {
+            setOverItem(
+                flattenedTasks[over.data.current.sortable.index] ?? null
+            )
+        },
+        onDragEnd({ active, over }) {
+            const clonedTasks = _.cloneDeep(tasks)
+            const overIndex = clonedTasks.findIndex(x => x._id === over.id)
+            const activeIndex = clonedTasks.findIndex(x => x._id === active.id)
+
+            clonedTasks[activeIndex] = {
+                ...clonedTasks[activeIndex],
+                level: getDepth(),
+                parentTask: getParentId(getDepth(), over.id, active.id)
+            }
+
+            const sortedTasks = arrayMove(clonedTasks, activeIndex, overIndex)
+
+            sortTask({
+                newItems: flatten(buildTree(sortedTasks)),
+                boardId: board._id
+            })
+
+            setActiveItem(null)
+        },
+        onDragCancel(event) {
+            setActiveItem(null)
+        }
+    })
+
+    const dropAnimationConfig = {
+        keyframes({ transform }) {
+            return [
+                {
+                    opacity: 1,
+                    transform: CSS.Transform?.toString(transform.initial)
+                },
+                {
+                    opacity: 0,
+                    transform: CSS.Transform?.toString({
+                        ...transform.final,
+                        x: transform.final.x + 5,
+                        y: transform.final.y + 5
+                    })
+                }
+            ]
+        },
+        easing: 'ease-out',
+        sideEffects({ active }) {
+            active.node.animate([{ opacity: 0 }, { opacity: 1 }], {
+                duration: defaultDropAnimation.duration,
+                easing: defaultDropAnimation.easing
+            })
+        }
+    }
+
+    const adjustTranslate = ({ transform }) => {
+        return {
+            ...transform,
+            y: transform.y - 25
+        }
+    }
 
     return (
         <div className="task mb-7 font-normal">
@@ -151,19 +318,41 @@ function TaskGroup(props) {
                                 hasPerms('CREATE:TASK') ? '' : 'rounded-b-sm'
                             }`}
                         >
-                            {props.tasks.map((task, i) => {
+                            {flattenedTasks.map((task, i) => {
                                 return (
                                     <Task
                                         groupedTasks={props.groupedTasks}
                                         hasPerms={hasPerms}
                                         board={props.board}
                                         key={task._id}
-                                        task={task}
+                                        task={
+                                            task._id === activeItem?._id
+                                                ? {
+                                                      ...task,
+                                                      level: getDepth()
+                                                  }
+                                                : task
+                                        }
                                         index={i}
                                         taskGroupId={props.taskGroupId}
                                     />
                                 )
                             })}
+                            {createPortal(
+                                <DragOverlay
+                                    dropAnimation={dropAnimationConfig}
+                                    modifiers={
+                                        false ? [adjustTranslate] : undefined
+                                    }
+                                >
+                                    {activeItem ? (
+                                        <div className="opacity-50 px-4 w-fit bg-white shadow h-8 rounded flex justify-center items-center">
+                                            {activeItem.name}
+                                        </div>
+                                    ) : null}
+                                </DragOverlay>,
+                                document.body
+                            )}
                         </div>
                         {hasPerms('CREATE:TASK') && (
                             <NewTaskForm

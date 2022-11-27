@@ -80,7 +80,7 @@
 }
 
 .subtask.subtaskNotFirst::before {
-  height: 150%;
+  height: 50%;
 }
 
 .subtask.subtaskWithSubtasks::before {

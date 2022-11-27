@@ -15,9 +15,9 @@ import {
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import QuickActionsToolbar from './QuickActionsToolbar'
-import NewTaskForm from './NewTaskForm'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import NewTaskForm from './NewTaskForm'
 
 function Task(props) {
     const navigate = useNavigate()
@@ -33,11 +33,12 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
+    const { hasPerms } = props
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({
-            id: props.task._id
+            id: props.task._id,
+            disabled: !hasPerms('MANAGE:TASK')
         })
-    const { hasPerms } = props
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -397,29 +398,15 @@ function Task(props) {
                     task={props.task}
                 />
             )}
-            <div className={`${collapsed ? 'hidden' : ''}`}>
-                {props.task?.subtasks.map((subtask, i) => {
-                    return (
-                        <Task
-                            hasPerms={hasPerms}
-                            groupedTasks={props.groupedTasks}
-                            board={props.board}
-                            key={subtask._id}
-                            task={subtask}
-                            index={i}
-                            taskGroupId={props.taskGroupId}
-                        />
-                    )
-                })}
-                {newTaskOpen && (
-                    <NewTaskForm
-                        board={props.board}
-                        taskId={props.task._id}
-                        setNewTaskOpen={setNewTaskOpen}
-                        level={props.task.level}
-                    />
-                )}
-            </div>
+
+            {newTaskOpen && (
+                <NewTaskForm
+                    board={props.board}
+                    taskId={props.task._id}
+                    setNewTaskOpen={setNewTaskOpen}
+                    level={props.task.level}
+                />
+            )}
         </>
     )
 }

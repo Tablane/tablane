@@ -13,10 +13,11 @@ import {
     KeyboardSensor,
     useSensor,
     useSensors,
-    MouseSensor
+    PointerSensor
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { snapCenterToCursor } from '@dnd-kit/modifiers'
+import { buildTree } from '../../../../utils/taskUtils'
 
 function BoardView({ board, hasPerms }) {
     const [sortAttribute] = useSortAttributeMutation()
@@ -25,12 +26,7 @@ function BoardView({ board, hasPerms }) {
     const [collapsed, setCollapsed] = useState(true)
 
     const sensors = useSensors(
-        useSensor(MouseSensor, {
-            activationConstraint: {
-                distance: 10
-            }
-        }),
-        // useSensor(PointerSensor, { activationConstraint: 15 }),
+        useSensor(PointerSensor, { activationConstraint: { distance: 15 } }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates
         })
@@ -63,7 +59,7 @@ function BoardView({ board, hasPerms }) {
         })
         labels.map(label => (label.tasks = []))
 
-        board.tasks.map(task => {
+        buildTree(board.tasks).map(task => {
             const value = task.options.find(
                 option => option.column === board.groupBy
             )?.value
@@ -146,8 +142,8 @@ function BoardView({ board, hasPerms }) {
                 >
                     <DndContext
                         sensors={sensors}
+                        modifiers={[snapCenterToCursor]}
                         collisionDetection={closestCenter}
-                        onDragEnd={x => console.log(x)}
                     >
                         <div className="border border-borderGrey rounded-md font-medium mr-6 mb-9">
                             <div className="px-4 h-9 flex justify-content items-center">
