@@ -5,6 +5,7 @@ export const flatten = (items, parentId = null, level = 0) => {
             {
                 ...item,
                 subtasks: [],
+                children: item.subtasks.length,
                 level
             },
             ...flatten(item.subtasks, item._id, level + 1)

@@ -17,7 +17,7 @@ import {
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
-import { buildTree } from '../../../../utils/taskUtils'
+import { buildTree, flatten } from '../../../../utils/taskUtils'
 
 function BoardView({ board, hasPerms }) {
     const [sortAttribute] = useSortAttributeMutation()
@@ -68,6 +68,7 @@ function BoardView({ board, hasPerms }) {
             else labels.find(label => label._id === 'empty').tasks.push(task)
         })
 
+        labels.map(x => (x.tasks = flatten(x.tasks)))
         setGroupedTasks(labels)
 
         return labels.map(label => (

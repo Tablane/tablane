@@ -33,7 +33,7 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms } = props
+    const { hasPerms, task } = props
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({
             id: props.task._id,
@@ -76,6 +76,7 @@ function Task(props) {
     const handleCollapse = e => {
         e.preventDefault()
         e.stopPropagation()
+        props.handleCollapse(task._id)
         setCollapsed(!collapsed)
     }
 
@@ -265,9 +266,7 @@ function Task(props) {
                     className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
                         props.task.level > 0 ? 'subtask' : ''
                     } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
-                        props.task.subtasks.length > 0
-                            ? 'subtaskWithSubtasks'
-                            : ''
+                        props.task.children > 0 ? 'subtaskWithSubtasks' : ''
                     } ${taskEditing ? 'ml-[20px]' : ''} ${
                         hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'
                     }`}
@@ -279,7 +278,7 @@ function Task(props) {
                     <div
                         onClick={handleCollapse}
                         className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
-                            props.task.subtasks.length > 0
+                            props.task.children > 0
                                 ? 'cursor-pointer'
                                 : 'hidden'
                         }`}
@@ -292,7 +291,7 @@ function Task(props) {
                             className={`transition-transform ${
                                 collapsed ? '-rotate-90' : ''
                             } ${
-                                props.task.subtasks.length > 0
+                                props.task.children > 0
                                     ? 'subtaskWithSubtasks'
                                     : ''
                             }`}

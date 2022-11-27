@@ -20,6 +20,7 @@ function TaskGroup(props) {
     const { hasPerms, tasks, board } = props
     const [collapsed, setCollapsed] = useState(false)
     const [activeItem, setActiveItem] = useState(null)
+    const [collapsedItems, setCollapsedItems] = useState([])
     const [sortTask] = useSortTaskMutation()
 
     // attribute popover
@@ -53,11 +54,6 @@ function TaskGroup(props) {
 
     const flattenedTasks = useMemo(() => {
         const flattenedTasks = _.cloneDeep(tasks)
-        const collapsedItems = flattenedTasks.reduce(
-            (acc, { children, collapsed, id }) =>
-                collapsed && children.length ? [...acc, id] : acc,
-            []
-        )
 
         return removeChildrenOf(
             flattenedTasks,
@@ -65,7 +61,7 @@ function TaskGroup(props) {
                 ? [activeItem._id, ...collapsedItems]
                 : collapsedItems
         )
-    }, [tasks, activeItem?._id])
+    }, [tasks, activeItem?._id, collapsedItems])
 
     const taskIds = useMemo(
         () => flattenedTasks.map(task => task._id),
@@ -88,7 +84,7 @@ function TaskGroup(props) {
 
     const getDepth = () => {
         const activeIndex = flattenedTasks.findIndex(
-            x => x._id === activeItem._id
+            x => x._id === activeItem?._id
         )
         const overIndex = flattenedTasks.indexOf(overItem)
         const newItems = arrayMove(flattenedTasks, activeIndex, overIndex)
@@ -130,6 +126,15 @@ function TaskGroup(props) {
             .find(item => item.level === level)?.parentId
 
         return newParent ?? null
+    }
+
+    const handleCollapse = id => {
+        const index = collapsedItems.indexOf(id)
+        if (index === -1) {
+            setCollapsedItems([...collapsedItems, id])
+        } else {
+            setCollapsedItems(prev => prev.filter(x => x !== id))
+        }
     }
 
     useDndMonitor({
@@ -321,6 +326,7 @@ function TaskGroup(props) {
                             {flattenedTasks.map((task, i) => {
                                 return (
                                     <Task
+                                        handleCollapse={handleCollapse}
                                         groupedTasks={props.groupedTasks}
                                         hasPerms={hasPerms}
                                         board={props.board}
