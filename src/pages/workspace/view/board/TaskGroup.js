@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import '../../../../styles/TaskGroup.css'
 import Task from '../board/taskGroup/Task'
 import AttributePopover from '../board/taskGroup/AttributePopover'
@@ -82,7 +82,7 @@ function TaskGroup(props) {
     const [overItem, setOverItem] = useState(null)
     const [offsetLeft, setOffsetLeft] = useState(0)
 
-    const getDepth = () => {
+    const getDepth = useCallback(() => {
         const activeIndex = flattenedTasks.findIndex(
             x => x._id === activeItem?._id
         )
@@ -100,9 +100,9 @@ function TaskGroup(props) {
         if (depth < minDepth) depth = minDepth
 
         return depth
-    }
+    }, [flattenedTasks, activeItem?._id, overItem?._id, offsetLeft])
 
-    function getParentId(level, overId, activeId) {
+    const getParentId = (level, overId, activeId) => {
         const overIndex = flattenedTasks.findIndex(x => x._id === overId)
         const activeIndex = flattenedTasks.findIndex(x => x._id === activeId)
         const newItems = arrayMove(flattenedTasks, activeIndex, overIndex)
@@ -329,7 +329,8 @@ function TaskGroup(props) {
                                         handleCollapse={handleCollapse}
                                         groupedTasks={props.groupedTasks}
                                         hasPerms={hasPerms}
-                                        board={props.board}
+                                        boardId={props.board._id}
+                                        attributes={props.board.attributes}
                                         key={task._id}
                                         task={
                                             task._id === activeItem?._id

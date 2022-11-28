@@ -17,6 +17,7 @@ import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 function TaskPopover(props) {
     const [deleteTask] = useDeleteTaskMutation()
     const [deleteDialog, setDeleteDialog] = useState(false)
+    const { boardId, taskId } = props
 
     // delete dialog
     const handleDeleteClose = () => {
@@ -27,15 +28,15 @@ function TaskPopover(props) {
     const handleDelete = () => {
         setDeleteDialog(false)
         deleteTask({
-            boardId: props.board._id,
-            taskId: props.task._id
+            boardId,
+            taskId
         })
     }
 
     // copy task id
     const copyTaskId = () => {
         props.handleClose()
-        navigator.clipboard.writeText(props.task._id)
+        navigator.clipboard.writeText(taskId)
         toast('Copied!')
     }
 

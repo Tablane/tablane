@@ -1,18 +1,22 @@
 import styles from '../../../../../styles/QuickActionsToolBar.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useSortTaskMutation } from '../../../../../modules/services/boardSlice'
+import {
+    useFetchBoardQuery,
+    useSortTaskMutation
+} from '../../../../../modules/services/boardSlice'
 import { Tooltip } from '@mui/material'
 
 function QuickActionsToolbar({
     handleTaskEdit,
-    board,
+    boardId,
     groupedTasks,
     taskGroupId,
     task,
     setNewTaskOpen,
     level
 }) {
+    const { data: board } = useFetchBoardQuery(boardId)
     const [sortTask] = useSortTaskMutation()
 
     const handleEditClick = e => {
@@ -43,7 +47,7 @@ function QuickActionsToolbar({
             result,
             destinationIndex,
             sourceIndex,
-            boardId: board._id
+            boardId
         })
     }
 
@@ -65,7 +69,7 @@ function QuickActionsToolbar({
             result,
             destinationIndex,
             sourceIndex,
-            boardId: board._id
+            boardId
         })
     }
 

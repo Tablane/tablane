@@ -7,7 +7,7 @@ import {
 } from '../../../../../modules/services/boardSlice'
 
 function NewTaskForm({
-    board,
+    boardId,
     taskGroupId,
     level = -1,
     setNewTaskOpen,
@@ -25,7 +25,7 @@ function NewTaskForm({
         if (level >= 0) return handleSubTask()
         addTask({
             author: user.username,
-            boardId: board._id,
+            boardId,
             taskGroupId: taskGroupId,
             newTaskName,
             _id: ObjectId()
@@ -34,7 +34,7 @@ function NewTaskForm({
 
     const handleSubTask = () => {
         addSubtask({
-            boardId: board._id,
+            boardId,
             newTaskName,
             taskId
         })

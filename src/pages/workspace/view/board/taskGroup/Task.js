@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, memo, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
 import TaskPopover from './task/TaskPopover'
@@ -33,17 +33,24 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms, task } = props
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({
-            id: props.task._id,
-            disabled: !hasPerms('MANAGE:TASK')
-        })
+    const { hasPerms, task, attributes, boardId } = props
+    const {
+        attributes: sortableAttributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition
+    } = useSortable({
+        id: props.task._id,
+        disabled: !hasPerms('MANAGE:TASK')
+    })
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition
     }
+
+    console.log('re-rendering task')
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -92,7 +99,7 @@ function Task(props) {
             column: e.target.name,
             value: e.target.value,
             type: 'text',
-            boardId: props.board._id,
+            boardId,
             taskId: task._id
         })
     }
@@ -119,7 +126,7 @@ function Task(props) {
                 </div>
                 {attribute._id.toString() === activeOption && (
                     <TaskColumnPopover
-                        boardId={props.board._id}
+                        boardId={boardId}
                         attribute={attribute}
                         anchor={anchor}
                         open={columnDialogOpen}
@@ -202,7 +209,7 @@ function Task(props) {
                 )}
                 {attribute._id.toString() === activeOption && (
                     <PersonColumnPopover
-                        boardId={props.board._id}
+                        boardId={boardId}
                         attribute={attribute}
                         people={people}
                         taskOption={taskOption}
@@ -228,7 +235,7 @@ function Task(props) {
         editTaskField({
             type: 'name',
             value: taskName,
-            boardId: props.board._id,
+            boardId,
             taskId: task._id
         })
     }
@@ -242,7 +249,7 @@ function Task(props) {
                 ref={setNodeRef}
                 style={style}
                 {...listeners}
-                {...attributes}
+                {...sortableAttributes}
             >
                 {!taskEditing && (
                     <div
@@ -333,7 +340,7 @@ function Task(props) {
                                     level={props.task.level}
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}
-                                    board={props.board}
+                                    boardId={boardId}
                                     task={props.task}
                                     handleTaskEdit={handleTaskEdit}
                                     setNewTaskOpen={setNewTaskOpen}
@@ -350,7 +357,7 @@ function Task(props) {
                             : 'cursor-auto'
                     }`}
                 >
-                    {props.board.attributes.map(attribute => {
+                    {attributes.map(attribute => {
                         if (attribute.type === 'status')
                             return getStatusLabel(attribute)
                         if (attribute.type === 'text')
@@ -380,7 +387,7 @@ function Task(props) {
 
             {!taskEditing && (
                 <TaskPopover
-                    board={props.board}
+                    boardId={boardId}
                     toggleTaskEdit={toggleTaskEdit}
                     open={moreDialogOpen}
                     anchor={anchor}
@@ -392,7 +399,7 @@ function Task(props) {
 
             {taskId === props.task._id && (
                 <TaskModal
-                    boardId={props.board._id}
+                    boardId={boardId}
                     taskGroupId={props.taskGroupId}
                     task={props.task}
                 />
@@ -400,7 +407,7 @@ function Task(props) {
 
             {newTaskOpen && (
                 <NewTaskForm
-                    board={props.board}
+                    boardId={boardId}
                     taskId={props.task._id}
                     setNewTaskOpen={setNewTaskOpen}
                     level={props.task.level}
@@ -410,4 +417,4 @@ function Task(props) {
     )
 }
 
-export default Task
+export default memo(Task)
