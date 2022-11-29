@@ -15,6 +15,7 @@ import { defaultDropAnimation, DragOverlay, useDndMonitor } from '@dnd-kit/core'
 import { useSortTaskMutation } from '../../../../modules/services/boardSlice'
 import _ from 'lodash'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
+import { Virtuoso } from 'react-virtuoso'
 
 function TaskGroup(props) {
     const { hasPerms, tasks, board } = props
@@ -323,8 +324,15 @@ function TaskGroup(props) {
                                 hasPerms('CREATE:TASK') ? '' : 'rounded-b-sm'
                             }`}
                         >
-                            {flattenedTasks.map((task, i) => {
-                                return (
+                            <Virtuoso
+                                customScrollParent={document.querySelector(
+                                    '.flex-grow.bg-backgroundGrey.overflow-auto'
+                                )}
+                                overscan={{ main: 15, reverse: 15 }}
+                                data={flattenedTasks}
+                                style={{ height: '100px', width: '100px' }}
+                                totalCount={flattenedTasks.length}
+                                itemContent={(i, task) => (
                                     <Task
                                         handleCollapse={handleCollapse}
                                         groupedTasks={props.groupedTasks}
@@ -343,8 +351,8 @@ function TaskGroup(props) {
                                         index={i}
                                         taskGroupId={props.taskGroupId}
                                     />
-                                )
-                            })}
+                                )}
+                            />
                             {createPortal(
                                 <DragOverlay
                                     dropAnimation={dropAnimationConfig}
