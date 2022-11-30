@@ -212,7 +212,7 @@ function TaskGroup(props) {
     return (
         <div className="task mb-7 font-normal">
             <div className="title ml-4 sticky top-0 z-10 pt-6 bg-[#eee]">
-                <div className="sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[220px] sm:basis-[420px] flex justify-start items-center">
+                <div className="min-w-[220px] sm:min-w-[420px] sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[220px] sm:basis-[420px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
                             collapsed ? '-rotate-90' : ''
@@ -259,7 +259,7 @@ function TaskGroup(props) {
                                     >
                                         {provided => (
                                             <div
-                                                className="attribute font-medium"
+                                                className="attribute font-medium min-w-[120px]"
                                                 ref={provided.innerRef}
                                                 {...provided.dragHandleProps}
                                                 {...provided.draggableProps}
@@ -299,7 +299,7 @@ function TaskGroup(props) {
                                 )
                             })}
                             {provided.placeholder}
-                            <div className="attribute">
+                            <div className="attribute min-w-[44px]">
                                 <p
                                     onClick={handleAddNewAttribute}
                                     className={`cursor-pointer ${
@@ -330,7 +330,7 @@ function TaskGroup(props) {
                                 )}
                                 overscan={{ main: 15, reverse: 15 }}
                                 data={flattenedTasks}
-                                style={{ height: '100px', width: '100px' }}
+                                defaultItemHeight={37}
                                 totalCount={flattenedTasks.length}
                                 itemContent={(i, task) => (
                                     <Task
