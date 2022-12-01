@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Popover } from '@mui/material'
+import { Fade, Grow, Popover } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
 import { ObjectId } from '../../../../../../utils'
@@ -177,6 +177,8 @@ function TaskColumnPopover(props) {
 
     return (
         <Popover
+            TransitionComponent={Grow}
+            TransitionProps={{ timeout: 200 }}
             open={props.open}
             anchorEl={props.anchor}
             onClose={handleClose}
