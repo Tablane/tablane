@@ -10,7 +10,8 @@ import { Tooltip } from '@mui/material'
 import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import {
     useEditOptionsTaskMutation,
-    useEditTaskFieldMutation
+    useEditTaskFieldMutation,
+    useFetchBoardQuery
 } from '../../../../../modules/services/boardSlice'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -34,6 +35,7 @@ function Task(props) {
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
     const { hasPerms, task, attributes, boardId } = props
+    const { data: board } = useFetchBoardQuery(boardId)
     const {
         attributes: sortableAttributes,
         listeners,
@@ -42,7 +44,9 @@ function Task(props) {
         transition
     } = useSortable({
         id: props.task._id,
-        disabled: !hasPerms('MANAGE:TASK') || true
+        disabled:
+            !hasPerms('MANAGE:TASK') ||
+            (board?.groupBy && board.groupBy !== 'none')
     })
 
     const style = {
