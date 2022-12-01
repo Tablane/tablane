@@ -12,6 +12,8 @@ function SharedBoard() {
         isLoading
     } = useFetchSharedBoardQuery(boardId)
 
+    const hasPerms = () => false
+
     if (isLoading) {
         return (
             <div className="flex h-[100vh] justify-center items-center">
@@ -42,7 +44,7 @@ function SharedBoard() {
     return (
         <div className="bg-[#eee] overflow-auto h-[100vh]">
             <BoardView
-                hasPerms={() => false}
+                hasPerms={hasPerms}
                 board={board}
                 sidebarOpen={false}
                 toggleSideBar={() => {}}

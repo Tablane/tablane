@@ -42,7 +42,7 @@ function Task(props) {
         transition
     } = useSortable({
         id: props.task._id,
-        disabled: !hasPerms('MANAGE:TASK')
+        disabled: !hasPerms('MANAGE:TASK') || true
     })
 
     const style = {
@@ -50,7 +50,7 @@ function Task(props) {
         transition
     }
 
-    console.log('re-rendering task')
+    console.log('re-rendering task: ', task.name)
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -275,9 +275,7 @@ function Task(props) {
                         props.task.level > 0 ? 'subtask' : ''
                     } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
                         props.task.children > 0 ? 'subtaskWithSubtasks' : ''
-                    } ${taskEditing ? 'ml-[20px]' : ''} ${
-                        hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'
-                    }`}
+                    } ${hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'}`}
                     style={{
                         '--total-margin-left':
                             props.task.level * 32 - 32 + 12 + 'px'
@@ -309,9 +307,9 @@ function Task(props) {
                         <form
                             onSubmit={handleTaskEdit}
                             onBlur={handleTaskEdit}
-                            className="text-[14px] border-t border-red-600"
+                            className="text-[14px] pl-[25px]"
                             style={{
-                                paddingLeft: props.task.level * 32 + 25 + 'px'
+                                marginLeft: props.task.level * 32 + 'px'
                             }}
                         >
                             <input
@@ -418,4 +416,6 @@ function Task(props) {
     )
 }
 
-export default memo(Task)
+export default memo(Task, (prev, next) => {
+    return JSON.stringify(prev) === JSON.stringify(next)
+})
