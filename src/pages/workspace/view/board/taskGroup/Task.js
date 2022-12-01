@@ -119,6 +119,7 @@ function Task(props) {
         return (
             <Fragment key={attribute._id}>
                 <div
+                    className="text-[14px]"
                     onClick={e => handleClick(e, attribute)}
                     style={{ backgroundColor: label.color }}
                 >

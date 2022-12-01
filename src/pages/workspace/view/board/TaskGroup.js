@@ -371,7 +371,7 @@ function TaskGroup(props) {
                         </div>
                         {hasPerms('CREATE:TASK') && (
                             <NewTaskForm
-                                board={props.board}
+                                boardId={props.board._id}
                                 taskGroupId={props.taskGroupId}
                             />
                         )}

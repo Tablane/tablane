@@ -194,7 +194,7 @@ function TaskColumnPopover(props) {
                     <Droppable droppableId="labels">
                         {provided => (
                             <div
-                                className="options"
+                                className="options text-[14px]"
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
