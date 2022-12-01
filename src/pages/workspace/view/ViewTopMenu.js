@@ -60,8 +60,11 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                 <div className="task-search"></div>
                 <div className="task-filter">
                     <div className="group-by" onClick={handleGroupByOpen}>
-                        <FontAwesomeIcon icon={solid('layer-group')} />
-                        <p>Group by: {groupBy()}</p>
+                        <FontAwesomeIcon
+                            className="text-[#53575E]"
+                            icon={solid('layer-group')}
+                        />
+                        <p className="text-[#333333]">Group by: {groupBy()}</p>
                     </div>
                 </div>
             </div>

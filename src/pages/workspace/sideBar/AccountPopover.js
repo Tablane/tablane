@@ -158,15 +158,15 @@ function AccountPopover() {
                         </div>
                     </div>
                     <div className="download">
-                        <div>
-                            <p>Download Apps</p>
-                        </div>
-                        <div>
-                            <FontAwesomeIcon icon={brands('apple')} />
-                            <FontAwesomeIcon icon={brands('android')} />
-                            <FontAwesomeIcon icon={solid('desktop')} />
-                            <FontAwesomeIcon icon={brands('chrome')} />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <p>Download Apps</p>*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <FontAwesomeIcon icon={brands('apple')} />*/}
+                        {/*    <FontAwesomeIcon icon={brands('android')} />*/}
+                        {/*    <FontAwesomeIcon icon={solid('desktop')} />*/}
+                        {/*    <FontAwesomeIcon icon={brands('chrome')} />*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </Popover>
