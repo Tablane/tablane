@@ -43,7 +43,7 @@ function AddAttributePopover(props) {
         >
             <div className="content">
                 <div>
-                    <p>Essentials</p>
+                    <p className="text-[#818193] font-normal">Essentials</p>
                     <div>
                         <div>
                             <div onClick={() => handleNewColumn('status')}>
@@ -61,20 +61,20 @@ function AddAttributePopover(props) {
                                 People
                             </div>
                         </div>
-                        <div>
-                            <div onClick={() => handleNewColumn('dropdown')}>
-                                <FontAwesomeIcon icon={solid('tag')} />
-                                Dropdown
-                            </div>
-                            <div onClick={() => handleNewColumn('date')}>
-                                <FontAwesomeIcon icon={regular('calendar')} />
-                                Date
-                            </div>
-                            <div onClick={() => handleNewColumn('number')}>
-                                <FontAwesomeIcon icon={solid('hashtag')} />
-                                Numbers
-                            </div>
-                        </div>
+                        {/*<div>*/}
+                        {/*    <div onClick={() => handleNewColumn('dropdown')}>*/}
+                        {/*        <FontAwesomeIcon icon={solid('tag')} />*/}
+                        {/*        Dropdown*/}
+                        {/*    </div>*/}
+                        {/*    <div onClick={() => handleNewColumn('date')}>*/}
+                        {/*        <FontAwesomeIcon icon={regular('calendar')} />*/}
+                        {/*        Date*/}
+                        {/*    </div>*/}
+                        {/*    <div onClick={() => handleNewColumn('number')}>*/}
+                        {/*        <FontAwesomeIcon icon={solid('hashtag')} />*/}
+                        {/*        Numbers*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </div>
