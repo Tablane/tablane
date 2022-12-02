@@ -1,6 +1,6 @@
 import Board from './view/Board'
 import ViewTopMenu from './view/ViewTopMenu'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import { LinearProgress } from '@mui/material'
@@ -17,7 +17,8 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
             ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
-    const { data: board, isFetching } = useFetchBoardQuery(boardId)
+    const { isFetching } = useFetchBoardQuery(boardId)
+    const viewContainerRef = useRef(null)
 
     if (level === 'list') {
         if (view === 'list')
@@ -31,8 +32,12 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
                     <div className="h-1 bg-backgroundGrey">
                         {isFetching && <LinearProgress />}
                     </div>
-                    <div className="flex-grow bg-backgroundGrey overflow-auto">
+                    <div
+                        ref={viewContainerRef}
+                        className="flex-grow bg-backgroundGrey overflow-auto"
+                    >
                         <Board
+                            ref={viewContainerRef}
                             boardId={boardId}
                             sidebarOpen={sidebarOpen}
                             toggleSideBar={toggleSideBar}

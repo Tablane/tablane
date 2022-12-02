@@ -2,7 +2,7 @@ import {
     useSortAttributeMutation,
     useSortTaskMutation
 } from '../../../../modules/services/boardSlice'
-import { useMemo, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import TaskGroup from './TaskGroup'
 import _ from 'lodash'
 import { DragDropContext } from '@hello-pangea/dnd'
@@ -19,7 +19,7 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 
-function BoardView({ board, hasPerms }) {
+function BoardView({ board, hasPerms }, viewContainerRef) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
@@ -37,6 +37,7 @@ function BoardView({ board, hasPerms }) {
         if (!board.groupBy || board.groupBy === 'none') {
             return (
                 <TaskGroup
+                    ref={viewContainerRef}
                     hasPerms={hasPerms}
                     board={board}
                     color={'rgb(196, 196, 196)'}
@@ -73,6 +74,7 @@ function BoardView({ board, hasPerms }) {
 
         return labels.map(label => (
             <TaskGroup
+                ref={viewContainerRef}
                 hasPerms={hasPerms}
                 groupedTasks={labels}
                 board={board}
@@ -174,4 +176,4 @@ function BoardView({ board, hasPerms }) {
     )
 }
 
-export default BoardView
+export default forwardRef(BoardView)

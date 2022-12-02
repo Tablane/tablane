@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { forwardRef, useCallback, useMemo, useState } from 'react'
 import '../../../../styles/TaskGroup.css'
 import Task from '../board/taskGroup/Task'
 import AttributePopover from '../board/taskGroup/AttributePopover'
@@ -17,7 +17,7 @@ import _ from 'lodash'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 import { Virtuoso } from 'react-virtuoso'
 
-function TaskGroup(props) {
+function TaskGroup(props, viewContainerRef) {
     const { hasPerms, tasks, board } = props
     const [collapsed, setCollapsed] = useState(false)
     const [activeItem, setActiveItem] = useState(null)
@@ -325,9 +325,7 @@ function TaskGroup(props) {
                             }`}
                         >
                             <Virtuoso
-                                customScrollParent={document.querySelector(
-                                    '.flex-grow.bg-backgroundGrey.overflow-auto'
-                                )}
+                                customScrollParent={viewContainerRef.current}
                                 overscan={{ main: 15, reverse: 15 }}
                                 data={flattenedTasks}
                                 defaultItemHeight={37}
@@ -394,4 +392,4 @@ function TaskGroup(props) {
     )
 }
 
-export default TaskGroup
+export default forwardRef(TaskGroup)
