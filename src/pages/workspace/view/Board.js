@@ -3,12 +3,11 @@ import { Navigate, useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../../modules/services/workspaceSlice'
 import { useFetchBoardQuery } from '../../../modules/services/boardSlice'
 import BoardView from './board/BoardView'
-import { useFetchUserQuery } from '../../../modules/services/userSlice'
+import { forwardRef } from 'react'
 
-function Board(props) {
+function Board(props, viewContainerRef) {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const { data: user } = useFetchUserQuery()
     const { data: board, error, isFetching } = useFetchBoardQuery(props.boardId)
 
     if (error && !isFetching) {
@@ -19,7 +18,9 @@ function Board(props) {
         return true
     }
 
-    return <BoardView board={board} hasPerms={hasPerms} />
+    return (
+        <BoardView ref={viewContainerRef} board={board} hasPerms={hasPerms} />
+    )
 }
 
-export default Board
+export default forwardRef(Board)
