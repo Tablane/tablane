@@ -25,6 +25,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import Profile from './settings/Profile'
 import WorkspaceSelector from './WorkspaceSelector'
+import ErrorPage from '../utils/ErrorPage'
 
 function Settings() {
     const [logoutUser] = useLogoutUserMutation()
@@ -42,12 +43,7 @@ function Settings() {
                 <CircularProgress />
             </div>
         )
-    if (error)
-        return (
-            <div className="loading">
-                <p>test error -- -error</p>
-            </div>
-        )
+    if (error) return <ErrorPage error={error} />
     return (
         <div className={styles.container}>
             <div className={styles.sidebar}>
