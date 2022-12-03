@@ -33,6 +33,7 @@ function General() {
 
     const handleDelete = async () => {
         await deleteWorkspace({ workspace })
+        localStorage.removeItem('lastVisitedBoard')
         navigate('/')
     }
 
