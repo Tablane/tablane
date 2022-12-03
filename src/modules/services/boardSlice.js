@@ -18,12 +18,16 @@ const addTask = ({ board, newTaskName, taskGroupId, _id, author }) => {
         watcher: [],
         subtasks: [],
         workspace: board._id,
+        comments: [],
         history: [
             {
                 type: 'activity',
                 author,
                 text: 'created this task',
-                timestamp: new Date().getTime()
+                timestamp: new Date().getTime(),
+                change: {
+                    type: 'creation'
+                }
             }
         ]
     }
