@@ -23,9 +23,9 @@ function Login() {
         validate: {
             username: value => {
                 if (value.length < 3)
-                    return 'Name has to be atleast 8 characters long'
+                    return 'Name has to be atleast 3 characters long'
                 if (value.length > 32)
-                    return 'Name has to be cannot be longer than 8 characters'
+                    return 'Name has to be cannot be longer than 32 characters'
                 return /^([a-zA-Z1-9_\-]){3,32}$/.test(value)
                     ? null
                     : 'The name can only contain _, -, numbers and alphanumeric characters'
