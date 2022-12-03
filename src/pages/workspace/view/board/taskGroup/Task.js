@@ -396,7 +396,7 @@ function Task(props) {
                     anchor={anchor}
                     handleClose={handleClose}
                     taskGroupId={props.taskGroupId}
-                    task={props.task}
+                    taskId={props.task._id}
                 />
             )}
 
