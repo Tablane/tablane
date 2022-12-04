@@ -32,6 +32,7 @@ function Editor({
     const params = useParams()
     const { data: user } = useFetchUserQuery()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const [status, setStatus] = useState(null)
 
     const [document] = useState(() => {
         return new Y.Doc()
@@ -42,7 +43,8 @@ function Editor({
             document,
             url: process.env.REACT_APP_REALTIME_EDITING_WEBSOCKET,
             name: taskId,
-            token: localStorage.getItem('access_token')
+            token: localStorage.getItem('access_token'),
+            onStatus: status => setStatus(status.status)
         })
     })
 
@@ -173,7 +175,7 @@ function Editor({
                 </BubbleMenu>
             )}
 
-            {provider.isAuthenticated ? (
+            {status === 'connected' ? (
                 <EditorContent editor={editor} />
             ) : (
                 <div className="flex justify-center items-center border-white rounded border-solid border box-border text-sm p-2 resize-none w-full border-[#e4e4e4] hover:border focus:border min-h-[250px]">
