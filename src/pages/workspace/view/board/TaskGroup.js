@@ -335,7 +335,7 @@ function TaskGroup(props, viewContainerRef) {
                                         handleCollapse={handleCollapse}
                                         groupedTasks={props.groupedTasks}
                                         hasPerms={hasPerms}
-                                        boardId={props.board._id}
+                                        board={props.board}
                                         attributes={props.board.attributes}
                                         key={task._id}
                                         task={

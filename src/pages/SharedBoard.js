@@ -21,8 +21,6 @@ function SharedBoard() {
         }
     }, [])
 
-    console.log('err - sb rerender')
-
     const hasPerms = () => false
 
     if (isLoading) {
