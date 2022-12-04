@@ -166,7 +166,11 @@ function TaskGroup(props, viewContainerRef) {
 
             sortTask({
                 newItems: flatten(buildTree(sortedTasks)),
-                boardId: board._id
+                boardId: board._id,
+                taskId: clonedTasks[activeIndex]._id,
+                newParentTask: getParentId(getDepth(), over.id, active.id),
+                index: overIndex,
+                overId: over.id
             })
 
             setActiveItem(null)
