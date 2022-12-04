@@ -10,8 +10,7 @@ import { Tooltip } from '@mui/material'
 import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import {
     useEditOptionsTaskMutation,
-    useEditTaskFieldMutation,
-    useFetchBoardQuery
+    useEditTaskFieldMutation
 } from '../../../../../modules/services/boardSlice'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -34,8 +33,7 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms, task, attributes, boardId } = props
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { hasPerms, task, attributes, board } = props
     const {
         attributes: sortableAttributes,
         listeners,
@@ -103,7 +101,7 @@ function Task(props) {
             column: e.target.name,
             value: e.target.value,
             type: 'text',
-            boardId,
+            boardId: board._id,
             taskId: task._id
         })
     }
@@ -131,7 +129,7 @@ function Task(props) {
                 </div>
                 {attribute._id.toString() === activeOption && (
                     <TaskColumnPopover
-                        boardId={boardId}
+                        boardId={board._id}
                         attribute={attribute}
                         anchor={anchor}
                         open={columnDialogOpen}
@@ -214,7 +212,7 @@ function Task(props) {
                 )}
                 {attribute._id.toString() === activeOption && (
                     <PersonColumnPopover
-                        boardId={boardId}
+                        boardId={board._id}
                         attribute={attribute}
                         people={people}
                         taskOption={taskOption}
@@ -240,7 +238,7 @@ function Task(props) {
         editTaskField({
             type: 'name',
             value: taskName,
-            boardId,
+            board: board._id,
             taskId: task._id
         })
     }
@@ -343,7 +341,7 @@ function Task(props) {
                                     level={props.task.level}
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}
-                                    boardId={boardId}
+                                    boardId={board._id}
                                     task={props.task}
                                     handleTaskEdit={handleTaskEdit}
                                     setNewTaskOpen={setNewTaskOpen}
@@ -390,7 +388,7 @@ function Task(props) {
 
             {!taskEditing && (
                 <TaskPopover
-                    boardId={boardId}
+                    boardId={board._id}
                     toggleTaskEdit={toggleTaskEdit}
                     open={moreDialogOpen}
                     anchor={anchor}
@@ -402,7 +400,7 @@ function Task(props) {
 
             {taskId === props.task._id && (
                 <TaskModal
-                    boardId={boardId}
+                    boardId={board._id}
                     taskGroupId={props.taskGroupId}
                     task={props.task}
                 />
@@ -410,7 +408,7 @@ function Task(props) {
 
             {newTaskOpen && (
                 <NewTaskForm
-                    boardId={boardId}
+                    boardId={board._id}
                     taskId={props.task._id}
                     setNewTaskOpen={setNewTaskOpen}
                     level={props.task.level}
