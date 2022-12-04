@@ -3,6 +3,7 @@ import styles from '../styles/SharedBoard.module.scss'
 import { CircularProgress } from '@mui/material'
 import BoardView from './workspace/view/board/BoardView'
 import { useFetchSharedBoardQuery } from '../modules/services/sharedContentSlice'
+import { useRef } from 'react'
 
 function SharedBoard() {
     const { boardId } = useParams()
@@ -11,6 +12,7 @@ function SharedBoard() {
         isError,
         isLoading
     } = useFetchSharedBoardQuery(boardId)
+    const viewContainerRef = useRef(null)
 
     const hasPerms = () => false
 
@@ -42,8 +44,12 @@ function SharedBoard() {
     }
 
     return (
-        <div className="bg-[#eee] overflow-auto h-[100vh]">
+        <div
+            className="bg-[#eee] overflow-auto h-[100vh]"
+            ref={viewContainerRef}
+        >
             <BoardView
+                ref={viewContainerRef}
                 hasPerms={hasPerms}
                 board={board}
                 sidebarOpen={false}
