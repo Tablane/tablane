@@ -246,7 +246,7 @@ function TaskGroup(props, viewContainerRef) {
                     {provided => (
                         <div
                             className={`attributes flex justify-center items-center ${
-                                collapsed ? 'hidden' : ''
+                                collapsed ? 'opacity-0' : ''
                             }`}
                             {...provided.droppableProps}
                             ref={provided.innerRef}
@@ -317,69 +317,76 @@ function TaskGroup(props, viewContainerRef) {
                     )}
                 </Droppable>
             </div>
-            {!collapsed && (
-                <>
-                    <SortableContext
-                        items={taskIds}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        <div
-                            className={`tasks ml-9 border-2 border-b border-white rounded-t-sm box-border ${
-                                hasPerms('CREATE:TASK') ? '' : 'rounded-b-sm'
-                            }`}
+            {!collapsed &&
+                !(flattenedTasks.length === 0 && !hasPerms('CREATE:TASK')) && (
+                    <>
+                        <SortableContext
+                            items={taskIds}
+                            strategy={verticalListSortingStrategy}
                         >
-                            <Virtuoso
-                                customScrollParent={viewContainerRef.current}
-                                overscan={{ main: 15, reverse: 15 }}
-                                data={flattenedTasks}
-                                defaultItemHeight={37}
-                                totalCount={flattenedTasks.length}
-                                itemContent={(i, task) => (
-                                    <Task
-                                        handleCollapse={handleCollapse}
-                                        groupedTasks={props.groupedTasks}
-                                        hasPerms={hasPerms}
-                                        board={props.board}
-                                        attributes={props.board.attributes}
-                                        key={task._id}
-                                        task={
-                                            task._id === activeItem?._id
-                                                ? {
-                                                      ...task,
-                                                      level: getDepth()
-                                                  }
-                                                : task
-                                        }
-                                        index={i}
-                                        taskGroupId={props.taskGroupId}
-                                    />
-                                )}
-                            />
-                            {createPortal(
-                                <DragOverlay
-                                    dropAnimation={dropAnimationConfig}
-                                    modifiers={
-                                        false ? [adjustTranslate] : undefined
+                            <div
+                                className={`tasks ml-9 border-2 border-b border-white rounded-t-sm box-border ${
+                                    hasPerms('CREATE:TASK')
+                                        ? ''
+                                        : 'rounded-b-sm'
+                                }`}
+                            >
+                                <Virtuoso
+                                    customScrollParent={
+                                        viewContainerRef.current
                                     }
-                                >
-                                    {activeItem ? (
-                                        <div className="opacity-50 px-4 w-fit bg-white shadow h-8 rounded flex justify-center items-center">
-                                            {activeItem.name}
-                                        </div>
-                                    ) : null}
-                                </DragOverlay>,
-                                document.body
+                                    overscan={{ main: 15, reverse: 15 }}
+                                    data={flattenedTasks}
+                                    defaultItemHeight={37}
+                                    totalCount={flattenedTasks.length}
+                                    itemContent={(i, task) => (
+                                        <Task
+                                            handleCollapse={handleCollapse}
+                                            groupedTasks={props.groupedTasks}
+                                            hasPerms={hasPerms}
+                                            board={props.board}
+                                            attributes={props.board.attributes}
+                                            key={task._id}
+                                            task={
+                                                task._id === activeItem?._id
+                                                    ? {
+                                                          ...task,
+                                                          level: getDepth()
+                                                      }
+                                                    : task
+                                            }
+                                            index={i}
+                                            taskGroupId={props.taskGroupId}
+                                        />
+                                    )}
+                                />
+                                {createPortal(
+                                    <DragOverlay
+                                        dropAnimation={dropAnimationConfig}
+                                        modifiers={
+                                            false
+                                                ? [adjustTranslate]
+                                                : undefined
+                                        }
+                                    >
+                                        {activeItem ? (
+                                            <div className="opacity-50 px-4 w-fit bg-white shadow h-8 rounded flex justify-center items-center">
+                                                {activeItem.name}
+                                            </div>
+                                        ) : null}
+                                    </DragOverlay>,
+                                    document.body
+                                )}
+                            </div>
+                            {hasPerms('CREATE:TASK') && (
+                                <NewTaskForm
+                                    boardId={props.board._id}
+                                    taskGroupId={props.taskGroupId}
+                                />
                             )}
-                        </div>
-                        {hasPerms('CREATE:TASK') && (
-                            <NewTaskForm
-                                boardId={props.board._id}
-                                taskGroupId={props.taskGroupId}
-                            />
-                        )}
-                    </SortableContext>
-                </>
-            )}
+                        </SortableContext>
+                    </>
+                )}
 
             <AttributePopover
                 boardId={props.board._id}
