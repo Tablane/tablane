@@ -238,7 +238,7 @@ function Task(props) {
         editTaskField({
             type: 'name',
             value: taskName,
-            board: board._id,
+            boardId: board._id,
             taskId: task._id
         })
     }
@@ -342,8 +342,8 @@ function Task(props) {
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}
                                     boardId={board._id}
-                                    task={props.task}
-                                    handleTaskEdit={handleTaskEdit}
+                                    taskId={props.task._id}
+                                    handleTaskEdit={toggleTaskEdit}
                                     setNewTaskOpen={setNewTaskOpen}
                                 />
                             )}

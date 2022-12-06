@@ -12,7 +12,7 @@ function QuickActionsToolbar({
     boardId,
     groupedTasks,
     taskGroupId,
-    task,
+    taskId,
     setNewTaskOpen,
     level
 }) {
@@ -36,11 +36,11 @@ function QuickActionsToolbar({
             : board.tasks
         const result = {
             destination: { droppableId: taskGroup._id },
-            draggableId: task._id
+            draggableId: taskId
         }
         const destinationIndex = taskGroup
         const sourceIndex = board.tasks.findIndex(
-            x => x._id.toString() === task._id
+            x => x._id.toString() === taskId
         )
 
         sortTask({
@@ -58,11 +58,11 @@ function QuickActionsToolbar({
             : board.tasks
         const result = {
             destination: { droppableId: taskGroup._id },
-            draggableId: task._id
+            draggableId: taskId
         }
         const destinationIndex = -1
         const sourceIndex = board.tasks.findIndex(
-            x => x._id.toString() === task._id
+            x => x._id.toString() === taskId
         )
 
         sortTask({
