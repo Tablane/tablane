@@ -84,9 +84,14 @@ function AccountPopover() {
                                 placement="right"
                                 arrow
                             >
-                                <div>
-                                    <FontAwesomeIcon icon={solid('plus')} />
-                                </div>
+                                <Link
+                                    className="mb-0 text-gray-800 bg-transparent font-bold cursor-pointer leading-6 text-center w-6 h-6 text-[8px] rounded-full add-workspace"
+                                    to={`/settings/${workspace.id}/workspaces`}
+                                >
+                                    <div>
+                                        <FontAwesomeIcon icon={solid('plus')} />
+                                    </div>
+                                </Link>
                             </Tooltip>
                         </div>
                         <div className="workspace-settings">
@@ -100,26 +105,26 @@ function AccountPopover() {
                                 <Link to={`/settings/${workspaceId}/general`}>
                                     Settings
                                 </Link>
-                                <Link to={`/settings/${workspaceId}/import`}>
-                                    Import/Export
-                                </Link>
+                                {/*<Link to={`/settings/${workspaceId}/import`}>*/}
+                                {/*    Import/Export*/}
+                                {/*</Link>*/}
                                 <Link to={`/settings/${workspaceId}/users`}>
                                     People
                                 </Link>
-                                <Link to={`/settings/${workspaceId}/apps`}>
-                                    Apps
-                                </Link>
-                                <Link
-                                    to={`/settings/${workspaceId}/integrations`}
-                                >
-                                    Integrations
-                                </Link>
-                                <Link to={`/settings/${workspaceId}/billing`}>
-                                    Upgrade
-                                </Link>
-                                <Link to={`/settings/${workspaceId}/trash`}>
-                                    Trash
-                                </Link>
+                                {/*<Link to={`/settings/${workspaceId}/apps`}>*/}
+                                {/*    Apps*/}
+                                {/*</Link>*/}
+                                {/*<Link*/}
+                                {/*    to={`/settings/${workspaceId}/integrations`}*/}
+                                {/*>*/}
+                                {/*    Integrations*/}
+                                {/*</Link>*/}
+                                {/*<Link to={`/settings/${workspaceId}/billing`}>*/}
+                                {/*    Upgrade*/}
+                                {/*</Link>*/}
+                                {/*<Link to={`/settings/${workspaceId}/trash`}>*/}
+                                {/*    Trash*/}
+                                {/*</Link>*/}
                                 <Link
                                     to={`/settings/${workspaceId}/permissions`}
                                 >
@@ -143,14 +148,14 @@ function AccountPopover() {
                                 >
                                     Workspaces
                                 </Link>
-                                <Link
-                                    to={`/settings/${workspaceId}/notifications`}
-                                >
-                                    Notifications
-                                </Link>
-                                <Link to={`/settings/${workspaceId}/apps`}>
-                                    Apps
-                                </Link>
+                                {/*<Link*/}
+                                {/*    to={`/settings/${workspaceId}/notifications`}*/}
+                                {/*>*/}
+                                {/*    Notifications*/}
+                                {/*</Link>*/}
+                                {/*<Link to={`/settings/${workspaceId}/apps`}>*/}
+                                {/*    Apps*/}
+                                {/*</Link>*/}
                                 <button onClick={() => logoutUser()}>
                                     Log out
                                 </button>

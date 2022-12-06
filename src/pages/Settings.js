@@ -70,30 +70,30 @@ function Settings() {
                     >
                         People
                     </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/import`}
-                    >
-                        Import/Export
-                    </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/apps`}
-                    >
-                        Apps
-                    </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/integrations`}
-                    >
-                        Integrations
-                    </NavLink>
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/import`}*/}
+                    {/*>*/}
+                    {/*    Import/Export*/}
+                    {/*</NavLink>*/}
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/apps`}*/}
+                    {/*>*/}
+                    {/*    Apps*/}
+                    {/*</NavLink>*/}
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/integrations`}*/}
+                    {/*>*/}
+                    {/*    Integrations*/}
+                    {/*</NavLink>*/}
                     {/*<NavLink*/}
                     {/*    className={({ isActive }) =>*/}
                     {/*        isActive ? styles.active : ''*/}
@@ -102,14 +102,14 @@ function Settings() {
                     {/*>*/}
                     {/*    Upgrade*/}
                     {/*</NavLink>*/}
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/trash`}
-                    >
-                        Trash
-                    </NavLink>
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/trash`}*/}
+                    {/*>*/}
+                    {/*    Trash*/}
+                    {/*</NavLink>*/}
                     <NavLink
                         className={({ isActive }) =>
                             isActive ? styles.active : ''
@@ -138,22 +138,22 @@ function Settings() {
                     >
                         Workspaces
                     </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/notifications`}
-                    >
-                        Notifications
-                    </NavLink>
-                    <NavLink
-                        className={({ isActive }) =>
-                            isActive ? styles.active : ''
-                        }
-                        to={`/settings/${workspace.id}/applications`}
-                    >
-                        Apps
-                    </NavLink>
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/notifications`}*/}
+                    {/*>*/}
+                    {/*    Notifications*/}
+                    {/*</NavLink>*/}
+                    {/*<NavLink*/}
+                    {/*    className={({ isActive }) =>*/}
+                    {/*        isActive ? styles.active : ''*/}
+                    {/*    }*/}
+                    {/*    to={`/settings/${workspace.id}/applications`}*/}
+                    {/*>*/}
+                    {/*    Apps*/}
+                    {/*</NavLink>*/}
                     <NavLink
                         className={({ isActive }) =>
                             isActive ? styles.active : ''
