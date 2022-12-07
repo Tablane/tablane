@@ -17,6 +17,7 @@ import {
 } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
+import PostHog from './utils/PostHog'
 
 posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
     api_host: 'https://eu.posthog.com'
@@ -48,6 +49,7 @@ root.render(
         <Provider store={store}>
             <HistoryRouter history={history}>
                 <App />
+                <PostHog />
                 <Toaster />
             </HistoryRouter>
         </Provider>
