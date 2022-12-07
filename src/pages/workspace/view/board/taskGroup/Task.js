@@ -1,4 +1,4 @@
-import { Fragment, memo, useState } from 'react'
+import { Fragment, memo, useRef, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
 import TaskPopover from './task/TaskPopover'
@@ -51,8 +51,6 @@ function Task(props) {
         transform: CSS.Transform.toString(transform),
         transition
     }
-
-    console.log('re-rendering task: ', task.name)
 
     const [taskEditing, setTaskEditing] = useState(false)
     const [taskName, changeTaskName] = useInputState(props.task.name)
@@ -418,6 +416,4 @@ function Task(props) {
     )
 }
 
-export default memo(Task, (prev, next) => {
-    return JSON.stringify(prev) === JSON.stringify(next)
-})
+export default memo(Task)

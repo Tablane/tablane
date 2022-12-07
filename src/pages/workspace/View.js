@@ -1,6 +1,6 @@
 import Board from './view/Board'
 import ViewTopMenu from './view/ViewTopMenu'
-import { useCallback, useRef, useState } from 'react'
+import { memo, useCallback, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import { LinearProgress } from '@mui/material'
@@ -57,4 +57,4 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
     }
 }
 
-export default View
+export default memo(View)

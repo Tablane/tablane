@@ -2,7 +2,7 @@ import {
     useSortAttributeMutation,
     useSortTaskMutation
 } from '../../../../modules/services/boardSlice'
-import { forwardRef, useMemo, useState } from 'react'
+import { forwardRef, memo, useMemo, useState } from 'react'
 import TaskGroup from './TaskGroup'
 import _ from 'lodash'
 import { DragDropContext } from '@hello-pangea/dnd'
@@ -10,12 +10,10 @@ import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
 import {
     DndContext,
     closestCenter,
-    KeyboardSensor,
     useSensor,
     useSensors,
     PointerSensor
 } from '@dnd-kit/core'
-import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 
@@ -26,10 +24,7 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
     const [collapsed, setCollapsed] = useState(true)
 
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 15 } }),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates
-        })
+        useSensor(PointerSensor, { activationConstraint: { distance: 15 } })
     )
 
     const groupTasks = useMemo(() => {
@@ -176,4 +171,4 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
     )
 }
 
-export default forwardRef(BoardView)
+export default memo(forwardRef(BoardView))
