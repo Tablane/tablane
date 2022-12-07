@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo, useState } from 'react'
+import { forwardRef, memo, useCallback, useMemo, useState } from 'react'
 import '../../../../styles/TaskGroup.css'
 import Task from '../board/taskGroup/Task'
 import AttributePopover from '../board/taskGroup/AttributePopover'
@@ -403,4 +403,4 @@ function TaskGroup(props, viewContainerRef) {
     )
 }
 
-export default forwardRef(TaskGroup)
+export default memo(forwardRef(TaskGroup))

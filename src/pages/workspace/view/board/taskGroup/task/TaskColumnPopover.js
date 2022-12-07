@@ -176,177 +176,181 @@ function TaskColumnPopover(props) {
     })
 
     return (
-        <Popover
-            TransitionComponent={Grow}
-            TransitionProps={{ timeout: 200 }}
-            open={props.open}
-            anchorEl={props.anchor}
-            onClose={handleClose}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center'
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center'
-            }}
-        >
-            <div className="task-popover">
-                <DragDropContext onDragEnd={handleSort}>
-                    <Droppable droppableId="labels">
-                        {provided => (
-                            <div
-                                className="options text-[14px]"
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                            >
-                                {editingLabels.map((x, i) => {
-                                    const backgroundColor =
-                                        labelsEditing && colorEditingLabel === i
-                                            ? hoverColor === null
-                                                ? x.color
-                                                : hoverColor
-                                            : x.color
-                                    return (
-                                        <Draggable
-                                            draggableId={x._id.toString()}
-                                            key={x._id}
-                                            index={i}
-                                            isDragDisabled={!labelsEditing}
-                                        >
-                                            {provided => (
-                                                <div
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}
-                                                    className={
-                                                        labelsEditing
-                                                            ? 'editing'
-                                                            : ''
-                                                    }
-                                                >
-                                                    <FontAwesomeIcon
-                                                        icon={solid(
-                                                            'grip-vertical'
-                                                        )}
-                                                    />
+        <>
+            <Popover
+                TransitionComponent={Grow}
+                TransitionProps={{ timeout: 200 }}
+                open={props.open}
+                anchorEl={props.anchor}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+            >
+                <div className="task-popover">
+                    <DragDropContext onDragEnd={handleSort}>
+                        <Droppable droppableId="labels">
+                            {provided => (
+                                <div
+                                    className="options text-[14px]"
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {editingLabels.map((x, i) => {
+                                        const backgroundColor =
+                                            labelsEditing &&
+                                            colorEditingLabel === i
+                                                ? hoverColor === null
+                                                    ? x.color
+                                                    : hoverColor
+                                                : x.color
+                                        return (
+                                            <Draggable
+                                                draggableId={x._id.toString()}
+                                                key={x._id}
+                                                index={i}
+                                                isDragDisabled={!labelsEditing}
+                                            >
+                                                {provided => (
                                                     <div
-                                                        style={{
-                                                            backgroundColor
-                                                        }}
-                                                        onClick={() =>
-                                                            handleLabelClick(
-                                                                i,
-                                                                x
-                                                            )
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        ref={provided.innerRef}
+                                                        className={
+                                                            labelsEditing
+                                                                ? 'editing'
+                                                                : ''
                                                         }
                                                     >
-                                                        {labelsEditing ? (
-                                                            <FontAwesomeIcon
-                                                                icon={solid(
-                                                                    'tint'
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            x.name
-                                                        )}
-                                                    </div>
-                                                    {labelsEditing ? (
-                                                        <div>
-                                                            <input
-                                                                onChange={e =>
-                                                                    handleEditChange(
-                                                                        e,
-                                                                        i
-                                                                    )
-                                                                }
-                                                                value={
-                                                                    editingLabels[
-                                                                        i
-                                                                    ].name
-                                                                }
-                                                                type="text"
-                                                            />
+                                                        <FontAwesomeIcon
+                                                            icon={solid(
+                                                                'grip-vertical'
+                                                            )}
+                                                        />
+                                                        <div
+                                                            style={{
+                                                                backgroundColor
+                                                            }}
+                                                            onClick={() =>
+                                                                handleLabelClick(
+                                                                    i,
+                                                                    x
+                                                                )
+                                                            }
+                                                        >
+                                                            {labelsEditing ? (
+                                                                <FontAwesomeIcon
+                                                                    icon={solid(
+                                                                        'tint'
+                                                                    )}
+                                                                />
+                                                            ) : (
+                                                                x.name
+                                                            )}
                                                         </div>
-                                                    ) : (
-                                                        ''
-                                                    )}
-                                                    <FontAwesomeIcon
-                                                        onClick={() =>
-                                                            handleEditDelete(
-                                                                x._id
-                                                            )
-                                                        }
-                                                        icon={solid(
-                                                            'times-circle'
+                                                        {labelsEditing ? (
+                                                            <div>
+                                                                <input
+                                                                    onChange={e =>
+                                                                        handleEditChange(
+                                                                            e,
+                                                                            i
+                                                                        )
+                                                                    }
+                                                                    value={
+                                                                        editingLabels[
+                                                                            i
+                                                                        ].name
+                                                                    }
+                                                                    type="text"
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            ''
                                                         )}
-                                                    />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    )
-                                })}
-                                {provided.placeholder}
-                                <div
-                                    className={`${
-                                        labelsEditing ? 'editing' : ''
-                                    } default`}
-                                    key="none"
-                                    style={{
-                                        backgroundColor: 'rgb(181, 188, 194)'
-                                    }}
-                                    onClick={handleLabelClear}
-                                ></div>
-                                {labelsEditing ? (
+                                                        <FontAwesomeIcon
+                                                            onClick={() =>
+                                                                handleEditDelete(
+                                                                    x._id
+                                                                )
+                                                            }
+                                                            icon={solid(
+                                                                'times-circle'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        )
+                                    })}
+                                    {provided.placeholder}
                                     <div
-                                        className="new-label"
-                                        key="new-label"
+                                        className={`${
+                                            labelsEditing ? 'editing' : ''
+                                        } default`}
+                                        key="none"
                                         style={{
                                             backgroundColor:
-                                                colorEditingLabel === -1
-                                                    ? hoverColor
-                                                    : null
+                                                'rgb(181, 188, 194)'
                                         }}
-                                        onClick={addNewLabel}
-                                    >
-                                        New label
-                                    </div>
-                                ) : (
-                                    ''
-                                )}
-                            </div>
+                                        onClick={handleLabelClear}
+                                    ></div>
+                                    {labelsEditing ? (
+                                        <div
+                                            className="new-label"
+                                            key="new-label"
+                                            style={{
+                                                backgroundColor:
+                                                    colorEditingLabel === -1
+                                                        ? hoverColor
+                                                        : null
+                                            }}
+                                            onClick={addNewLabel}
+                                        >
+                                            New label
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+
+                    <AnimateHeight
+                        duration={200}
+                        height={labelsEditing ? 'auto' : 0}
+                    >
+                        <div className="colors">
+                            {colors.map(x => (
+                                <div
+                                    key={x}
+                                    onMouseEnter={() => setHoverColor(x)}
+                                    onMouseLeave={() => setHoverColor(null)}
+                                    onClick={() => addNewLabel(x)}
+                                >
+                                    <div style={{ backgroundColor: x }}></div>
+                                </div>
+                            ))}
+                        </div>
+                    </AnimateHeight>
+
+                    <div className="edit" onClick={toggleEdit}>
+                        {labelsEditing ? (
+                            ''
+                        ) : (
+                            <FontAwesomeIcon icon={solid('pen')} />
                         )}
-                    </Droppable>
-                </DragDropContext>
-
-                <AnimateHeight
-                    duration={200}
-                    height={labelsEditing ? 'auto' : 0}
-                >
-                    <div className="colors">
-                        {colors.map(x => (
-                            <div
-                                key={x}
-                                onMouseEnter={() => setHoverColor(x)}
-                                onMouseLeave={() => setHoverColor(null)}
-                                onClick={() => addNewLabel(x)}
-                            >
-                                <div style={{ backgroundColor: x }}></div>
-                            </div>
-                        ))}
+                        <p>{labelsEditing ? 'Apply' : 'Edit Labels'}</p>
                     </div>
-                </AnimateHeight>
-
-                <div className="edit" onClick={toggleEdit}>
-                    {labelsEditing ? (
-                        ''
-                    ) : (
-                        <FontAwesomeIcon icon={solid('pen')} />
-                    )}
-                    <p>{labelsEditing ? 'Apply' : 'Edit Labels'}</p>
                 </div>
-            </div>
-        </Popover>
+            </Popover>
+        </>
     )
 }
 
