@@ -1,13 +1,3 @@
-.Task {
-  outline: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer !important;
-  position: relative;
-}
-
 .Task:hover .batch-select-checkbox {
   opacity: 1;
 }
@@ -95,18 +85,6 @@
 .Task > div {
   display: flex;
   flex-direction: row;
-  align-items: center;
-}
-
-.Task > div.taskAttr > div {
-  border-right: 1px solid white;
-  background-color: rgb(196, 196, 196);
-  height: 36px;
-  line-height: 36px;
-  text-align: center;
-  width: 120px;
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
 
