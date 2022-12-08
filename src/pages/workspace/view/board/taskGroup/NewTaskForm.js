@@ -66,7 +66,7 @@ function NewTaskForm({
                     placeholder="+ New Task"
                     value={newTaskName}
                     name="newTask"
-                    className="sticky left-0 w-full"
+                    className="sticky left-0"
                     onChange={changeNewTaskName}
                 />
                 <button
