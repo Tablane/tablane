@@ -117,26 +117,15 @@ function Task(props) {
         if (!label) label = { color: 'rgb(196,196,196)', name: '' }
 
         return (
-            <Fragment key={attribute._id}>
-                <div
-                    className="text-[14px]"
-                    onClick={e => handleClick(e, attribute)}
-                    style={{ backgroundColor: label.color }}
-                >
-                    {label.name}
-                </div>
-                {attribute._id.toString() === activeOption && (
-                    <TaskColumnPopover
-                        boardId={board._id}
-                        attribute={attribute}
-                        anchor={anchor}
-                        open={columnDialogOpen}
-                        task={props.task}
-                        taskGroupId={props.taskGroupId}
-                        handleClose={handleClose}
-                    />
-                )}
-            </Fragment>
+            <TaskColumnPopover
+                key={attribute._id}
+                hasPerms={hasPerms}
+                boardId={board._id}
+                label={label}
+                attribute={attribute}
+                task={props.task}
+                taskGroupId={props.taskGroupId}
+            />
         )
     }
 
@@ -244,7 +233,7 @@ function Task(props) {
     return (
         <>
             <div
-                className={`Task border-b border-white ${
+                className={`Task outline-none cursor-pointer flex flex-row items-center justify-start relative border-b border-white ${
                     taskEditing ? 'editing' : ''
                 }`}
                 ref={setNodeRef}
@@ -375,7 +364,10 @@ function Task(props) {
                         )
                     })}
 
-                    <div onClick={handleMoreClick}>
+                    <div
+                        className="flex items-center justify-center h-9 leading-9 text-center w-[40px] bg-[#c4c4c4]"
+                        onClick={handleMoreClick}
+                    >
                         {(hasPerms('MANAGE:TASK') ||
                             hasPerms('DELETE:TASK')) && (
                             <FontAwesomeIcon icon={solid('ellipsis-h')} />
