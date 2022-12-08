@@ -84,6 +84,7 @@
   background-color: transparent;
   outline: none;
   padding: 0 20px;
+  width: calc(100% - 100px);
 }
 
 .task .new-task button {
