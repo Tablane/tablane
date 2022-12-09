@@ -93,22 +93,22 @@ function QuickActionsToolbar({
                     <FontAwesomeIcon icon={solid('pen')} />
                 </div>
             </Tooltip>
-            <Tooltip title="Move up" placement="top" arrow>
-                <div
-                    className="quickActionItem text-[#7c828d]"
-                    onClick={handleMoveTopClick}
-                >
-                    <FontAwesomeIcon icon={solid('arrow-up')} />
-                </div>
-            </Tooltip>
-            <Tooltip title="Move down" placement="top" arrow>
-                <div
-                    className="quickActionItem text-[#7c828d]"
-                    onClick={handleMoveBottomClick}
-                >
-                    <FontAwesomeIcon icon={solid('arrow-down')} />
-                </div>
-            </Tooltip>
+            {/*<Tooltip title="Move up" placement="top" arrow>*/}
+            {/*    <div*/}
+            {/*        className="quickActionItem text-[#7c828d]"*/}
+            {/*        onClick={handleMoveTopClick}*/}
+            {/*    >*/}
+            {/*        <FontAwesomeIcon icon={solid('arrow-up')} />*/}
+            {/*    </div>*/}
+            {/*</Tooltip>*/}
+            {/*<Tooltip title="Move down" placement="top" arrow>*/}
+            {/*    <div*/}
+            {/*        className="quickActionItem text-[#7c828d]"*/}
+            {/*        onClick={handleMoveBottomClick}*/}
+            {/*    >*/}
+            {/*        <FontAwesomeIcon icon={solid('arrow-down')} />*/}
+            {/*    </div>*/}
+            {/*</Tooltip>*/}
         </div>
     )
 }
