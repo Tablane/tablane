@@ -1,8 +1,7 @@
-import styles from '../styles/RelativeDate.module.scss'
 import { useEffect, useState } from 'react'
 import { Tooltip } from '@mui/material'
 
-function RelativeDate({ timestamp }) {
+function RelativeDate({ timestamp, styled = true }) {
     const [time, setTime] = useState(Date.now())
 
     const getTime = (timestamp, relative = true) => {
@@ -67,7 +66,15 @@ function RelativeDate({ timestamp }) {
             placement={'top'}
             arrow
         >
-            <span className={styles.date}>{getTime(parseInt(timestamp))}</span>
+            <span
+                className={`${
+                    styled
+                        ? 'flex-shrink-0 font-normal my-0 mr-0 ml-2 px-0 pb-0 pt-1 font-[11px] text-[#abaeb0]'
+                        : ''
+                }`}
+            >
+                {getTime(parseInt(timestamp))}
+            </span>
         </Tooltip>
     )
 }
