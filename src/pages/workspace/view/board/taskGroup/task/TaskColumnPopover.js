@@ -179,7 +179,7 @@ function TaskColumnPopover(props) {
     return (
         <Menu as="div" className="relative">
             <Menu.Button
-                className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-32"
+                className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
                 style={{ backgroundColor: label.color }}
                 disabled={!hasPerms('MANAGE:TASK')}
                 ref={button}
