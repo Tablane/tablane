@@ -25,6 +25,7 @@ function NewTaskForm({
         if (level >= 0) return handleSubTask()
         addTask({
             author: user.username,
+            level: level + 1,
             boardId,
             taskGroupId: taskGroupId,
             newTaskName,

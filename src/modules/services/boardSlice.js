@@ -8,10 +8,11 @@ import { flatten } from '../../utils/taskUtils'
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
 }
-const addTask = ({ board, newTaskName, taskGroupId, _id, author }) => {
+const addTask = ({ board, newTaskName, taskGroupId, _id, author, level }) => {
     const task = {
         _id,
         name: newTaskName,
+        level,
         options: [],
         board: board._id,
         description: '',
