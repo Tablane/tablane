@@ -83,7 +83,7 @@ function Activity({ timestamp, activity, boardId }) {
         <div className={styles.activity}>
             <div>
                 <span className="text-primary rounded px-1 py-[2px] hover:bg-[#f2f2f2]">
-                    {activity.author}
+                    {activity.author.username}
                 </span>
                 {activity.change.type === 'creation' && (
                     <span key={timestamp}>created this task</span>
