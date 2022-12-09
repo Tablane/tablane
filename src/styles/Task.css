@@ -97,6 +97,7 @@
 
 .Task > div > div.people svg {
   font-size: 26px;
+  opacity: 0.2;
 }
 
 .Task > div > div.people > div {
@@ -106,13 +107,6 @@
 .Task > div > div.people .person {
   background-color: #4169e1;
   border-radius: 50%;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 26px;
-  height: 26px;
-  font-size: 10px;
 }
 
 .Task > div > div > input {
