@@ -26,7 +26,9 @@ function Comment({ comment, taskId, boardId }) {
     return (
         <div className={styles.comment}>
             <div className={styles.author}>
-                <div>{comment.author.substring(0, 2).toUpperCase()}</div>
+                <div>
+                    {comment.author.username.substring(0, 2).toUpperCase()}
+                </div>
             </div>
             <div className={styles.commentBody}>
                 {editing ? (
@@ -43,7 +45,7 @@ function Comment({ comment, taskId, boardId }) {
                         <div className={styles.commentHeader}>
                             <p>
                                 <span className={styles.authorSpan}>
-                                    {comment.author}
+                                    {comment.author.username}
                                 </span>
                                 <span> commented</span>
                             </p>

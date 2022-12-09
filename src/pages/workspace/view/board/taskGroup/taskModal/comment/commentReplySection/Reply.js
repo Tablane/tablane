@@ -25,7 +25,7 @@ function Reply({ commentId, reply, taskId, boardId }) {
     return (
         <div className={styles.comment}>
             <div className={styles.author}>
-                <div>{reply.author.substring(0, 2).toUpperCase()}</div>
+                <div>{reply.author.username.substring(0, 2).toUpperCase()}</div>
             </div>
             <div className={styles.commentBody}>
                 {editing ? (
@@ -42,7 +42,7 @@ function Reply({ commentId, reply, taskId, boardId }) {
                         <div className={styles.commentHeader}>
                             <p>
                                 <span className={styles.authorSpan}>
-                                    {reply.author}
+                                    {reply.author.username}
                                 </span>
                                 <span> commented</span>
                             </p>
