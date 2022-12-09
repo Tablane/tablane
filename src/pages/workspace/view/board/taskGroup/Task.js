@@ -169,7 +169,7 @@ function Task(props) {
             <Fragment key={attribute._id}>
                 {people.length > 0 ? (
                     <div
-                        className="people text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-32"
+                        className="people text-[14px] border-white border-solid border-r flex -space-x-4 items-center justify-center h-9 leading-9 text-center w-32"
                         onClick={e => handleClick(e, attribute)}
                     >
                         {people.map((person, i) => {
@@ -179,15 +179,16 @@ function Task(props) {
                                     key={person._id}
                                     arrow
                                 >
-                                    <div style={{ zIndex: people.length - i }}>
-                                        <div className="person">
-                                            {person.username
-                                                .charAt(0)
-                                                .toUpperCase()}
-                                            {person.username
-                                                .charAt(1)
-                                                .toUpperCase()}
-                                        </div>
+                                    <div
+                                        style={{ zIndex: people.length - i }}
+                                        className="person text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white hover:!z-50"
+                                    >
+                                        {person.username
+                                            .charAt(0)
+                                            .toUpperCase()}
+                                        {person.username
+                                            .charAt(1)
+                                            .toUpperCase()}
                                     </div>
                                 </Tooltip>
                             )
