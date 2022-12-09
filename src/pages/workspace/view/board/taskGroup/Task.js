@@ -135,7 +135,11 @@ function Task(props) {
         )
         if (!taskOption) taskOption = { value: '' }
         return (
-            <div style={{ backgroundColor: 'transparent' }} key={attribute._id}>
+            <div
+                className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-32"
+                style={{ backgroundColor: 'transparent' }}
+                key={attribute._id}
+            >
                 <input
                     type="text"
                     name={attribute._id}
@@ -165,7 +169,7 @@ function Task(props) {
             <Fragment key={attribute._id}>
                 {people.length > 0 ? (
                     <div
-                        className="people"
+                        className="people text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-32"
                         onClick={e => handleClick(e, attribute)}
                     >
                         {people.map((person, i) => {
@@ -191,7 +195,7 @@ function Task(props) {
                     </div>
                 ) : (
                     <div
-                        className="people"
+                        className="people text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-32"
                         onClick={e => handleClick(e, attribute)}
                     >
                         <FontAwesomeIcon icon={regular('circle-user')} />
