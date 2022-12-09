@@ -15,6 +15,7 @@ import EmailManageModal from './profile/EmailManageModal'
 import BackupManageModal from './profile/BackupManageModal'
 import SecurityKeyManageModal from './profile/SecurityKeyManageModal'
 import { CircularProgress } from '@mui/material'
+import RelativeDate from '../../utils/RelativeDate'
 
 function Profile() {
     const [updateProfile] = useUpdateProfileMutation()
@@ -181,7 +182,10 @@ function Profile() {
                                             <p>{session.device}</p>
                                         </div>
                                         <div>
-                                            <p>{session.lastActive}</p>
+                                            <RelativeDate
+                                                styled={false}
+                                                timestamp={session.lastActive}
+                                            />
                                         </div>
                                         <div className={styles.action}>
                                             <Button

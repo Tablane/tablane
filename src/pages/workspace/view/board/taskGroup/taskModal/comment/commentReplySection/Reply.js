@@ -5,6 +5,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
 import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice'
+import RelativeDate from '../../../../../../../../utils/RelativeDate'
 
 function Reply({ commentId, reply, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
@@ -20,8 +21,6 @@ function Reply({ commentId, reply, taskId, boardId }) {
         })
         setEditing(false)
     }
-
-    const getTime = x => x
 
     return (
         <div className={styles.comment}>
@@ -48,7 +47,7 @@ function Reply({ commentId, reply, taskId, boardId }) {
                                 <span> commented</span>
                             </p>
                             <p className={styles.date}>
-                                {getTime(reply.timestamp)}
+                                <RelativeDate timestamp={reply.timestamp} />
                             </p>
                             <div className={styles.actions}>
                                 <div onClick={() => setEditing(true)}>
