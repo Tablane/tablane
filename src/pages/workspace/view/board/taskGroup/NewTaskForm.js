@@ -54,11 +54,9 @@ function NewTaskForm({
             onSubmit={handleAddTask}
             onKeyUp={handleKeyUp}
             onBlur={handleBlur}
-            style={{
-                marginLeft: level === -1 ? '36px' : '20px',
-                paddingLeft: level * 32 + 'px'
-            }}
-            className={`ml-9 sticky left-0 new-task-form bg-white rounded-b-sm ${level}`}
+            className={`sticky left-0 new-task-form bg-white rounded-b-sm ${
+                level === -1 ? 'ml-9' : ''
+            }`}
         >
             <div className="new-task w-full justify-between border-white border-2 border-t-0 rounded-b-sm">
                 <input
@@ -67,7 +65,11 @@ function NewTaskForm({
                     placeholder="+ New Task"
                     value={newTaskName}
                     name="newTask"
-                    className="sticky left-0"
+                    style={{
+                        paddingLeft:
+                            level !== -1 ? (level + 1) * 32 + 25 + 'px' : '20px'
+                    }}
+                    className={`sticky left-0`}
                     onChange={changeNewTaskName}
                 />
                 <button
