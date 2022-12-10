@@ -366,7 +366,7 @@ export const boardApi = api.injectEndpoints({
                 }
             }),
             async onQueryStarted(
-                { boardId, newTaskName, taskGroupId, _id, author },
+                { boardId, newTaskName, taskGroupId, _id, author, level },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -379,7 +379,8 @@ export const boardApi = api.injectEndpoints({
                                 newTaskName,
                                 taskGroupId,
                                 _id,
-                                author
+                                author,
+                                level
                             })
                     )
                 )
