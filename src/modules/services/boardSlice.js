@@ -195,7 +195,7 @@ const sortAttribute = ({ board, result }) => {
     board.attributes.splice(result.destination.index, 0, attribute)
 }
 const editAttributeLabels = ({ board, name, labels }) => {
-    board.attributes.find(x => x.name === name).labels = labels
+    board.attributes.find(x => x.name === name).labels = [...labels]
 }
 const addWatcher = ({ board, task, user }) => {
     board.tasks.find(x => x._id === task._id).watcher.push(user)
