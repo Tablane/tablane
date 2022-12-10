@@ -370,7 +370,7 @@ function Task(props) {
                     })}
 
                     <div
-                        className="flex items-center justify-center h-9 leading-9 text-center w-[40px] bg-[#c4c4c4]"
+                        className="z-[9] flex items-center justify-center h-9 leading-9 text-center w-[40px] bg-[#c4c4c4]"
                         onClick={handleMoreClick}
                     >
                         {(hasPerms('MANAGE:TASK') ||
