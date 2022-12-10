@@ -24,8 +24,12 @@ function Users() {
 
     const handleAddUser = async e => {
         e.preventDefault()
-        resetEmail()
-        await addUser({ workspace, email, roleId })
+        addUser({ workspace, email, roleId })
+            .unwrap()
+            .then(x => {
+                console.log(x)
+                resetEmail()
+            })
     }
 
     return (
