@@ -137,8 +137,9 @@ function Login() {
                             Successfully registered
                         </p>
                         <p className="m-0">
-                            Please check your email and follow the instructions
-                            to verify your account.
+                            {/*Please check your email and follow the instructions*/}
+                            {/*to verify your account.*/}
+                            You can now log in.
                         </p>
                     </div>
                 )}
