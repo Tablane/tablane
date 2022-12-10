@@ -196,7 +196,7 @@ function TaskColumnPopover(props) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="z-20 absolute right-0 mt-2 w-[140px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-[C4C4C4FF]">
+                <Menu.Items className="z-20 absolute right-[-10px] mt-2 w-[140px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-[C4C4C4FF]">
                     <div className="task-popover">
                         <DragDropContext onDragEnd={handleSort}>
                             <Droppable droppableId="labels">
