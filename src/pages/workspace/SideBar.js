@@ -485,8 +485,8 @@ function SideBar(props) {
                         style={{
                             transition: 'transform 0.2s',
                             transform: spaceTabOpen
-                                ? 'rotate(360deg)'
-                                : 'rotate(270deg)'
+                                ? 'rotate(0deg)'
+                                : 'rotate(90deg)'
                         }}
                         icon={solid('angle-down')}
                     />
