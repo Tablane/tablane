@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import AnimateHeight from 'react-animate-height'
 import { ObjectId } from '../../../../../../utils'
@@ -37,6 +37,10 @@ function TaskColumnPopover(props) {
         setLabelsEditing(!labelsEditing)
         setColorEditingLabel(-1)
     }
+
+    useEffect(() => {
+        setEditingLabels(props.attribute.labels)
+    }, [props.attribute.labels])
 
     const handleClose = () => {
         setLabelsEditing(false)
