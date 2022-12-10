@@ -102,7 +102,12 @@ function Editor({
                         duration: 100
                     }}
                 >
-                    <Tooltip title="Bold" placement="top" arrow>
+                    <Tooltip
+                        disableInteractive
+                        title="Bold"
+                        placement="top"
+                        arrow
+                    >
                         <div
                             className={
                                 editor.isActive('bold')
@@ -116,7 +121,12 @@ function Editor({
                             <FontAwesomeIcon icon={solid('bold')} />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Italic" placement="top" arrow>
+                    <Tooltip
+                        disableInteractive
+                        title="Italic"
+                        placement="top"
+                        arrow
+                    >
                         <div
                             className={
                                 editor.isActive('italic')
@@ -130,7 +140,12 @@ function Editor({
                             <FontAwesomeIcon icon={solid('italic')} />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Underline" placement="top" arrow>
+                    <Tooltip
+                        disableInteractive
+                        title="Underline"
+                        placement="top"
+                        arrow
+                    >
                         <div
                             className={
                                 editor.isActive('underline')
@@ -144,7 +159,12 @@ function Editor({
                             <FontAwesomeIcon icon={solid('underline')} />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Strike-through" placement="top" arrow>
+                    <Tooltip
+                        disableInteractive
+                        title="Strike-through"
+                        placement="top"
+                        arrow
+                    >
                         <div
                             className={
                                 editor.isActive('strike')
@@ -158,7 +178,12 @@ function Editor({
                             <FontAwesomeIcon icon={solid('strikethrough')} />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Mark as code" placement="top" arrow>
+                    <Tooltip
+                        disableInteractive
+                        title="Mark as code"
+                        placement="top"
+                        arrow
+                    >
                         <div
                             className={
                                 editor.isActive('code')

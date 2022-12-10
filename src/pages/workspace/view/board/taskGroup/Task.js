@@ -175,6 +175,7 @@ function Task(props) {
                         {people.map((person, i) => {
                             return (
                                 <Tooltip
+                                    disableInteractive
                                     title={person.username}
                                     key={person._id}
                                     arrow

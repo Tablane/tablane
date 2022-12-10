@@ -125,6 +125,7 @@ function Notifications(props) {
                                                 </div>
                                                 <div>
                                                     <Tooltip
+                                                        disableInteractive
                                                         title="Stop watching"
                                                         arrow
                                                         placement="top"
@@ -142,6 +143,7 @@ function Notifications(props) {
                                                         </div>
                                                     </Tooltip>
                                                     <Tooltip
+                                                        disableInteractive
                                                         title={
                                                             condition.cleared
                                                                 ? 'Unclear notification'

@@ -62,6 +62,7 @@ function RelativeDate({ timestamp, styled = true }) {
 
     return (
         <Tooltip
+            disableInteractive
             title={getTime(parseInt(timestamp), false)}
             placement={'top'}
             arrow

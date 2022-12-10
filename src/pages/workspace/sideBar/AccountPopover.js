@@ -64,6 +64,7 @@ function AccountPopover() {
                                 user.workspaces.map(x => {
                                     return (
                                         <Tooltip
+                                            disableInteractive
                                             title={x.name}
                                             placement="right"
                                             key={x._id}
@@ -80,6 +81,7 @@ function AccountPopover() {
                                     )
                                 })}
                             <Tooltip
+                                disableInteractive
                                 title={'Add Workspace'}
                                 placement="right"
                                 arrow
