@@ -58,7 +58,7 @@ function NewTaskForm({
                 level === -1 ? 'ml-9' : ''
             }`}
         >
-            <label className="cursor-pointer new-task w-full justify-between border-white border-2 border-t-0 rounded-b-sm">
+            <label className="cursor-text new-task w-full justify-between border-white border-2 border-t-0 rounded-b-sm">
                 <input
                     autoFocus={level !== -1}
                     type="text"
