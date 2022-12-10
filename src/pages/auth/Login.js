@@ -15,6 +15,7 @@ import { useLoginUserMutation } from '../../modules/services/userSlice'
 import TotpCode from './login/TotpCode'
 import GoogleLogin from './login/GoogleLogin'
 import SecurityKeyLogin from './login/SecurityKeyLogin'
+import ErrorPage from '../../utils/ErrorPage'
 
 function Login() {
     const [loginUser, { isLoading, data }] = useLoginUserMutation()
@@ -82,7 +83,11 @@ function Login() {
                 />
             )
         } else if (type === 'email') {
-            return <p>currently not available</p>
+            return (
+                <ErrorPage
+                    error={{ error: 'Email MFA is currently not available' }}
+                />
+            )
         }
     }
 
