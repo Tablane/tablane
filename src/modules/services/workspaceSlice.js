@@ -172,6 +172,7 @@ export const workspaceApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: { name }
             }),
+            invalidatesTags: ['Board'],
             async onQueryStarted(
                 { workspaceId, workspaceIdFriendly, spaceId, boardId, name },
                 { dispatch, queryFulfilled }
