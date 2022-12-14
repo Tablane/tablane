@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
 import { history } from '../../utils/history'
 import { setCurrentToken } from './authReducer'
+import posthog from 'posthog-js'
 
 const mutex = new Mutex()
 
@@ -50,6 +51,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
                     result = await baseQuery(args, api, extraOptions)
                 } else {
                     api.dispatch(setCurrentToken(null))
+                    posthog.reset()
                     localStorage.removeItem('access_token')
                     history.push('/login')
                 }
