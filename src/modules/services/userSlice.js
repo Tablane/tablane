@@ -2,6 +2,7 @@ import { api } from './api'
 import { toast } from 'react-hot-toast'
 import { setCurrentToken } from './authReducer'
 import handleQueryError from '../../utils/handleQueryError'
+import posthog from 'posthog-js'
 
 export const userApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -19,6 +20,11 @@ export const userApi = api.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled
                     if (data?.success) {
+                        posthog.identify(data.user._id, {
+                            email: data.user.email,
+                            username: data.user.username
+                        })
+                        console.log(data.user)
                         localStorage.setItem('access_token', data.accessToken)
                         dispatch(setCurrentToken(data.accessToken))
                         dispatch(
@@ -65,6 +71,7 @@ export const userApi = api.injectEndpoints({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled
+                    posthog.reset()
                     localStorage.removeItem('access_token')
                     dispatch(setCurrentToken(null))
                     dispatch(
