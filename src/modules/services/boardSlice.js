@@ -318,7 +318,7 @@ export const boardApi = api.injectEndpoints({
                 await cacheEntryRemoved
                 socket.emit('unsubscribe', boardId)
             },
-            providesTags: board => (board ? [board._id] : []),
+            providesTags: board => (board ? [board._id, 'Board'] : []),
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled
