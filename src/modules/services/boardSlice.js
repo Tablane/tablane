@@ -122,17 +122,18 @@ const deleteTaskComment = ({ board, taskId, commentId }) => {
     const task = board.tasks.find(task => task._id === taskId)
     task.comments = task.comments.filter(x => x._id !== commentId)
 }
-const addReply = ({ board, content, author, taskId, commentId }) => {
+const addReply = ({ board, content, author, taskId, commentId, _id }) => {
     const reply = {
+        _id,
         type: 'reply',
-        author,
+        author: { username: author },
         timestamp: new Date().getTime(),
         content
     }
 
     board.tasks
         .find(task => task._id === taskId)
-        .history.find(x => x._id === commentId)
+        .comments.find(x => x._id === commentId)
         .replies.push(reply)
 }
 const editReply = ({ board, content, taskId, commentId, replyId }) => {
@@ -612,7 +613,7 @@ export const boardApi = api.injectEndpoints({
                 body: { content }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId, commentId },
+                { content, author, taskId, boardId, commentId, _id },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -626,7 +627,8 @@ export const boardApi = api.injectEndpoints({
                                 author,
                                 taskId,
                                 boardId,
-                                commentId
+                                commentId,
+                                _id
                             })
                     )
                 )
