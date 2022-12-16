@@ -23,7 +23,7 @@ const addTask = ({ board, newTaskName, taskGroupId, _id, author, level }) => {
         history: [
             {
                 type: 'activity',
-                author,
+                author: { username: author },
                 text: 'created this task',
                 timestamp: new Date().getTime(),
                 change: {
@@ -104,7 +104,7 @@ const editOptionsTask = ({ board, column, value, type, taskId }) => {
 const addTaskComment = ({ board, content, author, taskId }) => {
     const comment = {
         type: 'comment',
-        author,
+        author: { username: author },
         timestamp: new Date().getTime(),
         content,
         replies: []
