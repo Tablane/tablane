@@ -266,7 +266,7 @@ function Task(props) {
                     {...listeners}
                     {...sortableAttributes}
                     onClick={openTaskModal}
-                    className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc justify-start sticky left-0 ${
+                    className={`w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc bg-white z-10 justify-start sticky left-0 ${
                         props.task.level > 0 ? 'subtask' : ''
                     } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
                         props.task.children > 0 ? 'subtaskWithSubtasks' : ''
