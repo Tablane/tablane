@@ -25,7 +25,6 @@
     "@sentry/react": "^7.20.0",
     "@sentry/tracing": "^7.20.0",
     "@simplewebauthn/browser": "^6.3.0-alpha.1",
-    "@tanstack/react-virtual": "^3.0.0-alpha.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
