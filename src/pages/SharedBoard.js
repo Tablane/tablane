@@ -21,7 +21,7 @@ function SharedBoard() {
         }
     }, [])
 
-    const hasPerms = () => false
+    const hasPerms = useCallback(() => false, [])
 
     if (isLoading) {
         return (

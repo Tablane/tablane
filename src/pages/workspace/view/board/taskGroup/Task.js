@@ -1,4 +1,4 @@
-import { Fragment, memo, useRef, useState } from 'react'
+import { Fragment, memo, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
 import TaskPopover from './task/TaskPopover'
@@ -33,7 +33,7 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms, task, attributes, board } = props
+    const { hasPerms, task, attributes, boardId, groupBy } = props
     const {
         attributes: sortableAttributes,
         listeners,
@@ -42,9 +42,7 @@ function Task(props) {
         transition
     } = useSortable({
         id: props.task._id,
-        disabled:
-            !hasPerms('MANAGE:TASK') ||
-            (board?.groupBy && board.groupBy !== 'none')
+        disabled: !hasPerms('MANAGE:TASK') || (groupBy && groupBy !== 'none')
     })
 
     const style = {
@@ -99,7 +97,7 @@ function Task(props) {
             column: e.target.name,
             value: e.target.value,
             type: 'text',
-            boardId: board._id,
+            boardId,
             taskId: task._id
         })
     }
@@ -120,7 +118,7 @@ function Task(props) {
             <TaskColumnPopover
                 key={attribute._id}
                 hasPerms={hasPerms}
-                boardId={board._id}
+                boardId={boardId}
                 label={label}
                 attribute={attribute}
                 task={props.task}
@@ -205,7 +203,7 @@ function Task(props) {
                 )}
                 {attribute._id.toString() === activeOption && (
                     <PersonColumnPopover
-                        boardId={board._id}
+                        boardId={boardId}
                         attribute={attribute}
                         people={people}
                         taskOption={taskOption}
@@ -219,6 +217,8 @@ function Task(props) {
         )
     }
 
+    console.log('re-render ', task.name)
+
     const toggleTaskEdit = () => {
         document.activeElement.blur()
         setTimeout(() => setTaskEditing(!taskEditing), 0)
@@ -231,7 +231,7 @@ function Task(props) {
         editTaskField({
             type: 'name',
             value: taskName,
-            boardId: board._id,
+            boardId,
             taskId: task._id
         })
     }
@@ -334,7 +334,7 @@ function Task(props) {
                                     level={props.task.level}
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}
-                                    boardId={board._id}
+                                    boardId={boardId}
                                     taskId={props.task._id}
                                     handleTaskEdit={toggleTaskEdit}
                                     setNewTaskOpen={setNewTaskOpen}
@@ -384,7 +384,7 @@ function Task(props) {
 
             {!taskEditing && (
                 <TaskPopover
-                    boardId={board._id}
+                    boardId={boardId}
                     toggleTaskEdit={toggleTaskEdit}
                     open={moreDialogOpen}
                     anchor={anchor}
@@ -396,7 +396,7 @@ function Task(props) {
 
             {taskId === props.task._id && (
                 <TaskModal
-                    boardId={board._id}
+                    boardId={boardId}
                     taskGroupId={props.taskGroupId}
                     task={props.task}
                 />
@@ -404,7 +404,7 @@ function Task(props) {
 
             {newTaskOpen && (
                 <NewTaskForm
-                    boardId={board._id}
+                    boardId={boardId}
                     taskId={props.task._id}
                     setNewTaskOpen={setNewTaskOpen}
                     level={props.task.level}

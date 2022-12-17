@@ -34,7 +34,9 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                 <TaskGroup
                     ref={viewContainerRef}
                     hasPerms={hasPerms}
-                    board={board}
+                    boardId={board._id}
+                    groupBy={board?.groupBy}
+                    attributes={board.attributes}
                     color={'rgb(196, 196, 196)'}
                     name=""
                     taskGroupId={'empty'}
@@ -72,7 +74,9 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                 ref={viewContainerRef}
                 hasPerms={hasPerms}
                 groupedTasks={labels}
-                board={board}
+                boardId={board._id}
+                groupBy={board?.groupBy}
+                attributes={board.attributes}
                 color={label.color}
                 key={label._id}
                 name={label.name}
@@ -80,7 +84,7 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                 tasks={label.tasks}
             />
         ))
-    }, [board])
+    }, [board?.tasks, board?.groupBy])
 
     const onDragStart = () => {
         const [body] = document.getElementsByTagName('body')
