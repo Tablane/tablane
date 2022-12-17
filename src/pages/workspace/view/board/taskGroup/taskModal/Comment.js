@@ -93,7 +93,7 @@ function Comment({ comment, taskId, boardId }) {
                             </>
                         ) : (
                             <div className={styles.commentFooter}>
-                                <div className={styles.like}>Like</div>
+                                <div className={styles.like}>{/*Like*/}</div>
                                 <div
                                     className={styles.reply}
                                     onClick={() => setReplySectionOpen(true)}
