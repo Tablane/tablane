@@ -42,12 +42,6 @@ function TaskColumnPopover(props) {
         setEditingLabels(props.attribute.labels)
     }, [props.attribute.labels])
 
-    const handleClose = () => {
-        setLabelsEditing(false)
-        setColorEditingLabel(-1)
-        setEditingLabels([...props.attribute.labels])
-    }
-
     // handle change of edit state labels
     const handleEditChange = (e, x) => {
         let newCurrentLabels = _.cloneDeep(editingLabels)
@@ -269,6 +263,14 @@ function TaskColumnPopover(props) {
                                                             {labelsEditing ? (
                                                                 <div>
                                                                     <input
+                                                                        onKeyDown={e => {
+                                                                            if (
+                                                                                e.code ===
+                                                                                'Space'
+                                                                            ) {
+                                                                                e.stopPropagation()
+                                                                            }
+                                                                        }}
                                                                         onChange={e =>
                                                                             handleEditChange(
                                                                                 e,
