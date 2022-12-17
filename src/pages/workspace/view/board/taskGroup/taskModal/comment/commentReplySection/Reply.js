@@ -71,7 +71,7 @@ function Reply({ commentId, reply, taskId, boardId }) {
                             />
                         </div>
                         <div className={styles.commentFooter}>
-                            <div className={styles.like}>Like</div>
+                            <div className={styles.like}>{/*Like*/}</div>
                             <div className={styles.reply}>Reply</div>
                         </div>
                     </div>
