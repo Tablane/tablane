@@ -500,7 +500,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board =>
+                        board => {
                             editOptionsTask({
                                 board,
                                 column,
@@ -508,6 +508,7 @@ export const boardApi = api.injectEndpoints({
                                 type,
                                 taskId
                             })
+                        }
                     )
                 )
                 try {

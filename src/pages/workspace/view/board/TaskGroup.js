@@ -16,9 +16,10 @@ import { useSortTaskMutation } from '../../../../modules/services/boardSlice'
 import _ from 'lodash'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 import { Virtuoso } from 'react-virtuoso'
+import produce from 'immer'
 
 function TaskGroup(props, viewContainerRef) {
-    const { hasPerms, tasks, board } = props
+    const { hasPerms, tasks, boardId, groupBy, attributes } = props
     const [collapsed, setCollapsed] = useState(false)
     const [activeItem, setActiveItem] = useState(null)
     const [collapsedItems, setCollapsedItems] = useState([])
@@ -54,14 +55,15 @@ function TaskGroup(props, viewContainerRef) {
     }
 
     const flattenedTasks = useMemo(() => {
-        const flattenedTasks = _.cloneDeep(tasks)
-
-        return removeChildrenOf(
-            flattenedTasks,
-            activeItem?._id
-                ? [activeItem._id, ...collapsedItems]
-                : collapsedItems
-        )
+        const flattenedTasks = produce(tasks, draft => {
+            return removeChildrenOf(
+                draft,
+                activeItem?._id
+                    ? [activeItem._id, ...collapsedItems]
+                    : collapsedItems
+            )
+        })
+        return flattenedTasks
     }, [tasks, activeItem?._id, collapsedItems])
 
     const taskIds = useMemo(
@@ -129,14 +131,16 @@ function TaskGroup(props, viewContainerRef) {
         return newParent ?? null
     }
 
-    const handleCollapse = id => {
-        const index = collapsedItems.indexOf(id)
-        if (index === -1) {
-            setCollapsedItems([...collapsedItems, id])
-        } else {
-            setCollapsedItems(prev => prev.filter(x => x !== id))
-        }
-    }
+    const handleCollapse = useCallback(id => {
+        setCollapsedItems(collapsedItems => {
+            const index = collapsedItems.indexOf(id)
+            if (index === -1) {
+                return [...collapsedItems, id]
+            } else {
+                return collapsedItems.filter(x => x !== id)
+            }
+        })
+    }, [])
 
     useDndMonitor({
         onDragStart({ active: { id } }) {
@@ -166,7 +170,7 @@ function TaskGroup(props, viewContainerRef) {
 
             sortTask({
                 newItems: flatten(buildTree(sortedTasks)),
-                boardId: board._id,
+                boardId,
                 taskId: clonedTasks[activeIndex]._id,
                 newParentTask: getParentId(getDepth(), over.id, active.id),
                 index: overIndex,
@@ -215,7 +219,7 @@ function TaskGroup(props, viewContainerRef) {
 
     return (
         <div className="task mb-7 font-normal">
-            <div className="title ml-4 sticky top-0 z-10 pt-6 bg-[#eee]">
+            <div className="title ml-4 sticky top-0 z-20 pt-6 bg-[#eee]">
                 <div className="min-w-[220px] sm:min-w-[420px] sticky left-[-20px] bg-backgroundGrey flex-grow flex-shrink-0 basis-[220px] sm:basis-[420px] flex justify-start items-center">
                     <ExpandCircleIcon
                         className={`h-4 w-4 text-bcc0c7 mr-1 transition-transform cursor-pointer ${
@@ -251,7 +255,7 @@ function TaskGroup(props, viewContainerRef) {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {props.board.attributes.map((x, i) => {
+                            {attributes.map((x, i) => {
                                 return (
                                     <Draggable
                                         draggableId={props.taskGroupId + x._id}
@@ -344,8 +348,9 @@ function TaskGroup(props, viewContainerRef) {
                                             handleCollapse={handleCollapse}
                                             groupedTasks={props.groupedTasks}
                                             hasPerms={hasPerms}
-                                            board={props.board}
-                                            attributes={props.board.attributes}
+                                            boardId={boardId}
+                                            groupBy={groupBy}
+                                            attributes={attributes}
                                             key={task._id}
                                             task={
                                                 task._id === activeItem?._id
@@ -380,7 +385,7 @@ function TaskGroup(props, viewContainerRef) {
                             </div>
                             {hasPerms('CREATE:TASK') && (
                                 <NewTaskForm
-                                    boardId={props.board._id}
+                                    boardId={boardId}
                                     taskGroupId={props.taskGroupId}
                                 />
                             )}
@@ -389,13 +394,13 @@ function TaskGroup(props, viewContainerRef) {
                 )}
 
             <AttributePopover
-                boardId={props.board._id}
+                boardId={boardId}
                 open={popoverOpen}
                 close={handleAttributePopover}
                 attr={popoverId}
             />
             <AddAttributePopover
-                boardId={props.board._id}
+                boardId={boardId}
                 anchor={newAttributeOpen}
                 close={handleAddNewAttribute}
             />
