@@ -84,7 +84,7 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                 tasks={label.tasks}
             />
         ))
-    }, [board?.tasks, board?.groupBy])
+    }, [board])
 
     const onDragStart = () => {
         const [body] = document.getElementsByTagName('body')
