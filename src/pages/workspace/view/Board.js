@@ -19,7 +19,12 @@ function Board(props, viewContainerRef) {
     }
 
     return (
-        <BoardView ref={viewContainerRef} board={board} hasPerms={hasPerms} />
+        <BoardView
+            ref={viewContainerRef}
+            members={workspace.members}
+            board={board}
+            hasPerms={hasPerms}
+        />
     )
 }
 

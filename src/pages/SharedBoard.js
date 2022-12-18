@@ -60,6 +60,7 @@ function SharedBoard() {
                     ref={viewContainerRef}
                     hasPerms={hasPerms}
                     board={board}
+                    members={board.workspace.members}
                     sidebarOpen={false}
                     toggleSideBar={() => {}}
                 />

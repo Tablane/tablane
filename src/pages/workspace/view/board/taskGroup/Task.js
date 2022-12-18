@@ -7,7 +7,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import PersonColumnPopover from './task/PersonColumnPopover'
 import { Tooltip } from '@mui/material'
-import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 import {
     useEditOptionsTaskMutation,
     useEditTaskFieldMutation
@@ -22,8 +21,7 @@ import NewTaskForm from './NewTaskForm'
 function Task(props) {
     const navigate = useNavigate()
     const location = useLocation()
-    const { taskId, workspace: workspaceId } = useParams()
-    const { data: workspace } = useFetchWorkspaceQuery(workspaceId)
+    const { taskId } = useParams()
     const [anchor, setAnchor] = useState(null)
     const [activeOption, setActiveOption] = useState('')
     const [columnDialogOpen, setColumnDialogOpen] = useState(false)
@@ -33,7 +31,7 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms, task, attributes, boardId, groupBy } = props
+    const { hasPerms, task, attributes, boardId, groupBy, members } = props
     const {
         attributes: sortableAttributes,
         listeners,
@@ -156,9 +154,7 @@ function Task(props) {
         const people = []
         if (taskOption) {
             taskOption.value.map(userId => {
-                const person = workspace.members.find(
-                    ({ user }) => user._id === userId
-                )
+                const person = members.find(({ user }) => user._id === userId)
                 if (person) people.push(person.user)
             })
         }
