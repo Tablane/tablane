@@ -1,4 +1,4 @@
-import { Fragment, memo, useState } from 'react'
+import { Fragment, memo, useCallback, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskColumnPopover from './task/TaskColumnPopover'
 import TaskPopover from './task/TaskPopover'
@@ -217,12 +217,12 @@ function Task(props) {
         )
     }
 
-    console.log('re-render ', task.name)
+    console.log('re-render s', task.name)
 
-    const toggleTaskEdit = () => {
+    const toggleTaskEdit = useCallback(() => {
         document.activeElement.blur()
-        setTimeout(() => setTaskEditing(!taskEditing), 0)
-    }
+        setTimeout(() => setTaskEditing(prev => !prev), 0)
+    }, [])
 
     const handleTaskEdit = e => {
         e.preventDefault()
