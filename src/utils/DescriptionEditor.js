@@ -59,7 +59,8 @@ function Editor({
             Color,
             Highlight,
             Placeholder.configure({
-                placeholder: "Description or Type '/' for commands",
+                // placeholder: "Description or Type '/' for commands",
+                placeholder: 'Type your Description',
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             }),
             Collaboration.configure({
