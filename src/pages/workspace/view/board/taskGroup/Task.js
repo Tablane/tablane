@@ -247,7 +247,7 @@ function Task(props) {
             >
                 {!taskEditing && (
                     <div
-                        className={`absolute left-[-22px] h-full self-stretch w-[20px] ${
+                        className={`!hidden absolute left-[-22px] h-full self-stretch w-[20px] ${
                             hasPerms('MANAGE:TASK') ? '' : '!cursor-auto '
                         }`}
                         onClick={() => setBatchSelect(!batchSelect)}
