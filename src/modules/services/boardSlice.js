@@ -115,7 +115,7 @@ const addTaskComment = ({ board, content, author, taskId }) => {
 const editTaskComment = ({ board, content, taskId, commentId }) => {
     const comment = board.tasks
         .find(task => task._id === taskId)
-        .history.find(x => x._id === commentId)
+        .comments.find(x => x._id === commentId)
     comment.content = content
 }
 const deleteTaskComment = ({ board, taskId, commentId }) => {
@@ -139,14 +139,14 @@ const addReply = ({ board, content, author, taskId, commentId, _id }) => {
 const editReply = ({ board, content, taskId, commentId, replyId }) => {
     const reply = board.tasks
         .find(task => task._id === taskId)
-        .history.find(x => x._id === commentId)
+        .comments.find(x => x._id === commentId)
         .replies.find(x => x._id === replyId)
     reply.content = content
 }
 const deleteReply = ({ board, taskId, commentId, replyId }) => {
     const comment = board.tasks
         .find(task => task._id === taskId)
-        .history.find(x => x._id === commentId)
+        .comments.find(x => x._id === commentId)
     comment.replies = comment.replies.filter(x => x._id !== replyId)
 }
 const clearStatusTask = ({ board, taskId, optionId }) => {

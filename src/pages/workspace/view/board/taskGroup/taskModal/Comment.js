@@ -1,7 +1,7 @@
 import styles from '../../../../../../styles/TaskModal.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
 import Editor from '../../../../../../utils/Editor'
@@ -10,6 +10,7 @@ import RelativeDate from '../../../../../../utils/RelativeDate'
 
 function Comment({ comment, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
+    const [updatedContent, setUpdatedContent] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
 
@@ -23,6 +24,20 @@ function Comment({ comment, taskId, boardId }) {
         setEditing(false)
     }
 
+    const handleEditingClick = () => {
+        setEditing(true)
+        setUpdatedContent(false)
+    }
+
+    const handleEditingCancel = () => {
+        setEditing(false)
+        setUpdatedContent(true)
+    }
+
+    useEffect(() => {
+        setUpdatedContent(true)
+    }, [comment.content])
+
     return (
         <div className={styles.comment}>
             <div className={styles.author}>
@@ -35,7 +50,7 @@ function Comment({ comment, taskId, boardId }) {
                     <div>
                         <Editor
                             saveComment={handleSave}
-                            cancelEditing={() => setEditing(false)}
+                            cancelEditing={handleEditingCancel}
                             type="comment-edit"
                             content={comment.content}
                         />
@@ -53,7 +68,7 @@ function Comment({ comment, taskId, boardId }) {
                                 <RelativeDate timestamp={comment.timestamp} />
                             </p>
                             <div className={styles.actions}>
-                                <div onClick={() => setEditing(true)}>
+                                <div onClick={handleEditingClick}>
                                     <FontAwesomeIcon icon={solid('pen')} />
                                     <span>Edit</span>
                                 </div>
@@ -66,11 +81,13 @@ function Comment({ comment, taskId, boardId }) {
                             </div>
                         </div>
                         <div>
-                            <Editor
-                                type="comment"
-                                readOnly={true}
-                                content={comment.content}
-                            />
+                            {updatedContent && (
+                                <Editor
+                                    type="comment"
+                                    readOnly={true}
+                                    content={comment.content}
+                                />
+                            )}
                         </div>
                         {replySectionOpen ? (
                             <>
