@@ -1,11 +1,8 @@
 import styles from '../../../../../styles/QuickActionsToolBar.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import {
-    useFetchBoardQuery,
-    useSortTaskMutation
-} from '../../../../../modules/services/boardSlice'
 import { Tooltip } from '@mui/material'
+import { memo } from 'react'
 
 function QuickActionsToolbar({
     handleTaskEdit,
@@ -16,9 +13,6 @@ function QuickActionsToolbar({
     setNewTaskOpen,
     level
 }) {
-    const { data: board } = useFetchBoardQuery(boardId)
-    const [sortTask] = useSortTaskMutation()
-
     const handleEditClick = e => {
         e.stopPropagation()
         handleTaskEdit(e)
@@ -29,49 +23,49 @@ function QuickActionsToolbar({
         setNewTaskOpen(true)
     }
 
-    const handleMoveTopClick = e => {
-        e.stopPropagation()
-        const taskGroup = groupedTasks
-            ? groupedTasks.find(x => x._id === taskGroupId)
-            : board.tasks
-        const result = {
-            destination: { droppableId: taskGroup._id },
-            draggableId: taskId
-        }
-        const destinationIndex = taskGroup
-        const sourceIndex = board.tasks.findIndex(
-            x => x._id.toString() === taskId
-        )
-
-        sortTask({
-            result,
-            destinationIndex,
-            sourceIndex,
-            boardId
-        })
-    }
-
-    const handleMoveBottomClick = e => {
-        e.stopPropagation()
-        const taskGroup = groupedTasks
-            ? groupedTasks.find(x => x._id === taskGroupId)
-            : board.tasks
-        const result = {
-            destination: { droppableId: taskGroup._id },
-            draggableId: taskId
-        }
-        const destinationIndex = -1
-        const sourceIndex = board.tasks.findIndex(
-            x => x._id.toString() === taskId
-        )
-
-        sortTask({
-            result,
-            destinationIndex,
-            sourceIndex,
-            boardId
-        })
-    }
+    // const handleMoveTopClick = e => {
+    //     e.stopPropagation()
+    //     const taskGroup = groupedTasks
+    //         ? groupedTasks.find(x => x._id === taskGroupId)
+    //         : board.tasks
+    //     const result = {
+    //         destination: { droppableId: taskGroup._id },
+    //         draggableId: taskId
+    //     }
+    //     const destinationIndex = taskGroup
+    //     const sourceIndex = board.tasks.findIndex(
+    //         x => x._id.toString() === taskId
+    //     )
+    //
+    //     sortTask({
+    //         result,
+    //         destinationIndex,
+    //         sourceIndex,
+    //         boardId
+    //     })
+    // }
+    //
+    // const handleMoveBottomClick = e => {
+    //     e.stopPropagation()
+    //     const taskGroup = groupedTasks
+    //         ? groupedTasks.find(x => x._id === taskGroupId)
+    //         : board.tasks
+    //     const result = {
+    //         destination: { droppableId: taskGroup._id },
+    //         draggableId: taskId
+    //     }
+    //     const destinationIndex = -1
+    //     const sourceIndex = board.tasks.findIndex(
+    //         x => x._id.toString() === taskId
+    //     )
+    //
+    //     sortTask({
+    //         result,
+    //         destinationIndex,
+    //         sourceIndex,
+    //         boardId
+    //     })
+    // }
 
     return (
         <div className={styles.quickActionsToolbar}>
@@ -118,4 +112,4 @@ function QuickActionsToolbar({
     )
 }
 
-export default QuickActionsToolbar
+export default memo(QuickActionsToolbar)
