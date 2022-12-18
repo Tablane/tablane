@@ -137,6 +137,7 @@ function Task(props) {
                 key={attribute._id}
             >
                 <input
+                    readOnly={!hasPerms('MANAGE:TASK')}
                     type="text"
                     name={attribute._id}
                     onBlur={handleTextEdit}
