@@ -352,6 +352,7 @@ function TaskGroup(props, viewContainerRef) {
                                             groupBy={groupBy}
                                             attributes={attributes}
                                             key={task._id}
+                                            members={props.members}
                                             task={
                                                 task._id === activeItem?._id
                                                     ? {

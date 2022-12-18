@@ -17,7 +17,7 @@ import {
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 
-function BoardView({ board, hasPerms }, viewContainerRef) {
+function BoardView({ board, members, hasPerms }, viewContainerRef) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
@@ -37,6 +37,7 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                     boardId={board._id}
                     groupBy={board?.groupBy}
                     attributes={board.attributes}
+                    members={members}
                     color={'rgb(196, 196, 196)'}
                     name=""
                     taskGroupId={'empty'}
@@ -77,6 +78,7 @@ function BoardView({ board, hasPerms }, viewContainerRef) {
                 boardId={board._id}
                 groupBy={board?.groupBy}
                 attributes={board.attributes}
+                members={members}
                 color={label.color}
                 key={label._id}
                 name={label.name}
