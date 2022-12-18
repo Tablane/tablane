@@ -22,10 +22,9 @@ function Editor({
 }) {
     const getPlaceholder = x => {
         switch (x) {
-            case 'description':
-                return "Description or Type '/' for commands"
             case 'comment':
-                return "Comment or Type '/' for commands"
+                // return "Comment or Type '/' for commands"
+                return 'Type your Comment'
             default:
                 return ''
         }
