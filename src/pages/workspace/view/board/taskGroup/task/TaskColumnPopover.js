@@ -49,6 +49,15 @@ function TaskColumnPopover(props) {
         setEditingLabels([...newCurrentLabels])
     }
 
+    const handleKeyDown = e => {
+        if (e.code === 'Space') {
+            e.stopPropagation()
+        } else if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+            e.stopPropagation()
+            toggleEdit()
+        }
+    }
+
     // delete label while editing
     const handleEditDelete = id => {
         if (!labelsEditing) return
@@ -263,14 +272,9 @@ function TaskColumnPopover(props) {
                                                             {labelsEditing ? (
                                                                 <div>
                                                                     <input
-                                                                        onKeyDown={e => {
-                                                                            if (
-                                                                                e.code ===
-                                                                                'Space'
-                                                                            ) {
-                                                                                e.stopPropagation()
-                                                                            }
-                                                                        }}
+                                                                        onKeyDown={
+                                                                            handleKeyDown
+                                                                        }
                                                                         onChange={e =>
                                                                             handleEditChange(
                                                                                 e,
