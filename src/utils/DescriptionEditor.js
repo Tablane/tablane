@@ -20,6 +20,7 @@ import { Mention } from '@tiptap/extension-mention'
 import suggestion from './editor/suggestion'
 import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
+import useEffectOnce from '../modules/hooks/useEffectOnce.ts'
 
 function Editor({
     taskId,
@@ -91,6 +92,12 @@ function Editor({
             if (readOnly) editor.setEditable(false)
         }
     }, [editor])
+
+    useEffectOnce(() => {
+        return () => {
+            provider.disconnect()
+        }
+    })
 
     return (
         <div>
