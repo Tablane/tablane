@@ -7,7 +7,7 @@ import {
     Popover
 } from '@mui/material'
 import Button from '@mui/material/Button'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import styles from '../../../../../../styles/TaskPopover.module.scss'
 import { useDeleteTaskMutation } from '../../../../../../modules/services/boardSlice'
@@ -105,4 +105,4 @@ function TaskPopover(props) {
     )
 }
 
-export default TaskPopover
+export default memo(TaskPopover)
