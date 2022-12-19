@@ -14,7 +14,7 @@ import TOTPManageModal from './profile/TOTPManageModal'
 import EmailManageModal from './profile/EmailManageModal'
 import BackupManageModal from './profile/BackupManageModal'
 import SecurityKeyManageModal from './profile/SecurityKeyManageModal'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, Tooltip } from '@mui/material'
 import RelativeDate from '../../utils/RelativeDate'
 
 function Profile() {
@@ -57,6 +57,7 @@ function Profile() {
         updateProfile({ ...form.values })
             .unwrap()
             .catch(err => {
+                if (err.status !== 403) return
                 setSudoConfirmFn(() => () => handleProfileUpdate())
                 setSudoModeModalOpen(true)
             })
@@ -93,16 +94,23 @@ function Profile() {
                                 {...form.getInputProps('username')}
                             />
                         </div>
-                        <div className={styles.field}>
-                            <label>Email</label>
-                            <input
-                                type="text"
-                                value={values.email}
-                                placeholder="Enter Email"
-                                autoComplete="email"
-                                {...form.getInputProps('email')}
-                            />
-                        </div>
+                        <Tooltip
+                            title="Please message contact@tablane.net to change your email."
+                            disableInteractive
+                            arrow
+                        >
+                            <div className={styles.field}>
+                                <label>Email</label>
+                                <input
+                                    readOnly
+                                    type="text"
+                                    value={values.email}
+                                    placeholder="Enter Email"
+                                    autoComplete="email"
+                                    {...form.getInputProps('email')}
+                                />
+                            </div>
+                        </Tooltip>
                         <div className={styles.field}>
                             <label>Password</label>
                             <input
