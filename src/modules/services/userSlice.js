@@ -96,10 +96,10 @@ export const userApi = api.injectEndpoints({
             invalidatesTags: ['Session']
         }),
         updateProfile: builder.mutation({
-            query: ({ name, email, password }) => ({
+            query: ({ username, email, password }) => ({
                 url: `user/profile`,
                 method: 'PATCH',
-                body: { name, email, password }
+                body: { username, email, password }
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
