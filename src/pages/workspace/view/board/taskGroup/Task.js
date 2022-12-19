@@ -1,32 +1,24 @@
-import { Fragment, memo, useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import '../../../../../styles/Task.css'
-import TaskColumnPopover from './task/TaskColumnPopover'
 import TaskPopover from './task/TaskPopover'
 import useInputState from '../../../../../modules/hooks/useInputState'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
-import PersonColumnPopover from './task/PersonColumnPopover'
-import { Tooltip } from '@mui/material'
-import {
-    useEditOptionsTaskMutation,
-    useEditTaskFieldMutation
-} from '../../../../../modules/services/boardSlice'
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useEditTaskFieldMutation } from '../../../../../modules/services/boardSlice'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import QuickActionsToolbar from './QuickActionsToolbar'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import NewTaskForm from './NewTaskForm'
+import TaskColumns from './task/TaskColumns.tsx'
 
 function Task(props) {
+    const [anchor, setAnchor] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
     const { taskId } = useParams()
-    const [anchor, setAnchor] = useState(null)
-    const [activeOption, setActiveOption] = useState('')
-    const [columnDialogOpen, setColumnDialogOpen] = useState(false)
     const [moreDialogOpen, setMoreDialogOpen] = useState(false)
-    const [editOptionsTask] = useEditOptionsTaskMutation()
     const [editTaskField] = useEditTaskFieldMutation()
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
@@ -39,7 +31,7 @@ function Task(props) {
         transform,
         transition
     } = useSortable({
-        id: props.task._id,
+        id: task._id,
         disabled: !hasPerms('MANAGE:TASK') || (groupBy && groupBy !== 'none')
     })
 
@@ -49,26 +41,18 @@ function Task(props) {
     }
 
     const [taskEditing, setTaskEditing] = useState(false)
-    const [taskName, changeTaskName] = useInputState(props.task.name)
+    const [taskName, changeTaskName] = useInputState(task.name)
 
     const openTaskModal = () => {
         if (!hasPerms('READ:PUBLIC')) return
         if (taskEditing) return
-        navigate(`${location.pathname}/${props.task._id}`)
+        navigate(`${location.pathname}/${task._id}`)
     }
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchor(null)
         setMoreDialogOpen(false)
-        setColumnDialogOpen(false)
-    }
-
-    const handleClick = (e, key) => {
-        if (!hasPerms('MANAGE:TASK')) return
-        setAnchor(e.currentTarget)
-        setActiveOption(key._id)
-        setColumnDialogOpen(!columnDialogOpen)
-    }
+    }, [])
 
     const handleMoreClick = e => {
         if (!(hasPerms('MANAGE:TASK') || hasPerms('DELETE:TASK'))) return
@@ -83,138 +67,7 @@ function Task(props) {
         setCollapsed(!collapsed)
     }
 
-    const handleTextEdit = async e => {
-        const { task } = props
-        if (
-            task.options.find(option => option.column === e.target.name)
-                ?.value === e.target.value
-        )
-            return
-
-        editOptionsTask({
-            column: e.target.name,
-            value: e.target.value,
-            type: 'text',
-            boardId,
-            taskId: task._id
-        })
-    }
-
-    const getStatusLabel = attribute => {
-        let taskOption = props.task.options.find(
-            x => x.column === attribute._id
-        )
-        let label
-
-        if (taskOption) {
-            label = attribute.labels.find(x => x._id === taskOption.value)
-        } else label = { color: 'rgb(196,196,196)', name: '' }
-
-        if (!label) label = { color: 'rgb(196,196,196)', name: '' }
-
-        return (
-            <TaskColumnPopover
-                key={attribute._id}
-                hasPerms={hasPerms}
-                boardId={boardId}
-                label={label}
-                attribute={attribute}
-                task={props.task}
-                taskGroupId={props.taskGroupId}
-            />
-        )
-    }
-
-    const getTextLabel = attribute => {
-        let taskOption = props.task.options.find(
-            x => x.column === attribute._id
-        )
-        if (!taskOption) taskOption = { value: '' }
-        return (
-            <div
-                className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
-                style={{ backgroundColor: 'transparent' }}
-                key={attribute._id}
-            >
-                <input
-                    readOnly={!hasPerms('MANAGE:TASK')}
-                    type="text"
-                    name={attribute._id}
-                    onBlur={handleTextEdit}
-                    defaultValue={taskOption.value}
-                />
-            </div>
-        )
-    }
-
-    const getPersonLabel = attribute => {
-        let taskOption = props.task.options.find(
-            x => x.column === attribute._id
-        )
-
-        const people = []
-        if (taskOption) {
-            taskOption.value.map(userId => {
-                const person = members.find(({ user }) => user._id === userId)
-                if (person) people.push(person.user)
-            })
-        }
-
-        return (
-            <Fragment key={attribute._id}>
-                {people.length > 0 ? (
-                    <div
-                        className="people text-[14px] border-white border-solid border-r flex -space-x-4 items-center justify-center h-9 leading-9 text-center w-[120px]"
-                        onClick={e => handleClick(e, attribute)}
-                    >
-                        {people.map((person, i) => {
-                            return (
-                                <Tooltip
-                                    disableInteractive
-                                    title={person.username}
-                                    key={person._id}
-                                    arrow
-                                >
-                                    <div
-                                        style={{ zIndex: people.length - i }}
-                                        className="person text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white hover:!z-50"
-                                    >
-                                        {person.username
-                                            .charAt(0)
-                                            .toUpperCase()}
-                                        {person.username
-                                            .charAt(1)
-                                            .toUpperCase()}
-                                    </div>
-                                </Tooltip>
-                            )
-                        })}
-                    </div>
-                ) : (
-                    <div
-                        className="people text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
-                        onClick={e => handleClick(e, attribute)}
-                    >
-                        <FontAwesomeIcon icon={regular('circle-user')} />
-                    </div>
-                )}
-                {attribute._id.toString() === activeOption && (
-                    <PersonColumnPopover
-                        boardId={boardId}
-                        attribute={attribute}
-                        people={people}
-                        taskOption={taskOption}
-                        anchor={anchor}
-                        open={columnDialogOpen}
-                        task={props.task}
-                        handleClose={handleClose}
-                    />
-                )}
-            </Fragment>
-        )
-    }
-
-    console.log('re-render s', task.name)
+    console.log('re-render ', task.name)
 
     const toggleTaskEdit = useCallback(() => {
         document.activeElement.blur()
@@ -264,24 +117,21 @@ function Task(props) {
                     {...sortableAttributes}
                     onClick={openTaskModal}
                     className={`outline-none w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc bg-white z-10 justify-start sticky left-0 ${
-                        props.task.level > 0 ? 'subtask' : ''
+                        task.level > 0 ? 'subtask' : ''
                     } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
-                        props.task.children > 0 ? 'subtaskWithSubtasks' : ''
+                        task.children > 0 ? 'subtaskWithSubtasks' : ''
                     } ${hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'}`}
                     style={{
-                        '--total-margin-left':
-                            props.task.level * 32 - 32 + 12 + 'px'
+                        '--total-margin-left': task.level * 32 - 32 + 12 + 'px'
                     }}
                 >
                     <div
                         onClick={handleCollapse}
                         className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
-                            props.task.children > 0
-                                ? 'cursor-pointer'
-                                : 'hidden'
+                            task.children > 0 ? 'cursor-pointer' : 'hidden'
                         }`}
                         style={{
-                            marginLeft: props.task.level * 32 + 'px'
+                            marginLeft: task.level * 32 + 'px'
                         }}
                     >
                         <FontAwesomeIcon
@@ -289,9 +139,7 @@ function Task(props) {
                             className={`transition-transform ${
                                 collapsed ? '-rotate-90' : ''
                             } ${
-                                props.task.children > 0
-                                    ? 'subtaskWithSubtasks'
-                                    : ''
+                                task.children > 0 ? 'subtaskWithSubtasks' : ''
                             }`}
                         />
                     </div>
@@ -301,7 +149,7 @@ function Task(props) {
                             onBlur={handleTaskEdit}
                             className="text-[14px] pl-[25px]"
                             style={{
-                                marginLeft: props.task.level * 32 + 'px'
+                                marginLeft: task.level * 32 + 'px'
                             }}
                         >
                             <input
@@ -320,19 +168,17 @@ function Task(props) {
                         <div
                             className="flex flex-row"
                             style={{
-                                paddingLeft: props.task.level * 32 + 'px'
+                                paddingLeft: task.level * 32 + 'px'
                             }}
                         >
-                            <p className="taskName text-sm">
-                                {props.task.name}
-                            </p>
+                            <p className="taskName text-sm">{task.name}</p>
                             {hasPerms('MANAGE:TASK') && (
                                 <QuickActionsToolbar
-                                    level={props.task.level}
+                                    level={task.level}
                                     taskGroupId={props.taskGroupId}
                                     groupedTasks={props.groupedTasks}
                                     boardId={boardId}
-                                    taskId={props.task._id}
+                                    taskId={task._id}
                                     handleTaskEdit={toggleTaskEdit}
                                     setNewTaskOpen={setNewTaskOpen}
                                 />
@@ -348,24 +194,14 @@ function Task(props) {
                             : 'cursor-auto'
                     }`}
                 >
-                    {attributes.map(attribute => {
-                        if (attribute.type === 'status')
-                            return getStatusLabel(attribute)
-                        if (attribute.type === 'text')
-                            return getTextLabel(attribute)
-                        if (attribute.type === 'people') {
-                            return getPersonLabel(attribute)
-                        }
-
-                        return (
-                            <div
-                                style={{ backgroundColor: 'crimson' }}
-                                key={Math.random()}
-                            >
-                                ERROR
-                            </div>
-                        )
-                    })}
+                    <TaskColumns
+                        attributes={attributes}
+                        task={task}
+                        members={members}
+                        boardId={boardId}
+                        hasPerms={hasPerms}
+                        taskGroupId={props.taskGroupId}
+                    />
 
                     <div
                         className="z-[9] flex items-center justify-center h-9 leading-9 text-center w-[40px] bg-[#c4c4c4]"
@@ -387,24 +223,24 @@ function Task(props) {
                     anchor={anchor}
                     handleClose={handleClose}
                     taskGroupId={props.taskGroupId}
-                    taskId={props.task._id}
+                    taskId={task._id}
                 />
             )}
 
-            {taskId === props.task._id && (
+            {taskId === task._id && (
                 <TaskModal
                     boardId={boardId}
                     taskGroupId={props.taskGroupId}
-                    task={props.task}
+                    task={task}
                 />
             )}
 
             {newTaskOpen && (
                 <NewTaskForm
                     boardId={boardId}
-                    taskId={props.task._id}
+                    taskId={task._id}
                     setNewTaskOpen={setNewTaskOpen}
-                    level={props.task.level}
+                    level={task.level}
                 />
             )}
         </>
