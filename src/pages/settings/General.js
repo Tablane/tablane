@@ -7,9 +7,9 @@ import {
     DialogTitle
 } from '@mui/material'
 import Button from '@mui/material/Button'
-import useInputState from '../../modules/hooks/useInputState'
+import useInputState from '../../modules/hooks/useInputState.tsx'
 import { toast } from 'react-hot-toast'
-import useToggleState from '../../modules/hooks/useToggleState'
+import useToggleState from '../../modules/hooks/useToggleState.tsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from '../../styles/General.module.scss'
 import {

@@ -1,19 +1,13 @@
 import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice'
 import { Attribute, Task } from '../../../../../../../types/Board'
 
-type TextColumnProps = {
+type Props = {
     attribute: Attribute
     task: Task
-    hasPerms: (string) => boolean
     boardId: string
 }
 
-export default function TextColumn({
-    task,
-    attribute,
-    hasPerms,
-    boardId
-}: TextColumnProps) {
+export default function TextColumn({ task, attribute, boardId }: Props) {
     const [editOptionsTask] = useEditOptionsTaskMutation()
 
     const handleTextEdit = async e => {
@@ -42,7 +36,7 @@ export default function TextColumn({
             key={attribute._id}
         >
             <input
-                readOnly={!hasPerms('MANAGE:TASK')}
+                readOnly
                 type="text"
                 name={attribute._id}
                 onBlur={handleTextEdit}

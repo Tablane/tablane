@@ -1,7 +1,7 @@
 import TaskColumnPopover from '../TaskColumnPopover'
 import { Attribute, Task } from '../../../../../../../types/Board'
 
-type DropDownColumnProps = {
+type Props = {
     attribute: Attribute
     task: Task
     boardId: string
@@ -15,7 +15,7 @@ export default function DropDownColumn({
     boardId,
     hasPerms,
     taskGroupId
-}) {
+}: Props) {
     let taskOption = task.options.find(x => x.column === attribute._id)
     let label
 

@@ -1,6 +1,6 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../../styles/WatcherPopover.module.scss'
-import useInputState from '../../../../../../modules/hooks/useInputState'
+import useInputState from '../../../../../../modules/hooks/useInputState.tsx'
 import {
     useAddWatcherMutation,
     useRemoveWatcherMutation

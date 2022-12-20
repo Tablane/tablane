@@ -1,5 +1,5 @@
 import { ObjectId } from '../../../../../utils'
-import useInputState from '../../../../../modules/hooks/useInputState'
+import useInputState from '../../../../../modules/hooks/useInputState.tsx'
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
 import {
     useAddSubtaskMutation,
@@ -27,7 +27,7 @@ function NewTaskForm({
             author: user.username,
             level: level + 1,
             boardId,
-            taskGroupId: taskGroupId,
+            taskGroupId,
             newTaskName,
             _id: ObjectId()
         })

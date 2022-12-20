@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { MouseEventHandler, useState } from 'react'
 
-function usePopoverState(initialVal = false) {
+function usePopoverState(initialVal: boolean = false) {
     const [state, setState] = useState(initialVal)
 
-    const open = e => {
+    const open = (e): void => {
         setState(e.currentTarget)
     }
 
-    const close = () => {
+    const close = (): void => {
         setState(false)
     }
 

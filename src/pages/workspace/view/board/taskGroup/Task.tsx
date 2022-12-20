@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react'
 import '../../../../../styles/Task.css'
 import TaskPopover from './task/TaskPopover'
-import useInputState from '../../../../../modules/hooks/useInputState'
+import useInputState from '../../../../../modules/hooks/useInputState.tsx'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TaskModal from './TaskModal'
 import { useEditTaskFieldMutation } from '../../../../../modules/services/boardSlice'
@@ -12,8 +12,34 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import NewTaskForm from './NewTaskForm'
 import TaskColumns from './task/TaskColumns.tsx'
+import { Attribute, Label, FlatTask } from '../../../../../types/Board'
+import { Member } from '../../../../../types/Workspace'
 
-function Task(props) {
+interface Props {
+    hasPerms: (string) => boolean
+    task: FlatTask
+    attributes: Attribute[]
+    boardId: string
+    groupBy: string
+    members: Member[]
+    handleCollapse: (string) => void
+    groupedTasks: Label[]
+    taskGroupId: string
+    index: number
+}
+
+function Task({
+    hasPerms,
+    task,
+    attributes,
+    boardId,
+    groupBy,
+    members,
+    handleCollapse,
+    groupedTasks,
+    taskGroupId,
+    index
+}: Props) {
     const [anchor, setAnchor] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
@@ -23,7 +49,6 @@ function Task(props) {
     const [batchSelect, setBatchSelect] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     const [newTaskOpen, setNewTaskOpen] = useState(false)
-    const { hasPerms, task, attributes, boardId, groupBy, members } = props
     const {
         attributes: sortableAttributes,
         listeners,
@@ -60,23 +85,24 @@ function Task(props) {
         setMoreDialogOpen(!moreDialogOpen)
     }
 
-    const handleCollapse = e => {
+    const handleCollapseClick = e => {
         e.preventDefault()
         e.stopPropagation()
-        props.handleCollapse(task._id)
+        handleCollapse(task._id)
         setCollapsed(!collapsed)
     }
 
     console.log('re-render ', task.name)
 
     const toggleTaskEdit = useCallback(() => {
-        document.activeElement.blur()
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+        }
         setTimeout(() => setTaskEditing(prev => !prev), 0)
     }, [])
 
     const handleTaskEdit = e => {
         e.preventDefault()
-        const { task } = props
         toggleTaskEdit()
         editTaskField({
             type: 'name',
@@ -86,6 +112,8 @@ function Task(props) {
         })
     }
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             <div
@@ -118,15 +146,16 @@ function Task(props) {
                     onClick={openTaskModal}
                     className={`outline-none w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc bg-white z-10 justify-start sticky left-0 ${
                         task.level > 0 ? 'subtask' : ''
-                    } ${props.index > 0 ? 'subtaskNotFirst' : ''} ${
+                    } ${index > 0 ? 'subtaskNotFirst' : ''} ${
                         task.children > 0 ? 'subtaskWithSubtasks' : ''
                     } ${hasPerms('MANAGE:TASK') ? '' : '!cursor-auto'}`}
                     style={{
+                        // @ts-ignore
                         '--total-margin-left': task.level * 32 - 32 + 12 + 'px'
                     }}
                 >
                     <div
-                        onClick={handleCollapse}
+                        onClick={handleCollapseClick}
                         className={`absolute text-[10px] w-[25px] text-[#b9bec7] hover:text-[#7c828d] p-[4px] h-full flex justify-center items-center ${
                             task.children > 0 ? 'cursor-pointer' : 'hidden'
                         }`}
@@ -153,7 +182,6 @@ function Task(props) {
                             }}
                         >
                             <input
-                                type={taskName}
                                 onKeyUp={e => {
                                     if (e.key === 'Escape')
                                         e.currentTarget.blur()
@@ -175,8 +203,8 @@ function Task(props) {
                             {hasPerms('MANAGE:TASK') && (
                                 <QuickActionsToolbar
                                     level={task.level}
-                                    taskGroupId={props.taskGroupId}
-                                    groupedTasks={props.groupedTasks}
+                                    taskGroupId={taskGroupId}
+                                    groupedTasks={groupedTasks}
                                     boardId={boardId}
                                     taskId={task._id}
                                     handleTaskEdit={toggleTaskEdit}
@@ -200,7 +228,7 @@ function Task(props) {
                         members={members}
                         boardId={boardId}
                         hasPerms={hasPerms}
-                        taskGroupId={props.taskGroupId}
+                        taskGroupId={taskGroupId}
                     />
 
                     <div
@@ -222,18 +250,12 @@ function Task(props) {
                     open={moreDialogOpen}
                     anchor={anchor}
                     handleClose={handleClose}
-                    taskGroupId={props.taskGroupId}
+                    taskGroupId={taskGroupId}
                     taskId={task._id}
                 />
             )}
 
-            {taskId === task._id && (
-                <TaskModal
-                    boardId={boardId}
-                    taskGroupId={props.taskGroupId}
-                    task={task}
-                />
-            )}
+            {taskId === task._id && <TaskModal boardId={boardId} task={task} />}
 
             {newTaskOpen && (
                 <NewTaskForm
@@ -241,6 +263,7 @@ function Task(props) {
                     taskId={task._id}
                     setNewTaskOpen={setNewTaskOpen}
                     level={task.level}
+                    taskGroupId={taskGroupId}
                 />
             )}
         </>

@@ -42,7 +42,6 @@ function TaskColumns({
                             key={attribute._id}
                             attribute={attribute}
                             boardId={boardId}
-                            hasPerms={hasPerms}
                             task={task}
                         />
                     )

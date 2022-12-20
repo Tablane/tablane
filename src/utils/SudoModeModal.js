@@ -1,7 +1,7 @@
 import { Button, Modal, TextInput } from '@mantine/core'
 import styles from '../styles/SudoModeModal.module.scss'
 import { useSudoModeMutation } from '../modules/services/userSlice'
-import useInputState from '../modules/hooks/useInputState'
+import useInputState from '../modules/hooks/useInputState.tsx'
 
 function SudoModeModal({ open, setOpen, onConfirm }) {
     const [sudoMode] = useSudoModeMutation()

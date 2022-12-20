@@ -14,9 +14,9 @@ import AnimateHeight from 'react-animate-height'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import BoardPopover from './sideBar/BoardPopover'
 import SpacePopover from './sideBar/SpacePopover'
-import useLocalStorageState from '../../modules/hooks/useLocalStorageState'
-import useInputState from '../../modules/hooks/useInputState'
-import useToggleState from '../../modules/hooks/useToggleState'
+import useLocalStorageState from '../../modules/hooks/useLocalStorageState.tsx'
+import useInputState from '../../modules/hooks/useInputState.tsx'
+import useToggleState from '../../modules/hooks/useToggleState.tsx'
 import { ObjectId } from '../../utils'
 import {
     useAddBoardMutation,
