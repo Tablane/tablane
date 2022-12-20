@@ -264,6 +264,31 @@ export const boardApi = api.injectEndpoints({
                                     addTaskComment({ board, ...body })
                                 )
                                 break
+                            case 'editTaskComment':
+                                updateCachedData(board =>
+                                    editTaskComment({ board, ...body })
+                                )
+                                break
+                            case 'deleteTaskComment':
+                                updateCachedData(board =>
+                                    deleteTaskComment({ board, ...body })
+                                )
+                                break
+                            case 'addReply':
+                                updateCachedData(board =>
+                                    addReply({ board, ...body })
+                                )
+                                break
+                            case 'editReply':
+                                updateCachedData(board =>
+                                    editReply({ board, ...body })
+                                )
+                                break
+                            case 'deleteReply':
+                                updateCachedData(board =>
+                                    deleteReply({ board, ...body })
+                                )
+                                break
                             case 'clearStatusTask':
                                 updateCachedData(board =>
                                     clearStatusTask({ board, ...body })

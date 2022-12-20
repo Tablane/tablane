@@ -43,6 +43,7 @@ function TaskColumns({
                             attribute={attribute}
                             boardId={boardId}
                             task={task}
+                            hasPerms={hasPerms}
                         />
                     )
                 if (attribute.type === 'people') {
