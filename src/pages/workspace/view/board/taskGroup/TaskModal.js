@@ -2,7 +2,7 @@ import styles from '../../../../../styles/TaskModal.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import useInputState from '../../../../../modules/hooks/useInputState'
+import useInputState from '../../../../../modules/hooks/useInputState.tsx'
 import WatcherPopover from './taskModal/WatcherPopover'
 import {
     useAddTaskCommentMutation,

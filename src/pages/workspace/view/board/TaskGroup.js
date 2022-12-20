@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react'
 import '../../../../styles/TaskGroup.css'
-import Task from '../board/taskGroup/Task'
+import Task from './taskGroup/Task.tsx'
 import AttributePopover from '../board/taskGroup/AttributePopover'
 import AddAttributePopover from '../board/taskGroup/AddAttributePopover'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -55,7 +55,7 @@ function TaskGroup(props, viewContainerRef) {
     }
 
     const flattenedTasks = useMemo(() => {
-        const flattenedTasks = produce(tasks, draft => {
+        return produce(tasks, draft => {
             return removeChildrenOf(
                 draft,
                 activeItem?._id
@@ -63,7 +63,6 @@ function TaskGroup(props, viewContainerRef) {
                     : collapsedItems
             )
         })
-        return flattenedTasks
     }, [tasks, activeItem?._id, collapsedItems])
 
     const taskIds = useMemo(

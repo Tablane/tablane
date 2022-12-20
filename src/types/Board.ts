@@ -74,6 +74,10 @@ export interface Task {
     __v: number
 }
 
+export interface FlatTask extends Task {
+    children: number
+}
+
 export interface Label {
     _id: string
     name: string

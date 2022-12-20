@@ -1,6 +1,6 @@
 import '../../../styles/TopMenu.scss'
 import ShareDialog from '../topMenu/ShareDialog'
-import useToggleState from '../../../modules/hooks/useToggleState'
+import useToggleState from '../../../modules/hooks/useToggleState.tsx'
 import GroupByPopover from '../topMenu/GroupByPopover'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

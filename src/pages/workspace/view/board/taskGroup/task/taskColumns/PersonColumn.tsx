@@ -6,7 +6,7 @@ import PersonColumnPopover from '../PersonColumnPopover'
 import { Attribute, Task } from '../../../../../../../types/Board'
 import { Member } from '../../../../../../../types/Workspace'
 
-type PersonColumnProps = {
+type Props = {
     attribute: Attribute
     members: Member[]
     task: Task
@@ -20,7 +20,7 @@ export default function PersonColumn({
     task,
     hasPerms,
     boardId
-}: PersonColumnProps) {
+}: Props) {
     const [anchor, setAnchor] = useState(null)
     let taskOption = task.options.find(x => x.column === attribute._id)
 

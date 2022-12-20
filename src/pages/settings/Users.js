@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
-import useInputState from '../../modules/hooks/useInputState'
-import usePopoverState from '../../modules/hooks/usePopoverState'
+import useInputState from '../../modules/hooks/useInputState.tsx'
+import usePopoverState from '../../modules/hooks/usePopoverState.tsx'
 import UserPopup from './users/UserPopup'
 import RolePopup from './users/RolePopup'
 import styles from '../../styles/Users.module.scss'
