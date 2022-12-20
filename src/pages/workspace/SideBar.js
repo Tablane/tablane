@@ -139,7 +139,12 @@ function SideBar(props) {
     }
 
     const handleBoardEditClick = (workspace, space, board) => {
-        setEditingBoard({ spaceId: space._id, boardId: board._id })
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+        }
+        setTimeout(() => {
+            setEditingBoard({ spaceId: space._id, boardId: board._id })
+        }, 1)
     }
 
     const handleSpaceEditClick = (workspace, space) => {
