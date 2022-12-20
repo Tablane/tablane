@@ -3,11 +3,13 @@ import { Tooltip } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import PersonColumnPopover from '../PersonColumnPopover'
+import { Attribute, Task } from '../../../../../../../types/Board'
+import { Member } from '../../../../../../../types/Workspace'
 
 type PersonColumnProps = {
-    attribute
-    members
-    task
+    attribute: Attribute
+    members: Member[]
+    task: Task
     hasPerms: (string) => boolean
     boardId: string
 }

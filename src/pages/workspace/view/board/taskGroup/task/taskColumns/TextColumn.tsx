@@ -1,8 +1,9 @@
 import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice'
+import { Attribute, Task } from '../../../../../../../types/Board'
 
 type TextColumnProps = {
-    attribute
-    task
+    attribute: Attribute
+    task: Task
     hasPerms: (string) => boolean
     boardId: string
 }
@@ -32,7 +33,7 @@ export default function TextColumn({
     }
 
     let taskOption = task.options.find(x => x.column === attribute._id)
-    if (!taskOption) taskOption = { value: '' }
+    if (!taskOption) taskOption = { _id: '', column: '', value: '' }
 
     return (
         <div

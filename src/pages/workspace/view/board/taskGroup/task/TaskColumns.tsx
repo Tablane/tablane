@@ -2,11 +2,13 @@ import { memo } from 'react'
 import PersonColumn from './taskColumns/PersonColumn.tsx'
 import TextColumn from './taskColumns/TextColumn.tsx'
 import DropDownColumn from './taskColumns/DropDownColumn.tsx'
+import { Attribute, Task } from '../../../../../../types/Board'
+import { Member } from '../../../../../../types/Workspace'
 
-type TaskColumns = {
-    attributes: any
-    task: any
-    members: any
+interface Props {
+    attributes: Attribute[]
+    task: Task
+    members: Member[]
     boardId: string
     hasPerms: (string) => boolean
     taskGroupId: string
@@ -19,13 +21,14 @@ function TaskColumns({
     boardId,
     hasPerms,
     taskGroupId
-}: TaskColumns) {
+}: Props) {
     return (
         <>
             {attributes.map(attribute => {
                 if (attribute.type === 'status')
                     return (
                         <DropDownColumn
+                            key={attribute._id}
                             attribute={attribute}
                             boardId={boardId}
                             hasPerms={hasPerms}
@@ -36,6 +39,7 @@ function TaskColumns({
                 if (attribute.type === 'text')
                     return (
                         <TextColumn
+                            key={attribute._id}
                             attribute={attribute}
                             boardId={boardId}
                             hasPerms={hasPerms}
@@ -45,6 +49,7 @@ function TaskColumns({
                 if (attribute.type === 'people') {
                     return (
                         <PersonColumn
+                            key={attribute._id}
                             attribute={attribute}
                             boardId={boardId}
                             hasPerms={hasPerms}

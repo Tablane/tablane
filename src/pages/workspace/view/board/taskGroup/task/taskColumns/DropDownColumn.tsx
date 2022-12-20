@@ -1,8 +1,9 @@
 import TaskColumnPopover from '../TaskColumnPopover'
+import { Attribute, Task } from '../../../../../../../types/Board'
 
 type DropDownColumnProps = {
-    attribute
-    task
+    attribute: Attribute
+    task: Task
     boardId: string
     hasPerms: (string) => boolean
     taskGroupId: string
