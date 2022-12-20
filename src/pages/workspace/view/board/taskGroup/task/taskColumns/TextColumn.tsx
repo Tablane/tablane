@@ -5,9 +5,15 @@ type Props = {
     attribute: Attribute
     task: Task
     boardId: string
+    hasPerms: (string) => boolean
 }
 
-export default function TextColumn({ task, attribute, boardId }: Props) {
+export default function TextColumn({
+    task,
+    attribute,
+    boardId,
+    hasPerms
+}: Props) {
     const [editOptionsTask] = useEditOptionsTaskMutation()
 
     const handleTextEdit = async e => {
@@ -36,7 +42,7 @@ export default function TextColumn({ task, attribute, boardId }: Props) {
             key={attribute._id}
         >
             <input
-                readOnly
+                readOnly={!hasPerms('MANAGE:TASK')}
                 type="text"
                 name={attribute._id}
                 onBlur={handleTextEdit}
