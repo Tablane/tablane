@@ -3,12 +3,11 @@ import Editor from '../../../../../../../../utils/Editor'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice'
 import RelativeDate from '../../../../../../../../utils/RelativeDate'
 
 function Reply({ commentId, reply, taskId, boardId }) {
-    const [updatedContent, setUpdatedContent] = useState(false)
     const [editing, setEditing] = useState(false)
     const [editReply] = useEditReplyMutation()
 
@@ -25,17 +24,11 @@ function Reply({ commentId, reply, taskId, boardId }) {
 
     const handleEditingClick = () => {
         setEditing(true)
-        setUpdatedContent(false)
     }
 
     const handleEditingCancel = () => {
         setEditing(false)
-        setUpdatedContent(true)
     }
-
-    useEffect(() => {
-        setUpdatedContent(true)
-    }, [reply.content])
 
     return (
         <div className={styles.comment}>
@@ -79,13 +72,11 @@ function Reply({ commentId, reply, taskId, boardId }) {
                             </div>
                         </div>
                         <div>
-                            {updatedContent && (
-                                <Editor
-                                    type="comment"
-                                    readOnly={true}
-                                    content={reply.content}
-                                />
-                            )}
+                            <Editor
+                                type="comment"
+                                readOnly={true}
+                                content={reply.content}
+                            />
                         </div>
                         <div className={styles.commentFooter}>
                             <div className={styles.like}>{/*Like*/}</div>

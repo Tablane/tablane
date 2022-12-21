@@ -1,7 +1,7 @@
 import styles from '../../../../../../styles/TaskModal.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
 import Editor from '../../../../../../utils/Editor'
@@ -10,7 +10,6 @@ import RelativeDate from '../../../../../../utils/RelativeDate'
 
 function Comment({ comment, taskId, boardId }) {
     const [editing, setEditing] = useState(false)
-    const [updatedContent, setUpdatedContent] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
 
@@ -26,17 +25,11 @@ function Comment({ comment, taskId, boardId }) {
 
     const handleEditingClick = () => {
         setEditing(true)
-        setUpdatedContent(false)
     }
 
     const handleEditingCancel = () => {
         setEditing(false)
-        setUpdatedContent(true)
     }
-
-    useEffect(() => {
-        setUpdatedContent(true)
-    }, [comment.content])
 
     return (
         <div className={styles.comment}>
