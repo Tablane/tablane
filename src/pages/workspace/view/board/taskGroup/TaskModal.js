@@ -15,6 +15,7 @@ import Comment from './taskModal/Comment.tsx'
 import Editor from '../../../../../utils/Editor.tsx'
 import DescriptionEditor from '../../../../../utils/DescriptionEditor'
 import Activity from './taskModal/Activity'
+import { ObjectId } from '../../../../../utils'
 
 function TaskModal({ task, boardId }) {
     const navigate = useNavigate()
@@ -68,6 +69,7 @@ function TaskModal({ task, boardId }) {
         if (editor.getJSON() === '') return
 
         await addTaskComment({
+            _id: ObjectId(),
             boardId,
             content: editor.getJSON(),
             taskId: task._id,

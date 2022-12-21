@@ -1,7 +1,7 @@
 import styles from '../styles/Editor.module.scss'
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Tooltip } from '@mui/material'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
