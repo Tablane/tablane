@@ -13,13 +13,20 @@ import { Placeholder } from '@tiptap/extension-placeholder'
 import DisableEnter from './editor/Extensions'
 import { Button } from '@mantine/core'
 
+interface Props {
+    type: string
+    content: any
+    saveComment: (any) => void
+    readOnly: boolean
+    cancelEditing: () => void
+}
 function Editor({
     type,
     content = '',
     saveComment,
     readOnly = false,
     cancelEditing
-}) {
+}: Props) {
     const getPlaceholder = x => {
         switch (x) {
             case 'comment':
@@ -200,6 +207,7 @@ function Editor({
                         Cancel
                     </Button>
                     <Button
+                        className="bg-[#4c6ef5]"
                         size="xs"
                         color="indigo"
                         uppercase

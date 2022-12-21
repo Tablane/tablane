@@ -229,6 +229,7 @@ function Editor({
                     <Button
                         size="xs"
                         color="indigo"
+                        className="bg-[#4c6ef5]"
                         uppercase
                         onClick={() => saveComment(editor)}
                     >

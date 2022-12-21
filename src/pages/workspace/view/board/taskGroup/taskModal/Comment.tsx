@@ -4,11 +4,17 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from 'react'
 import CommentPopover from './comment/CommentPopover'
 import { useEditTaskCommentMutation } from '../../../../../../modules/services/boardSlice'
-import Editor from '../../../../../../utils/Editor'
-import CommentReplySection from './comment/CommentReplySection'
+import Editor from '../../../../../../utils/Editor.tsx'
+import CommentReplySection from './comment/CommentReplySection.tsx'
 import RelativeDate from '../../../../../../utils/RelativeDate'
+import { Comment as CommentType } from '../../../../../../types/Board'
 
-function Comment({ comment, taskId, boardId }) {
+interface Props {
+    comment: CommentType
+    taskId: string
+    boardId: string
+}
+function Comment({ comment, taskId, boardId }: Props) {
     const [editing, setEditing] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()

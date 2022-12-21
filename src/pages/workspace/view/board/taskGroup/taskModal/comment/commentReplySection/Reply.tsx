@@ -1,13 +1,21 @@
 import styles from '../../../../../../../../styles/TaskModal.module.scss'
-import Editor from '../../../../../../../../utils/Editor'
+import Editor from '../../../../../../../../utils/Editor.tsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
 import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice'
 import RelativeDate from '../../../../../../../../utils/RelativeDate'
+import { Reply as ReplyType } from '../../../../../../../../types/Board'
 
-function Reply({ commentId, reply, taskId, boardId }) {
+interface Props {
+    commentId: string
+    reply: ReplyType
+    taskId: string
+    boardId: string
+}
+
+function Reply({ commentId, reply, taskId, boardId }: Props) {
     const [editing, setEditing] = useState(false)
     const [editReply] = useEditReplyMutation()
 

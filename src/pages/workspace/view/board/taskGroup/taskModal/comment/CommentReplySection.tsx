@@ -1,10 +1,18 @@
-import Editor from '../../../../../../../utils/Editor'
+import Editor from '../../../../../../../utils/Editor.tsx'
 import { useAddReplyMutation } from '../../../../../../../modules/services/boardSlice'
-import Reply from './commentReplySection/Reply'
+import Reply from './commentReplySection/Reply.tsx'
 import { useFetchUserQuery } from '../../../../../../../modules/services/userSlice'
 import { ObjectId } from '../../../../../../../utils'
+import { ReplyType } from '../../../../../../../types/Board'
 
-function CommentReplySection({ taskId, commentId, replies, boardId }) {
+interface Props {
+    taskId: string
+    commentId: string
+    replies: ReplyType
+    boardId: string
+}
+
+function CommentReplySection({ taskId, commentId, replies, boardId }: Props) {
     const { data: user } = useFetchUserQuery()
     const [addReply] = useAddReplyMutation()
 
