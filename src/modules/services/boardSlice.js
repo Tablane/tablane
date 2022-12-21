@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import socket from '../../socket/socket'
 import handleQueryError from '../../utils/handleQueryError'
 import { flatten } from '../../utils/taskUtils'
+import { current } from 'immer'
 
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
@@ -101,8 +102,9 @@ const editOptionsTask = ({ board, column, value, type, taskId }) => {
         else options.push({ column, value })
     }
 }
-const addTaskComment = ({ board, content, author, taskId }) => {
+const addTaskComment = ({ _id, board, content, author, taskId }) => {
     const comment = {
+        _id,
         type: 'comment',
         author: { username: author },
         timestamp: new Date().getTime(),
@@ -110,7 +112,7 @@ const addTaskComment = ({ board, content, author, taskId }) => {
         replies: []
     }
 
-    board.tasks.find(task => task._id === taskId).history.unshift(comment)
+    board.tasks.find(task => task._id === taskId).comments.unshift(comment)
 }
 const editTaskComment = ({ board, content, taskId, commentId }) => {
     const comment = board.tasks
@@ -544,13 +546,13 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         addTaskComment: builder.mutation({
-            query: ({ taskId, content, boardId }) => ({
+            query: ({ taskId, content, _id }) => ({
                 url: `comment/${taskId}`,
                 method: 'POST',
-                body: { content }
+                body: { content, _id }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId },
+                { content, author, taskId, boardId, _id },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
@@ -560,6 +562,7 @@ export const boardApi = api.injectEndpoints({
                         board =>
                             addTaskComment({
                                 board,
+                                _id,
                                 content,
                                 author,
                                 taskId,
@@ -633,10 +636,10 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         addReply: builder.mutation({
-            query: ({ taskId, commentId, content }) => ({
+            query: ({ taskId, commentId, content, _id }) => ({
                 url: `comment/reply/${taskId}/${commentId}`,
                 method: 'POST',
-                body: { content }
+                body: { content, _id }
             }),
             async onQueryStarted(
                 { content, author, taskId, boardId, commentId, _id },
