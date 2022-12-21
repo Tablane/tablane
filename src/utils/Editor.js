@@ -41,6 +41,9 @@ function Editor({
                 return ''
         }
     }
+    const handleSave = () => {
+        saveComment(editor)
+    }
 
     const editor = useEditor({
         extensions: [
@@ -72,6 +75,10 @@ function Editor({
             if (readOnly) editor.setEditable(false)
         }
     }, [editor])
+
+    useEffect(() => {
+        editor?.commands.setContent(content)
+    }, [content, editor])
 
     return (
         <div>
@@ -196,7 +203,7 @@ function Editor({
                         size="xs"
                         color="indigo"
                         uppercase
-                        onClick={() => saveComment(editor)}
+                        onClick={handleSave}
                     >
                         Save
                     </Button>
