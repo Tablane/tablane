@@ -102,6 +102,7 @@ function Task({
     const handleTaskEdit = e => {
         e.preventDefault()
         setTaskEditing(false)
+        if (task.name === taskName) return
         editTaskField({
             type: 'name',
             value: taskName,
