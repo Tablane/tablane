@@ -185,6 +185,7 @@ function Task({
                                 value={taskName}
                                 onChange={changeTaskName}
                                 name="taskName"
+                                className="bg-transparent"
                                 autoFocus
                             />
                         </form>

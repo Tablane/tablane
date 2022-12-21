@@ -27,7 +27,6 @@
 .Task.editing form {
   height: 100%;
   width: 100%;
-  background-color: #fafbfc;
 }
 
 .Task.editing input {
