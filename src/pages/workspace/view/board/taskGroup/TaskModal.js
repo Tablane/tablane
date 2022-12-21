@@ -11,8 +11,8 @@ import {
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import Comment from './taskModal/Comment'
-import Editor from '../../../../../utils/Editor'
+import Comment from './taskModal/Comment.tsx'
+import Editor from '../../../../../utils/Editor.tsx'
 import DescriptionEditor from '../../../../../utils/DescriptionEditor'
 import Activity from './taskModal/Activity'
 
