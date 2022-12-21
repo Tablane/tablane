@@ -81,13 +81,11 @@ function Comment({ comment, taskId, boardId }) {
                             </div>
                         </div>
                         <div>
-                            {updatedContent && (
-                                <Editor
-                                    type="comment"
-                                    readOnly={true}
-                                    content={comment.content}
-                                />
-                            )}
+                            <Editor
+                                type="comment"
+                                readOnly={true}
+                                content={comment.content}
+                            />
                         </div>
                         {replySectionOpen ? (
                             <>

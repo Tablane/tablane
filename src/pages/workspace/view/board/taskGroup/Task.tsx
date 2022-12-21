@@ -92,8 +92,6 @@ function Task({
         setCollapsed(!collapsed)
     }
 
-    console.log('re-render ', task.name)
-
     const toggleTaskEdit = useCallback(() => {
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur()
@@ -112,8 +110,6 @@ function Task({
         })
     }
 
-    // @ts-ignore
-    // @ts-ignore
     return (
         <>
             <div
