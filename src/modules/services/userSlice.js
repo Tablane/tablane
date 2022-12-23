@@ -24,7 +24,6 @@ export const userApi = api.injectEndpoints({
                             email: data.user.email,
                             username: data.user.username
                         })
-                        console.log(data.user)
                         localStorage.setItem('access_token', data.accessToken)
                         dispatch(setCurrentToken(data.accessToken))
                         dispatch(
