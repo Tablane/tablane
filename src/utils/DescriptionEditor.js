@@ -88,9 +88,10 @@ function Editor({
     })
 
     useEffect(() => {
-        if (editor) {
-            editor.setEditable(true)
-            if (readOnly) editor.setEditable(false)
+        if (status === 'connected') {
+            editor?.setEditable(true)
+        } else {
+            editor?.setEditable(false)
         }
     }, [editor])
 
@@ -99,6 +100,14 @@ function Editor({
             provider.disconnect()
         }
     })
+
+    useEffect(() => {
+        if (status === 'connected') {
+            editor?.setEditable(true)
+        } else {
+            editor?.setEditable(false)
+        }
+    }, [status])
 
     return (
         <div>
@@ -208,13 +217,19 @@ function Editor({
                 </BubbleMenu>
             )}
 
-            {status === 'connected' ? (
+            <div
+                className={`relative ${
+                    status !== 'connected' ? 'opacity-50' : ''
+                }`}
+            >
+                {status !== 'connected' && (
+                    <div className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]">
+                        <CircularProgress size="15px" />
+                    </div>
+                )}
                 <EditorContent editor={editor} />
-            ) : (
-                <div className="flex justify-center items-center border-white rounded border-solid border box-border text-sm p-2 resize-none w-full border-[#e4e4e4] hover:border focus:border min-h-[250px]">
-                    <CircularProgress size="15px" />
-                </div>
-            )}
+            </div>
+
             {type === 'comment-edit' && (
                 <div className={styles.commentEditingButtons}>
                     <Button
