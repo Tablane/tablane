@@ -75,15 +75,17 @@ export default function PersonColumn({
                     <FontAwesomeIcon icon={regular('circle-user')} />
                 </div>
             )}
-            <PersonColumnPopover
-                boardId={boardId}
-                attribute={attribute}
-                people={people}
-                taskOption={taskOption}
-                anchor={anchor}
-                task={task}
-                handleClose={handleClose}
-            />
+            {hasPerms('MANAGE:TASK') && (
+                <PersonColumnPopover
+                    boardId={boardId}
+                    attribute={attribute}
+                    people={people}
+                    taskOption={taskOption}
+                    anchor={anchor}
+                    task={task}
+                    handleClose={handleClose}
+                />
+            )}
         </Fragment>
     )
 }
