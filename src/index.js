@@ -19,29 +19,31 @@ import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import PostHog from './utils/PostHog'
 
-posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
-    api_host: 'https://eu.posthog.com'
-})
-Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
-    integrations: [
-        new BrowserTracing({
-            routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-                useEffect,
-                useLocation,
-                useNavigationType,
-                createRoutesFromChildren,
-                matchRoutes
+if (process.env.NODE_ENV === 'production') {
+    posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
+        api_host: 'https://eu.posthog.com'
+    })
+    Sentry.init({
+        dsn: process.env.REACT_APP_SENTRY_DSN,
+        integrations: [
+            new BrowserTracing({
+                routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+                    useEffect,
+                    useLocation,
+                    useNavigationType,
+                    createRoutesFromChildren,
+                    matchRoutes
+                )
+            }),
+            new posthog.SentryIntegration(
+                posthog,
+                'tablane',
+                process.env.REACT_APP_SENTRY_PROJECT_ID
             )
-        }),
-        new posthog.SentryIntegration(
-            posthog,
-            'tablane',
-            process.env.REACT_APP_SENTRY_PROJECT_ID
-        )
-    ],
-    tracesSampleRate: 1.0
-})
+        ],
+        tracesSampleRate: 1.0
+    })
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
