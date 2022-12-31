@@ -509,15 +509,15 @@ function SideBar(props) {
                         </button>
                     </div>
                     <div className="space">
-                        <div className="space-title">
-                            <div> </div>
-                            <div>
-                                <div className="space-icon">
-                                    <FontAwesomeIcon icon={solid('th-large')} />
-                                </div>
-                                <p className="text-[14px]">Everything</p>
-                            </div>
-                        </div>
+                        {/*<div className="space-title">*/}
+                        {/*    <div> </div>*/}
+                        {/*    <div>*/}
+                        {/*        <div className="space-icon">*/}
+                        {/*            <FontAwesomeIcon icon={solid('th-large')} />*/}
+                        {/*        </div>*/}
+                        {/*        <p className="text-[14px]">Everything</p>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
 
                     <DragDropContext
