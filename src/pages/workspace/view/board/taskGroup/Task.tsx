@@ -3,7 +3,7 @@ import '../../../../../styles/Task.css'
 import TaskPopover from './task/TaskPopover'
 import useInputState from '../../../../../modules/hooks/useInputState.tsx'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import TaskModal from './TaskModal'
+import TaskModal from './TaskModal.tsx'
 import { useEditTaskFieldMutation } from '../../../../../modules/services/boardSlice'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -253,7 +253,14 @@ function Task({
                 />
             )}
 
-            {taskId === task._id && <TaskModal boardId={boardId} task={task} />}
+            {taskId === task._id && (
+                <TaskModal
+                    boardId={boardId}
+                    task={task}
+                    hasPerms={hasPerms}
+                    members={members}
+                />
+            )}
 
             {newTaskOpen && (
                 <NewTaskForm

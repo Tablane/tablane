@@ -10,7 +10,6 @@ import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Placeholder } from '@tiptap/extension-placeholder'
-import { Button } from '@mantine/core'
 import Collaboration from '@tiptap/extension-collaboration'
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import { useFetchUserQuery } from '../modules/services/userSlice'
@@ -22,14 +21,12 @@ import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
 import useEffectOnce from '../modules/hooks/useEffectOnce.ts'
 
-function Editor({
-    taskId,
-    type,
-    content = '',
-    saveComment,
-    readOnly = false,
-    cancelEditing
-}) {
+interface Props {
+    taskId: string
+    readOnly: boolean
+}
+
+function Editor({ taskId, readOnly = false }: Props) {
     const params = useParams()
     const { data: user } = useFetchUserQuery()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
@@ -229,29 +226,6 @@ function Editor({
                 )}
                 <EditorContent editor={editor} />
             </div>
-
-            {type === 'comment-edit' && (
-                <div className={styles.commentEditingButtons}>
-                    <Button
-                        size="xs"
-                        variant="outline"
-                        color="gray"
-                        uppercase
-                        onClick={cancelEditing}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        size="xs"
-                        color="indigo"
-                        className="bg-[#4c6ef5]"
-                        uppercase
-                        onClick={() => saveComment(editor)}
-                    >
-                        Save
-                    </Button>
-                </div>
-            )}
         </div>
     )
 }

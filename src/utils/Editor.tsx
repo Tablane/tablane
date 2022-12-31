@@ -15,10 +15,10 @@ import { Button } from '@mantine/core'
 
 interface Props {
     type: string
-    content: any
+    content?: any
     saveComment: (any) => void
     readOnly: boolean
-    cancelEditing: () => void
+    cancelEditing?: () => void
 }
 function Editor({
     type,
