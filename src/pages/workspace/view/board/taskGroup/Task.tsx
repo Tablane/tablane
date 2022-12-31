@@ -114,7 +114,7 @@ function Task({
     return (
         <>
             <div
-                className={`Task outline-none cursor-pointer flex flex-row items-center justify-start relative border-b border-white ${
+                className={`Task group outline-none cursor-pointer flex flex-row items-center justify-start relative border-b border-white ${
                     taskEditing ? 'editing' : ''
                 }`}
                 ref={setNodeRef}
@@ -141,7 +141,7 @@ function Task({
                     {...listeners}
                     {...sortableAttributes}
                     onClick={openTaskModal}
-                    className={`outline-none w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch hover:bg-fafbfc bg-white z-10 justify-start sticky left-0 ${
+                    className={`outline-none w-[200px] sm:min-w-[400px] flex grow shrink-0 basis-0 bg-white w-full flex flex-row self-stretch group-hover:bg-fafbfc bg-white z-10 justify-start sticky left-0 ${
                         task.level > 0 ? 'subtask' : ''
                     } ${index > 0 ? 'subtaskNotFirst' : ''} ${
                         task.children > 0 ? 'subtaskWithSubtasks' : ''
