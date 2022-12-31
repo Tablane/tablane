@@ -58,7 +58,7 @@ export default function PersonColumn({
                             >
                                 <div
                                     style={{ zIndex: people.length - i }}
-                                    className="person cursor-pointer bg-[#4169e1] text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white hover:!z-50"
+                                    className="person cursor-pointer bg-[#4169e1] text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white transition-all top-0 hover:top-[-3px] relative hover:!z-50"
                                 >
                                     {person.username.charAt(0).toUpperCase()}
                                     {person.username.charAt(1).toUpperCase()}
