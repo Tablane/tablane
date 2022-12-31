@@ -1,12 +1,14 @@
 .container {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .topMenu {
     align-items: center;
     padding: 0 20px;
     width: 100%;
-    height: 61px;
+    flex-shrink: 0;
+    height: 62px;
     display: flex;
     box-sizing: border-box;
     border-bottom: 1px solid #e9ebf0;
@@ -32,8 +34,10 @@
 
   .panel {
     padding: 30px 40px;
+    overflow: scroll;
 
     .myWork {
+      padding-bottom: 24px;
       font-size: 24px;
       font-weight: 500;
       line-height: 1;
@@ -45,13 +49,13 @@
       margin-top: 8px;
 
       .task {
+        border: 1px solid #f4f5f7;
         margin-top: 1px;
         padding: 0 15px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         border-radius: 3px;
-        border-color: #f4f5f7;
         box-shadow: 0 1px 3px #0000001a;
         height: 34px;
         cursor: pointer;
