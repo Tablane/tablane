@@ -116,7 +116,7 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
                         </div>
                         <div className="px-[30px] py-[10px]">
                             <div className="border rounded flex flex-col">
-                                <div className="flex flex-col justify-between">
+                                <div className="flex flex-col justify-between gap-px">
                                     <TaskModalColumns
                                         attributes={board.attributes}
                                         task={task}
