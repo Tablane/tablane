@@ -1,7 +1,6 @@
 import { Route, Routes, useParams } from 'react-router-dom'
 import SideBar from './workspace/SideBar'
-import Board from './workspace/view/Board'
-import Home from './workspace/Home'
+import Home from './workspace/Home.tsx'
 import { CircularProgress } from '@mui/material'
 import useLocalStorageState from '../modules/hooks/useLocalStorageState.tsx'
 import Notifications from './workspace/Notifications'

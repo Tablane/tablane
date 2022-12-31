@@ -18,6 +18,7 @@ import {
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import PostHog from './utils/PostHog'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 if (process.env.NODE_ENV === 'production') {
     posthog.init(process.env.REACT_APP_POSTHOG_TOKEN, {
@@ -45,16 +46,20 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
+const queryClient = new QueryClient()
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <HistoryRouter history={history}>
-                <App />
-                <PostHog />
-                <Toaster />
-            </HistoryRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <HistoryRouter history={history}>
+                    <App />
+                    <PostHog />
+                    <Toaster />
+                </HistoryRouter>
+            </Provider>
+        </QueryClientProvider>
     </React.StrictMode>
 )
 
