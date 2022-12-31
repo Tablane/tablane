@@ -44,6 +44,7 @@ export default function TextColumn({
             <input
                 readOnly={!hasPerms('MANAGE:TASK')}
                 type="text"
+                className="w-full text-center outline-none"
                 name={attribute._id}
                 onBlur={handleTextEdit}
                 defaultValue={taskOption.value}

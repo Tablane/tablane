@@ -110,7 +110,8 @@
 
   &:focus p.showEmptyNodePlaceHolder::before {
     color: #adb5bd;
-    content: "Type '/' for commands";
+    //content: "Type '/' for commands";
+    content: "Type your Description";
     float: left;
     height: 0;
     pointer-events: none;

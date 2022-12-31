@@ -6,15 +6,13 @@ type Props = {
     task: Task
     boardId: string
     hasPerms: (string) => boolean
-    taskGroupId: string
 }
 
 export default function DropDownColumn({
     attribute,
     task,
     boardId,
-    hasPerms,
-    taskGroupId
+    hasPerms
 }: Props) {
     let taskOption = task.options.find(x => x.column === attribute._id)
     let label
@@ -33,7 +31,6 @@ export default function DropDownColumn({
             label={label}
             attribute={attribute}
             task={task}
-            taskGroupId={taskGroupId}
         />
     )
 }

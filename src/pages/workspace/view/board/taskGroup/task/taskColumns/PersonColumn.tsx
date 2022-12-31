@@ -58,7 +58,7 @@ export default function PersonColumn({
                             >
                                 <div
                                     style={{ zIndex: people.length - i }}
-                                    className="person text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white hover:!z-50"
+                                    className="person cursor-pointer bg-[#4169e1] text-[10px] min-w-[32px] h-[32px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white hover:!z-50"
                                 >
                                     {person.username.charAt(0).toUpperCase()}
                                     {person.username.charAt(1).toUpperCase()}
@@ -69,10 +69,13 @@ export default function PersonColumn({
                 </div>
             ) : (
                 <div
-                    className="people text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
+                    className="people text-[26px] text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
                     onClick={handleClick}
                 >
-                    <FontAwesomeIcon icon={regular('circle-user')} />
+                    <FontAwesomeIcon
+                        className="opacity-20 cursor-pointer"
+                        icon={regular('circle-user')}
+                    />
                 </div>
             )}
             {hasPerms('MANAGE:TASK') && (

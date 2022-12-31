@@ -9,27 +9,37 @@ import {
     useEditTaskFieldMutation
 } from '../../../../../modules/services/boardSlice'
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
+import { useFetchBoardQuery } from '../../../../../modules/services/boardSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Comment from './taskModal/Comment.tsx'
 import Editor from '../../../../../utils/Editor.tsx'
-import DescriptionEditor from '../../../../../utils/DescriptionEditor'
+import DescriptionEditor from '../../../../../utils/DescriptionEditor.tsx'
 import Activity from './taskModal/Activity'
 import { ObjectId } from '../../../../../utils'
+import { Task } from '../../../../../types/Board'
+import { Member } from '../../../../../types/Workspace'
+import TaskModalColumns from './taskModal/TaskModalColumns.tsx'
 
-function TaskModal({ task, boardId }) {
+interface Props {
+    task: Task
+    boardId: string
+    hasPerms: (string) => boolean
+    members: Member[]
+}
+
+function TaskModal({ task, boardId, hasPerms, members }: Props) {
     const navigate = useNavigate()
     const params = useParams()
+    const { data: board } = useFetchBoardQuery(boardId)
     const { data: user } = useFetchUserQuery()
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
-    const [description, changeDescription] = useInputState(task.description)
     const [addTaskComment] = useAddTaskCommentMutation()
     const [editTaskField] = useEditTaskFieldMutation()
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
-        handleDescriptionChange()
         handleNameChange()
         navigate(`/${params.workspace}/${params.space}/${params.board}`)
     }
@@ -41,25 +51,13 @@ function TaskModal({ task, boardId }) {
         }
     }, [])
 
-    const handleNameChange = e => {
+    const handleNameChange = (e?) => {
         e?.preventDefault()
         if (name === task.name) return
 
         editTaskField({
             type: 'name',
             value: name,
-            boardId,
-            taskId: task._id
-        })
-    }
-
-    const handleDescriptionChange = e => {
-        e?.preventDefault()
-        if (description === task.description) return
-
-        editTaskField({
-            type: 'description',
-            value: description,
             boardId,
             taskId: task._id
         })
@@ -110,20 +108,35 @@ function TaskModal({ task, boardId }) {
                                 onBlur={handleNameChange}
                             />
                         </form>
-                        <form
-                            onSubmit={handleDescriptionChange}
-                            className={styles.description}
-                        >
-                            <DescriptionEditor taskId={task._id} />
-                        </form>
+                        <div className={styles.description}>
+                            <DescriptionEditor
+                                taskId={task._id}
+                                readOnly={false}
+                            />
+                        </div>
+                        <div className="px-[30px] py-[10px]">
+                            <div className="border rounded flex flex-col">
+                                <div className="flex flex-col justify-between">
+                                    <TaskModalColumns
+                                        attributes={board.attributes}
+                                        task={task}
+                                        members={members}
+                                        boardId={boardId}
+                                        hasPerms={hasPerms}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className={styles.divider}></div>
                     <div className={styles.attributeTab}>
                         <div className={styles.historyLog}>
                             {[...task.history, ...task.comments]
                                 .sort(
-                                    ({ timestamp: a }, { timestamp: b }) =>
-                                        b - a
+                                    (
+                                        { timestamp: a }: any,
+                                        { timestamp: b }: any
+                                    ) => b - a
                                 )
                                 .map(log => {
                                     if (log.type === 'activity') {
@@ -133,7 +146,6 @@ function TaskModal({ task, boardId }) {
                                                 key={log.timestamp}
                                                 timestamp={log.timestamp}
                                                 activity={log}
-                                                saveComment={handleAddComment}
                                             />
                                         )
                                     } else if (log.type === 'comment') {
@@ -155,6 +167,7 @@ function TaskModal({ task, boardId }) {
                             <Editor
                                 type="comment"
                                 saveComment={handleAddComment}
+                                readOnly={false}
                             />
                         </div>
                     </div>
