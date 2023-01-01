@@ -40,7 +40,9 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
-        handleNameChange()
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+        }
         navigate(`/${params.workspace}/${params.space}/${params.board}`)
     }
 

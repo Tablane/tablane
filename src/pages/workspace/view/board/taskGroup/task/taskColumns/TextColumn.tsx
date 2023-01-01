@@ -45,6 +45,9 @@ export default function TextColumn({
                 readOnly={!hasPerms('MANAGE:TASK')}
                 type="text"
                 className="w-full text-center outline-none"
+                onKeyUp={e => {
+                    if (e.key === 'Enter') e.currentTarget.blur()
+                }}
                 name={attribute._id}
                 onBlur={handleTextEdit}
                 defaultValue={taskOption.value}
