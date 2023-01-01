@@ -1,5 +1,7 @@
 import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice'
 import { Attribute, Task } from '../../../../../../../types/Board'
+import useInputState from '../../../../../../../modules/hooks/useInputState.tsx'
+import { useEffect } from 'react'
 
 type Props = {
     attribute: Attribute
@@ -35,6 +37,12 @@ export default function TextColumn({
     let taskOption = task.options.find(x => x.column === attribute._id)
     if (!taskOption) taskOption = { _id: '', column: '', value: '' }
 
+    const [value, handleChange, , setValue] = useInputState(taskOption.value)
+
+    useEffect(() => {
+        setValue(taskOption.value)
+    }, [taskOption.value])
+
     return (
         <div
             className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
@@ -50,7 +58,8 @@ export default function TextColumn({
                 }}
                 name={attribute._id}
                 onBlur={handleTextEdit}
-                defaultValue={taskOption.value}
+                onChange={handleChange}
+                value={value}
             />
         </div>
     )
