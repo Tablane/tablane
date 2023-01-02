@@ -16,12 +16,16 @@ import {
 } from '@dnd-kit/core'
 import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
+import Fuse from 'fuse.js'
+import { useAtom } from 'jotai'
+import { searchAtom } from '../../../../utils/atoms.ts'
 
 function BoardView({ board, members, hasPerms }, viewContainerRef) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
     const [collapsed, setCollapsed] = useState(true)
+    const [search] = useAtom(searchAtom)
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 15 } })
@@ -30,6 +34,15 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
     const groupTasks = useMemo(() => {
         if (!board) return
         if (!board.groupBy || board.groupBy === 'none') {
+            const fuse = new Fuse(board.tasks, {
+                keys: ['name'],
+                shouldSort: false
+            })
+            const tasks =
+                search === ''
+                    ? board.tasks
+                    : fuse.search(search).map(x => x.item)
+
             return (
                 <TaskGroup
                     ref={viewContainerRef}
@@ -41,7 +54,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                     color={'rgb(196, 196, 196)'}
                     name=""
                     taskGroupId={'empty'}
-                    tasks={board.tasks}
+                    tasks={tasks}
                 />
             )
         }
@@ -86,7 +99,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                 tasks={label.tasks}
             />
         ))
-    }, [board])
+    }, [board, search])
 
     const onDragStart = () => {
         const [body] = document.getElementsByTagName('body')
