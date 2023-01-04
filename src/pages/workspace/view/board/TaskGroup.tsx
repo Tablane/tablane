@@ -17,11 +17,31 @@ import _ from 'lodash'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 import { Virtuoso } from 'react-virtuoso'
 import produce from 'immer'
+import {
+    Attribute,
+    FlatTask,
+    Label,
+    Task as TaskType
+} from '../../../../types/Board'
+import { Member } from '../../../../types/Workspace'
 
-function TaskGroup(props, viewContainerRef) {
+interface Props {
+    hasPerms: (string) => boolean
+    tasks: TaskType[]
+    boardId: string
+    groupBy: string
+    attributes: Attribute[]
+    color: string
+    name: string
+    taskGroupId: string
+    members: Member[]
+    groupedTasks: Label[]
+}
+
+function TaskGroup(props: Props, viewContainerRef) {
     const { hasPerms, tasks, boardId, groupBy, attributes } = props
     const [collapsed, setCollapsed] = useState(false)
-    const [activeItem, setActiveItem] = useState(null)
+    const [activeItem, setActiveItem] = useState<null | FlatTask>(null)
     const [collapsedItems, setCollapsedItems] = useState([])
     const [sortTask] = useSortTaskMutation()
 
@@ -32,7 +52,7 @@ function TaskGroup(props, viewContainerRef) {
     // add new attribute popover
     const [newAttributeOpen, setNewAttributeOpen] = useState(false)
 
-    const handleAddNewAttribute = (e = false) => {
+    const handleAddNewAttribute = (e: any = false) => {
         setNewAttributeOpen(e ? e.target.parentNode.parentNode : false)
     }
 
@@ -54,7 +74,7 @@ function TaskGroup(props, viewContainerRef) {
         })
     }
 
-    const flattenedTasks = useMemo(() => {
+    const flattenedTasks: Task[] = useMemo(() => {
         return produce(tasks, draft => {
             return removeChildrenOf(
                 draft,
@@ -188,10 +208,12 @@ function TaskGroup(props, viewContainerRef) {
             return [
                 {
                     opacity: 1,
+                    // @ts-ignore
                     transform: CSS.Transform?.toString(transform.initial)
                 },
                 {
                     opacity: 0,
+                    // @ts-ignore
                     transform: CSS.Transform?.toString({
                         ...transform.final,
                         x: transform.final.x + 5,
@@ -374,11 +396,23 @@ function TaskGroup(props, viewContainerRef) {
                                                 : undefined
                                         }
                                     >
-                                        {activeItem ? (
-                                            <div className="opacity-50 px-4 w-fit bg-white shadow h-8 rounded flex justify-center items-center">
-                                                {activeItem.name}
-                                            </div>
-                                        ) : null}
+                                        {Boolean(activeItem) && (
+                                            <Task
+                                                handleCollapse={handleCollapse}
+                                                groupedTasks={
+                                                    props.groupedTasks
+                                                }
+                                                hasPerms={hasPerms}
+                                                boardId={boardId}
+                                                groupBy={groupBy}
+                                                attributes={attributes}
+                                                key={activeItem._id}
+                                                members={props.members}
+                                                task={activeItem}
+                                                index={1}
+                                                taskGroupId={props.taskGroupId}
+                                            />
+                                        )}
                                     </DragOverlay>,
                                     document.body
                                 )}
@@ -387,6 +421,8 @@ function TaskGroup(props, viewContainerRef) {
                                 <NewTaskForm
                                     boardId={boardId}
                                     taskGroupId={props.taskGroupId}
+                                    setNewTaskOpen={undefined}
+                                    taskId={undefined}
                                 />
                             )}
                         </SortableContext>
