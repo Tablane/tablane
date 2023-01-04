@@ -3,7 +3,7 @@ import {
     useSortTaskMutation
 } from '../../../../modules/services/boardSlice'
 import { forwardRef, memo, useMemo, useState } from 'react'
-import TaskGroup from './TaskGroup'
+import TaskGroup from './TaskGroup.tsx'
 import _ from 'lodash'
 import { DragDropContext } from '@hello-pangea/dnd'
 import ExpandCircleIcon from '../../../../styles/assets/ExpandCircleIcon'
@@ -14,7 +14,6 @@ import {
     useSensors,
     PointerSensor
 } from '@dnd-kit/core'
-import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import { buildTree, flatten } from '../../../../utils/taskUtils'
 import Fuse from 'fuse.js'
 import { useAtom } from 'jotai'
@@ -159,7 +158,6 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                 >
                     <DndContext
                         sensors={sensors}
-                        modifiers={[snapCenterToCursor]}
                         collisionDetection={closestCenter}
                     >
                         <div className="border border-borderGrey rounded-md font-medium mr-6 mb-9">

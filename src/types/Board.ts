@@ -76,6 +76,7 @@ export interface Task {
 
 export interface FlatTask extends Task {
     children: number
+    parentId: string
 }
 
 export interface Label {
