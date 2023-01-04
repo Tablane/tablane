@@ -7,7 +7,8 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    TextField
+    TextField,
+    Tooltip
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import AnimateHeight from 'react-animate-height'
@@ -268,9 +269,16 @@ function SideBar(props) {
                                         autoFocus
                                     />
                                 ) : (
-                                    <p className="text-[14px] text-[#292d34] font-semibold">
-                                        {space.name}
-                                    </p>
+                                    <Tooltip
+                                        disableInteractive
+                                        title={space.name}
+                                        placement="top"
+                                        arrow
+                                    >
+                                        <p className="text-[14px] text-[#292d34] font-semibold truncate max-w-[159px]">
+                                            {space.name}
+                                        </p>
+                                    </Tooltip>
                                 )}
                             </div>
                             <div className="flex flex-row">
@@ -364,9 +372,20 @@ function SideBar(props) {
                                                                     autoFocus
                                                                 />
                                                             ) : (
-                                                                <p className="text-[13px] text-[#292d34]">
-                                                                    {board.name}
-                                                                </p>
+                                                                <Tooltip
+                                                                    disableInteractive
+                                                                    title={
+                                                                        board.name
+                                                                    }
+                                                                    placement="top"
+                                                                    arrow
+                                                                >
+                                                                    <p className="text-[13px] text-[#292d34] truncate max-w-[180px]">
+                                                                        {
+                                                                            board.name
+                                                                        }
+                                                                    </p>
+                                                                </Tooltip>
                                                             )}
                                                             <div className="flex justify-center items-center w-5 mr-5 ml-auto opacity-0 cursor-pointer text-[0.8rem]">
                                                                 <FontAwesomeIcon
