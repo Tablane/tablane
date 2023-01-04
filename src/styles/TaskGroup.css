@@ -57,6 +57,7 @@
   opacity: 0;
   transition: opacity 0.2s;
   margin-left: 5px;
+  margin-right: 5px;
 }
 
 .task .title .attribute:hover > svg:last-of-type {
