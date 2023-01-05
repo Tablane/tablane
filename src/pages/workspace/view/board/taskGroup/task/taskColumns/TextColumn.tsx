@@ -1,4 +1,4 @@
-import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice'
+import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice.ts'
 import { Attribute, Task } from '../../../../../../../types/Board'
 import useInputState from '../../../../../../../modules/hooks/useInputState.tsx'
 import { useEffect } from 'react'

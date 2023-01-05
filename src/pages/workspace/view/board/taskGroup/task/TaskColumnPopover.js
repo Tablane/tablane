@@ -7,7 +7,7 @@ import {
     useClearStatusTaskMutation,
     useEditAttributeLabelsMutation,
     useEditOptionsTaskMutation
-} from '../../../../../../modules/services/boardSlice'
+} from '../../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { Menu, Transition } from '@headlessui/react'

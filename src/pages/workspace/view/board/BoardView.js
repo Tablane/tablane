@@ -1,7 +1,7 @@
 import {
     useSortAttributeMutation,
     useSortTaskMutation
-} from '../../../../modules/services/boardSlice'
+} from '../../../../modules/services/boardSlice.ts'
 import { forwardRef, memo, useMemo, useState } from 'react'
 import TaskGroup from './TaskGroup.tsx'
 import _ from 'lodash'
@@ -14,7 +14,7 @@ import {
     useSensors,
     PointerSensor
 } from '@dnd-kit/core'
-import { buildTree, flatten } from '../../../../utils/taskUtils'
+import { buildTree, flatten } from '../../../../utils/taskUtils.ts'
 import Fuse from 'fuse.js'
 import { useAtom } from 'jotai'
 import { searchAtom } from '../../../../utils/atoms.ts'

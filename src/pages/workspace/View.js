@@ -4,7 +4,7 @@ import { memo, useCallback, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import { LinearProgress } from '@mui/material'
-import { useFetchBoardQuery } from '../../modules/services/boardSlice'
+import { useFetchBoardQuery } from '../../modules/services/boardSlice.ts'
 
 function View({ level, view, sidebarOpen, toggleSideBar }) {
     const params = useParams()

@@ -1,5 +1,5 @@
 import Editor from '../../../../../../../utils/Editor.tsx'
-import { useAddReplyMutation } from '../../../../../../../modules/services/boardSlice'
+import { useAddReplyMutation } from '../../../../../../../modules/services/boardSlice.ts'
 import Reply from './commentReplySection/Reply.tsx'
 import { useFetchUserQuery } from '../../../../../../../modules/services/userSlice'
 import { ObjectId } from '../../../../../../../utils'

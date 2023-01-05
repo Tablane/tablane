@@ -7,9 +7,9 @@ import WatcherPopover from './taskModal/WatcherPopover'
 import {
     useAddTaskCommentMutation,
     useEditTaskFieldMutation
-} from '../../../../../modules/services/boardSlice'
+} from '../../../../../modules/services/boardSlice.ts'
 import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
-import { useFetchBoardQuery } from '../../../../../modules/services/boardSlice'
+import { useFetchBoardQuery } from '../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Comment from './taskModal/Comment.tsx'

@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast'
 import styles from '../../../styles/ShareDialog.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { useSetSharingMutation } from '../../../modules/services/boardSlice'
+import { useSetSharingMutation } from '../../../modules/services/boardSlice.ts'
 
 function ShareDialog({ handleClose, open, board }) {
     const [setSharing] = useSetSharingMutation()

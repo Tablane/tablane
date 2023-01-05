@@ -1,7 +1,7 @@
 import '../../../styles/Board.css'
 import { Navigate, useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../../modules/services/workspaceSlice'
-import { useFetchBoardQuery } from '../../../modules/services/boardSlice'
+import { useFetchBoardQuery } from '../../../modules/services/boardSlice.ts'
 import BoardView from './board/BoardView'
 import { forwardRef, useCallback } from 'react'
 

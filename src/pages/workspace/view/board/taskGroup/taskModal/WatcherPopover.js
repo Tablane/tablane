@@ -4,7 +4,7 @@ import useInputState from '../../../../../../modules/hooks/useInputState.tsx'
 import {
     useAddWatcherMutation,
     useRemoveWatcherMutation
-} from '../../../../../../modules/services/boardSlice'
+} from '../../../../../../modules/services/boardSlice.ts'
 import { useFetchUserQuery } from '../../../../../../modules/services/userSlice'
 import { useFetchWorkspaceQuery } from '../../../../../../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
