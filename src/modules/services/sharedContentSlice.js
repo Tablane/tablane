@@ -1,6 +1,6 @@
 import { api } from './api'
 import handleQueryError from '../../utils/handleQueryError'
-import { flatten } from '../../utils/taskUtils'
+import { flatten } from '../../utils/taskUtils.ts'
 
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({

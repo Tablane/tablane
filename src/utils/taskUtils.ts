@@ -29,3 +29,16 @@ export const buildTree = flattenedTasks => {
     }
     return root.subtasks
 }
+
+export const removeChildrenOf = (items, ids) => {
+    const excludeParentIds = [...ids]
+
+    return items.filter(item => {
+        if (item.parentTask && excludeParentIds.includes(item.parentTask)) {
+            excludeParentIds.push(item._id)
+            return false
+        }
+
+        return true
+    })
+}

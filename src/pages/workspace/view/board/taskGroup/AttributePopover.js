@@ -12,7 +12,7 @@ import '../../../../../styles/AttributePopover.css'
 import {
     useDeleteAttributeMutation,
     useEditAttributeNameMutation
-} from '../../../../../modules/services/boardSlice'
+} from '../../../../../modules/services/boardSlice.ts'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 

@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import { memo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import styles from '../../../../../../styles/TaskPopover.module.scss'
-import { useDeleteTaskMutation } from '../../../../../../modules/services/boardSlice'
+import { useDeleteTaskMutation } from '../../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 

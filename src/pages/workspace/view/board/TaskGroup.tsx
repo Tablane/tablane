@@ -12,9 +12,13 @@ import { Draggable, Droppable } from '@hello-pangea/dnd'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
 import { defaultDropAnimation, DragOverlay, useDndMonitor } from '@dnd-kit/core'
-import { useSortTaskMutation } from '../../../../modules/services/boardSlice'
+import { useSortTaskMutation } from '../../../../modules/services/boardSlice.ts'
 import _ from 'lodash'
-import { buildTree, flatten } from '../../../../utils/taskUtils'
+import {
+    buildTree,
+    flatten,
+    removeChildrenOf
+} from '../../../../utils/taskUtils.ts'
 import { Virtuoso } from 'react-virtuoso'
 import produce from 'immer'
 import {
@@ -59,19 +63,6 @@ function TaskGroup(props: Props, viewContainerRef) {
     const handleAttributePopover = (e, id = null) => {
         setPopoverId(id ? id : popoverId)
         setPopoverOpen(e ? e.target.parentNode : null)
-    }
-
-    const removeChildrenOf = (items, ids) => {
-        const excludeParentIds = [...ids]
-
-        return items.filter(item => {
-            if (item.parentTask && excludeParentIds.includes(item.parentTask)) {
-                excludeParentIds.push(item._id)
-                return false
-            }
-
-            return true
-        })
     }
 
     const flattenedTasks: Task[] = useMemo(() => {

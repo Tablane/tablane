@@ -6,7 +6,7 @@ import LinkIcon from '../../../../../../../styles/assets/LinkIcon'
 import {
     useDeleteReplyMutation,
     useDeleteTaskCommentMutation
-} from '../../../../../../../modules/services/boardSlice'
+} from '../../../../../../../modules/services/boardSlice.ts'
 
 function CommentPopover({ taskId, commentId, type, replyId, boardId }) {
     const [open, setOpen] = useState(null)

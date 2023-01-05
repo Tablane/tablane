@@ -3,8 +3,7 @@ import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
 import socket from '../../socket/socket'
 import handleQueryError from '../../utils/handleQueryError'
-import { flatten } from '../../utils/taskUtils'
-import { current } from 'immer'
+import { flatten, removeChildrenOf } from '../../utils/taskUtils.ts'
 
 const setGroupBy = ({ board, groupBy }) => {
     board.groupBy = groupBy
@@ -49,9 +48,10 @@ const editTaskField = ({ board, taskId, type, value }) => {
     }
 }
 const deleteTask = ({ board, taskId }) => {
-    const task = board.tasks.find(x => x._id.toString() === taskId)
-    const taskIndex = board.tasks.indexOf(task)
-    board.tasks.splice(taskIndex, 1)
+    board.tasks = removeChildrenOf(
+        board.tasks.filter(x => x._id !== taskId),
+        [taskId]
+    )
 }
 const sortTask = ({ board, result, destinationIndex, sourceIndex }) => {
     const task = board.tasks.find(x => x._id.toString() === result.draggableId)
@@ -172,7 +172,8 @@ const addAttribute = ({ board, type, _id }) => {
     let attribute = {
         name,
         type: type,
-        _id
+        _id,
+        labels: []
     }
     if (type === 'status') attribute.labels = []
     board.attributes.push(attribute)
@@ -215,7 +216,7 @@ export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchBoard: builder.query({
             query: boardId => `board/${boardId}`,
-            transformResponse: (response, meta, arg) => {
+            transformResponse: (response: any, meta, arg) => {
                 return {
                     ...response,
                     tasks: flatten(response.tasks)
@@ -459,7 +460,9 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => deleteTask({ board, taskId })
+                        board => {
+                            deleteTask({ board, taskId })
+                        }
                     )
                 )
                 try {
@@ -565,8 +568,7 @@ export const boardApi = api.injectEndpoints({
                                 _id,
                                 content,
                                 author,
-                                taskId,
-                                boardId
+                                taskId
                             })
                     )
                 )
@@ -655,7 +657,6 @@ export const boardApi = api.injectEndpoints({
                                 content,
                                 author,
                                 taskId,
-                                boardId,
                                 commentId,
                                 _id
                             })
@@ -717,7 +718,6 @@ export const boardApi = api.injectEndpoints({
                                 board,
                                 commentId,
                                 taskId,
-                                boardId,
                                 replyId
                             })
                     )

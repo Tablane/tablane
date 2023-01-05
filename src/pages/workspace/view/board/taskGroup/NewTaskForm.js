@@ -4,7 +4,7 @@ import { useFetchUserQuery } from '../../../../../modules/services/userSlice'
 import {
     useAddSubtaskMutation,
     useAddTaskMutation
-} from '../../../../../modules/services/boardSlice'
+} from '../../../../../modules/services/boardSlice.ts'
 
 function NewTaskForm({
     boardId,

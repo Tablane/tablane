@@ -2,7 +2,7 @@ import '../../../../../styles/AddAttributePopover.css'
 import { toast } from 'react-hot-toast'
 import { Popover } from '@mui/material'
 import { ObjectId } from '../../../../../utils'
-import { useAddAttributeMutation } from '../../../../../modules/services/boardSlice'
+import { useAddAttributeMutation } from '../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 

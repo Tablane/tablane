@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import CommentPopover from '../CommentPopover'
 import { useState } from 'react'
-import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice'
+import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice.ts'
 import RelativeDate from '../../../../../../../../utils/RelativeDate'
 import { Reply as ReplyType } from '../../../../../../../../types/Board'
 

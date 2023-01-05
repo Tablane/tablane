@@ -1,7 +1,7 @@
 import styles from '../../../../../../styles/TaskModal.module.scss'
 import RelativeDate from '../../../../../../utils/RelativeDate'
 import { diffWords } from 'diff'
-import { useFetchBoardQuery } from '../../../../../../modules/services/boardSlice'
+import { useFetchBoardQuery } from '../../../../../../modules/services/boardSlice.ts'
 
 function Activity({ timestamp, activity, boardId }) {
     const { data: board } = useFetchBoardQuery(boardId)

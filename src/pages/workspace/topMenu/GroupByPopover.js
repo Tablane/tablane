@@ -1,6 +1,6 @@
 import { Popover } from '@mui/material'
 import styles from '../../../styles/GroupByPopover.module.scss'
-import { useSetGroupByMutation } from '../../../modules/services/boardSlice'
+import { useSetGroupByMutation } from '../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import React from 'react'
