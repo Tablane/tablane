@@ -454,16 +454,12 @@ function SideBar(props) {
                         <img
                             src="/assets/favicon-96x96.png"
                             className="h-6 w-6 mr-2"
+                            alt="logo"
                         />
                         <p>Tablane</p>
                     </Link>
                 </div>
                 <div className="icons">
-                    {workspace.members ? (
-                        <Link to={`/settings/${workspace.id}/general`}>
-                            <FontAwesomeIcon icon={solid('cog')} />
-                        </Link>
-                    ) : null}
                     <FontAwesomeIcon
                         onClick={props.toggleSideBar}
                         icon={solid('angle-double-left')}

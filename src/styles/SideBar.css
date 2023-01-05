@@ -52,12 +52,6 @@
   min-height: 61px;
 }
 
-.header a svg[data-icon="gear"] {
-  margin-right: 15px;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
 .SideBar:hover .header a svg:first-of-type {
   opacity: 1;
 }
