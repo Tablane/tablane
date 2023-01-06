@@ -3,7 +3,7 @@
 Portions of this software are licensed as follows:
 
 -   Content of branches other than the main branch (i.e. "master") are not licensed.
--   All third party components incorporated into the n8n Software are licensed under the original license
+-   All third party components incorporated into the Tablane Software are licensed under the original license
     provided by the owner of the applicable component.
 -   Content outside of the above mentioned files or restrictions is available under the "Sustainable Use
     License" as defined below.
