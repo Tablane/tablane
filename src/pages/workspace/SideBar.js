@@ -581,6 +581,11 @@ function SideBar(props) {
                         name="name"
                         value={newSpaceName}
                         onChange={changeNewSpaceName}
+                        onKeyUp={(e) => {
+                            if (e.key === 'Enter') {
+                                handleNewSpace()
+                            }
+                        }}
                         label="Space name"
                         type="text"
                         fullWidth
