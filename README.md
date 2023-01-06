@@ -30,7 +30,7 @@ The fastest and most reliable way to get started with Tablane is signing up for 
 
 ### Self-hosting
 
-First, rename `.env.example` to `.env.local`.
+First, rename `.env.example` to `.env`.
 
 ```
 git clone <this-repo>
