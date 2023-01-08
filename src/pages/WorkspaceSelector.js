@@ -104,6 +104,11 @@ function WorkspaceSelector({ noPadding }) {
                         label="Workspace Name"
                         type="name"
                         fullWidth
+                        onKeyUp={e => {
+                            if (e.key === 'Enter') {
+                                handleCreate()
+                            }
+                        }}
                         variant="standard"
                     />
                 </DialogContent>
