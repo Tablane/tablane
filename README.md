@@ -8,7 +8,7 @@
   <!---<a href="https://news.ycombinator.com/item?id="><img src="https://img.shields.io/badge/Hacker%20News-0-%23FF6600" alt="Hacker News"></a>-->
   <a href="https://github.com/tablane/tablane/pulse"><img src="https://img.shields.io/github/commit-activity/m/tablane/tablane" alt="Commits-per-month"></a>
   <a href="https://tablane.net"><img src="https://img.shields.io/badge/Pricing-Free-brightgreen" alt="Pricing"></a>
-  <a href="https://twitter.com/calcom"><img src="https://img.shields.io/twitter/follow/tablane_net?style=flat" alt='twitter'></a>
+  <a href="https://twitter.com/tablane_net"><img src="https://img.shields.io/twitter/follow/tablane_net?style=flat" alt='twitter'></a>
 </p>
 
 <p align="center">
