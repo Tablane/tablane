@@ -1,4 +1,4 @@
-import TaskColumnPopover from '../TaskColumnPopover'
+import TaskColumnPopover from '../TaskColumnPopover.tsx'
 import { Attribute, Task } from '../../../../../../../types/Board'
 
 type Props = {

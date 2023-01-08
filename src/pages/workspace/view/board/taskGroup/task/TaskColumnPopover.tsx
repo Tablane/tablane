@@ -11,9 +11,23 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { Menu, Transition } from '@headlessui/react'
+import { Attribute, Label, FlatTask } from '../../../../../../types/Board'
 
-function TaskColumnPopover(props) {
-    const { hasPerms, label } = props
+interface Props {
+    hasPerms: (string) => boolean
+    label: Label
+    attribute: Attribute
+    boardId: string
+    task: FlatTask
+}
+
+function TaskColumnPopover({
+    hasPerms,
+    label,
+    attribute,
+    boardId,
+    task
+}: Props) {
     const button = useRef(null)
     const [editAttributeLabels] = useEditAttributeLabelsMutation()
     const [clearStatusTask] = useClearStatusTaskMutation()
@@ -22,15 +36,15 @@ function TaskColumnPopover(props) {
     const [labelsEditing, setLabelsEditing] = useState(false)
 
     const [colorEditingLabel, setColorEditingLabel] = useState(-1)
-    const [editingLabels, setEditingLabels] = useState(props.attribute.labels)
+    const [editingLabels, setEditingLabels] = useState(attribute.labels)
 
     const [hoverColor, setHoverColor] = useState(null)
 
     const toggleEdit = async () => {
         if (labelsEditing) {
             editAttributeLabels({
-                boardId: props.boardId,
-                name: props.attribute.name,
+                boardId,
+                name: attribute.name,
                 labels: editingLabels
             })
         }
@@ -39,8 +53,8 @@ function TaskColumnPopover(props) {
     }
 
     useEffect(() => {
-        setEditingLabels(props.attribute.labels)
-    }, [props.attribute.labels])
+        setEditingLabels(attribute.labels)
+    }, [attribute.labels])
 
     // handle change of edit state labels
     const handleEditChange = (e, x) => {
@@ -93,13 +107,12 @@ function TaskColumnPopover(props) {
 
     // change label to id
     const handleLabelChange = id => {
-        const { task } = props
         if (labelsEditing) return
 
         editOptionsTask({
-            boardId: props.boardId,
+            boardId,
             taskId: task._id,
-            column: props.attribute._id,
+            column: attribute._id,
             value: id._id,
             type: 'status'
         })
@@ -108,11 +121,10 @@ function TaskColumnPopover(props) {
 
     // change label to none
     const handleLabelClear = () => {
-        const { task, attribute } = props
         if (labelsEditing) return
 
         clearStatusTask({
-            boardId: props.boardId,
+            boardId,
             taskId: task._id,
             optionId: attribute._id
         })
