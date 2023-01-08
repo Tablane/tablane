@@ -195,6 +195,13 @@ function TaskColumnPopover({
         colors.splice(colors.indexOf(x.color), 1)
     })
 
+    const getReadableTextColor = (rgb): 'white' | 'black' => {
+        const values = rgb.match(/[0-9.]+/gi)
+        let luminance =
+            0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2]
+        return luminance < 140 ? 'white' : 'black'
+    }
+
     return (
         <Menu as="div" className="relative">
             <Menu.Button
@@ -233,6 +240,10 @@ function TaskColumnPopover({
                                                         ? x.color
                                                         : hoverColor
                                                     : x.color
+                                            const textColor =
+                                                getReadableTextColor(
+                                                    backgroundColor
+                                                )
                                             return (
                                                 <Draggable
                                                     draggableId={x._id.toString()}
@@ -262,6 +273,7 @@ function TaskColumnPopover({
                                                             />
                                                             <div
                                                                 style={{
+                                                                    color: textColor,
                                                                     backgroundColor
                                                                 }}
                                                                 onClick={() =>
