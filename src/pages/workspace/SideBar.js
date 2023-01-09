@@ -149,7 +149,12 @@ function SideBar(props) {
     }
 
     const handleSpaceEditClick = (workspace, space) => {
-        setEditingSpace(space._id)
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+        }
+        setTimeout(() => {
+            setEditingSpace(space._id)
+        }, 1)
     }
 
     const handleBoardEdit = async () => {
@@ -581,7 +586,7 @@ function SideBar(props) {
                         name="name"
                         value={newSpaceName}
                         onChange={changeNewSpaceName}
-                        onKeyUp={(e) => {
+                        onKeyUp={e => {
                             if (e.key === 'Enter') {
                                 handleNewSpace()
                             }
