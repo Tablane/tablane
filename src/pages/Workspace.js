@@ -9,6 +9,7 @@ import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import FunctionAndNavigate from '../utils/FunctionAndNavigate'
 import { toast } from 'react-hot-toast'
 import View from './workspace/View'
+import LoadingPage from '../utils/LoadingPage.tsx'
 
 function Workspace(props) {
     const params = useParams()
@@ -28,11 +29,7 @@ function Workspace(props) {
 
     if (error) return <WorkspaceNotFound />
     if (isFetching) {
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
+        return <LoadingPage />
     }
 
     return (

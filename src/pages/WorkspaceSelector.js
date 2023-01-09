@@ -1,5 +1,4 @@
 import {
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -18,6 +17,7 @@ import ErrorPage from '../utils/ErrorPage'
 import { useFetchUserQuery } from '../modules/services/userSlice'
 import { useAddWorkspaceMutation } from '../modules/services/workspaceSlice'
 import { useEffect } from 'react'
+import LoadingPage from '../utils/LoadingPage.tsx'
 
 function WorkspaceSelector({ noPadding }) {
     const navigate = useNavigate()
@@ -34,12 +34,7 @@ function WorkspaceSelector({ noPadding }) {
         }
     }, [])
 
-    if (isLoading)
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
+    if (isLoading) return <LoadingPage />
     if (error) {
         return <ErrorPage error={error} />
     }
