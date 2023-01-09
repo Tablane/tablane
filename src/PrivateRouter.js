@@ -5,8 +5,8 @@ import PrivateRoutes from './utils/PrivateRoute'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from './modules/services/authReducer'
 import { useFetchUserQuery } from './modules/services/userSlice'
-import { CircularProgress } from '@mui/material'
 import ErrorPage from './utils/ErrorPage'
+import LoadingPage from './utils/LoadingPage.tsx'
 const Register = lazy(() => import('./pages/auth/Register'))
 const Login = lazy(() => import('./pages/auth/Login'))
 const WorkspaceSelector = lazy(() => import('./pages/WorkspaceSelector'))
@@ -18,20 +18,12 @@ function PrivateRouter() {
     const token = useSelector(selectCurrentToken)
 
     if (isLoading) {
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
+        return <LoadingPage />
     } else if (error?.status) {
         if (error.status === 'FETCH_ERROR') return <ErrorPage error={error} />
     }
 
-    const loading = (
-        <div className="loading">
-            <CircularProgress />
-        </div>
-    )
+    const loading = <LoadingPage />
 
     return (
         <>

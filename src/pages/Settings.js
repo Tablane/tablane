@@ -1,4 +1,3 @@
-import { CircularProgress } from '@mui/material'
 import {
     Link,
     NavLink,
@@ -26,6 +25,7 @@ import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import Profile from './settings/Profile'
 import WorkspaceSelector from './WorkspaceSelector'
 import ErrorPage from '../utils/ErrorPage'
+import LoadingPage from '../utils/LoadingPage.tsx'
 
 function Settings() {
     const [logoutUser] = useLogoutUserMutation()
@@ -37,12 +37,7 @@ function Settings() {
         isLoading
     } = useFetchWorkspaceQuery(params.workspace)
 
-    if (isLoading)
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
+    if (isLoading) return <LoadingPage />
     if (error) return <ErrorPage error={error} />
     return (
         <div className={styles.container}>
