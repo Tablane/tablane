@@ -53,7 +53,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
                     api.dispatch(setCurrentToken(null))
                     posthog.reset()
                     localStorage.removeItem('access_token')
-                    history.push('/login')
+                    history.replace('/login')
                 }
             } finally {
                 release()
