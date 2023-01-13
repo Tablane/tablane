@@ -164,7 +164,7 @@ const addAttribute = ({ board, type, _id }) => {
     while (board.attributes.filter(x => x.name === name).length >= 1) {
         if (/ \d$/gm.test(name)) {
             name =
-                name.substring(0, name.length - 1) +
+                name.substring(0, name.length - 2) +
                 ` ${parseInt(name.slice(-1)) + 1}`
         } else name = name + ' 1'
     }
