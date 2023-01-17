@@ -21,6 +21,7 @@
     "@mantine/form": "^5.6.3",
     "@mantine/hooks": "^5.6.3",
     "@mui/material": "^5.10.11",
+    "@radix-ui/react-icons": "^1.1.1",
     "@radix-ui/react-popover": "^1.0.2",
     "@reduxjs/toolkit": "^1.8.6",
     "@sentry/react": "^7.20.0",

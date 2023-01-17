@@ -90,7 +90,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     {/*</div>*/}
                 </div>
                 <div className="task-filter">
-                    <FilterMenu />
+                    {board && <FilterMenu boardId={boardId} />}
                     <div className="group-by" onClick={handleGroupByOpen}>
                         <FontAwesomeIcon
                             className="text-[#53575E]"
