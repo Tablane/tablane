@@ -39,6 +39,7 @@ export default function FilterMenu({ boardId }) {
         setFilters(
             produce(filters, draft => {
                 draft[i].column = column
+                draft[i].value = null
             })
         )
     }
