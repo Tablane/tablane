@@ -1,8 +1,75 @@
 import * as Popover from '@radix-ui/react-popover'
-import React from 'react'
+import React, { useState } from 'react'
 import FilterIcon from '../../../../styles/assets/FilterIcon.tsx'
+import Filter from './filterMenu/Filter.tsx'
+import { useFetchBoardQuery } from '../../../../modules/services/boardSlice.ts'
+import produce from 'immer'
 
-export default function FilterMenu() {
+export default function FilterMenu({ boardId }) {
+    const { data: board } = useFetchBoardQuery(boardId)
+    const [filters, setFilters] = useState([
+        {
+            column: null,
+            type: null,
+            value: null
+        }
+    ])
+
+    const getMappedFilter = () => {
+        const mappedFilter = {
+            $and: []
+        }
+        filters
+            .filter(x => !!x.value?._id)
+            .map(x => x.value._id)
+            .map(x => {
+                mappedFilter.$and.push({
+                    'option.value': x
+                })
+            })
+        return mappedFilter
+    }
+
+    console.log({
+        filters,
+        mappedFilters: getMappedFilter()
+    })
+
+    const setColumn = (column, i) => {
+        setFilters(
+            produce(filters, draft => {
+                draft[i].column = column
+            })
+        )
+    }
+
+    const setValue = (value, i) => {
+        setFilters(
+            produce(filters, draft => {
+                if (draft[i]) draft[i].value = value
+            })
+        )
+    }
+
+    const addFilter = () => {
+        setFilters([
+            ...filters,
+            {
+                column: null,
+                type: null,
+                value: null
+            }
+        ])
+    }
+
+    const removeFilter = i => {
+        setFilters(
+            produce(filters, draft => {
+                draft.splice(i, 1)
+            })
+        )
+    }
+
     return (
         <Popover.Root>
             <Popover.Trigger asChild>
@@ -13,15 +80,38 @@ export default function FilterMenu() {
             </Popover.Trigger>
             <Popover.Portal className="z-[1300] radix-portal">
                 <Popover.Content
-                    className="p-6 z-[100] outline-none shadow-lg m-3 rounded-md bg-white"
+                    className="p-6 pb-2 z-[100] outline-none shadow-lg m-3 rounded-md bg-white"
                     sideOffset={5}
                 >
                     <div className="w-[720px] bg-[transparent]">
                         <p className="text-[#2a2e34] text-xl font-semibold">
                             Filters
                         </p>
+                        <div className="text-sm mt-4 text-[#2a2e34]">
+                            {filters.map(({ column, value }, i) => (
+                                <Filter
+                                    value={value}
+                                    removeFilter={removeFilter}
+                                    key={i}
+                                    index={i}
+                                    column={column}
+                                    setColumn={setColumn}
+                                    setValue={setValue}
+                                    people={board.attributes}
+                                    filterTypes={[
+                                        'Is',
+                                        'Is not',
+                                        'Is set',
+                                        'Is not set'
+                                    ]}
+                                />
+                            ))}
+                        </div>
                         <div className="py-3 group">
-                            <span className="cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium">
+                            <span
+                                onClick={addFilter}
+                                className="cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium"
+                            >
                                 + Add filter
                             </span>
                             <span className="opacity-0 group-hover:opacity-100 cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium">
@@ -32,67 +122,5 @@ export default function FilterMenu() {
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>
-
-        // <div className="relative inline-block text-left">
-        //     <Popover.Root>
-        //         <Popover.Trigger asChild>
-        //             <p>click me</p>
-        //         </Popover.Trigger>
-        //         <Popover.Content
-        //             align="center"
-        //             sideOffset={4}
-        //             className={cx(
-        //                 'radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down',
-        //                 'w-48 rounded-lg p-4 shadow-md md:w-56',
-        //                 'bg-white dark:bg-gray-800'
-        //             )}
-        //         >
-        //             <Popover.Arrow className="fill-current text-white dark:text-gray-800" />
-        //             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-        //                 Dimensions
-        //             </h3>
-        //
-        //             <form className="mt-4 space-y-2">
-        //                 {items.map(({ id, label, defaultValue }) => {
-        //                     return (
-        //                         <fieldset
-        //                             key={`popover-items-${id}`}
-        //                             className="flex items-center"
-        //                         >
-        //                             {/* <legend>Choose your favorite monster</legend> */}
-        //                             <label
-        //                                 htmlFor={id}
-        //                                 className="shrink-0 grow text-xs font-medium text-gray-700 dark:text-gray-400"
-        //                             >
-        //                                 {label}
-        //                             </label>
-        //                             <input
-        //                                 id={id}
-        //                                 type="text"
-        //                                 defaultValue={defaultValue}
-        //                                 autoComplete="given-name"
-        //                                 className={cx(
-        //                                     'block w-1/2 rounded-md',
-        //                                     'text-xs text-gray-700 placeholder:text-gray-500 dark:text-gray-400 dark:placeholder:text-gray-600',
-        //                                     'border border-gray-400 focus-visible:border-transparent dark:border-gray-700 dark:bg-gray-800',
-        //                                     'focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75'
-        //                                 )}
-        //                             />
-        //                         </fieldset>
-        //                     )
-        //                 })}
-        //             </form>
-        //
-        //             <Popover.Close
-        //                 className={cx(
-        //                     'absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1',
-        //                     'focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75'
-        //                 )}
-        //             >
-        //                 close icon
-        //             </Popover.Close>
-        //         </Popover.Content>
-        //     </Popover.Root>
-        // </div>
     )
 }
