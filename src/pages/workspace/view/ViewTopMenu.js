@@ -9,6 +9,7 @@ import { useFetchBoardQuery } from '../../../modules/services/boardSlice.ts'
 import { useAtom } from 'jotai'
 import { searchAtom } from '../../../utils/atoms.ts'
 import { useParams } from 'react-router-dom'
+import FilterMenu from './viewTopMenu/FilterMenu.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     const { data: board } = useFetchBoardQuery(boardId)
@@ -89,6 +90,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     {/*</div>*/}
                 </div>
                 <div className="task-filter">
+                    <FilterMenu />
                     <div className="group-by" onClick={handleGroupByOpen}>
                         <FontAwesomeIcon
                             className="text-[#53575E]"
