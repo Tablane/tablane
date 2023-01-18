@@ -7,7 +7,8 @@ export default function FilterGroup({
     boardId,
     _id,
     group,
-    operation,
+    operations,
+    setOperation,
     filters,
     index,
     removeFilter,
@@ -68,15 +69,12 @@ export default function FilterGroup({
                                 column={column}
                                 setColumn={setColumn}
                                 setValue={setValue}
+                                operations={operations}
+                                operation={operation}
+                                setOperation={setOperation}
                                 filterAnd={filterAnd}
                                 toggleFilterAnd={toggleFilterAnd}
                                 people={board.attributes}
-                                filterTypes={[
-                                    'Is',
-                                    'Is not',
-                                    'Is set',
-                                    'Is not set'
-                                ]}
                             />
                         )
                     )}
@@ -110,10 +108,12 @@ export default function FilterGroup({
                 column={column}
                 setColumn={setColumn}
                 setValue={setValue}
+                operations={operations}
+                operation={operation}
+                setOperation={setOperation}
                 filterAnd={filterAnd}
                 toggleFilterAnd={toggleFilterAnd}
                 people={board.attributes}
-                filterTypes={['Is', 'Is not', 'Is set', 'Is not set']}
             />
         )
     }
