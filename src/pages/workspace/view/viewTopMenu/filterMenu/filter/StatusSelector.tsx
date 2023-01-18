@@ -3,19 +3,19 @@ import { CaretDownIcon } from '@radix-ui/react-icons'
 import React, { Fragment } from 'react'
 
 export default function StatusSelector({
-    filterType,
-    setFilterType,
+    operations,
+    operation,
+    handleSetOperation,
     value,
     handleSetValue,
-    column,
-    filterTypes
+    column
 }) {
     return (
         <>
-            <Listbox value={filterType} onChange={setFilterType}>
+            <Listbox value={operation} onChange={handleSetOperation}>
                 <div className="relative mx-2">
                     <Listbox.Button className="relative cursor-pointer w-full h-8 rounded-lg bg-white pl-3 pr-8 text-left border outline-none sm:text-sm">
-                        <span className="block truncate">{filterType}</span>
+                        <span className="block truncate">{operation}</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <CaretDownIcon />
                         </span>
@@ -30,7 +30,7 @@ export default function StatusSelector({
                         leaveTo="transform opacity-0 scale-95"
                     >
                         <Listbox.Options className="z-10 w-[220px] max-h-[300px] py-2 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            {filterTypes.map((filterType, i) => (
+                            {operations['status'].map((filterType, i) => (
                                 <Listbox.Option
                                     key={i}
                                     className={({ active }) =>
