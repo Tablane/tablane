@@ -13,6 +13,7 @@ export default function Filter({
     setValue,
     people,
     filterTypes,
+    operations,
     index,
     removeFilter,
     value,
@@ -22,15 +23,16 @@ export default function Filter({
     toggleFilterAnd,
     groupId
 }) {
-    const [filterType, setFilterType] = useState(filterTypes[0])
-
     const handleSetColumn = column => {
-        setFilterType(filterTypes[0])
         setColumn({ groupId, filterId: _id, column })
     }
 
     const handleRemoveFilter = () => {
         removeFilter({ groupId, filterId: _id })
+    }
+
+    const handleSetOperation = operation => {
+        setOperation({ groupId, filterId: _id, operation })
     }
 
     const handleSetValue = value => {
@@ -119,12 +121,13 @@ export default function Filter({
                         </Transition>
                     </div>
                 </Listbox>
-                {column && (
+                {column && operation && (
                     <>
                         {column.type === 'status' && (
                             <StatusSelector
-                                filterType={filterType}
-                                setFilterType={setFilterType}
+                                operations={operations}
+                                operation={operation}
+                                handleSetOperation={handleSetOperation}
                                 value={value}
                                 handleSetValue={handleSetValue}
                                 column={column}
@@ -133,8 +136,9 @@ export default function Filter({
                         )}
                         {column.type === 'people' && (
                             <PeopleSelector
-                                filterType={filterType}
-                                setFilterType={setFilterType}
+                                operations={operations}
+                                operation={operation}
+                                handleSetOperation={handleSetOperation}
                                 value={value}
                                 handleSetValue={handleSetValue}
                                 filterTypes={filterTypes}

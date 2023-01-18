@@ -1,9 +1,15 @@
 import * as Popover from '@radix-ui/react-popover'
 import React, { useState } from 'react'
 import FilterIcon from '../../../../styles/assets/FilterIcon.tsx'
-import produce, { current } from 'immer'
+import produce from 'immer'
 import { ObjectId } from '../../../../utils'
 import FilterGroup from './filterMenu/FilterGroup.tsx'
+
+const operations = {
+    status: ['Is', 'Is not', 'Is set', 'Is not set'],
+    people: ['Is', 'Is not', 'Is set', 'Is not set'],
+    text: ['Contains', 'Does not contain', 'Is set', 'Is not set']
+}
 
 export default function FilterMenu({ boardId }) {
     const [filters, setFilters] = useState([
@@ -11,7 +17,6 @@ export default function FilterMenu({ boardId }) {
             _id: ObjectId(),
             group: false,
             filterAnd: true,
-            operation: null,
             filters: [
                 {
                     _id: ObjectId(),
@@ -26,7 +31,6 @@ export default function FilterMenu({ boardId }) {
             _id: ObjectId(),
             group: true,
             filterAnd: true,
-            operation: null,
             filters: [
                 {
                     _id: ObjectId(),
@@ -48,7 +52,6 @@ export default function FilterMenu({ boardId }) {
             _id: ObjectId(),
             group: false,
             filterAnd: true,
-            operation: null,
             filters: [
                 {
                     _id: ObjectId(),
@@ -64,30 +67,24 @@ export default function FilterMenu({ boardId }) {
     const setColumn = ({ groupId, filterId, column }) => {
         setFilters(
             produce(filters, draft => {
-                draft
+                const filter = draft
                     .find(x => x._id === groupId)
-                    .filters.find(x => x._id === filterId).column = column
+                    .filters.find(x => x._id === filterId)
+                filter.column = column
+                filter.operation = operations[column.type][0]
+                filter.value = null
             })
         )
     }
 
-    const setOperation = ({ group, groupId, filterId, operation }) => {
-        if (group) {
-            setFilters(
-                produce(filters, draft => {
-                    draft.find(x => x._id === groupId).operation = operation
-                })
-            )
-        } else {
-            setFilters(
-                produce(filters, draft => {
-                    draft
-                        .find(x => x._id === groupId)
-                        .filters.find(x => x._id === filterId).operation =
-                        operation
-                })
-            )
-        }
+    const setOperation = ({ groupId, filterId, operation }) => {
+        setFilters(
+            produce(filters, draft => {
+                draft
+                    .find(x => x._id === groupId)
+                    .filters.find(x => x._id === filterId).operation = operation
+            })
+        )
     }
 
     const toggleFilterAnd = ({ group, groupId, filterId }) => {
@@ -142,7 +139,6 @@ export default function FilterMenu({ boardId }) {
                         _id: ObjectId(),
                         group,
                         filterAnd: true,
-                        operation: null,
                         filters: [filter]
                     })
                 })
@@ -184,24 +180,15 @@ export default function FilterMenu({ boardId }) {
                         </p>
                         <div className="text-sm mt-4 text-[#2a2e34]">
                             {filters.map(
-                                (
-                                    {
-                                        _id,
-                                        group,
-                                        filterAnd,
-                                        operation,
-                                        filters
-                                    },
-                                    index
-                                ) => (
+                                ({ _id, group, filterAnd, filters }, index) => (
                                     <FilterGroup
                                         boardId={boardId}
                                         _id={_id}
                                         group={group}
                                         filterAnd={filterAnd}
-                                        operation={operation}
                                         filters={filters}
                                         index={index}
+                                        operations={operations}
                                         removeFilter={removeFilter}
                                         addFilter={addFilter}
                                         setColumn={setColumn}
