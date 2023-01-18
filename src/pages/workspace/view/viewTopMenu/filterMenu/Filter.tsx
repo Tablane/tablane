@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import StatusSelector from './filter/StatusSelector.tsx'
 import PeopleSelector from './filter/PeopleSelector.tsx'
-import useToggleState from '../../../../../modules/hooks/useToggleState.tsx'
 
 export default function Filter({
+    _id,
     column,
     setColumn,
     setValue,
@@ -15,22 +15,30 @@ export default function Filter({
     filterTypes,
     index,
     removeFilter,
-    value
+    value,
+    operation,
+    setOperation,
+    filterAnd,
+    toggleFilterAnd,
+    groupId
 }) {
     const [filterType, setFilterType] = useState(filterTypes[0])
-    const [filterCond, toggleFilterCond] = useToggleState()
 
     const handleSetColumn = column => {
         setFilterType(filterTypes[0])
-        setColumn(column, index)
+        setColumn({ groupId, filterId: _id, column })
     }
 
     const handleRemoveFilter = () => {
-        removeFilter(index)
+        removeFilter({ groupId, filterId: _id })
     }
 
     const handleSetValue = value => {
-        setValue(value, index)
+        setValue({ groupId, filterId: _id, value })
+    }
+
+    const handleToggleFilterAnd = () => {
+        toggleFilterAnd({ group: false, groupId, filterId: _id })
     }
 
     return (
@@ -40,19 +48,19 @@ export default function Filter({
             ) : (
                 <div className="w-12 cursor-pointer flex justify-center items-center">
                     <div
-                        onClick={toggleFilterCond}
-                        className="overflow-hidden rounded border-[#d6d9de] text-xs border flex flex-row h-6 w-full flex justify-center items-center"
+                        onClick={handleToggleFilterAnd}
+                        className="select-none overflow-hidden rounded border-[#d6d9de] text-xs border flex flex-row h-6 w-full flex justify-center items-center"
                     >
                         <div
                             className={`flex flex-col h-12 transition-all duration-500 relative ${
-                                filterCond ? 'top-[12px]' : 'top-[-12px]'
+                                filterAnd ? 'top-[12px]' : 'top-[-12px]'
                             }`}
                         >
                             <div className="flex justify-center items-center pl-1 h-6 font-medium">
-                                <span>AND</span>
+                                <span>OR</span>
                             </div>
                             <div className="flex justify-center items-center pl-1 h-6 font-medium">
-                                <span>OR</span>
+                                <span>AND</span>
                             </div>
                         </div>
                         <CaretSortIcon />
@@ -141,7 +149,7 @@ export default function Filter({
             >
                 <FontAwesomeIcon
                     icon={regular('trash-alt')}
-                    className="text-pink-400 text-base"
+                    className="text-pink-400 text-base text-lg"
                 />
             </div>
         </div>

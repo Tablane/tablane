@@ -1,72 +1,166 @@
 import * as Popover from '@radix-ui/react-popover'
 import React, { useState } from 'react'
 import FilterIcon from '../../../../styles/assets/FilterIcon.tsx'
-import Filter from './filterMenu/Filter.tsx'
-import { useFetchBoardQuery } from '../../../../modules/services/boardSlice.ts'
-import produce from 'immer'
+import produce, { current } from 'immer'
+import { ObjectId } from '../../../../utils'
+import FilterGroup from './filterMenu/FilterGroup.tsx'
 
 export default function FilterMenu({ boardId }) {
-    const { data: board } = useFetchBoardQuery(boardId)
     const [filters, setFilters] = useState([
         {
-            column: null,
-            type: null,
-            value: null
+            _id: ObjectId(),
+            group: false,
+            filterAnd: true,
+            operation: null,
+            filters: [
+                {
+                    _id: ObjectId(),
+                    filterAnd: true,
+                    column: null,
+                    operation: null,
+                    value: null
+                }
+            ]
+        },
+        {
+            _id: ObjectId(),
+            group: true,
+            filterAnd: true,
+            operation: null,
+            filters: [
+                {
+                    _id: ObjectId(),
+                    filterAnd: true,
+                    column: null,
+                    operation: null,
+                    value: null
+                },
+                {
+                    _id: ObjectId(),
+                    filterAnd: true,
+                    column: null,
+                    operation: null,
+                    value: null
+                }
+            ]
+        },
+        {
+            _id: ObjectId(),
+            group: false,
+            filterAnd: true,
+            operation: null,
+            filters: [
+                {
+                    _id: ObjectId(),
+                    filterAnd: true,
+                    column: null,
+                    operation: null,
+                    value: null
+                }
+            ]
         }
     ])
 
-    const getMappedFilter = () => {
-        const mappedFilter = {
-            $and: []
-        }
-        filters
-            .filter(x => !!x.value?._id)
-            .map(x => x.value._id)
-            .map(x => {
-                mappedFilter.$and.push({
-                    'option.value': x
+    const setColumn = ({ groupId, filterId, column }) => {
+        setFilters(
+            produce(filters, draft => {
+                draft
+                    .find(x => x._id === groupId)
+                    .filters.find(x => x._id === filterId).column = column
+            })
+        )
+    }
+
+    const setOperation = ({ group, groupId, filterId, operation }) => {
+        if (group) {
+            setFilters(
+                produce(filters, draft => {
+                    draft.find(x => x._id === groupId).operation = operation
                 })
-            })
-        return mappedFilter
+            )
+        } else {
+            setFilters(
+                produce(filters, draft => {
+                    draft
+                        .find(x => x._id === groupId)
+                        .filters.find(x => x._id === filterId).operation =
+                        operation
+                })
+            )
+        }
     }
 
-    console.log({
-        filters,
-        mappedFilters: getMappedFilter()
-    })
+    const toggleFilterAnd = ({ group, groupId, filterId }) => {
+        if (group) {
+            setFilters(
+                produce(filters, draft => {
+                    const group = draft.find(x => x._id === groupId)
+                    group.filterAnd = !group.filterAnd
+                })
+            )
+        } else {
+            setFilters(
+                produce(filters, draft => {
+                    const filter = draft
+                        .find(x => x._id === groupId)
+                        .filters.find(x => x._id === filterId)
+                    filter.filterAnd = !filter.filterAnd
+                })
+            )
+        }
+    }
 
-    const setColumn = (column, i) => {
+    const setValue = ({ groupId, filterId, value }) => {
         setFilters(
             produce(filters, draft => {
-                draft[i].column = column
-                draft[i].value = null
+                draft
+                    .find(x => x._id === groupId)
+                    .filters.find(x => x._id === filterId).value = value
             })
         )
     }
 
-    const setValue = (value, i) => {
-        setFilters(
-            produce(filters, draft => {
-                if (draft[i]) draft[i].value = value
-            })
-        )
+    const addFilter = (group: boolean, groupId = null) => {
+        const filter = {
+            _id: ObjectId(),
+            column: null,
+            filterAnd: true,
+            operation: null,
+            value: null
+        }
+
+        if (groupId) {
+            setFilters(
+                produce(filters, draft => {
+                    draft.find(x => x._id === groupId).filters.push(filter)
+                })
+            )
+        } else {
+            setFilters(
+                produce(filters, draft => {
+                    draft.push({
+                        _id: ObjectId(),
+                        group,
+                        filterAnd: true,
+                        operation: null,
+                        filters: [filter]
+                    })
+                })
+            )
+        }
     }
 
-    const addFilter = () => {
-        setFilters([
-            ...filters,
-            {
-                column: null,
-                type: null,
-                value: null
-            }
-        ])
-    }
-
-    const removeFilter = i => {
+    const removeFilter = ({ groupId, filterId }) => {
         setFilters(
             produce(filters, draft => {
-                draft.splice(i, 1)
+                const group = draft.find(x => x._id === groupId)
+                if (group.filters.length <= 1) {
+                    return [...draft.filter(x => x._id !== groupId)]
+                } else {
+                    group.filters = group.filters.filter(
+                        x => x._id !== filterId
+                    )
+                }
             })
         )
     }
@@ -89,33 +183,47 @@ export default function FilterMenu({ boardId }) {
                             Filters
                         </p>
                         <div className="text-sm mt-4 text-[#2a2e34]">
-                            {filters.map(({ column, value }, i) => (
-                                <Filter
-                                    value={value}
-                                    removeFilter={removeFilter}
-                                    key={i}
-                                    index={i}
-                                    column={column}
-                                    setColumn={setColumn}
-                                    setValue={setValue}
-                                    people={board.attributes}
-                                    filterTypes={[
-                                        'Is',
-                                        'Is not',
-                                        'Is set',
-                                        'Is not set'
-                                    ]}
-                                />
-                            ))}
+                            {filters.map(
+                                (
+                                    {
+                                        _id,
+                                        group,
+                                        filterAnd,
+                                        operation,
+                                        filters
+                                    },
+                                    index
+                                ) => (
+                                    <FilterGroup
+                                        boardId={boardId}
+                                        _id={_id}
+                                        group={group}
+                                        filterAnd={filterAnd}
+                                        operation={operation}
+                                        filters={filters}
+                                        index={index}
+                                        removeFilter={removeFilter}
+                                        addFilter={addFilter}
+                                        setColumn={setColumn}
+                                        setValue={setValue}
+                                        setOperation={setOperation}
+                                        toggleFilterAnd={toggleFilterAnd}
+                                        key={_id}
+                                    />
+                                )
+                            )}
                         </div>
                         <div className="py-3 group">
                             <span
-                                onClick={addFilter}
+                                onClick={() => addFilter(false)}
                                 className="cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium"
                             >
                                 + Add filter
                             </span>
-                            <span className="opacity-0 group-hover:opacity-100 cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium">
+                            <span
+                                onClick={() => addFilter(true)}
+                                className="opacity-0 group-hover:opacity-100 cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium"
+                            >
                                 + Add group
                             </span>
                         </div>
