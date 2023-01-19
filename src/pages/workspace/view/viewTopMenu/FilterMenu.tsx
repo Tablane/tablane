@@ -207,12 +207,14 @@ export default function FilterMenu({ boardId }) {
                             >
                                 + Add filter
                             </span>
-                            <span
-                                onClick={() => addFilter(true)}
-                                className="opacity-0 group-hover:opacity-100 cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium"
-                            >
-                                + Add group
-                            </span>
+                            {filters.length >= 1 && (
+                                <span
+                                    onClick={() => addFilter(true)}
+                                    className="opacity-0 group-hover:opacity-100 cursor-pointer rounded transition-all hover:bg-[#f0f1f3] px-2 py-1 text-[#4f5762] text-xs font-medium"
+                                >
+                                    + Add group
+                                </span>
+                            )}
                         </div>
                     </div>
                 </Popover.Content>
