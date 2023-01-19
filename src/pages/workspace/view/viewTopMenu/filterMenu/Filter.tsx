@@ -71,7 +71,7 @@ export default function Filter({
             )}
             <div className="flex-grow mx-3 flex flex-row items-center">
                 <Listbox value={column} onChange={handleSetColumn}>
-                    <div className="relative">
+                    <div className={`relative ${column ? 'grow' : ''}`}>
                         <Listbox.Button className="relative cursor-pointer w-full h-8 rounded-lg bg-white pl-3 pr-8 text-left bg-[#F7F8F9] border-[#d6d9de] border outline-none sm:text-sm">
                             <span className="block truncate">
                                 {column?.name ?? 'Select filter'}

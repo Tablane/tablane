@@ -65,7 +65,7 @@ export default function PeopleSelector({
                 </div>
             </Listbox>
             <Listbox value={value} onChange={handleSetValue}>
-                <div className="relative">
+                <div className="relative grow-[2]">
                     <Listbox.Button className="relative cursor-pointer w-full h-8 rounded-lg bg-white pl-3 pr-8 text-left border outline-none sm:text-sm">
                         <span
                             className="block truncate rounded px-2 min-w-[40px] min-h-[20px]"
