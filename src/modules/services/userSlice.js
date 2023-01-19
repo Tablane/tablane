@@ -24,6 +24,7 @@ export const userApi = api.injectEndpoints({
                             email: data.user.email,
                             username: data.user.username
                         })
+                        localStorage.removeItem('lastVisitedBoard')
                         localStorage.setItem('access_token', data.accessToken)
                         dispatch(setCurrentToken(data.accessToken))
                         dispatch(
