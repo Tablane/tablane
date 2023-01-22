@@ -1,6 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react'
 import { CaretDownIcon, CaretSortIcon } from '@radix-ui/react-icons'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import StatusSelector from './filter/StatusSelector.tsx'
@@ -11,7 +11,6 @@ export default function Filter({
     column,
     setColumn,
     setValue,
-    people,
     filterTypes,
     operations,
     index,
@@ -21,7 +20,8 @@ export default function Filter({
     setOperation,
     filterAnd,
     toggleFilterAnd,
-    groupId
+    groupId,
+    board
 }) {
     const handleSetColumn = column => {
         setColumn({ groupId, filterId: _id, column })
@@ -55,7 +55,7 @@ export default function Filter({
                     >
                         <div
                             className={`flex flex-col h-12 transition-all duration-500 relative ${
-                                filterAnd ? 'top-[12px]' : 'top-[-12px]'
+                                filterAnd ? 'top-[-12px]' : 'top-[12px]'
                             }`}
                         >
                             <div className="flex justify-center items-center pl-1 h-6 font-medium">
@@ -69,9 +69,9 @@ export default function Filter({
                     </div>
                 </div>
             )}
-            <div className="flex-grow mx-3 flex flex-row items-center">
+            <div className="grow mx-3 flex flex-row items-center">
                 <Listbox value={column} onChange={handleSetColumn}>
-                    <div className={`relative ${column ? 'grow' : ''}`}>
+                    <div className={`relative ${column ? 'grow-[2]' : ''}`}>
                         <Listbox.Button className="relative cursor-pointer w-full h-8 rounded-lg bg-white pl-3 pr-8 text-left bg-[#F7F8F9] border-[#d6d9de] border outline-none sm:text-sm">
                             <span className="block truncate">
                                 {column?.name ?? 'Select filter'}
@@ -90,33 +90,37 @@ export default function Filter({
                             leaveTo="transform opacity-0 scale-95"
                         >
                             <Listbox.Options className="z-10 w-[220px] max-h-[300px] py-2 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {people.map((person, personIdx) => (
-                                    <Listbox.Option
-                                        key={personIdx}
-                                        className={({ active }) =>
-                                            `relative cursor-pointer rounded flex items-center select-none h-8 px-2 mx-2 ${
-                                                active
-                                                    ? 'bg-[#f3f4f6]'
-                                                    : 'text-gray-900'
-                                            }`
-                                        }
-                                        value={person}
-                                    >
-                                        {({ selected }) => (
-                                            <>
-                                                <span
-                                                    className={`block truncate ${
-                                                        selected
-                                                            ? 'font-medium'
-                                                            : 'font-normal'
-                                                    }`}
-                                                >
-                                                    {person.name}
-                                                </span>
-                                            </>
-                                        )}
-                                    </Listbox.Option>
-                                ))}
+                                {board.attributes
+                                    .filter(x =>
+                                        ['status', 'people'].includes(x.type)
+                                    )
+                                    .map((person, personIdx) => (
+                                        <Listbox.Option
+                                            key={personIdx}
+                                            className={({ active }) =>
+                                                `relative cursor-pointer rounded flex items-center select-none h-8 px-2 mx-2 ${
+                                                    active
+                                                        ? 'bg-[#f3f4f6]'
+                                                        : 'text-gray-900'
+                                                }`
+                                            }
+                                            value={person}
+                                        >
+                                            {({ selected }) => (
+                                                <>
+                                                    <span
+                                                        className={`block truncate ${
+                                                            selected
+                                                                ? 'font-medium'
+                                                                : 'font-normal'
+                                                        }`}
+                                                    >
+                                                        {person.name}
+                                                    </span>
+                                                </>
+                                            )}
+                                        </Listbox.Option>
+                                    ))}
                             </Listbox.Options>
                         </Transition>
                     </div>
