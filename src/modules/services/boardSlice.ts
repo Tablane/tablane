@@ -967,6 +967,14 @@ export const boardApi = api.injectEndpoints({
                     if (handleQueryError({ err })) patchResult.undo()
                 }
             }
+        }),
+        setFilters: builder.mutation({
+            query: ({ boardId, filters }) => ({
+                url: `board/${boardId}`,
+                method: 'PUT',
+                body: { filters }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.boardId]
         })
     })
 })
@@ -994,5 +1002,6 @@ export const {
     useAddWatcherMutation,
     useRemoveWatcherMutation,
     useSetSharingMutation,
-    useAddSubtaskMutation
+    useAddSubtaskMutation,
+    useSetFiltersMutation
 } = boardApi
