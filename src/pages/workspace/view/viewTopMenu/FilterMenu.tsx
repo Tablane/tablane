@@ -86,7 +86,6 @@ export default function FilterMenu({ boardId }) {
 
     const handleClose = open => {
         if (!open) {
-            console.log({ filters })
             setFilters({
                 boardId,
                 filters
