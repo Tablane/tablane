@@ -43,9 +43,9 @@ function NewTaskForm({
         const values = value.split('\r\n')
 
         if (values.length > 1) {
-            console.log('multiple lines detected', values)
-
-            setMultipleTasks([...values.splice(0, 100)])
+            setMultipleTasks([
+                ...values.filter(name => name !== '').splice(0, 100)
+            ])
 
             resetNewTaskName()
         }
@@ -66,7 +66,6 @@ function NewTaskForm({
 
     const handleMultitaskCreation = () => {
         multipleTasks.map(taskName => {
-            if (newTaskName === '') return
             if (level >= 0) return handleSubTask()
             addTask({
                 author: user.username,
