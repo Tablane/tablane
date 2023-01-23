@@ -21,7 +21,9 @@ function NewTaskForm({
     const [multipleTasks, setMultipleTasks] = useState<string[]>([])
     const [newTaskName, changeNewTaskName, resetNewTaskName] = useInputState('')
     const ref = useRef(null)
+    const formRef = useRef(null)
     useClickAway(ref, () => setMultipleTasks([]))
+    useClickAway(formRef, () => handleNewSubtask())
 
     const handleAddTask = async e => {
         e.preventDefault()
@@ -49,11 +51,6 @@ function NewTaskForm({
 
             resetNewTaskName()
         }
-
-        console.log({
-            value,
-            hasBreak: value.split('\r\n').length > 1
-        })
     }
 
     const handleSubTask = () => {
@@ -66,25 +63,33 @@ function NewTaskForm({
 
     const handleMultitaskCreation = () => {
         multipleTasks.map(taskName => {
-            if (level >= 0) return handleSubTask()
-            addTask({
-                author: user.username,
-                level: level + 1,
-                boardId,
-                taskGroupId,
-                newTaskName: taskName,
-                _id: ObjectId()
-            })
+            if (level >= 0) {
+                addSubtask({
+                    boardId,
+                    newTaskName: taskName,
+                    taskId
+                })
+            } else {
+                addTask({
+                    author: user.username,
+                    level: level + 1,
+                    boardId,
+                    taskGroupId,
+                    newTaskName: taskName,
+                    _id: ObjectId()
+                })
+            }
         })
+        handleNewSubtask()
         resetNewTaskName()
         setMultipleTasks([])
     }
 
     const handleKeyUp = e => {
-        if (['Escape'].includes(e.key)) handleBlur()
+        if (['Escape'].includes(e.key)) handleNewSubtask()
     }
 
-    const handleBlur = () => {
+    const handleNewSubtask = () => {
         if (level >= 0) setNewTaskOpen(false)
     }
 
@@ -92,7 +97,7 @@ function NewTaskForm({
         <form
             onSubmit={handleAddTask}
             onKeyUp={handleKeyUp}
-            onBlur={handleBlur}
+            ref={formRef}
             className={`sticky z-[51] left-0 new-task-form bg-white rounded-b-sm ${
                 level === -1 ? 'ml-9' : ''
             }`}
