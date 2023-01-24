@@ -42,7 +42,7 @@ function NewTaskForm({
 
     const handlePaste = e => {
         const value = e.clipboardData.getData('text')
-        const values = value.split('\r\n')
+        const values = value.split(/\r?\n|\r|\n/g)
 
         if (values.length > 1) {
             setMultipleTasks([
