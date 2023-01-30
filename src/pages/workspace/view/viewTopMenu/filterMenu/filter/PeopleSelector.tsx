@@ -68,17 +68,25 @@ export default function PeopleSelector({
                 <Listbox value={value} onChange={handleSetValue}>
                     <div className="relative grow-[2]">
                         <Listbox.Button className="relative cursor-pointer w-full h-8 rounded-lg bg-white pl-3 pr-8 text-left border outline-none sm:text-sm">
-                            <span
-                                className="block truncate rounded px-2 min-w-[40px] min-h-[20px]"
-                                style={{
-                                    backgroundColor: value?.color
-                                }}
-                            >
-                                {value?.username ?? 'Select option'}
-                            </span>
-                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                <CaretDownIcon />
-                            </span>
+                            <div className="flex flex-row items-center">
+                                {value?.username && (
+                                    <div className="cursor-pointer bg-[#4169e1] text-[10px] min-w-[26px] h-[26px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white">
+                                        {value.username.charAt(0).toUpperCase()}
+                                        {value.username.charAt(1).toUpperCase()}
+                                    </div>
+                                )}
+                                <span
+                                    className="block truncate rounded px-2 min-w-[40px] min-h-[20px]"
+                                    style={{
+                                        backgroundColor: value?.color
+                                    }}
+                                >
+                                    {value?.username ?? 'Select option'}
+                                </span>
+                                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                    <CaretDownIcon />
+                                </span>
+                            </div>
                         </Listbox.Button>
                         <Transition
                             as={Fragment}
@@ -104,15 +112,29 @@ export default function PeopleSelector({
                                     >
                                         {({ selected }) => (
                                             <>
-                                                <span
-                                                    className={`block truncate text-center ${
-                                                        selected
-                                                            ? 'font-medium'
-                                                            : 'font-normal'
-                                                    }`}
-                                                >
-                                                    {user.username}
-                                                </span>
+                                                <div>
+                                                    <div className="flex flex-row items-center">
+                                                        {value?.username && (
+                                                            <div className="mr-2 cursor-pointer bg-[#4169e1] text-[10px] min-w-[26px] h-[26px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white">
+                                                                {user.username
+                                                                    .charAt(0)
+                                                                    .toUpperCase()}
+                                                                {user.username
+                                                                    .charAt(1)
+                                                                    .toUpperCase()}
+                                                            </div>
+                                                        )}
+                                                        <span
+                                                            className={`block truncate text-center ${
+                                                                selected
+                                                                    ? 'font-medium'
+                                                                    : 'font-normal'
+                                                            }`}
+                                                        >
+                                                            {user.username}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </>
                                         )}
                                     </Listbox.Option>
