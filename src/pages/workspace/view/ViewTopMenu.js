@@ -96,7 +96,10 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     {/*</div>*/}
                 </div>
                 <div className="pr-4">
-                    <button className="share" onClick={toggleShareDialogOpen}>
+                    <button
+                        className="share m-h-[32px]"
+                        onClick={toggleShareDialogOpen}
+                    >
                         <FontAwesomeIcon icon={solid('share-alt')} />
                         <p>Share</p>
                     </button>
