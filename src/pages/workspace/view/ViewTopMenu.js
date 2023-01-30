@@ -27,7 +27,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     }
 
     const groupBy = () => {
-        if (!board?.groupBy || board.groupBy === 'none') return 'None'
+        if (!board?.groupBy || board.groupBy === 'none') return false
         return board.attributes.find(
             attribute => attribute._id === board.groupBy
         ).name
@@ -91,12 +91,25 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                 </div>
                 <div className="task-filter">
                     {board && <FilterMenu boardId={boardId} />}
-                    <div className="group-by" onClick={handleGroupByOpen}>
+                    <div
+                        className={`group-by ${
+                            groupBy() ? 'bg-[#eaedfb] text-[#4169e1]' : ''
+                        }`}
+                        onClick={handleGroupByOpen}
+                    >
                         <FontAwesomeIcon
-                            className="text-[#53575E]"
+                            className={`${
+                                groupBy() ? 'text-[#4169e1]' : 'text-[#333333]'
+                            }`}
                             icon={solid('layer-group')}
                         />
-                        <p className="text-[#333333]">Group by: {groupBy()}</p>
+                        <p
+                            className={`${
+                                groupBy() ? 'text-[#4169e1]' : 'text-[#333333]'
+                            }`}
+                        >
+                            Group by: {groupBy() || 'None'}
+                        </p>
                     </div>
                 </div>
             </div>
