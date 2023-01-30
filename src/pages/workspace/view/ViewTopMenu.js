@@ -10,6 +10,7 @@ import { useAtom } from 'jotai'
 import { searchAtom } from '../../../utils/atoms.ts'
 import { useParams } from 'react-router-dom'
 import FilterMenu from './viewTopMenu/FilterMenu.tsx'
+import ListIcon from '../../../styles/assets/ListIcon.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     const { data: board } = useFetchBoardQuery(boardId)
@@ -53,6 +54,46 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     <div className="info">
                         <h1>{board?.name || '...'}</h1>
                     </div>
+                    {/*<div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">*/}
+                    {/*    {[*/}
+                    {/*        {*/}
+                    {/*            name: 'List',*/}
+                    {/*            icon: <ListIcon className="h-5 w-5 mr-2" />,*/}
+                    {/*            active: true*/}
+                    {/*        },*/}
+                    {/*        {*/}
+                    {/*            name: 'Bugs',*/}
+                    {/*            icon: <ListIcon className="h-5 w-5 mr-2" />,*/}
+                    {/*            active: false*/}
+                    {/*        }*/}
+                    {/*    ].map(({ name, icon, active }) => (*/}
+                    {/*        <div*/}
+                    {/*            key={name}*/}
+                    {/*            className={`flex justify-center items-center h-[60px] box-border cursor-pointer border-y-[3px] border-y-[white] border-solid ${*/}
+                    {/*                active ? 'border-b-[#4169e1]' : ''*/}
+                    {/*            }`}*/}
+                    {/*        >*/}
+                    {/*            <div*/}
+                    {/*                className={`flex justify-center items-center h-[25px] px-3 py-0 border-l-[#e9ebf1] border-l border-solid ${*/}
+                    {/*                    active*/}
+                    {/*                        ? 'text-[#4169e1]'*/}
+                    {/*                        : 'text-[#7c828d]'*/}
+                    {/*                }`}*/}
+                    {/*            >*/}
+                    {/*                {icon}*/}
+                    {/*                <span*/}
+                    {/*                    className={`text-sm leading-[14px] font-medium ${*/}
+                    {/*                        active*/}
+                    {/*                            ? 'text-[#4169e1]'*/}
+                    {/*                            : 'text-[#7c828d]'*/}
+                    {/*                    }`}*/}
+                    {/*                >*/}
+                    {/*                    {name}*/}
+                    {/*                </span>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
                 </div>
                 <div className="pr-4">
                     <button className="share" onClick={toggleShareDialogOpen}>
