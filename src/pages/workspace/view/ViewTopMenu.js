@@ -43,10 +43,14 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
             <div>
                 <div className="details flex justify-start items-center h-full pl-4">
                     {sideBarClosed && (
-                        <FontAwesomeIcon
-                            icon={solid('angle-double-right')}
+                        <div
                             onClick={toggleSideBar}
-                        />
+                            className="mr-[15px] cursor-pointer"
+                        >
+                            <FontAwesomeIcon
+                                icon={solid('angle-double-right')}
+                            />
+                        </div>
                     )}
                     <div className="pic">
                         <div> </div>
