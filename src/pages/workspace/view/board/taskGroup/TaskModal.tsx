@@ -37,7 +37,7 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
     const [anchor, setAnchor] = useState(null)
     const [addTaskComment] = useAddTaskCommentMutation()
     const [editTaskField] = useEditTaskFieldMutation()
-    const [currentTab, setCurrentTab] = useState<string>('activity')
+    const [currentTab, setCurrentTab] = useState<string>('content')
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
