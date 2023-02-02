@@ -37,6 +37,7 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
     const [anchor, setAnchor] = useState(null)
     const [addTaskComment] = useAddTaskCommentMutation()
     const [editTaskField] = useEditTaskFieldMutation()
+    const [currentTab, setCurrentTab] = useState<string>('activity')
 
     const handleClose = e => {
         if (e?.key && e.key !== 'Escape') return
@@ -79,26 +80,71 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
     }
 
     return (
-        <div className={styles.root}>
-            <div onClick={handleClose} className={styles.background}></div>
-            <div className={styles.modal}>
-                <div className={styles.topMenu}>
-                    <p className={styles.taskId}>{task._id}</p>
-                    <div className={styles.additionalMenu}>
+        <div className="fixed z-[1300] inset-0">
+            <div
+                onClick={handleClose}
+                className="z-[-1] fixed bg-[rgba(0,0,0,0.5)] inset-0"
+            ></div>
+            <div className="fixed flex flex-col w-full lg:w-[calc(100vw_-_50px)] h-full lg:h-[calc(100%_-_70px)] max-w-[1700px] z-[801] rounded-xl lg:left-[25px] lg:top-5 bg-white 2xl:left-[calc(50vw_-_850px)]">
+                <div className="flex justify-between pt-6 pb-2 px-8 border-b-[rgba(0,0,0,0.1)] border-b border-solid">
+                    <p className="leading-8 m-0">{task._id}</p>
+                    <div className="flex flex-row">
                         <div
-                            className={styles.watcher}
+                            className="cursor-pointer hover:bg-[#ecedf0] h-8 w-[60px] flex justify-center items-center rounded-[3px]"
                             onClick={e => setAnchor(e.currentTarget)}
                         >
-                            <FontAwesomeIcon icon={regular('eye')} />
-                            <span>{task.watcher.length}</span>
+                            <FontAwesomeIcon
+                                className="text-[1.3em]"
+                                icon={regular('eye')}
+                            />
+                            <span className="leading-8 ml-[5px]">
+                                {task.watcher.length}
+                            </span>
                         </div>
-                        <div className={styles.close} onClick={handleClose}>
-                            <FontAwesomeIcon icon={solid('times')} />
+                        <div
+                            className="ml-2 cursor-pointer hover:bg-[#ecedf0] group h-8 w-8 flex justify-center items-center rounded-[3px]"
+                            onClick={handleClose}
+                        >
+                            <FontAwesomeIcon
+                                className="group-hover:rotate-90 text-[1.5em] transition-transform duration-[0.2s]"
+                                icon={solid('times')}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className={styles.mainContent}>
-                    <div className={styles.contentTab}>
+                <div className="lg:hidden h-[60px] border-[#dedede] border-b flex justify-center items-center">
+                    <div
+                        onClick={() => setCurrentTab('content')}
+                        className={`uppercase text-xs p-2 font-medium cursor-pointer border-b mx-1 ${
+                            currentTab === 'content'
+                                ? 'text-[#4169e1]'
+                                : 'text-[#a5a9b0]'
+                        }`}
+                    >
+                        Details
+                    </div>
+                    <div
+                        onClick={() => setCurrentTab('activity')}
+                        className={`uppercase text-xs p-2 font-medium cursor-pointer border-b mx-1 ${
+                            currentTab === 'activity'
+                                ? 'text-[#4169e1]'
+                                : 'text-[#a5a9b0]'
+                        }`}
+                    >
+                        Activity
+                    </div>
+                </div>
+                <div className="h-0 grow shrink-0 basis-0 flex flex-col lg:flex-row">
+                    <div
+                        className={
+                            styles.contentTab +
+                            ` ${
+                                currentTab === 'content'
+                                    ? 'block'
+                                    : 'hidden lg:block'
+                            }`
+                        }
+                    >
                         <form
                             onSubmit={handleNameChange}
                             className={styles.name}
@@ -132,8 +178,14 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
                             </div>
                         )}
                     </div>
-                    <div className={styles.divider}></div>
-                    <div className={styles.attributeTab}>
+                    <div className="hidden lg:block w-[1px] bg-[#e9ebf0]"></div>
+                    <div
+                        className={`w-full flex flex-col flex-[1_1_0] box-border max-h-full ${
+                            currentTab === 'activity'
+                                ? 'block'
+                                : 'hidden lg:block'
+                        }`}
+                    >
                         <div className={styles.historyLog}>
                             {[...task.history, ...task.comments]
                                 .sort(

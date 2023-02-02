@@ -1,108 +1,6 @@
-.root {
-  position: fixed;
-  z-index: 1300;
-  inset: 0;
-}
-
-.background {
-  z-index: -1;
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.modal {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  top: 20px;
-  left: 25px;
-  width: calc(100vw - 50px);
-  height: calc(100% - 70px);
-  max-width: 1700px;
-  z-index: 801;
-  background: #fff;
-  border-radius: 12px;
-}
-
-@media (min-width: 1751px) {
-  .modal {
-    left: calc(50vw - 850px);
-  }
-}
-
-.topMenu {
-  padding: 24px 32px 8px 32px;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
-  .taskId {
-    margin: 0;
-    line-height: 32px;
-  }
-}
-
-.additionalMenu {
-  display: flex;
-  flex-direction: row;
-
-  & > div {
-    margin-left: 8px;
-    cursor: pointer;
-  }
-
-  & > div:hover {
-    background-color: #ecedf0;
-  }
-
-  & > .watcher {
-    height: 32px;
-    width: 60px;
-    border-radius: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      font-size: 1.3em;
-    }
-
-    & > span {
-      margin-left: 5px;
-      line-height: 32px;
-    }
-  }
-
-  & > .close {
-    height: 32px;
-    width: 32px;
-    border-radius: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover > svg {
-      transform: rotate(90deg);
-    }
-
-    & > svg {
-      font-size: 1.5em;
-      transition: transform 0.2s;
-    }
-  }
-}
-
-.mainContent {
-  height: 0;
-  flex: 1 0 0;
-  display: flex;
-  flex-direction: row;
-}
-
 .contentTab {
   flex: 1 1 0;
+  width: 100%;
   box-sizing: border-box;
   padding: 0 0 32px 0;
   overflow-x: auto;
@@ -135,19 +33,6 @@
     width: 100%;
     box-sizing: border-box;
   }
-}
-
-.divider {
-  width: 1px;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.attributeTab {
-  width: 0;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-  box-sizing: border-box;
 }
 
 .historyLog {
