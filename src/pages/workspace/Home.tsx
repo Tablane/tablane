@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { CircularProgress } from '@mui/material'
 import ErrorPage from '../../utils/ErrorPage'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import { useFetchUserQuery } from '../../modules/services/userSlice'
+import LoadingPage from '../../utils/LoadingPage.tsx'
 
 function Home(props) {
     const params = useParams()
@@ -36,12 +36,7 @@ function Home(props) {
         ).then(res => res.json())
     )
 
-    if (isLoading)
-        return (
-            <div className="loading">
-                <CircularProgress />
-            </div>
-        )
+    if (isLoading) return <LoadingPage />
     if (error) return <ErrorPage error={error} />
     return (
         <div className={styles.container}>
