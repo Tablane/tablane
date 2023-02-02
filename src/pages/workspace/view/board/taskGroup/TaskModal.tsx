@@ -182,8 +182,8 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
                     <div
                         className={`w-full flex flex-col flex-[1_1_0] box-border max-h-full ${
                             currentTab === 'activity'
-                                ? 'block'
-                                : 'hidden lg:block'
+                                ? 'flex'
+                                : 'hidden lg:flex'
                         }`}
                     >
                         <div className={styles.historyLog}>
