@@ -45,7 +45,7 @@ export default function PersonColumn({
         <Fragment key={attribute._id}>
             {people.length > 0 ? (
                 <div
-                    className="people text-[14px] border-white border-solid border-r flex -space-x-4 items-center justify-center h-9 leading-9 text-center w-[120px]"
+                    className="people text-[14px] border-white border-solid border-r flex -space-x-4 items-center justify-center h-full leading-9 text-center w-[120px]"
                     onClick={handleClick}
                 >
                     {people.map((person, i) => {
@@ -69,7 +69,7 @@ export default function PersonColumn({
                 </div>
             ) : (
                 <div
-                    className="people text-[26px] text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
+                    className="people text-[26px] text-[14px] border-white border-solid border-r flex items-center justify-center h-full leading-9 text-center w-[120px]"
                     onClick={handleClick}
                 >
                     <FontAwesomeIcon
