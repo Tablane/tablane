@@ -45,7 +45,7 @@ export default function TextColumn({
 
     return (
         <div
-            className="text-[14px] border-white border-solid border-r flex items-center justify-center h-9 leading-9 text-center w-[120px]"
+            className="text-[14px] h-full border-white border-solid border-r flex items-center justify-center leading-9 text-center w-[120px]"
             style={{ backgroundColor: 'transparent' }}
             key={attribute._id}
         >

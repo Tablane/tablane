@@ -114,7 +114,7 @@ function Task({
     return (
         <>
             <div
-                className={`Task group outline-none cursor-pointer flex flex-row items-center justify-start relative border-b border-white ${
+                className={`Task group outline-none cursor-pointer flex flex-row items-stretch justify-start relative border-b border-white ${
                     taskEditing ? 'editing' : ''
                 }`}
                 ref={setNodeRef}
@@ -230,7 +230,7 @@ function Task({
                     />
 
                     <div
-                        className="z-[9] flex items-center justify-center h-9 leading-9 text-center w-[40px] bg-[#c4c4c4]"
+                        className="z-[9] flex items-center justify-center h-full leading-9 text-center w-[40px] bg-[#c4c4c4]"
                         onClick={handleMoreClick}
                     >
                         {(hasPerms('MANAGE:TASK') ||
