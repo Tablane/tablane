@@ -77,7 +77,7 @@ function QuickActionsToolbar({
                     arrow
                 >
                     <div
-                        className="quickActionItem text-[#7c828d]"
+                        className="quickActionItem bg-white text-[#7c828d]"
                         onClick={handleSubtaskClick}
                     >
                         <FontAwesomeIcon icon={solid('code-branch')} />
@@ -86,7 +86,7 @@ function QuickActionsToolbar({
             )}
             <Tooltip disableInteractive title="Rename" placement="top" arrow>
                 <div
-                    className="quickActionItem text-[#7c828d]"
+                    className="quickActionItem bg-white text-[#7c828d]"
                     onClick={handleEditClick}
                 >
                     <FontAwesomeIcon icon={solid('pen')} />
