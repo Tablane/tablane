@@ -192,12 +192,14 @@ function Task({
                         </form>
                     ) : (
                         <div
-                            className="flex flex-row"
+                            className="block flex-row ml-[25px] mr-[5px]"
                             style={{
                                 paddingLeft: task.level * 32 + 'px'
                             }}
                         >
-                            <p className="taskName text-sm">{task.name}</p>
+                            <p className="taskName text-sm inline">
+                                {task.name}
+                            </p>
                             {hasPerms('MANAGE:TASK') && (
                                 <QuickActionsToolbar
                                     level={task.level}
