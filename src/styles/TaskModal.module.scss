@@ -1,3 +1,9 @@
+.taskModal {
+  @media (min-width: 1751px) {
+    left: calc(50vw - 850px);
+  }
+}
+
 .contentTab {
   flex: 1 1 0;
   width: 100%;

@@ -85,7 +85,12 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
                 onClick={handleClose}
                 className="z-[-1] fixed bg-[rgba(0,0,0,0.5)] inset-0"
             ></div>
-            <div className="fixed flex flex-col w-full lg:w-[calc(100vw_-_50px)] h-full lg:h-[calc(100%_-_70px)] max-w-[1700px] z-[801] rounded-xl lg:left-[25px] lg:top-5 bg-white 2xl:left-[calc(50vw_-_850px)]">
+            <div
+                className={
+                    'fixed flex flex-col w-full lg:w-[calc(100vw_-_50px)] h-full lg:h-[calc(100%_-_70px)] max-w-[1700px] z-[801] rounded-xl lg:left-[25px] lg:top-5 bg-white ' +
+                    styles.taskModal
+                }
+            >
                 <div className="flex justify-between pt-6 pb-2 px-8 border-b-[rgba(0,0,0,0.1)] border-b border-solid">
                     <p className="leading-8 m-0">{task._id}</p>
                     <div className="flex flex-row">
