@@ -78,6 +78,7 @@
 }
 
 .Task > div {
+  min-height: 36px;
   display: flex;
   flex-direction: row;
   align-items: center;
