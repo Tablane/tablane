@@ -23,7 +23,10 @@ export default memo(function TaskModalColumns({
     return (
         <>
             {attributes.map(attribute => (
-                <div key={attribute._id} className="flex flex-row items-center">
+                <div
+                    key={attribute._id}
+                    className="h-[36px] flex flex-row items-center"
+                >
                     <span className="text-xs text-[#6b6f76] px-4 w-[120px]">
                         {attribute.name}
                     </span>
