@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import StatusSelector from './filter/StatusSelector.tsx'
 import PeopleSelector from './filter/PeopleSelector.tsx'
+import { useParams } from 'react-router-dom'
+import { useFetchWorkspaceQuery } from '../../../../../modules/services/workspaceSlice'
 
 export default function Filter({
     _id,
@@ -23,6 +25,9 @@ export default function Filter({
     groupId,
     board
 }) {
+    const params = useParams()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+
     const handleSetColumn = column => {
         setColumn({ groupId, filterId: _id, column })
     }
@@ -132,7 +137,7 @@ export default function Filter({
                                 operations={operations}
                                 operation={operation}
                                 handleSetOperation={handleSetOperation}
-                                value={value}
+                                value={column.labels.find(x => x._id === value)}
                                 handleSetValue={handleSetValue}
                                 column={column}
                                 filterTypes={filterTypes}
@@ -143,7 +148,11 @@ export default function Filter({
                                 operations={operations}
                                 operation={operation}
                                 handleSetOperation={handleSetOperation}
-                                value={value}
+                                value={
+                                    workspace.members.find(
+                                        x => x?.user?._id === value
+                                    )?.user
+                                }
                                 handleSetValue={handleSetValue}
                                 filterTypes={filterTypes}
                             />
