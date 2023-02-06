@@ -24,7 +24,8 @@ export default function FilterMenu({ boardId }) {
         setFiltersState(
             produce(filters, draft => {
                 const filter = draft.find(x => x._id === filterId)
-                filter.column = column
+                filter.column = column._id
+                filter.type = column.type
                 filter.operation = operations[column.type][0]
                 filter.value = null
             })
@@ -51,7 +52,7 @@ export default function FilterMenu({ boardId }) {
     const setValue = ({ filterId, value }) => {
         setFiltersState(
             produce(filters, draft => {
-                draft.find(x => x._id === filterId).value = value
+                draft.find(x => x._id === filterId).value = value._id
             })
         )
     }
@@ -141,7 +142,9 @@ export default function FilterMenu({ boardId }) {
                                         removeFilter={removeFilter}
                                         key={index}
                                         index={index}
-                                        column={column}
+                                        column={board.attributes.find(
+                                            x => x._id === column
+                                        )}
                                         setColumn={setColumn}
                                         setValue={setValue}
                                         operations={operations}
