@@ -9,6 +9,9 @@ const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
             authorization: `Bearer ${localStorage.getItem('access_token')}`
         })
     },
+    disableStats: true,
+    wsHost: process.env.REACT_APP_PUSHER_HOST,
+    forceTLS: true,
     enabledTransports: ['ws', 'wss']
 })
 
