@@ -1,4 +1,4 @@
-import { useEditOptionsTaskMutation } from '../../../../../../../modules/services/boardSlice.ts'
+import { useEditTaskFieldMutation } from '../../../../../../../modules/services/boardSlice.ts'
 import { Attribute, Task } from '../../../../../../../types/Board'
 import useInputState from '../../../../../../../modules/hooks/useInputState.tsx'
 import { useEffect } from 'react'
@@ -16,7 +16,7 @@ export default function TextColumn({
     boardId,
     hasPerms
 }: Props) {
-    const [editOptionsTask] = useEditOptionsTaskMutation()
+    const [editTaskField] = useEditTaskFieldMutation()
 
     const handleTextEdit = async e => {
         if (
@@ -25,7 +25,7 @@ export default function TextColumn({
         )
             return
 
-        editOptionsTask({
+        editTaskField({
             column: e.target.name,
             value: e.target.value,
             type: 'text',

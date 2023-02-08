@@ -1,7 +1,7 @@
 import { Popover } from '@mui/material'
 import styles from '../../../../../../styles/WatcherPopover.module.scss'
 import useInputState from '../../../../../../modules/hooks/useInputState.tsx'
-import { useEditOptionsTaskMutation } from '../../../../../../modules/services/boardSlice.ts'
+import { useEditTaskFieldMutation } from '../../../../../../modules/services/boardSlice.ts'
 import { useFetchWorkspaceQuery } from '../../../../../../modules/services/workspaceSlice'
 import { useFetchUserQuery } from '../../../../../../modules/services/userSlice'
 import { useParams } from 'react-router-dom'
@@ -21,11 +21,11 @@ function PersonColumnPopover({
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { data: user } = useFetchUserQuery()
     const [search, handleSearch] = useInputState('')
-    const [editOptionsTask] = useEditOptionsTaskMutation()
+    const [editTaskField] = useEditTaskFieldMutation()
 
     const handleClick = (user, isAssignee) => {
         if (isAssignee) {
-            editOptionsTask({
+            editTaskField({
                 column: attribute._id,
                 value: taskOption.value.filter(x => x !== user._id),
                 type: 'person',
@@ -35,7 +35,7 @@ function PersonColumnPopover({
         } else {
             let value = [user._id]
             if (taskOption) value = [...taskOption.value, user._id]
-            editOptionsTask({
+            editTaskField({
                 column: attribute._id,
                 value,
                 type: 'person',

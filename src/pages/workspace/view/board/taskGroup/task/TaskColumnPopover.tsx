@@ -6,7 +6,7 @@ import _ from 'lodash'
 import {
     useClearStatusTaskMutation,
     useEditAttributeLabelsMutation,
-    useEditOptionsTaskMutation
+    useEditTaskFieldMutation
 } from '../../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -31,7 +31,7 @@ function TaskColumnPopover({
     const button = useRef(null)
     const [editAttributeLabels] = useEditAttributeLabelsMutation()
     const [clearStatusTask] = useClearStatusTaskMutation()
-    const [editOptionsTask] = useEditOptionsTaskMutation()
+    const [editTaskField] = useEditTaskFieldMutation()
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -109,7 +109,7 @@ function TaskColumnPopover({
     const handleLabelChange = id => {
         if (labelsEditing) return
 
-        editOptionsTask({
+        editTaskField({
             boardId,
             taskId: task._id,
             column: attribute._id,

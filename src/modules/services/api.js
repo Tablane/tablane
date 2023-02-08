@@ -3,6 +3,7 @@ import { Mutex } from 'async-mutex'
 import { history } from '../../utils/history'
 import { setCurrentToken } from './authReducer'
 import posthog from 'posthog-js'
+import pusher from '../../pusher/pusher.ts'
 
 const mutex = new Mutex()
 
@@ -14,6 +15,10 @@ const baseQuery = fetchBaseQuery({
 
         if (token) {
             headers.set('Authorization', `Bearer ${token}`)
+        }
+
+        if (pusher.sessionID) {
+            headers.set('pusher-session', pusher.sessionID.toString())
         }
 
         return headers
