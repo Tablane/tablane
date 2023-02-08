@@ -1,7 +1,7 @@
 import { api } from './api'
 import { toast } from 'react-hot-toast'
-import socket from '../../socket/socket'
 import handleQueryError from '../../utils/handleQueryError'
+import pusher from '../../pusher/pusher.ts'
 
 const addBoard = data => {
     const { workspace, workspaceId, spaceId, name, _id } = data
@@ -64,14 +64,13 @@ export const workspaceApi = api.injectEndpoints({
                 workspaceId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
             ) {
+                let channel
                 try {
                     const { data } = await cacheDataLoaded
-                    socket.emit('subscribe', {
-                        room: workspaceId,
-                        type: 'workspace'
-                    })
-
-                    socket.on(workspaceId, ({ event, body }) => {
+                    channel = pusher.subscribe(
+                        'private-workspace-' + workspaceId
+                    )
+                    channel.bind('updates', ({ event, body }) => {
                         switch (event) {
                             case 'addBoard':
                                 updateCachedData(workspace =>
@@ -125,7 +124,7 @@ export const workspaceApi = api.injectEndpoints({
                     handleQueryError({ err })
                 }
                 await cacheEntryRemoved
-                socket.emit('unsubscribe', workspaceId)
+                channel.unbind()
             }
         }),
         addWorkspace: builder.mutation({

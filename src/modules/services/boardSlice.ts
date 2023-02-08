@@ -1,7 +1,7 @@
 import { api } from './api'
 import { ObjectId } from '../../utils'
 import { toast } from 'react-hot-toast'
-import socket from '../../socket/socket'
+import pusher from '../../pusher/pusher.ts'
 import handleQueryError from '../../utils/handleQueryError'
 import { flatten, removeChildrenOf } from '../../utils/taskUtils.ts'
 
@@ -40,13 +40,6 @@ const addTask = ({ board, newTaskName, taskGroupId, _id, author, level }) => {
     }
     board.tasks.push(task)
 }
-const editTaskField = ({ board, taskId, type, value }) => {
-    if (type === 'name') {
-        board.tasks.find(x => x._id.toString() === taskId).name = value
-    } else if (type === 'description') {
-        board.tasks.find(x => x._id.toString() === taskId).description = value
-    }
-}
 const deleteTask = ({ board, taskId }) => {
     board.tasks = removeChildrenOf(
         board.tasks.filter(x => x._id !== taskId),
@@ -77,7 +70,7 @@ const sortTask = ({ board, result, destinationIndex, sourceIndex }) => {
     if (destinationIndex < 0) board.tasks.push(task)
     else board.tasks.splice(destinationIndex, 0, task)
 }
-const editOptionsTask = ({ board, column, value, type, taskId }) => {
+const editTaskField = ({ board, column, value, type, taskId }) => {
     const options = board.tasks.find(x => x._id.toString() === taskId).options
     const option = options.find(x => x.column.toString() === column)
 
@@ -100,6 +93,8 @@ const editOptionsTask = ({ board, column, value, type, taskId }) => {
     } else if (type === 'person') {
         if (option) option.value = value
         else options.push({ column, value })
+    } else if (type === 'name') {
+        board.tasks.find(x => x._id.toString() === taskId).name = value
     }
 }
 const addTaskComment = ({ _id, board, content, author, taskId }) => {
@@ -226,11 +221,14 @@ export const boardApi = api.injectEndpoints({
                 boardId,
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
             ) {
+                let channel
                 try {
                     await cacheDataLoaded
-                    socket.emit('subscribe', { room: boardId, type: 'board' })
-
-                    socket.on(boardId, ({ event, body }) => {
+                    channel = pusher.subscribe('private-board-' + boardId)
+                    channel.bind('updates', ({ event, body, sessionId }) => {
+                        if (sessionId === pusher.sessionID.toString()) {
+                            return
+                        }
                         switch (event) {
                             case 'setGroupBy':
                                 updateCachedData(board =>
@@ -240,11 +238,6 @@ export const boardApi = api.injectEndpoints({
                             case 'addTask':
                                 updateCachedData(board =>
                                     addTask({ board, ...body })
-                                )
-                                break
-                            case 'editTaskField':
-                                updateCachedData(board =>
-                                    editTaskField({ board, ...body })
                                 )
                                 break
                             case 'deleteTask':
@@ -257,9 +250,9 @@ export const boardApi = api.injectEndpoints({
                                     sortTask({ board, ...body })
                                 )
                                 break
-                            case 'editOptionsTask':
+                            case 'editTaskField':
                                 updateCachedData(board =>
-                                    editOptionsTask({ board, ...body })
+                                    editTaskField({ board, ...body })
                                 )
                                 break
                             case 'addTaskComment':
@@ -345,7 +338,7 @@ export const boardApi = api.injectEndpoints({
                     handleQueryError({ err })
                 }
                 await cacheEntryRemoved
-                socket.emit('unsubscribe', boardId)
+                channel.unbind()
             },
             providesTags: board => (board ? [board._id, 'Board'] : []),
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -512,7 +505,7 @@ export const boardApi = api.injectEndpoints({
                 }
             }
         }),
-        editOptionsTask: builder.mutation({
+        editTaskField: builder.mutation({
             query: ({ taskId, column, value, type, boardId }) => ({
                 url: `task/${boardId}/${taskId}`,
                 method: 'PATCH',
@@ -531,7 +524,7 @@ export const boardApi = api.injectEndpoints({
                         'fetchBoard',
                         boardId,
                         board => {
-                            editOptionsTask({
+                            editTaskField({
                                 board,
                                 column,
                                 value,
@@ -983,10 +976,9 @@ export const {
     useFetchBoardQuery,
     useSetGroupByMutation,
     useAddTaskMutation,
-    useEditTaskFieldMutation,
     useDeleteTaskMutation,
     useSortTaskMutation,
-    useEditOptionsTaskMutation,
+    useEditTaskFieldMutation,
     useAddTaskCommentMutation,
     useEditTaskCommentMutation,
     useDeleteTaskCommentMutation,
