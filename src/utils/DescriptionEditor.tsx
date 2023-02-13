@@ -10,7 +10,7 @@ import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Placeholder } from '@tiptap/extension-placeholder'
-import Collaboration from '@tiptap/extension-collaboration'
+import { Collaboration } from './collaborationExtension.ts'
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import { useFetchUserQuery } from '../modules/services/userSlice'
 import * as Y from 'yjs'
@@ -32,13 +32,9 @@ function Editor({ taskId, readOnly = false }: Props) {
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [status, setStatus] = useState(null)
 
-    const [document] = useState(() => {
-        return new Y.Doc()
-    })
-
     const [provider] = useState(() => {
         return new HocuspocusProvider({
-            document,
+            document: new Y.Doc(),
             url: process.env.REACT_APP_REALTIME_EDITING_WEBSOCKET,
             name: taskId,
             token: localStorage.getItem('access_token'),
@@ -61,7 +57,7 @@ function Editor({ taskId, readOnly = false }: Props) {
                 emptyNodeClass: styles.showEmptyNodePlaceHolder
             }),
             Collaboration.configure({
-                document
+                document: provider.document
             }),
             CollaborationCursor.configure({
                 provider,
@@ -90,21 +86,13 @@ function Editor({ taskId, readOnly = false }: Props) {
         } else {
             editor?.setEditable(false)
         }
-    }, [editor])
+    }, [editor, status])
 
     useEffectOnce(() => {
         return () => {
             provider.disconnect()
         }
     })
-
-    useEffect(() => {
-        if (status === 'connected') {
-            editor?.setEditable(true)
-        } else {
-            editor?.setEditable(false)
-        }
-    }, [status])
 
     return (
         <div>
