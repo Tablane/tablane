@@ -47,7 +47,15 @@ function RelativeDate({ timestamp, styled = true }) {
                 `${
                     months[date.getMonth()]
                 } ${date.getDate()} ${date.getFullYear()} ` +
-                `at ${date.toLocaleTimeString().substring(0, 5)}`
+                `at ${
+                    date.getHours().toString().length === 1
+                        ? 0 + '' + date.getHours()
+                        : date.getHours()
+                }:${
+                    date.getMinutes().toString().length === 1
+                        ? 0 + '' + date.getMinutes()
+                        : date.getMinutes()
+                }`
         }
 
         return timeString
