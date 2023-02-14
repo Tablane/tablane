@@ -137,7 +137,10 @@ export default function Filter({
                                 operations={operations}
                                 operation={operation}
                                 handleSetOperation={handleSetOperation}
-                                value={column.labels.find(x => x._id === value)}
+                                value={
+                                    column.labels.find(x => x._id === value) ||
+                                    null
+                                }
                                 handleSetValue={handleSetValue}
                                 column={column}
                                 filterTypes={filterTypes}
@@ -151,7 +154,7 @@ export default function Filter({
                                 value={
                                     workspace.members.find(
                                         x => x?.user?._id === value
-                                    )?.user
+                                    )?.user || null
                                 }
                                 handleSetValue={handleSetValue}
                                 filterTypes={filterTypes}

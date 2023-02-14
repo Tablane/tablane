@@ -64,6 +64,7 @@ export default function FilterMenu({ boardId }) {
                     _id: ObjectId(),
                     column: null,
                     filterAnd: true,
+                    type: null,
                     operation: null,
                     value: null
                 })
@@ -142,9 +143,11 @@ export default function FilterMenu({ boardId }) {
                                         removeFilter={removeFilter}
                                         key={index}
                                         index={index}
-                                        column={board.attributes.find(
-                                            x => x._id === column
-                                        )}
+                                        column={
+                                            board.attributes.find(
+                                                x => x._id === column
+                                            ) || null
+                                        }
                                         setColumn={setColumn}
                                         setValue={setValue}
                                         operations={operations}
