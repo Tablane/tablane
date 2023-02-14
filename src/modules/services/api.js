@@ -5,7 +5,7 @@ import { setCurrentToken } from './authReducer'
 import posthog from 'posthog-js'
 import pusher from '../../pusher/pusher.ts'
 
-const mutex = new Mutex()
+export const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_BACKEND_HOST}/api`,
