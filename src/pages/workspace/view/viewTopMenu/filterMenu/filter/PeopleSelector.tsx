@@ -114,7 +114,7 @@ export default function PeopleSelector({
                                             <>
                                                 <div>
                                                     <div className="flex flex-row items-center">
-                                                        {value?.username && (
+                                                        {user?.username && (
                                                             <div className="mr-2 cursor-pointer bg-[#4169e1] text-[10px] min-w-[26px] h-[26px] rounded-full border-2 border-white dark:border-gray-800 flex justify-center items-center text-white">
                                                                 {user.username
                                                                     .charAt(0)
