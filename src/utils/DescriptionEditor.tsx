@@ -20,6 +20,10 @@ import suggestion from './editor/suggestion'
 import { useFetchWorkspaceQuery } from '../modules/services/workspaceSlice'
 import { useParams } from 'react-router-dom'
 import useEffectOnce from '../modules/hooks/useEffectOnce.ts'
+import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import { setCurrentToken } from '../modules/services/authReducer'
+import { mutex } from '../modules/services/api'
 
 interface Props {
     taskId: string
@@ -31,14 +35,42 @@ function Editor({ taskId, readOnly = false }: Props) {
     const { data: user } = useFetchUserQuery()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const [status, setStatus] = useState(null)
+    const dispatch = useDispatch()
 
     const [provider] = useState(() => {
         return new HocuspocusProvider({
             document: new Y.Doc(),
             url: process.env.REACT_APP_REALTIME_EDITING_WEBSOCKET,
             name: taskId,
-            token: localStorage.getItem('access_token'),
-            onStatus: status => setStatus(status.status)
+            token: () => localStorage.getItem('access_token'),
+            onStatus: status => setStatus(status.status),
+            onAuthenticationFailed: async () => {
+                if (!mutex.isLocked()) {
+                    const release = await mutex.acquire()
+
+                    try {
+                        const refreshResult = await axios({
+                            url: `${process.env.REACT_APP_BACKEND_HOST}/api/user/refresh`,
+                            method: 'GET',
+                            withCredentials: true
+                        })
+
+                        if (refreshResult.data) {
+                            dispatch(
+                                setCurrentToken(refreshResult.data.accessToken)
+                            )
+                            localStorage.setItem(
+                                'access_token',
+                                refreshResult.data.accessToken
+                            )
+                        }
+                    } finally {
+                        release()
+                    }
+                }
+                await mutex.waitForUnlock()
+                provider.connect()
+            }
         })
     })
 
