@@ -76,7 +76,8 @@ function Activity({ timestamp, activity, boardId }) {
             x => x._id === activity.change.field
         )
 
-        if (field.type === 'status') return getStatusField(field)
+        if (field?.type === 'status') return getStatusField(field)
+        else return <span>updated a deleted value</span>
     }
 
     return (
