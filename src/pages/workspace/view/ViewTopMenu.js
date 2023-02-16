@@ -13,7 +13,7 @@ import FilterMenu from './viewTopMenu/FilterMenu.tsx'
 import ListIcon from '../../../styles/assets/ListIcon.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { data: board, isFetching, error } = useFetchBoardQuery(boardId)
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
     const [search, setSearch] = useAtom(searchAtom)
@@ -56,7 +56,11 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                         <div> </div>
                     </div>
                     <div className="info">
-                        <h1>{board?.name || '...'}</h1>
+                        <h1>
+                            {!isFetching && !error && board?.name
+                                ? board?.name
+                                : '...'}
+                        </h1>
                     </div>
                     {/*<div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">*/}
                     {/*    {[*/}
