@@ -87,6 +87,7 @@ export default function FilterMenu({ boardId }) {
     }, [board.filters])
 
     const handleClose = open => {
+        if (filters === board.filters) return
         if (!open) {
             setFilters({
                 boardId,
