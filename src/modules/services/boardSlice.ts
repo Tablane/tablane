@@ -341,7 +341,7 @@ export const boardApi = api.injectEndpoints({
                 channel.unbind()
             },
             providesTags: board => (board ? [board._id, 'Board'] : []),
-            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+            async onQueryStarted(boardId, { queryFulfilled }) {
                 try {
                     await queryFulfilled
                     localStorage.setItem(
@@ -349,7 +349,8 @@ export const boardApi = api.injectEndpoints({
                         window.location.pathname
                     )
                 } catch {
-                    toast('Could not find that Board')
+                    if (boardId === undefined)
+                        toast('Could not find that Board')
                 }
             }
         }),

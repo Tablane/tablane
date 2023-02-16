@@ -1,7 +1,7 @@
 import Board from './view/Board'
 import ViewTopMenu from './view/ViewTopMenu'
 import { memo, useCallback, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useFetchWorkspaceQuery } from '../../modules/services/workspaceSlice'
 import { LinearProgress } from '@mui/material'
 import { useFetchBoardQuery } from '../../modules/services/boardSlice.ts'
@@ -17,7 +17,7 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
             ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
-    const { isFetching } = useFetchBoardQuery(boardId)
+    const { isFetching, error } = useFetchBoardQuery(boardId)
     const viewContainerRef = useRef(null)
     const [bla, setBla] = useState(false)
     const setViewContainerRef = useCallback(node => {
@@ -26,6 +26,10 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
             setBla(!bla)
         }
     }, [])
+
+    if (error && !isFetching && boardId === undefined) {
+        return <Navigate to={`/${workspace.id}`} />
+    }
 
     if (level === 'list') {
         if (view === 'list')
@@ -37,13 +41,13 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
                         sideBarClosed={!sidebarOpen}
                     />
                     <div className="h-1 bg-backgroundGrey">
-                        {isFetching && <LinearProgress />}
+                        {(isFetching || error) && <LinearProgress />}
                     </div>
                     <div
                         ref={setViewContainerRef}
                         className="flex-grow bg-backgroundGrey overflow-auto"
                     >
-                        {viewContainerRef?.current && (
+                        {!isFetching && !error && viewContainerRef?.current && (
                             <Board
                                 ref={viewContainerRef}
                                 boardId={boardId}
