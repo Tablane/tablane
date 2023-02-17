@@ -326,6 +326,13 @@ function SideBar(props) {
                                                 >
                                                     {provided => (
                                                         <NavLink
+                                                            onClick={() => {
+                                                                if (
+                                                                    window.innerWidth <=
+                                                                    576
+                                                                )
+                                                                    props.toggleSideBar()
+                                                            }}
                                                             {...provided.draggableProps}
                                                             ref={
                                                                 provided.innerRef
