@@ -11,6 +11,7 @@ import { searchAtom } from '../../../utils/atoms.ts'
 import { useNavigate, useParams } from 'react-router-dom'
 import FilterMenu from './viewTopMenu/FilterMenu.tsx'
 import ListIcon from '../../../styles/assets/ListIcon.tsx'
+import NewViewMenu from './viewTopMenu/NewViewMenu.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     const { data: board, isFetching, error } = useFetchBoardQuery({ boardId })
@@ -103,6 +104,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                                 </div>
                             </div>
                         ))}
+                        <NewViewMenu boardId={boardId} />
                     </div>
                 </div>
                 <div className="pr-4">
