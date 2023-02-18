@@ -80,6 +80,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     <div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">
                         {board?.views.map(({ name, id, _id }) => (
                             <ViewNavItem
+                                key={_id}
                                 boardId={boardId}
                                 _id={_id}
                                 id={id}

@@ -2,9 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ListIcon from '../../../../styles/assets/ListIcon.tsx'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import * as React from 'react'
-import { useDeleteViewMutation } from '../../../../modules/services/boardSlice.ts'
+import {
+    useDeleteViewMutation,
+    useRenameViewMutation
+} from '../../../../modules/services/boardSlice.ts'
+import useInputState from '../../../../modules/hooks/useInputState.tsx'
 
 interface Props {
     boardId: string
@@ -24,8 +28,24 @@ export default function ({
     handleViewClick
 }: Props) {
     const [deleteView] = useDeleteViewMutation()
+    const [renameView] = useRenameViewMutation()
+    const [renaming, setRenaming] = useState<boolean>(false)
+    const [newName, changeNewName, , setNewName] = useInputState(name)
+    const [width, setWidth] = useState<number>(100)
+    const ref = useRef<HTMLSpanElement>()
 
-    const handleRename = () => {}
+    const handleRenameClick = () => {
+        setWidth(ref.current.offsetWidth)
+        setRenaming(true)
+    }
+
+    const handleRename = () => {
+        renameView({
+            viewId: _id,
+            name: newName
+        })
+        setRenaming(false)
+    }
 
     const handleDelete = () => {
         deleteView({
@@ -33,6 +53,10 @@ export default function ({
             viewId: _id
         })
     }
+
+    useEffect(() => {
+        setNewName(name)
+    }, [name])
 
     return (
         <div
@@ -46,13 +70,29 @@ export default function ({
                 }`}
             >
                 <ListIcon className="h-5 w-5 mr-2" />
-                <span
-                    className={`text-sm leading-[14px] font-medium ${
-                        active ? 'text-[#4169e1]' : 'text-[#7c828d]'
-                    }`}
-                >
-                    {name}
-                </span>
+                {renaming ? (
+                    <input
+                        onKeyDown={e => {
+                            if (['Enter', 'Escape'].includes(e.key))
+                                e.currentTarget.blur()
+                        }}
+                        style={{ width: `${width}px` }}
+                        onBlur={handleRename}
+                        className="outline-none text-sm leading-[14px] font-medium text-[#4169e1]"
+                        value={newName}
+                        onChange={changeNewName}
+                        autoFocus
+                    />
+                ) : (
+                    <span
+                        ref={ref}
+                        className={`text-sm leading-[14px] font-medium aaa ${
+                            active ? 'text-[#4169e1]' : 'text-[#7c828d]'
+                        }`}
+                    >
+                        {name}
+                    </span>
+                )}
                 {active && (
                     <Menu as="div" className="relative inline-block text-left">
                         <div>
@@ -77,7 +117,7 @@ export default function ({
                                         {({ active }) => (
                                             <div
                                                 className="h-8"
-                                                onClick={handleRename}
+                                                onClick={handleRenameClick}
                                             >
                                                 <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
                                                     <div className="text-[#656f7d] w-4 mr-2 flex content-center justify-center">
