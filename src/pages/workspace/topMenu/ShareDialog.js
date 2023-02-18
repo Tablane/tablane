@@ -11,6 +11,7 @@ function ShareDialog({ handleClose, open, boardId, view }) {
 
     const toggleShare = (e, share) => {
         setSharing({
+            viewId: view._id,
             boardId,
             share
         })

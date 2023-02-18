@@ -90,7 +90,7 @@ export default function FilterMenu({ boardId, view }) {
         if (filters === view.filters) return
         if (!open) {
             setFilters({
-                boardId,
+                viewId: view._id,
                 filters
             })
         }

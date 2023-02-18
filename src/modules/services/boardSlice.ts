@@ -5,8 +5,11 @@ import pusher from '../../pusher/pusher.ts'
 import handleQueryError from '../../utils/handleQueryError'
 import { flatten, removeChildrenOf } from '../../utils/taskUtils.ts'
 
-const setGroupBy = ({ board, groupBy }) => {
-    board.groupBy = groupBy
+const setGroupBy = ({ board, groupBy, viewId }) => {
+    console.log('bla')
+    // console.log('viewId')
+    // console.log(viewId)
+    // board.views.find(x => x._id === viewId).groupBy = groupBy
 }
 const addTask = ({ board, newTaskName, taskGroupId, _id, author, level }) => {
     const task = {
@@ -355,20 +358,23 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         setGroupBy: builder.mutation({
-            query: ({ boardId, groupBy }) => ({
-                url: `board/${boardId}`,
-                method: 'PATCH',
+            query: ({ viewId, groupBy }) => ({
+                url: `view/${viewId}/groupBy`,
+                method: 'PUT',
                 body: { groupBy }
             }),
             async onQueryStarted(
-                { boardId, groupBy },
+                { boardId, groupBy, viewId },
                 { dispatch, queryFulfilled }
             ) {
+                console.log({ boardId, groupBy, viewId })
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         boardId,
-                        board => setGroupBy({ board, groupBy })
+                        board => {
+                            setGroupBy({ board, groupBy, viewId })
+                        }
                     )
                 )
                 try {
@@ -914,9 +920,9 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         setSharing: builder.mutation({
-            query: ({ boardId, share }) => ({
-                url: `board/share/${boardId}`,
-                method: 'PATCH',
+            query: ({ viewId, share }) => ({
+                url: `view/${viewId}/setSharing`,
+                method: 'PUT',
                 body: { share }
             }),
             async onQueryStarted(
@@ -963,8 +969,8 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         setFilters: builder.mutation({
-            query: ({ boardId, filters }) => ({
-                url: `board/${boardId}`,
+            query: ({ viewId, filters }) => ({
+                url: `view/${viewId}/setFilters`,
                 method: 'PUT',
                 body: { filters }
             }),

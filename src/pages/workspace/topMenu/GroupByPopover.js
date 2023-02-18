@@ -13,7 +13,7 @@ function GroupByPopover({ view, board, groupByOpen, setGroupByOpen }) {
     }
 
     const handleGroupByChange = _id => {
-        setGroupBy({ boardId: board._id, groupBy: _id })
+        setGroupBy({ boardId: board._id, viewId: view._id, groupBy: _id })
         handleClose()
     }
 
