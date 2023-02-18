@@ -990,6 +990,28 @@ export const boardApi = api.injectEndpoints({
                 }
             }
         }),
+        deleteView: builder.mutation({
+            query: ({ boardId, viewId }) => ({
+                url: `view/${boardId}/deleteView`,
+                method: 'POST',
+                body: { viewId }
+            }),
+            invalidatesTags: (result, error, arg) => [arg.boardId],
+            async onQueryStarted({ boardId }, { dispatch, queryFulfilled }) {
+                const patchResult = dispatch(
+                    boardApi.util.updateQueryData(
+                        'fetchBoard',
+                        boardId,
+                        board => {}
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
+                }
+            }
+        }),
         setFilters: builder.mutation({
             query: ({ viewId, filters }) => ({
                 url: `view/${viewId}/setFilters`,
@@ -1025,5 +1047,6 @@ export const {
     useSetSharingMutation,
     useAddSubtaskMutation,
     useSetFiltersMutation,
-    useAddViewMutation
+    useAddViewMutation,
+    useDeleteViewMutation
 } = boardApi
