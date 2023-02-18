@@ -210,7 +210,7 @@ const setSharing = ({ board, share }) => {
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchBoard: builder.query({
-            query: boardId => `board/${boardId}`,
+            query: ({ boardId, viewId = '' }) => `board/${boardId}/${viewId}`,
             transformResponse: (response: any, meta, arg) => {
                 return {
                     ...response,
@@ -218,7 +218,7 @@ export const boardApi = api.injectEndpoints({
                 }
             },
             async onCacheEntryAdded(
-                boardId,
+                { boardId },
                 { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
             ) {
                 let channel

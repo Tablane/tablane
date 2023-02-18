@@ -31,7 +31,7 @@ interface Props {
 function TaskModal({ task, boardId, hasPerms, members }: Props) {
     const navigate = useNavigate()
     const params = useParams()
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { data: board } = useFetchBoardQuery({ boardId })
     const { data: user } = useFetchUserQuery()
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
@@ -44,7 +44,9 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur()
         }
-        navigate(`/${params.workspace}/${params.space}/${params.board}`)
+        navigate(
+            `/${params.workspace}/${params.space}/${params.board}/${params.view}`
+        )
     }
 
     useEffect(() => {

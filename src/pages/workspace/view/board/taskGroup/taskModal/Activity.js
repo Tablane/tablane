@@ -4,7 +4,7 @@ import { diffWords } from 'diff'
 import { useFetchBoardQuery } from '../../../../../../modules/services/boardSlice.ts'
 
 function Activity({ timestamp, activity, boardId }) {
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { data: board } = useFetchBoardQuery({ boardId })
 
     const getDiff = () => {
         const groups = diffWords(activity.change.from, activity.change.to)

@@ -8,7 +8,8 @@ import { forwardRef, useCallback } from 'react'
 function Board({ boardId }, viewContainerRef) {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { data: board } = useFetchBoardQuery({ boardId, viewId: params.view })
+    const view = board?.views.find(x => x.id === params.view)
 
     const hasPerms = useCallback(permission => {
         return true
@@ -19,6 +20,7 @@ function Board({ boardId }, viewContainerRef) {
             ref={viewContainerRef}
             members={workspace.members}
             board={board}
+            view={view}
             hasPerms={hasPerms}
         />
     )

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import React from 'react'
 
-function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
+function GroupByPopover({ view, board, groupByOpen, setGroupByOpen }) {
     const [setGroupBy] = useSetGroupByMutation()
 
     const handleClose = () => {
@@ -48,7 +48,7 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
                                 }
                             >
                                 <span>{attribute.name}</span>
-                                {board?.groupBy === attribute._id && (
+                                {view?.groupBy === attribute._id && (
                                     <FontAwesomeIcon icon={solid('check')} />
                                 )}
                             </div>
@@ -59,7 +59,7 @@ function GroupByPopover({ board, groupByOpen, setGroupByOpen }) {
                         onClick={() => handleGroupByChange('none')}
                     >
                         <span>None</span>
-                        {(!board?.groupBy || board?.groupBy === 'none') && (
+                        {(!view?.groupBy || view?.groupBy === 'none') && (
                             <FontAwesomeIcon icon={solid('check')} />
                         )}
                     </div>

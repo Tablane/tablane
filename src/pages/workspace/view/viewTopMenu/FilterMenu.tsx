@@ -15,8 +15,8 @@ const operations = {
     text: ['Contains', 'Does not contain', 'Is set', 'Is not set']
 }
 
-export default function FilterMenu({ boardId }) {
-    const { data: board } = useFetchBoardQuery(boardId)
+export default function FilterMenu({ boardId, view }) {
+    const { data: board } = useFetchBoardQuery({ boardId })
     const [setFilters] = useSetFiltersMutation()
     const [filters, setFiltersState] = useState([])
 
@@ -81,13 +81,13 @@ export default function FilterMenu({ boardId }) {
     }
 
     useEffect(() => {
-        if (board?.filters) {
-            setFiltersState(board.filters)
+        if (view?.filters) {
+            setFiltersState(view.filters)
         }
-    }, [board.filters])
+    }, [view.filters])
 
     const handleClose = open => {
-        if (filters === board.filters) return
+        if (filters === view.filters) return
         if (!open) {
             setFilters({
                 boardId,
