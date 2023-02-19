@@ -2,9 +2,11 @@ import styles from '../../../../../../styles/TaskModal.module.scss'
 import RelativeDate from '../../../../../../utils/RelativeDate'
 import { diffWords } from 'diff'
 import { useFetchBoardQuery } from '../../../../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
 function Activity({ timestamp, activity, boardId }) {
-    const { data: board } = useFetchBoardQuery({ boardId })
+    const params = useParams()
+    const { data: board } = useFetchBoardQuery({ boardId, viewId: params.view })
 
     const getDiff = () => {
         const groups = diffWords(activity.change.from, activity.change.to)

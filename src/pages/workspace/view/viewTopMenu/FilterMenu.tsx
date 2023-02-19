@@ -8,6 +8,7 @@ import {
     useFetchBoardQuery,
     useSetFiltersMutation
 } from '../../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
 const operations = {
     status: ['Is', 'Is not', 'Is set', 'Is not set'],
@@ -16,7 +17,11 @@ const operations = {
 }
 
 export default function FilterMenu({ boardId, view }) {
-    const { data: board } = useFetchBoardQuery({ boardId })
+    const params = useParams()
+    const { data: board } = useFetchBoardQuery({
+        boardId,
+        viewId: params?.view
+    })
     const [setFilters] = useSetFiltersMutation()
     const [filters, setFiltersState] = useState([])
 
@@ -97,6 +102,7 @@ export default function FilterMenu({ boardId, view }) {
     }
 
     const used = filters.length >= 1
+    if (!board) return <span></span>
     return (
         <Popover.Root onOpenChange={handleClose}>
             <Popover.Trigger asChild>

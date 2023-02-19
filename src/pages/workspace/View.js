@@ -17,7 +17,10 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
             ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
-    const { isFetching, error } = useFetchBoardQuery({ boardId })
+    const { isFetching, error } = useFetchBoardQuery({
+        boardId,
+        viewId: params.view
+    })
     const viewContainerRef = useRef(null)
     const [bla, setBla] = useState(false)
     const setViewContainerRef = useCallback(node => {

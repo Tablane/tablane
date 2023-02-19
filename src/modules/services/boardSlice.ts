@@ -6,10 +6,7 @@ import handleQueryError from '../../utils/handleQueryError'
 import { flatten, removeChildrenOf } from '../../utils/taskUtils.ts'
 
 const setGroupBy = ({ board, groupBy, viewId }) => {
-    console.log('bla')
-    // console.log('viewId')
-    // console.log(viewId)
-    // board.views.find(x => x._id === viewId).groupBy = groupBy
+    board.views.find(x => x._id === viewId).groupBy = groupBy
 }
 const addTask = ({ board, newTaskName, taskGroupId, _id, author, level }) => {
     const task = {
@@ -367,7 +364,6 @@ export const boardApi = api.injectEndpoints({
                 { boardId, groupBy, viewId },
                 { dispatch, queryFulfilled }
             ) {
-                console.log({ boardId, groupBy, viewId })
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
@@ -411,33 +407,6 @@ export const boardApi = api.injectEndpoints({
                                 author,
                                 level
                             })
-                    )
-                )
-                try {
-                    await queryFulfilled
-                } catch (err) {
-                    if (handleQueryError({ err })) patchResult.undo()
-                }
-            }
-        }),
-        editTaskField: builder.mutation({
-            query: ({ boardId, taskId, type, value }) => ({
-                url: `task/${boardId}/${taskId}`,
-                method: 'PATCH',
-                body: {
-                    type,
-                    value
-                }
-            }),
-            async onQueryStarted(
-                { taskId, type, value, boardId },
-                { dispatch, queryFulfilled }
-            ) {
-                const patchResult = dispatch(
-                    boardApi.util.updateQueryData(
-                        'fetchBoard',
-                        boardId,
-                        board => editTaskField({ board, taskId, type, value })
                     )
                 )
                 try {

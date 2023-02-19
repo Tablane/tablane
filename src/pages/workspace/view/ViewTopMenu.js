@@ -14,12 +14,16 @@ import NewViewMenu from './viewTopMenu/NewViewMenu.tsx'
 import ViewNavItem from './viewTopMenu/ViewNavItem.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
-    const { data: board, isFetching, error } = useFetchBoardQuery({ boardId })
+    const params = useParams()
+    const {
+        data: board,
+        isFetching,
+        error
+    } = useFetchBoardQuery({ boardId, viewId: params.view })
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
     const navigate = useNavigate()
     const [search, setSearch] = useAtom(searchAtom)
-    const params = useParams()
     const view = board?.views.find(x => x.id === params?.view)
 
     useEffect(() => {
@@ -78,17 +82,19 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                         </h1>
                     </div>
                     <div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">
-                        {board?.views.map(({ name, id, _id }) => (
-                            <ViewNavItem
-                                key={_id}
-                                boardId={boardId}
-                                _id={_id}
-                                id={id}
-                                name={name}
-                                handleViewClick={handleViewClick}
-                                active={id === params.view}
-                            />
-                        ))}
+                        {!isFetching &&
+                            !error &&
+                            board?.views.map(({ name, id, _id }) => (
+                                <ViewNavItem
+                                    key={_id}
+                                    boardId={boardId}
+                                    _id={_id}
+                                    id={id}
+                                    name={name}
+                                    handleViewClick={handleViewClick}
+                                    active={id === params.view}
+                                />
+                            ))}
                         <NewViewMenu boardId={boardId} />
                     </div>
                 </div>
