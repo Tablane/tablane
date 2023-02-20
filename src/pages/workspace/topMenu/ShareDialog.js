@@ -5,12 +5,15 @@ import styles from '../../../styles/ShareDialog.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useSetSharingMutation } from '../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
 function ShareDialog({ handleClose, open, boardId, view }) {
+    const params = useParams()
     const [setSharing] = useSetSharingMutation()
 
     const toggleShare = (e, share) => {
         setSharing({
+            viewShortId: params.view,
             viewId: view._id,
             boardId,
             share

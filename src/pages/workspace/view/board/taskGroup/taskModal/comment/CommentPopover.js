@@ -7,12 +7,14 @@ import {
     useDeleteReplyMutation,
     useDeleteTaskCommentMutation
 } from '../../../../../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
 function CommentPopover({ taskId, commentId, type, replyId, boardId }) {
     const [open, setOpen] = useState(null)
     const [deleteComment] = useDeleteTaskCommentMutation()
     const [deleteReply] = useDeleteReplyMutation()
     const lastEl = useRef()
+    const params = useParams()
 
     const items = [
         {
@@ -32,9 +34,21 @@ function CommentPopover({ taskId, commentId, type, replyId, boardId }) {
     ]
 
     const handleDelete = () => {
-        if (type === 'comment') deleteComment({ boardId, taskId, commentId })
+        if (type === 'comment')
+            deleteComment({
+                viewShortId: params.view,
+                boardId,
+                taskId,
+                commentId
+            })
         else if (type === 'reply')
-            deleteReply({ boardId, taskId, commentId, replyId })
+            deleteReply({
+                viewShortId: params.view,
+                boardId,
+                taskId,
+                commentId,
+                replyId
+            })
         setOpen(false)
     }
 

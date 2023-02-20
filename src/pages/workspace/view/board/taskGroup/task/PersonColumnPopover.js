@@ -30,7 +30,8 @@ function PersonColumnPopover({
                 value: taskOption.value.filter(x => x !== user._id),
                 type: 'person',
                 boardId,
-                taskId: task._id
+                taskId: task._id,
+                viewShortId: params.view
             })
         } else {
             let value = [user._id]
@@ -40,7 +41,8 @@ function PersonColumnPopover({
                 value,
                 type: 'person',
                 boardId,
-                taskId: task._id
+                taskId: task._id,
+                viewShortId: params.view
             })
         }
     }

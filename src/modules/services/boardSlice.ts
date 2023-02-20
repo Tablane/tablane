@@ -210,7 +210,9 @@ const setSharing = ({ board, share }) => {
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
         fetchBoard: builder.query({
-            query: ({ boardId, viewId = '' }) => `board/${boardId}/${viewId}`,
+            query: ({ boardId, viewShortId = '' }) =>
+                `board/${boardId}/${viewShortId}`,
+            keepUnusedDataFor: 0,
             transformResponse: (response: any, meta, arg) => {
                 return {
                     ...response,
@@ -341,7 +343,7 @@ export const boardApi = api.injectEndpoints({
                 channel.unbind()
             },
             providesTags: board => (board ? [board._id, 'Board'] : []),
-            async onQueryStarted(boardId, { queryFulfilled }) {
+            async onQueryStarted({ boardId }, { queryFulfilled }) {
                 try {
                     await queryFulfilled
                     localStorage.setItem(
@@ -361,13 +363,15 @@ export const boardApi = api.injectEndpoints({
                 body: { groupBy }
             }),
             async onQueryStarted(
-                { boardId, groupBy, viewId },
+                { boardId, groupBy, viewId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
+                console.log('viewShortId')
+                console.log(viewShortId)
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {
                             setGroupBy({ board, groupBy, viewId })
                         }
@@ -391,13 +395,22 @@ export const boardApi = api.injectEndpoints({
                 }
             }),
             async onQueryStarted(
-                { boardId, newTaskName, taskGroupId, _id, author, level },
+                {
+                    boardId,
+                    newTaskName,
+                    taskGroupId,
+                    _id,
+                    author,
+                    level,
+                    viewId,
+                    viewShortId
+                },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             addTask({
                                 board,
@@ -422,13 +435,13 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { taskId, boardId },
+                { taskId, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {
                             deleteTask({ board, taskId })
                         }
@@ -453,13 +466,20 @@ export const boardApi = api.injectEndpoints({
                 }
             }),
             async onQueryStarted(
-                { result, destinationIndex, newItems, sourceIndex, boardId },
+                {
+                    result,
+                    destinationIndex,
+                    newItems,
+                    sourceIndex,
+                    boardId,
+                    viewShortId
+                },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {
                             // sortTask({
                             //     board,
@@ -492,13 +512,13 @@ export const boardApi = api.injectEndpoints({
                 }
             }),
             async onQueryStarted(
-                { column, value, type, taskId, boardId },
+                { column, value, type, taskId, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {
                             editTaskField({
                                 board,
@@ -524,13 +544,13 @@ export const boardApi = api.injectEndpoints({
                 body: { content, _id }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId, _id },
+                { content, author, taskId, boardId, _id, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             addTaskComment({
                                 board,
@@ -555,13 +575,13 @@ export const boardApi = api.injectEndpoints({
                 body: { content }
             }),
             async onQueryStarted(
-                { content, taskId, boardId, commentId },
+                { content, taskId, boardId, commentId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             editTaskComment({
                                 board,
@@ -584,13 +604,13 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { taskId, boardId, commentId },
+                { taskId, boardId, commentId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             deleteTaskComment({
                                 board,
@@ -613,13 +633,21 @@ export const boardApi = api.injectEndpoints({
                 body: { content, _id }
             }),
             async onQueryStarted(
-                { content, author, taskId, boardId, commentId, _id },
+                {
+                    content,
+                    author,
+                    taskId,
+                    boardId,
+                    commentId,
+                    _id,
+                    viewShortId
+                },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             addReply({
                                 board,
@@ -675,13 +703,13 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { taskId, boardId, replyId, commentId },
+                { taskId, boardId, replyId, commentId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board =>
                             deleteReply({
                                 board,
@@ -704,13 +732,13 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { taskId, optionId, boardId },
+                { taskId, optionId, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => clearStatusTask({ board, taskId, optionId })
                     )
                 )
@@ -728,13 +756,13 @@ export const boardApi = api.injectEndpoints({
                 body: { type, _id }
             }),
             async onQueryStarted(
-                { type, _id, boardId },
+                { type, _id, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => addAttribute({ board, type, _id })
                     )
                 )
@@ -752,13 +780,13 @@ export const boardApi = api.injectEndpoints({
                 body: { name }
             }),
             async onQueryStarted(
-                { name, attributeId, boardId },
+                { name, attributeId, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => editAttributeName({ board, name, attributeId })
                     )
                 )
@@ -775,13 +803,13 @@ export const boardApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
             async onQueryStarted(
-                { attributeId, boardId },
+                { attributeId, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => deleteAttribute({ board, attributeId })
                     )
                 )
@@ -799,13 +827,13 @@ export const boardApi = api.injectEndpoints({
                 body: { result }
             }),
             async onQueryStarted(
-                { result, boardId },
+                { result, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => sortAttribute({ board, result })
                     )
                 )
@@ -823,13 +851,13 @@ export const boardApi = api.injectEndpoints({
                 body: { name, labels }
             }),
             async onQueryStarted(
-                { name, labels, boardId },
+                { name, labels, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => editAttributeLabels({ board, name, labels })
                     )
                 )
@@ -847,13 +875,13 @@ export const boardApi = api.injectEndpoints({
                 body: { userId: user._id }
             }),
             async onQueryStarted(
-                { task, user, boardId },
+                { task, user, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => addWatcher({ board, task, user })
                     )
                 )
@@ -871,13 +899,13 @@ export const boardApi = api.injectEndpoints({
                 body: { userId: user._id }
             }),
             async onQueryStarted(
-                { task, user, boardId },
+                { task, user, boardId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => removeWatcher({ board, task, user })
                     )
                 )
@@ -895,13 +923,13 @@ export const boardApi = api.injectEndpoints({
                 body: { share }
             }),
             async onQueryStarted(
-                { boardId, share },
+                { boardId, share, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => setSharing({ board, share })
                     )
                 )
@@ -913,20 +941,20 @@ export const boardApi = api.injectEndpoints({
             }
         }),
         addSubtask: builder.mutation({
-            query: ({ boardId, newTaskName, taskId }) => ({
+            query: ({ boardId, newTaskName, taskId, viewShortId }) => ({
                 url: `task/${boardId}/${taskId}`,
                 method: 'POST',
                 body: { name: newTaskName }
             }),
             invalidatesTags: (result, error, arg) => [arg.boardId],
             async onQueryStarted(
-                { boardId, newTaskName, taskGroupId, _id, author },
+                { boardId, newTaskName, taskGroupId, _id, author, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {}
                     )
                 )
@@ -944,11 +972,14 @@ export const boardApi = api.injectEndpoints({
                 body: { type }
             }),
             invalidatesTags: (result, error, arg) => [arg.boardId],
-            async onQueryStarted({ boardId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { boardId, viewShortId },
+                { dispatch, queryFulfilled }
+            ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {}
                     )
                 )
@@ -966,11 +997,14 @@ export const boardApi = api.injectEndpoints({
                 body: { viewId }
             }),
             invalidatesTags: (result, error, arg) => [arg.boardId],
-            async onQueryStarted({ boardId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { boardId, viewShortId },
+                { dispatch, queryFulfilled }
+            ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {}
                     )
                 )
@@ -988,11 +1022,14 @@ export const boardApi = api.injectEndpoints({
                 body: { name }
             }),
             invalidatesTags: (result, error, arg) => [arg.boardId],
-            async onQueryStarted({ boardId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted(
+                { boardId, viewShortId },
+                { dispatch, queryFulfilled }
+            ) {
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',
-                        boardId,
+                        { boardId, viewShortId },
                         board => {}
                     )
                 )

@@ -19,7 +19,7 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
     const boardId = findBoardId()
     const { isFetching, error } = useFetchBoardQuery({
         boardId,
-        viewId: params.view
+        viewShortId: params.view
     })
     const viewContainerRef = useRef(null)
     const [bla, setBla] = useState(false)

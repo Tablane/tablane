@@ -9,6 +9,7 @@ import {
     useRenameViewMutation
 } from '../../../../modules/services/boardSlice.ts'
 import useInputState from '../../../../modules/hooks/useInputState.tsx'
+import { useParams } from 'react-router-dom'
 
 interface Props {
     boardId: string
@@ -33,6 +34,7 @@ export default function ({
     const [newName, changeNewName, , setNewName] = useInputState(name)
     const [width, setWidth] = useState<number>(100)
     const ref = useRef<HTMLSpanElement>()
+    const params = useParams()
 
     const handleRenameClick = () => {
         setWidth(ref.current.offsetWidth)
@@ -41,6 +43,7 @@ export default function ({
 
     const handleRename = () => {
         renameView({
+            viewShortId: params.view,
             viewId: _id,
             name: newName
         })
@@ -49,6 +52,7 @@ export default function ({
 
     const handleDelete = () => {
         deleteView({
+            viewShortId: params.view,
             boardId,
             viewId: _id
         })

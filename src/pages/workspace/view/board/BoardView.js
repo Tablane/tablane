@@ -47,6 +47,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
 
             return (
                 <TaskGroup
+                    viewShortId={params.view}
                     ref={viewContainerRef}
                     hasPerms={hasPerms}
                     boardId={board._id}
@@ -87,6 +88,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
 
         return labels.map(label => (
             <TaskGroup
+                viewShortId={params.view}
                 ref={viewContainerRef}
                 hasPerms={hasPerms}
                 groupedTasks={labels}
@@ -150,7 +152,11 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                 boardId: board._id
             })
         } else if (/^attribute /gm.test(result.type)) {
-            sortAttribute({ result, boardId: board._id })
+            sortAttribute({
+                viewShortId: params.view,
+                result,
+                boardId: board._id
+            })
         }
     }
 

@@ -20,7 +20,7 @@ export default function FilterMenu({ boardId, view }) {
     const params = useParams()
     const { data: board } = useFetchBoardQuery({
         boardId,
-        viewId: params?.view
+        viewShortId: params?.view
     })
     const [setFilters] = useSetFiltersMutation()
     const [filters, setFiltersState] = useState([])

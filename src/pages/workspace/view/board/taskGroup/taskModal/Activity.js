@@ -6,7 +6,10 @@ import { useParams } from 'react-router-dom'
 
 function Activity({ timestamp, activity, boardId }) {
     const params = useParams()
-    const { data: board } = useFetchBoardQuery({ boardId, viewId: params.view })
+    const { data: board } = useFetchBoardQuery({
+        boardId,
+        viewShortId: params.view
+    })
 
     const getDiff = () => {
         const groups = diffWords(activity.change.from, activity.change.to)

@@ -19,7 +19,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
         data: board,
         isFetching,
         error
-    } = useFetchBoardQuery({ boardId, viewId: params.view })
+    } = useFetchBoardQuery({ boardId, viewShortId: params.view })
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
     const navigate = useNavigate()

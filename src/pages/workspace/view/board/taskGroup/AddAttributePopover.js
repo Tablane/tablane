@@ -5,9 +5,11 @@ import { ObjectId } from '../../../../../utils'
 import { useAddAttributeMutation } from '../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useParams } from 'react-router-dom'
 
 function AddAttributePopover(props) {
     const [addAttribute] = useAddAttributeMutation()
+    const params = useParams()
 
     const handleClose = () => {
         props.close()
@@ -20,6 +22,7 @@ function AddAttributePopover(props) {
             return
         }
         addAttribute({
+            viewShortId: params.view,
             boardId: props.boardId,
             type,
             _id: ObjectId()

@@ -7,6 +7,7 @@ import {
 } from '../../../../../modules/services/boardSlice.ts'
 import { useRef, useState } from 'react'
 import { useClickAway } from 'react-use'
+import { useParams } from 'react-router-dom'
 
 function NewTaskForm({
     boardId,
@@ -15,6 +16,7 @@ function NewTaskForm({
     setNewTaskOpen,
     taskId
 }) {
+    const params = useParams()
     const { data: user } = useFetchUserQuery()
     const [addTask] = useAddTaskMutation()
     const [addSubtask] = useAddSubtaskMutation()
@@ -31,6 +33,7 @@ function NewTaskForm({
         resetNewTaskName()
         if (level >= 0) return handleSubTask()
         addTask({
+            viewShortId: params.view,
             author: user.username,
             level: level + 1,
             boardId,
@@ -55,6 +58,7 @@ function NewTaskForm({
 
     const handleSubTask = () => {
         addSubtask({
+            viewShortId: params.view,
             boardId,
             newTaskName,
             taskId
@@ -65,12 +69,14 @@ function NewTaskForm({
         multipleTasks.map(taskName => {
             if (level >= 0) {
                 addSubtask({
+                    viewShortId: params.view,
                     boardId,
                     newTaskName: taskName,
                     taskId
                 })
             } else {
                 addTask({
+                    viewShortId: params.view,
                     author: user.username,
                     level: level + 1,
                     boardId,

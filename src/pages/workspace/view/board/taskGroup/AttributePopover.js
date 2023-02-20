@@ -15,12 +15,14 @@ import {
 } from '../../../../../modules/services/boardSlice.ts'
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useParams } from 'react-router-dom'
 
 function AttributePopover(props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [name, setName] = useState(props.attr.name)
     const [deleteAttribute] = useDeleteAttributeMutation()
     const [editAttributeName] = useEditAttributeNameMutation()
+    const params = useParams()
 
     useEffect(() => {
         setName(props.attr.name || '')
@@ -33,12 +35,17 @@ function AttributePopover(props) {
 
     const handleAttributeDelete = async () => {
         setDeleteDialogOpen(!deleteDialogOpen)
-        deleteAttribute({ attributeId: props.attr._id, boardId: props.boardId })
+        deleteAttribute({
+            viewShortId: params.view,
+            attributeId: props.attr._id,
+            boardId: props.boardId
+        })
     }
 
     const updateName = async () => {
         if (props.attr.name === name || name === '') return
         editAttributeName({
+            viewShortId: params.view,
             attributeId: props.attr._id,
             name,
             boardId: props.boardId

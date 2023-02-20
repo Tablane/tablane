@@ -8,6 +8,7 @@ import Editor from '../../../../../../utils/Editor.tsx'
 import CommentReplySection from './comment/CommentReplySection.tsx'
 import RelativeDate from '../../../../../../utils/RelativeDate'
 import { Comment as CommentType } from '../../../../../../types/Board'
+import { useParams } from 'react-router-dom'
 
 interface Props {
     comment: CommentType
@@ -15,12 +16,14 @@ interface Props {
     boardId: string
 }
 function Comment({ comment, taskId, boardId }: Props) {
+    const params = useParams()
     const [editing, setEditing] = useState(false)
     const [replySectionOpen, setReplySectionOpen] = useState(false)
     const [editTaskComment] = useEditTaskCommentMutation()
 
     const handleSave = editor => {
         editTaskComment({
+            viewShortId: params.view,
             boardId,
             taskId,
             commentId: comment._id,
