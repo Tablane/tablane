@@ -12,7 +12,8 @@ import {
     closestCenter,
     useSensor,
     useSensors,
-    PointerSensor
+    TouchSensor,
+    MouseSensor
 } from '@dnd-kit/core'
 import { buildTree, flatten } from '../../../../utils/taskUtils.ts'
 import Fuse from 'fuse.js'
@@ -27,7 +28,15 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
     const [search] = useAtom(searchAtom)
 
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 15 } })
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 250, tolerance: 5 }
+        }),
+        useSensor(MouseSensor, {
+            activationConstraint: { distance: 15 }
+        }),
+        useSensor(MouseSensor, {
+            activationConstraint: { distance: 15 }
+        })
     )
 
     const groupTasks = useMemo(() => {
