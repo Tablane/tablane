@@ -180,6 +180,7 @@ function TaskGroup(props: Props, viewContainerRef) {
             const sortedTasks = arrayMove(clonedTasks, activeIndex, overIndex)
 
             sortTask({
+                viewShortId,
                 newItems: flatten(buildTree(sortedTasks)),
                 boardId,
                 taskId: clonedTasks[activeIndex]._id,

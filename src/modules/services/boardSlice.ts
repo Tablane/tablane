@@ -1021,7 +1021,7 @@ export const boardApi = api.injectEndpoints({
                 method: 'PUT',
                 body: { name }
             }),
-            invalidatesTags: (result, error, arg) => [arg.boardId],
+            invalidatesTags: (result, error, arg) => ['Board'],
             async onQueryStarted(
                 { boardId, viewShortId },
                 { dispatch, queryFulfilled }
@@ -1046,7 +1046,7 @@ export const boardApi = api.injectEndpoints({
                 method: 'PUT',
                 body: { filters }
             }),
-            invalidatesTags: (result, error, arg) => [arg.boardId]
+            invalidatesTags: (result, error, arg) => ['Board']
         })
     })
 })

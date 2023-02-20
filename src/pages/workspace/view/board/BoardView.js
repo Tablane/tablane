@@ -33,8 +33,8 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
     )
 
     const groupTasks = useMemo(() => {
-        if (!board) return
         const view = board?.views.find(x => x.id === params?.view)
+        if (!view) return
         if (!view.groupBy || view.groupBy === 'none') {
             const fuse = new Fuse(board.tasks, {
                 keys: ['name'],
@@ -51,7 +51,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                     ref={viewContainerRef}
                     hasPerms={hasPerms}
                     boardId={board._id}
-                    groupBy={board?.groupBy}
+                    groupBy={view?.groupBy}
                     attributes={board.attributes}
                     members={members}
                     color={'rgb(196, 196, 196)'}
@@ -93,7 +93,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                 hasPerms={hasPerms}
                 groupedTasks={labels}
                 boardId={board._id}
-                groupBy={board?.groupBy}
+                groupBy={view?.groupBy}
                 attributes={board.attributes}
                 members={members}
                 color={label.color}
