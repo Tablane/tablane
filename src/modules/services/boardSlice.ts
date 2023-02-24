@@ -366,8 +366,6 @@ export const boardApi = api.injectEndpoints({
                 { boardId, groupBy, viewId, viewShortId },
                 { dispatch, queryFulfilled }
             ) {
-                console.log('viewShortId')
-                console.log(viewShortId)
                 const patchResult = dispatch(
                     boardApi.util.updateQueryData(
                         'fetchBoard',

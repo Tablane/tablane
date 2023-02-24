@@ -4,14 +4,17 @@ import handleQueryError from '../../utils/handleQueryError'
 import pusher from '../../pusher/pusher.ts'
 
 const addBoard = data => {
-    const { workspace, workspaceId, spaceId, name, _id } = data
+    const { workspace, viewShortId, viewId, spaceId, name, _id } = data
     const board = {
         _id,
         name,
-        workspace: workspaceId,
-        attributes: [],
-        taskGroups: [],
-        sharing: false
+        views: [
+            {
+                name: 'List',
+                _id: viewId,
+                id: viewShortId
+            }
+        ]
     }
     workspace.spaces.find(space => space._id === spaceId).boards.push(board)
     return workspace
@@ -147,6 +150,7 @@ export const workspaceApi = api.injectEndpoints({
                 { workspaceId, workspaceIdFriendly, spaceId, name, _id },
                 { dispatch, queryFulfilled }
             ) {
+                const { data } = await queryFulfilled
                 const patchResult = dispatch(
                     workspaceApi.util.updateQueryData(
                         'fetchWorkspace',
@@ -157,7 +161,9 @@ export const workspaceApi = api.injectEndpoints({
                                 workspaceId,
                                 spaceId,
                                 name,
-                                _id
+                                _id,
+                                viewId: data.message.viewId,
+                                viewShortId: data.message.viewShortId
                             })
                     )
                 )
