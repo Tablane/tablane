@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import pusher from '../../pusher/pusher.ts'
 import handleQueryError from '../../utils/handleQueryError'
 import { flatten, removeChildrenOf } from '../../utils/taskUtils.ts'
+import { current } from 'immer'
 
 const setGroupBy = ({ board, groupBy, viewId }) => {
     board.views.find(x => x._id === viewId).groupBy = groupBy
@@ -203,8 +204,9 @@ const removeWatcher = ({ board, task, user }) => {
     const localTask = board.tasks.find(x => x._id === task._id)
     localTask.watcher = localTask.watcher.filter(x => x._id !== user._id)
 }
-const setSharing = ({ board, share }) => {
-    board.sharing = share
+const setSharing = ({ board, share, viewShortId }) => {
+    const view = board.views.find(x => x.id === viewShortId)
+    view.sharing = share
 }
 
 export const boardApi = api.injectEndpoints({
@@ -928,7 +930,7 @@ export const boardApi = api.injectEndpoints({
                     boardApi.util.updateQueryData(
                         'fetchBoard',
                         { boardId, viewShortId },
-                        board => setSharing({ board, share })
+                        board => setSharing({ board, share, viewShortId })
                     )
                 )
                 try {

@@ -4,8 +4,8 @@ import { flatten } from '../../utils/taskUtils.ts'
 
 export const boardApi = api.injectEndpoints({
     endpoints: builder => ({
-        fetchSharedBoard: builder.query({
-            query: boardId => `board/share/${boardId}`,
+        fetchSharedView: builder.query({
+            query: viewId => `view/share/${viewId}`,
             transformResponse: (response, meta, arg) => {
                 return {
                     ...response,
@@ -23,4 +23,4 @@ export const boardApi = api.injectEndpoints({
     })
 })
 
-export const { useFetchSharedBoardQuery } = boardApi
+export const { useFetchSharedViewQuery } = boardApi

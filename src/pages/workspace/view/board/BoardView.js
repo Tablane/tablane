@@ -20,7 +20,7 @@ import { useAtom } from 'jotai'
 import { searchAtom } from '../../../../utils/atoms.ts'
 import { useParams } from 'react-router-dom'
 
-function BoardView({ board, members, hasPerms }, viewContainerRef) {
+function BoardView({ board, members, view, hasPerms }, viewContainerRef) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
@@ -33,7 +33,6 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
     )
 
     const groupTasks = useMemo(() => {
-        const view = board?.views.find(x => x.id === params?.view)
         if (!view) return
         if (!view.groupBy || view.groupBy === 'none') {
             const fuse = new Fuse(board.tasks, {
