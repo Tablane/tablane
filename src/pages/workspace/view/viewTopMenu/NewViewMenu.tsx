@@ -19,7 +19,7 @@ function NewViewMenu({ boardId }: NewViewMenuProps) {
     }
 
     return (
-        <Menu as="div" className="relative inline-block text-left">
+        <Menu as="div" className="shrink-0 relative inline-block text-left">
             <div>
                 <Menu.Button className="outline-none">
                     <div className="outline-none subpixel-antialiased flex justify-center items-center h-[60px] box-border cursor-pointer border-y-[3px] border-y-[white] border-solid">

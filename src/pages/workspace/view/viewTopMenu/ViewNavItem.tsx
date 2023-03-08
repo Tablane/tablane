@@ -66,7 +66,7 @@ export default function ({
         <div
             key={id}
             onClick={() => handleViewClick(id)}
-            className="subpixel-antialiased flex justify-center items-center h-[60px] box-border cursor-pointer border-y-[3px] border-y-[white] border-solid"
+            className="min-w-[0] shrink-0 subpixel-antialiased flex justify-center items-center h-[60px] box-border cursor-pointer border-y-[3px] border-y-[white] border-solid"
         >
             <div
                 className={`flex justify-center items-center h-[25px] px-3 py-0 border-l-[#e9ebf1] border-l border-solid ${

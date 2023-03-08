@@ -60,41 +60,43 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     return (
         <div className="TopMenu">
             <div>
-                <div className="details flex justify-start items-center h-full pl-4">
+                <div className="details min-w-0 flex justify-start items-center h-full pl-4">
                     {sideBarClosed && (
                         <div
                             onClick={toggleSideBar}
-                            className="mr-[15px] cursor-pointer"
+                            className="mr-[15px] shrink-0 cursor-pointer"
                         >
                             <FontAwesomeIcon
                                 icon={solid('angle-double-right')}
                             />
                         </div>
                     )}
-                    <div className="pic">
+                    <div className="pic shrink-0">
                         <div> </div>
                     </div>
-                    <div className="info">
+                    <div className="info shrink-0">
                         <h1>
                             {!isFetching && !error && board?.name
                                 ? board?.name
                                 : '...'}
                         </h1>
                     </div>
-                    <div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">
-                        {!isFetching &&
-                            !error &&
-                            board?.views.map(({ name, id, _id }) => (
-                                <ViewNavItem
-                                    key={_id}
-                                    boardId={boardId}
-                                    _id={_id}
-                                    id={id}
-                                    name={name}
-                                    handleViewClick={handleViewClick}
-                                    active={id === params.view}
-                                />
-                            ))}
+                    <div className="flex flex-row min-w-0 justify-center items-center h-full mx-[15px] my-0">
+                        <div className="flex min-w-0 flex-row overflow-auto">
+                            {!isFetching &&
+                                !error &&
+                                board?.views.map(({ name, id, _id }) => (
+                                    <ViewNavItem
+                                        key={_id}
+                                        boardId={boardId}
+                                        _id={_id}
+                                        id={id}
+                                        name={name}
+                                        handleViewClick={handleViewClick}
+                                        active={id === params.view}
+                                    />
+                                ))}
+                        </div>
                         <NewViewMenu boardId={boardId} />
                     </div>
                 </div>
