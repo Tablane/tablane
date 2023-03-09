@@ -10,6 +10,7 @@ import {
 } from '../../../../modules/services/boardSlice.ts'
 import useInputState from '../../../../modules/hooks/useInputState.tsx'
 import { useParams } from 'react-router-dom'
+import { usePopper } from '../../../../utils/usePopper.ts'
 
 interface Props {
     boardId: string
@@ -35,6 +36,12 @@ export default function ({
     const [width, setWidth] = useState<number>(100)
     const ref = useRef<HTMLSpanElement>()
     const params = useParams()
+
+    const [trigger, container] = usePopper({
+        placement: 'bottom-end',
+        strategy: 'fixed',
+        modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+    })
 
     const handleRenameClick = () => {
         setWidth(ref.current.offsetWidth)
@@ -98,69 +105,71 @@ export default function ({
                     </span>
                 )}
                 {active && (
-                    <Menu as="div" className="relative inline-block text-left">
-                        <div>
-                            <Menu.Button className="outline-none">
-                                <div className="ml-2">
-                                    <FontAwesomeIcon icon={solid('ellipsis')} />
-                                </div>
-                            </Menu.Button>
+                    <Menu as="div">
+                        <Menu.Button ref={trigger} className="outline-none">
+                            <div className="ml-2">
+                                <FontAwesomeIcon icon={solid('ellipsis')} />
+                            </div>
+                        </Menu.Button>
+                        <div ref={container} className="z-10">
+                            <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                            >
+                                <Menu.Items className="z-[100] absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="py-2">
+                                        <Menu.Item>
+                                            {({ active }) => (
+                                                <div
+                                                    className="h-8"
+                                                    onClick={handleRenameClick}
+                                                >
+                                                    <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
+                                                        <div className="text-[#656f7d] w-4 mr-2 flex content-center justify-center">
+                                                            <FontAwesomeIcon
+                                                                icon={solid(
+                                                                    'pen'
+                                                                )}
+                                                            />
+                                                        </div>
+                                                        <p className="opacity-[.87] text-black leading-4 text-sm leading-2">
+                                                            Rename
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                            {({ active }) => (
+                                                <div
+                                                    className="h-8"
+                                                    onClick={handleDelete}
+                                                >
+                                                    <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
+                                                        <div className="w-4 mr-2 flex content-center justify-center">
+                                                            <FontAwesomeIcon
+                                                                icon={regular(
+                                                                    'trash-alt'
+                                                                )}
+                                                                className="text-pink-400"
+                                                            />
+                                                        </div>
+                                                        <p className="opacity-[.87] text-black leading-4 text-sm leading-2">
+                                                            Delete
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Menu.Item>
+                                    </div>
+                                </Menu.Items>
+                            </Transition>
                         </div>
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                        >
-                            <Menu.Items className="z-[100] absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="py-2">
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <div
-                                                className="h-8"
-                                                onClick={handleRenameClick}
-                                            >
-                                                <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
-                                                    <div className="text-[#656f7d] w-4 mr-2 flex content-center justify-center">
-                                                        <FontAwesomeIcon
-                                                            icon={solid('pen')}
-                                                        />
-                                                    </div>
-                                                    <p className="opacity-[.87] text-black leading-4 text-sm leading-2">
-                                                        Rename
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <div
-                                                className="h-8"
-                                                onClick={handleDelete}
-                                            >
-                                                <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
-                                                    <div className="w-4 mr-2 flex content-center justify-center">
-                                                        <FontAwesomeIcon
-                                                            icon={regular(
-                                                                'trash-alt'
-                                                            )}
-                                                            className="text-pink-400"
-                                                        />
-                                                    </div>
-                                                    <p className="opacity-[.87] text-black leading-4 text-sm leading-2">
-                                                        Delete
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </Menu.Item>
-                                </div>
-                            </Menu.Items>
-                        </Transition>
                     </Menu>
                 )}
             </div>
