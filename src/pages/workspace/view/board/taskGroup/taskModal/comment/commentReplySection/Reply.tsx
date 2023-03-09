@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useEditReplyMutation } from '../../../../../../../../modules/services/boardSlice.ts'
 import RelativeDate from '../../../../../../../../utils/RelativeDate'
 import { Reply as ReplyType } from '../../../../../../../../types/Board'
+import { useParams } from 'react-router-dom'
 
 interface Props {
     commentId: string
@@ -18,9 +19,11 @@ interface Props {
 function Reply({ commentId, reply, taskId, boardId }: Props) {
     const [editing, setEditing] = useState(false)
     const [editReply] = useEditReplyMutation()
+    const params = useParams()
 
     const handleSave = editor => {
         editReply({
+            viewShortId: params.view,
             boardId,
             taskId,
             commentId,

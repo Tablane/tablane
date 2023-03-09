@@ -8,29 +8,48 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useFetchBoardQuery } from '../../../modules/services/boardSlice.ts'
 import { useAtom } from 'jotai'
 import { searchAtom } from '../../../utils/atoms.ts'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FilterMenu from './viewTopMenu/FilterMenu.tsx'
-import ListIcon from '../../../styles/assets/ListIcon.tsx'
+import NewViewMenu from './viewTopMenu/NewViewMenu.tsx'
+import ViewNavItem from './viewTopMenu/ViewNavItem.tsx'
 
 function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
-    const { data: board, isFetching, error } = useFetchBoardQuery(boardId)
+    const params = useParams()
+    const {
+        data: board,
+        isFetching,
+        error
+    } = useFetchBoardQuery({ boardId, viewShortId: params.view })
     const [shareDialogOpen, toggleShareDialogOpen] = useToggleState(false)
     const [groupByOpen, setGroupByOpen] = useState(null)
+    const navigate = useNavigate()
     const [search, setSearch] = useAtom(searchAtom)
-    const params = useParams()
+    const view = board?.views.find(x => x.id === params?.view)
 
     useEffect(() => {
         setSearch('')
     }, [params.board])
 
+    useEffect(() => {
+        if (!params.view && board) {
+            const { workspace, space, board: boardId } = params
+            navigate(`/${workspace}/${space}/${boardId}/${board.views[0].id}`)
+        }
+    }, [params.board, board])
+
     const handleChange = e => {
         setSearch(e.target.value)
     }
 
+    const handleViewClick = id => {
+        const { workspace, space, board } = params
+        navigate(`/${workspace}/${space}/${board}/${id}`)
+    }
+
     const groupBy = () => {
-        if (!board?.groupBy || board.groupBy === 'none') return false
+        if (!view?.groupBy || view.groupBy === 'none') return false
         return board.attributes.find(
-            attribute => attribute._id === board.groupBy
+            attribute => attribute._id === view.groupBy
         ).name
     }
 
@@ -41,67 +60,46 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
     return (
         <div className="TopMenu">
             <div>
-                <div className="details flex justify-start items-center h-full pl-4">
+                <div className="details min-w-0 flex justify-start items-center h-full pl-4">
                     {sideBarClosed && (
                         <div
                             onClick={toggleSideBar}
-                            className="mr-[15px] cursor-pointer"
+                            className="mr-[15px] shrink-0 cursor-pointer"
                         >
                             <FontAwesomeIcon
                                 icon={solid('angle-double-right')}
                             />
                         </div>
                     )}
-                    <div className="pic">
+                    <div className="pic shrink-0">
                         <div> </div>
                     </div>
-                    <div className="info">
+                    <div className="info shrink-0">
                         <h1>
                             {!isFetching && !error && board?.name
                                 ? board?.name
                                 : '...'}
                         </h1>
                     </div>
-                    {/*<div className="flex flex-row justify-center items-center h-full mx-[15px] my-0">*/}
-                    {/*    {[*/}
-                    {/*        {*/}
-                    {/*            name: 'List',*/}
-                    {/*            icon: <ListIcon className="h-5 w-5 mr-2" />,*/}
-                    {/*            active: true*/}
-                    {/*        },*/}
-                    {/*        {*/}
-                    {/*            name: 'Bugs',*/}
-                    {/*            icon: <ListIcon className="h-5 w-5 mr-2" />,*/}
-                    {/*            active: false*/}
-                    {/*        }*/}
-                    {/*    ].map(({ name, icon, active }) => (*/}
-                    {/*        <div*/}
-                    {/*            key={name}*/}
-                    {/*            className={`flex justify-center items-center h-[60px] box-border cursor-pointer border-y-[3px] border-y-[white] border-solid ${*/}
-                    {/*                active ? 'border-b-[#4169e1]' : ''*/}
-                    {/*            }`}*/}
-                    {/*        >*/}
-                    {/*            <div*/}
-                    {/*                className={`flex justify-center items-center h-[25px] px-3 py-0 border-l-[#e9ebf1] border-l border-solid ${*/}
-                    {/*                    active*/}
-                    {/*                        ? 'text-[#4169e1]'*/}
-                    {/*                        : 'text-[#7c828d]'*/}
-                    {/*                }`}*/}
-                    {/*            >*/}
-                    {/*                {icon}*/}
-                    {/*                <span*/}
-                    {/*                    className={`text-sm leading-[14px] font-medium ${*/}
-                    {/*                        active*/}
-                    {/*                            ? 'text-[#4169e1]'*/}
-                    {/*                            : 'text-[#7c828d]'*/}
-                    {/*                    }`}*/}
-                    {/*                >*/}
-                    {/*                    {name}*/}
-                    {/*                </span>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    ))}*/}
-                    {/*</div>*/}
+                    <div className="flex flex-row min-w-0 justify-center items-center h-full mx-[15px] my-0">
+                        <div className="flex min-w-0 flex-row overflow-auto">
+                            {!isFetching &&
+                                !error &&
+                                board?.views.map(({ name, id, _id }) => (
+                                    <ViewNavItem
+                                        key={_id}
+                                        boardId={boardId}
+                                        _id={_id}
+                                        id={id}
+                                        name={name}
+                                        handleViewClick={handleViewClick}
+                                        active={id === params.view}
+                                    />
+                                ))}
+
+                            <NewViewMenu boardId={boardId} />
+                        </div>
+                    </div>
                 </div>
                 <div className="pr-4">
                     <button
@@ -113,9 +111,10 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     </button>
                 </div>
 
-                {board && (
+                {view && (
                     <ShareDialog
-                        board={board}
+                        boardId={boardId}
+                        view={view}
                         open={shareDialogOpen}
                         handleClose={toggleShareDialogOpen}
                     />
@@ -142,7 +141,9 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                     {/*</div>*/}
                 </div>
                 <div className="task-filter">
-                    {board && <FilterMenu boardId={boardId} />}
+                    {board && view && (
+                        <FilterMenu view={view} boardId={boardId} />
+                    )}
                     <div
                         className={`group-by ${
                             groupBy() ? 'bg-[#eaedfb] text-[#4169e1]' : ''
@@ -167,6 +168,7 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
             </div>
 
             <GroupByPopover
+                view={view}
                 board={board}
                 groupByOpen={groupByOpen}
                 setGroupByOpen={setGroupByOpen}

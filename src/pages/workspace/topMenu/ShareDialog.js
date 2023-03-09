@@ -5,13 +5,17 @@ import styles from '../../../styles/ShareDialog.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useSetSharingMutation } from '../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
-function ShareDialog({ handleClose, open, board }) {
+function ShareDialog({ handleClose, open, boardId, view }) {
+    const params = useParams()
     const [setSharing] = useSetSharingMutation()
 
     const toggleShare = (e, share) => {
         setSharing({
-            boardId: board._id,
+            viewShortId: params.view,
+            viewId: view._id,
+            boardId,
             share
         })
     }
@@ -30,14 +34,14 @@ function ShareDialog({ handleClose, open, board }) {
                 <div className={styles.sharing}>
                     <p>Link sharing</p>
                     <Switch
-                        checked={board.sharing}
+                        checked={view.sharing}
                         onChange={toggleShare}
                         color="primary"
                         name="checkedB"
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                 </div>
-                {board.sharing && (
+                {view.sharing && (
                     <div className={styles.shareInfo}>
                         <div>
                             <FontAwesomeIcon icon={solid('link')} />
@@ -46,7 +50,7 @@ function ShareDialog({ handleClose, open, board }) {
                         <input
                             type="text"
                             className="text-sm"
-                            value={`${window.location.origin}/shared/board/${board._id}`}
+                            value={`${window.location.origin}/shared/view/${view._id}`}
                             onClick={copy}
                             readOnly
                         />

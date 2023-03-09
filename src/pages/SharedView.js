@@ -2,16 +2,12 @@ import { Link, useParams } from 'react-router-dom'
 import styles from '../styles/SharedBoard.module.scss'
 import { CircularProgress } from '@mui/material'
 import BoardView from './workspace/view/board/BoardView'
-import { useFetchSharedBoardQuery } from '../modules/services/sharedContentSlice'
+import { useFetchSharedViewQuery } from '../modules/services/sharedContentSlice'
 import { useCallback, useRef, useState } from 'react'
 
-function SharedBoard() {
-    const { boardId } = useParams()
-    const {
-        data: board,
-        isError,
-        isLoading
-    } = useFetchSharedBoardQuery(boardId)
+function SharedView() {
+    const { viewId } = useParams()
+    const { data: board, isError, isLoading } = useFetchSharedViewQuery(viewId)
     const viewContainerRef = useRef(null)
     const [bla, setBla] = useState(false)
     const setViewContainerRef = useCallback(node => {
@@ -50,6 +46,7 @@ function SharedBoard() {
         )
     }
 
+    const view = board?.views.find(x => x._id === viewId)
     return (
         <div
             className="bg-[#eee] overflow-auto h-[100vh]"
@@ -61,6 +58,7 @@ function SharedBoard() {
                     hasPerms={hasPerms}
                     board={board}
                     members={board.workspace.members}
+                    view={view}
                     sidebarOpen={false}
                     toggleSideBar={() => {}}
                 />
@@ -69,4 +67,4 @@ function SharedBoard() {
     )
 }
 
-export default SharedBoard
+export default SharedView

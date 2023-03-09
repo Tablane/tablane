@@ -13,8 +13,10 @@ import styles from '../../../../../../styles/TaskPopover.module.scss'
 import { useDeleteTaskMutation } from '../../../../../../modules/services/boardSlice.ts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useParams } from 'react-router-dom'
 
 function TaskPopover(props) {
+    const params = useParams()
     const [deleteTask] = useDeleteTaskMutation()
     const [deleteDialog, setDeleteDialog] = useState(false)
     const { boardId, taskId } = props
@@ -28,6 +30,7 @@ function TaskPopover(props) {
     const handleDelete = () => {
         setDeleteDialog(false)
         deleteTask({
+            viewShortId: params.view,
             boardId,
             taskId
         })

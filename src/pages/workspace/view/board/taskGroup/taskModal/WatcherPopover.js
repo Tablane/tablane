@@ -25,9 +25,19 @@ function WatcherPopover({ task, anchor, setAnchor, boardId }) {
 
     const handleClick = (user, isWatcher) => {
         if (isWatcher) {
-            removeWatcher({ task: task, user: user, boardId })
+            removeWatcher({
+                viewShortId: params.view,
+                task: task,
+                user: user,
+                boardId
+            })
         } else {
-            addWatcher({ task: task, user: user, boardId })
+            addWatcher({
+                viewShortId: params.view,
+                task: task,
+                user: user,
+                boardId
+            })
         }
     }
 

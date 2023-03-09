@@ -40,10 +40,11 @@ interface Props {
     taskGroupId: string
     members: Member[]
     groupedTasks: Label[]
+    viewShortId: string
 }
 
 function TaskGroup(props: Props, viewContainerRef) {
-    const { hasPerms, tasks, boardId, groupBy, attributes } = props
+    const { hasPerms, tasks, boardId, groupBy, attributes, viewShortId } = props
     const [collapsed, setCollapsed] = useState(false)
     const [activeItem, setActiveItem] = useState<null | FlatTask>(null)
     const [collapsedItems, setCollapsedItems] = useState([])
@@ -179,6 +180,7 @@ function TaskGroup(props: Props, viewContainerRef) {
             const sortedTasks = arrayMove(clonedTasks, activeIndex, overIndex)
 
             sortTask({
+                viewShortId,
                 newItems: flatten(buildTree(sortedTasks)),
                 boardId,
                 taskId: clonedTasks[activeIndex]._id,
@@ -357,6 +359,7 @@ function TaskGroup(props: Props, viewContainerRef) {
                                     totalCount={flattenedTasks.length}
                                     itemContent={(i, task) => (
                                         <Task
+                                            viewShortId={viewShortId}
                                             handleCollapse={handleCollapse}
                                             groupedTasks={props.groupedTasks}
                                             hasPerms={hasPerms}
@@ -389,6 +392,7 @@ function TaskGroup(props: Props, viewContainerRef) {
                                     >
                                         {Boolean(activeItem) && (
                                             <Task
+                                                viewShortId={viewShortId}
                                                 handleCollapse={handleCollapse}
                                                 groupedTasks={
                                                     props.groupedTasks

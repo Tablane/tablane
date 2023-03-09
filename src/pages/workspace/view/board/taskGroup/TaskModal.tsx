@@ -31,7 +31,10 @@ interface Props {
 function TaskModal({ task, boardId, hasPerms, members }: Props) {
     const navigate = useNavigate()
     const params = useParams()
-    const { data: board } = useFetchBoardQuery(boardId)
+    const { data: board } = useFetchBoardQuery({
+        boardId,
+        viewShortId: params.view
+    })
     const { data: user } = useFetchUserQuery()
     const [name, changeName] = useInputState(task.name)
     const [anchor, setAnchor] = useState(null)
@@ -44,7 +47,9 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur()
         }
-        navigate(`/${params.workspace}/${params.space}/${params.board}`)
+        navigate(
+            `/${params.workspace}/${params.space}/${params.board}/${params.view}`
+        )
     }
 
     useEffect(() => {
@@ -62,7 +67,8 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
             type: 'name',
             value: name,
             boardId,
-            taskId: task._id
+            taskId: task._id,
+            viewShortId: params.view
         })
     }
 
@@ -70,6 +76,7 @@ function TaskModal({ task, boardId, hasPerms, members }: Props) {
         if (editor.getJSON() === '') return
 
         await addTaskComment({
+            viewShortId: params.view,
             _id: ObjectId(),
             boardId,
             content: editor.getJSON(),

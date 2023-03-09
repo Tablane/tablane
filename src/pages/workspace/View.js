@@ -17,7 +17,10 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
             ?.boards.find(x => x.name === board)?._id
     }, [params.space, params.board, workspace?.spaces, workspace])
     const boardId = findBoardId()
-    const { isFetching, error } = useFetchBoardQuery(boardId)
+    const { isFetching, error } = useFetchBoardQuery({
+        boardId,
+        viewShortId: params.view
+    })
     const viewContainerRef = useRef(null)
     const [bla, setBla] = useState(false)
     const setViewContainerRef = useCallback(node => {
@@ -41,20 +44,25 @@ function View({ level, view, sidebarOpen, toggleSideBar }) {
                         sideBarClosed={!sidebarOpen}
                     />
                     <div className="h-1 bg-backgroundGrey">
-                        {(isFetching || error) && <LinearProgress />}
+                        {(!params.view || isFetching || error) && (
+                            <LinearProgress />
+                        )}
                     </div>
                     <div
                         ref={setViewContainerRef}
                         className="flex-grow bg-backgroundGrey overflow-auto"
                     >
-                        {!isFetching && !error && viewContainerRef?.current && (
-                            <Board
-                                ref={viewContainerRef}
-                                boardId={boardId}
-                                sidebarOpen={sidebarOpen}
-                                toggleSideBar={toggleSideBar}
-                            />
-                        )}
+                        {params.view &&
+                            !isFetching &&
+                            !error &&
+                            viewContainerRef?.current && (
+                                <Board
+                                    ref={viewContainerRef}
+                                    boardId={boardId}
+                                    sidebarOpen={sidebarOpen}
+                                    toggleSideBar={toggleSideBar}
+                                />
+                            )}
                     </div>
                 </>
             )

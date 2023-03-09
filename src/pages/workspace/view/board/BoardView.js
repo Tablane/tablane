@@ -19,13 +19,15 @@ import { buildTree, flatten } from '../../../../utils/taskUtils.ts'
 import Fuse from 'fuse.js'
 import { useAtom } from 'jotai'
 import { searchAtom } from '../../../../utils/atoms.ts'
+import { useParams } from 'react-router-dom'
 
-function BoardView({ board, members, hasPerms }, viewContainerRef) {
+function BoardView({ board, members, view, hasPerms }, viewContainerRef) {
     const [sortAttribute] = useSortAttributeMutation()
     const [sortTask] = useSortTaskMutation()
     const [groupedTasks, setGroupedTasks] = useState([])
     const [collapsed, setCollapsed] = useState(true)
     const [search] = useAtom(searchAtom)
+    const params = useParams()
 
     const sensors = useSensors(
         useSensor(TouchSensor, {
@@ -40,8 +42,8 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
     )
 
     const groupTasks = useMemo(() => {
-        if (!board) return
-        if (!board.groupBy || board.groupBy === 'none') {
+        if (!view) return
+        if (!view.groupBy || view.groupBy === 'none') {
             const fuse = new Fuse(board.tasks, {
                 keys: ['name'],
                 shouldSort: false
@@ -53,10 +55,11 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
 
             return (
                 <TaskGroup
+                    viewShortId={params.view}
                     ref={viewContainerRef}
                     hasPerms={hasPerms}
                     boardId={board._id}
-                    groupBy={board?.groupBy}
+                    groupBy={view?.groupBy}
                     attributes={board.attributes}
                     members={members}
                     color={'rgb(196, 196, 196)'}
@@ -68,7 +71,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
         }
 
         const labels = _.cloneDeep(
-            board.attributes.find(attribute => attribute._id === board.groupBy)
+            board.attributes.find(attribute => attribute._id === view.groupBy)
                 .labels
         )
 
@@ -81,7 +84,7 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
 
         buildTree(board.tasks).map(task => {
             const value = task.options.find(
-                option => option.column === board.groupBy
+                option => option.column === view.groupBy
             )?.value
             const label = labels.find(label => label._id === value)
             if (value && label) label.tasks.push(task)
@@ -93,11 +96,12 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
 
         return labels.map(label => (
             <TaskGroup
+                viewShortId={params.view}
                 ref={viewContainerRef}
                 hasPerms={hasPerms}
                 groupedTasks={labels}
                 boardId={board._id}
-                groupBy={board?.groupBy}
+                groupBy={view?.groupBy}
                 attributes={board.attributes}
                 members={members}
                 color={label.color}
@@ -128,7 +132,9 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
             const sourceIndex = board.tasks.findIndex(
                 x => x._id.toString() === result.draggableId
             )
-            if (!(!board.groupBy || board.groupBy === 'none')) {
+
+            const view = board?.views.find(x => x.id === params?.view)
+            if (!(!view.groupBy || view.groupBy === 'none')) {
                 const destinationTask = groupedTasks.find(
                     group => group._id === result.destination.droppableId
                 ).tasks[result.destination.index]
@@ -154,7 +160,11 @@ function BoardView({ board, members, hasPerms }, viewContainerRef) {
                 boardId: board._id
             })
         } else if (/^attribute /gm.test(result.type)) {
-            sortAttribute({ result, boardId: board._id })
+            sortAttribute({
+                viewShortId: params.view,
+                result,
+                boardId: board._id
+            })
         }
     }
 

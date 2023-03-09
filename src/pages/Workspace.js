@@ -54,7 +54,18 @@ function Workspace(props) {
                         }
                     />
                     <Route
-                        path="/:space/:board/:taskId"
+                        path="/:space/:board/:view"
+                        element={
+                            <View
+                                view="list"
+                                level="list"
+                                sidebarOpen={sidebarOpen}
+                                toggleSideBar={toggleSideBar}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/:space/:board/:view/:taskId"
                         element={
                             <View
                                 view="list"

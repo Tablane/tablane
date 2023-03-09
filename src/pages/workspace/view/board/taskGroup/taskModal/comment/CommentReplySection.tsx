@@ -4,6 +4,7 @@ import Reply from './commentReplySection/Reply.tsx'
 import { useFetchUserQuery } from '../../../../../../../modules/services/userSlice'
 import { ObjectId } from '../../../../../../../utils'
 import { ReplyType } from '../../../../../../../types/Board'
+import { useParams } from 'react-router-dom'
 
 interface Props {
     taskId: string
@@ -15,9 +16,11 @@ interface Props {
 function CommentReplySection({ taskId, commentId, replies, boardId }: Props) {
     const { data: user } = useFetchUserQuery()
     const [addReply] = useAddReplyMutation()
+    const params = useParams()
 
     const handleAddReply = editor => {
         addReply({
+            viewShortId: params.view,
             _id: ObjectId(),
             boardId,
             taskId,

@@ -354,7 +354,10 @@ function SideBar(props) {
                                                             )}/${board.name.replaceAll(
                                                                 ' ',
                                                                 '-'
-                                                            )}`}
+                                                            )}/${
+                                                                board.views[0]
+                                                                    .id
+                                                            }`}
                                                         >
                                                             <div> </div>
                                                             {board._id ===

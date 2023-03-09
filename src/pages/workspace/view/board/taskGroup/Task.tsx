@@ -26,6 +26,7 @@ interface Props {
     groupedTasks: Label[]
     taskGroupId: string
     index: number
+    viewShortId: string
 }
 
 function Task({
@@ -38,7 +39,8 @@ function Task({
     handleCollapse,
     groupedTasks,
     taskGroupId,
-    index
+    index,
+    viewShortId
 }: Props) {
     const [anchor, setAnchor] = useState(null)
     const navigate = useNavigate()
@@ -104,6 +106,7 @@ function Task({
         setTaskEditing(false)
         if (task.name === taskName) return
         editTaskField({
+            viewShortId: viewShortId,
             type: 'name',
             value: taskName,
             boardId,

@@ -8,6 +8,7 @@ import {
     useFetchBoardQuery,
     useSetFiltersMutation
 } from '../../../../modules/services/boardSlice.ts'
+import { useParams } from 'react-router-dom'
 
 const operations = {
     status: ['Is', 'Is not', 'Is set', 'Is not set'],
@@ -15,8 +16,12 @@ const operations = {
     text: ['Contains', 'Does not contain', 'Is set', 'Is not set']
 }
 
-export default function FilterMenu({ boardId }) {
-    const { data: board } = useFetchBoardQuery(boardId)
+export default function FilterMenu({ boardId, view }) {
+    const params = useParams()
+    const { data: board } = useFetchBoardQuery({
+        boardId,
+        viewShortId: params?.view
+    })
     const [setFilters] = useSetFiltersMutation()
     const [filters, setFiltersState] = useState([])
 
@@ -81,22 +86,23 @@ export default function FilterMenu({ boardId }) {
     }
 
     useEffect(() => {
-        if (board?.filters) {
-            setFiltersState(board.filters)
+        if (view?.filters) {
+            setFiltersState(view.filters)
         }
-    }, [board.filters])
+    }, [view.filters])
 
     const handleClose = open => {
-        if (filters === board.filters) return
+        if (filters === view.filters) return
         if (!open) {
             setFilters({
-                boardId,
+                viewId: view._id,
                 filters
             })
         }
     }
 
     const used = filters.length >= 1
+    if (!board) return <span></span>
     return (
         <Popover.Root onOpenChange={handleClose}>
             <Popover.Trigger asChild>

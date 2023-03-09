@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { Menu, Transition } from '@headlessui/react'
 import { Attribute, Label, FlatTask } from '../../../../../../types/Board'
+import { useParams } from 'react-router-dom'
 
 interface Props {
     hasPerms: (string) => boolean
@@ -32,6 +33,7 @@ function TaskColumnPopover({
     const [editAttributeLabels] = useEditAttributeLabelsMutation()
     const [clearStatusTask] = useClearStatusTaskMutation()
     const [editTaskField] = useEditTaskFieldMutation()
+    const params = useParams()
 
     const [labelsEditing, setLabelsEditing] = useState(false)
 
@@ -43,6 +45,7 @@ function TaskColumnPopover({
     const toggleEdit = async () => {
         if (labelsEditing) {
             editAttributeLabels({
+                viewShortId: params.view,
                 boardId,
                 name: attribute.name,
                 labels: editingLabels
@@ -111,6 +114,7 @@ function TaskColumnPopover({
 
         editTaskField({
             boardId,
+            viewShortId: params.view,
             taskId: task._id,
             column: attribute._id,
             value: id._id,
@@ -124,6 +128,7 @@ function TaskColumnPopover({
         if (labelsEditing) return
 
         clearStatusTask({
+            viewShortId: params.view,
             boardId,
             taskId: task._id,
             optionId: attribute._id

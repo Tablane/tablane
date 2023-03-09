@@ -2,6 +2,7 @@ import { useEditTaskFieldMutation } from '../../../../../../../modules/services/
 import { Attribute, Task } from '../../../../../../../types/Board'
 import useInputState from '../../../../../../../modules/hooks/useInputState.tsx'
 import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
 type Props = {
     attribute: Attribute
@@ -16,6 +17,7 @@ export default function TextColumn({
     boardId,
     hasPerms
 }: Props) {
+    const params = useParams()
     const [editTaskField] = useEditTaskFieldMutation()
 
     const handleTextEdit = async e => {
@@ -27,6 +29,7 @@ export default function TextColumn({
 
         editTaskField({
             column: e.target.name,
+            viewShortId: params.view,
             value: e.target.value,
             type: 'text',
             boardId,
