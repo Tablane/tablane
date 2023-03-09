@@ -96,8 +96,9 @@ function ViewTopMenu({ boardId, sideBarClosed, toggleSideBar }) {
                                         active={id === params.view}
                                     />
                                 ))}
+
+                            <NewViewMenu boardId={boardId} />
                         </div>
-                        <NewViewMenu boardId={boardId} />
                     </div>
                 </div>
                 <div className="pr-4">
