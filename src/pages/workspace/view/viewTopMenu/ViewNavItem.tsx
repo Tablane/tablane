@@ -129,7 +129,13 @@ export default function ({
                                                     className="h-8"
                                                     onClick={handleRenameClick}
                                                 >
-                                                    <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
+                                                    <div
+                                                        className={`w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer ${
+                                                            active
+                                                                ? 'bg-[#f3f4f6]'
+                                                                : 'text-gray-900'
+                                                        }`}
+                                                    >
                                                         <div className="text-[#656f7d] w-4 mr-2 flex content-center justify-center">
                                                             <FontAwesomeIcon
                                                                 icon={solid(
@@ -150,7 +156,13 @@ export default function ({
                                                     className="h-8"
                                                     onClick={handleDelete}
                                                 >
-                                                    <div className="w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer">
+                                                    <div
+                                                        className={`w-40 h-8 p-2 rounded-md mx-2 flex flex-row content-center hover:bg-gray-100 cursor-pointer ${
+                                                            active
+                                                                ? 'bg-[#f3f4f6]'
+                                                                : 'text-gray-900'
+                                                        }`}
+                                                    >
                                                         <div className="w-4 mr-2 flex content-center justify-center">
                                                             <FontAwesomeIcon
                                                                 icon={regular(
