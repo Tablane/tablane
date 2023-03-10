@@ -70,7 +70,10 @@ export const workspaceApi = api.injectEndpoints({
                     channel = pusher.subscribe(
                         'private-workspace-' + workspaceId
                     )
-                    channel.bind('updates', ({ event, body }) => {
+                    channel.bind('updates', ({ event, body, sessionId }) => {
+                        if (sessionId === pusher.sessionID.toString()) {
+                            return
+                        }
                         switch (event) {
                             case 'addBoard':
                                 updateCachedData(workspace =>
