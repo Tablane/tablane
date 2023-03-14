@@ -1,4 +1,4 @@
-import styles from '../../../../../../styles/TaskModal.module.scss'
+import styles from '../../../../../../styles/Comment.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from 'react'

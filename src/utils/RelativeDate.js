@@ -78,7 +78,7 @@ function RelativeDate({ timestamp, styled = true }) {
             <span
                 className={`${
                     styled
-                        ? 'flex-shrink-0 font-normal my-0 mr-0 ml-2 px-0 pb-0 pt-1 font-[11px] text-[#abaeb0]'
+                        ? 'flex-shrink-0 font-normal my-0 mr-0 ml-2 px-0 pb-0 pt-1 text-[11px] text-[#abaeb0]'
                         : ''
                 }`}
             >

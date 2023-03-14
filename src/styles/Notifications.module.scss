@@ -129,7 +129,7 @@
       & > .item {
         border-radius: 6px;
         box-sizing: border-box;
-        height: 58px;
+        min-height: 58px;
         padding: 15px 20px;
         display: flex;
         justify-content: space-between;

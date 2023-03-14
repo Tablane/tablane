@@ -1,0 +1,112 @@
+.comment {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .author {
+    width: 42px;
+    flex-shrink: 0;
+    margin-top: 10px;
+
+    > div {
+      background-color: rgb(65, 105, 225);
+      border-radius: 50px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 11px;
+      color: white;
+    }
+  }
+
+  .commentBody {
+    background-color: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid #dedede;
+
+    .date {
+      height: 21px;
+    }
+
+    .commentHeader {
+      padding: 10px 16px 0;
+      color: #abaeb0;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+
+      .actions {
+        display: none;
+        flex-direction: row;
+        max-height: 21px;
+
+        font-size: 11px;
+        font-weight: 400;
+        flex-shrink: 0;
+        margin: 0 0 0 10px;
+        padding: 4px 0 0;
+        color: #abaeb0;
+
+        > div {
+          margin-left: 14px;
+          cursor: pointer;
+
+          &:hover {
+            color: #4169e1;
+          }
+
+          span {
+            margin-left: 8px;
+          }
+
+          svg[data-icon="ellipsis"] {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    .commentContent {
+      padding: 0 16px 10px;
+    }
+
+    .commentFooter {
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      border-top: 1px solid #e9ebf0;
+
+      .like {
+        cursor: pointer;
+        font-size: 11px;
+        color: #7c828d;
+        font-weight: 500;
+      }
+
+      .reply {
+        cursor: pointer;
+        font-size: 11px;
+        color: #7c828d;
+        font-weight: 500;
+      }
+    }
+
+    .commentHeader[data-active="true"],
+    &:hover {
+      .date {
+        display: none;
+      }
+      .actions {
+        display: flex;
+      }
+    }
+  }
+}

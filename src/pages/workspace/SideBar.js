@@ -81,6 +81,7 @@ function SideBar(props) {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { data: user } = useFetchUserQuery()
+    const unseenCount = 1
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
@@ -491,24 +492,22 @@ function SideBar(props) {
                     </div>
                     <span className="text-[14px] text-[#53575e]">Home</span>
                 </NavLink>
-                {/*<NavLink*/}
-                {/*    className={({ isActive }) =>*/}
-                {/*        'notifications' + (isActive ? ' active' : '')*/}
-                {/*    }*/}
-                {/*    to={`/${workspace.id}/notifications`}*/}
-                {/*>*/}
-                {/*    <div className="icon text-[#53575e]">*/}
-                {/*        <FontAwesomeIcon icon={solid('bell')} />*/}
-                {/*        {user?.newNotifications > 0 && (*/}
-                {/*            <span className="indicator">*/}
-                {/*                {user?.newNotifications}*/}
-                {/*            </span>*/}
-                {/*        )}*/}
-                {/*    </div>*/}
-                {/*    <span className="text-[14px] text-[#53575e]">*/}
-                {/*        Notifications*/}
-                {/*    </span>*/}
-                {/*</NavLink>*/}
+                <NavLink
+                    className={({ isActive }) =>
+                        'notifications' + (isActive ? ' active' : '')
+                    }
+                    to={`/${workspace.id}/notifications`}
+                >
+                    <div className="icon text-[#53575e]">
+                        <FontAwesomeIcon icon={solid('bell')} />
+                        {unseenCount > 0 && (
+                            <span className="indicator">{unseenCount}</span>
+                        )}
+                    </div>
+                    <span className="text-[14px] text-[#53575e]">
+                        Notifications
+                    </span>
+                </NavLink>
             </div>
             <div className="boards">
                 <div onClick={toggleSpaces} className="section-name">
