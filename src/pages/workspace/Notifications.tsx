@@ -10,6 +10,7 @@ import {
     useUnclearNotificationMutation
 } from '../../modules/services/notificationSlice'
 import Notification from './notifications/Notification.tsx'
+import { Notification as NotificationType } from '../../types/Notification.d.ts'
 
 function Notifications(props) {
     const [clearNotification] = useClearNotificationMutation()
@@ -21,7 +22,7 @@ function Notifications(props) {
         workspaceId: workspace._id,
         condition
     })
-    const notifications = data?.notifications
+    const notifications: NotificationType[] = data?.notifications
 
     const handleClick = taskId => {
         if (!condition.cleared) {
@@ -42,79 +43,6 @@ function Notifications(props) {
     const updateCondition = options => {
         setCondition({ ...condition, ...options })
     }
-
-    const notifications_example = [
-        {
-            _id: '123412341234',
-            task: {
-                name: 'a',
-                _id: '64105b9cad4e504677fea964',
-                board: {
-                    _id: '640ee59d3141294082f5705f',
-                    name: 'test',
-                    space: {
-                        _id: '63f8f559107c89bcf8fcb6fb',
-                        name: 'test'
-                    }
-                }
-            },
-            changes: [
-                {
-                    timestamp: 1678790815414,
-                    user: { username: 'game' },
-                    change_type: 'changed status',
-                    payload: {
-                        from: { text: 'working on it', color: '#3f8dcc' },
-                        to: { text: 'done', color: '#83be31' }
-                    }
-                },
-                {
-                    timestamp: 1678790811414,
-                    user: { username: 'game' },
-                    change_type: 'changed name',
-                    payload: {
-                        from: { text: 'abc' },
-                        to: { text: 'a' }
-                    }
-                }
-            ]
-        },
-        {
-            _id: '123412341234',
-            task: {
-                name: 'a',
-                _id: '64105b9cad4e504677fea964',
-                board: {
-                    _id: '640ee59d3141294082f5705f',
-                    name: 'test',
-                    space: {
-                        _id: '63f8f559107c89bcf8fcb6fb',
-                        name: 'test'
-                    }
-                }
-            },
-            changes: [
-                {
-                    timestamp: 1678790815414,
-                    user: { username: 'game' },
-                    change_type: 'changed status',
-                    payload: {
-                        from: { text: 'working on it', color: '#3f8dcc' },
-                        to: { text: 'done', color: '#83be31' }
-                    }
-                },
-                {
-                    timestamp: 1678790811414,
-                    user: { username: 'game' },
-                    change_type: 'changed name',
-                    payload: {
-                        from: { text: 'abc' },
-                        to: { text: 'a' }
-                    }
-                }
-            ]
-        }
-    ]
 
     return (
         <div className={styles.wrapper}>
@@ -140,13 +68,13 @@ function Notifications(props) {
                                     <span>Please try again.</span>
                                 </div>
                             )}
-                            {!error && notifications?.length === 0 && (
+                            {!error && !(notifications?.length > 0) && (
                                 <p>You have no unread notifications</p>
                             )}
                             {!error &&
-                                notifications?.map(notification => (
+                                notifications?.map((notification, i) => (
                                     <Notification
-                                        key={notification._id}
+                                        key={i}
                                         notification={notification}
                                         condition={condition}
                                         handleClick={handleClick}

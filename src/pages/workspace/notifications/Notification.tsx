@@ -6,8 +6,19 @@ import RelativeDate from '../../../utils/RelativeDate'
 import styles from '../../../styles/Notifications.module.scss'
 import { diffWords } from 'diff'
 import CommentChange from './notification/CommentChange.tsx'
+import { Notification as NotificationType } from '../../../types/Notification'
 
-export default function Notification({ notification, handleClick, condition }) {
+interface Props {
+    notification: NotificationType
+    handleClick: (taskId: string) => void
+    condition: { cleared: boolean }
+}
+
+export default function Notification({
+    notification,
+    handleClick,
+    condition
+}: Props) {
     const params = useParams()
     const board = notification.task.board
     const space = board.space
@@ -127,26 +138,27 @@ export default function Notification({ notification, handleClick, condition }) {
                                         <span
                                             style={{
                                                 backgroundColor:
-                                                    change.from.color
+                                                    change.payload.from.color
                                             }}
                                         >
-                                            {change.from.text}
+                                            {change.payload.from.text}
                                         </span>
                                         <span>to</span>
                                         <span
                                             style={{
-                                                backgroundColor: change.to.color
+                                                backgroundColor:
+                                                    change.payload.to.color
                                             }}
                                         >
-                                            {change.to.text}
+                                            {change.payload.to.text}
                                         </span>
                                     </div>
                                 )}
                                 {change.change_type === 'changed name' && (
                                     <div className="flex items-center text-[#2a2e34]">
                                         {getDiff(
-                                            change.from.text,
-                                            change.to.text
+                                            change.payload.from.text,
+                                            change.payload.to.text
                                         )}
                                     </div>
                                 )}
