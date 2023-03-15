@@ -1,5 +1,6 @@
 import { api } from './api'
 import handleQueryError from '../../utils/handleQueryError'
+import { current } from 'immer'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -10,6 +11,7 @@ export const notificationApi = api.injectEndpoints({
                 method: 'POST',
                 body: { condition }
             }),
+            keepUnusedDataFor: 0,
             providesTags: ['Notifications']
         }),
         clearNotification: builder.mutation({
@@ -18,7 +20,6 @@ export const notificationApi = api.injectEndpoints({
                 method: 'DELETE',
                 body: { condition }
             }),
-            invalidatesTags: ['Notifications'],
             async onQueryStarted(
                 { taskId, workspaceId, condition },
                 { dispatch, queryFulfilled }
@@ -28,9 +29,12 @@ export const notificationApi = api.injectEndpoints({
                         'fetchNotifications',
                         { workspaceId, condition },
                         notifications => {
-                            return notifications.filter(
-                                x => x.task._id !== taskId
-                            )
+                            return {
+                                notifications:
+                                    notifications.notifications.filter(
+                                        x => x.task._id !== taskId
+                                    )
+                            }
                         }
                     )
                 )
@@ -47,7 +51,6 @@ export const notificationApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: { condition }
             }),
-            invalidatesTags: ['Notifications'],
             async onQueryStarted(
                 { taskId, workspaceId, condition },
                 { dispatch, queryFulfilled }
@@ -57,9 +60,12 @@ export const notificationApi = api.injectEndpoints({
                         'fetchNotifications',
                         { workspaceId, condition },
                         notifications => {
-                            return notifications.filter(
-                                x => x.task._id !== taskId
-                            )
+                            return {
+                                notifications:
+                                    notifications.notifications.filter(
+                                        x => x.task._id !== taskId
+                                    )
+                            }
                         }
                     )
                 )
