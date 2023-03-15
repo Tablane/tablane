@@ -17,14 +17,11 @@ function Notifications(props) {
     const [unclearNotification] = useUnclearNotificationMutation()
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
-    const {
-        data: notificationss,
-        isFetching,
-        error
-    } = useFetchNotificationsQuery({
+    const { data, isFetching, error } = useFetchNotificationsQuery({
         workspaceId: workspace._id,
         condition
     })
+    const notifications = data?.notifications
 
     const handleClick = taskId => {
         if (!condition.cleared) {
@@ -46,7 +43,7 @@ function Notifications(props) {
         setCondition({ ...condition, ...options })
     }
 
-    const notifications = [
+    const notifications_example = [
         {
             _id: '123412341234',
             task: {
@@ -66,45 +63,53 @@ function Notifications(props) {
                     timestamp: 1678790815414,
                     user: { username: 'game' },
                     change_type: 'changed status',
-                    from: { text: 'working on it', color: '#3f8dcc' },
-                    to: { text: 'done', color: '#83be31' }
+                    payload: {
+                        from: { text: 'working on it', color: '#3f8dcc' },
+                        to: { text: 'done', color: '#83be31' }
+                    }
                 },
                 {
                     timestamp: 1678790811414,
                     user: { username: 'game' },
                     change_type: 'changed name',
-                    from: { text: 'abc' },
-                    to: { text: 'a' }
+                    payload: {
+                        from: { text: 'abc' },
+                        to: { text: 'a' }
+                    }
+                }
+            ]
+        },
+        {
+            _id: '123412341234',
+            task: {
+                name: 'a',
+                _id: '64105b9cad4e504677fea964',
+                board: {
+                    _id: '640ee59d3141294082f5705f',
+                    name: 'test',
+                    space: {
+                        _id: '63f8f559107c89bcf8fcb6fb',
+                        name: 'test'
+                    }
+                }
+            },
+            changes: [
+                {
+                    timestamp: 1678790815414,
+                    user: { username: 'game' },
+                    change_type: 'changed status',
+                    payload: {
+                        from: { text: 'working on it', color: '#3f8dcc' },
+                        to: { text: 'done', color: '#83be31' }
+                    }
                 },
                 {
-                    timestamp: 1678790811413,
+                    timestamp: 1678790811414,
                     user: { username: 'game' },
-                    change_type: 'new comment',
+                    change_type: 'changed name',
                     payload: {
-                        _id: '64105dcfdc90529e4c388b14',
-                        type: 'comment',
-                        author: {
-                            _id: '63efc31fb97957af5590ac2f',
-                            username: 'game'
-                        },
-                        content: {
-                            type: 'doc',
-                            content: [
-                                {
-                                    type: 'paragraph',
-                                    content: [
-                                        {
-                                            type: 'text',
-                                            text: 'this is a sample comment'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        timestamp: '1678794191092',
-                        task: '64105b9cad4e504677fea964',
-                        replies: [],
-                        __v: 0
+                        from: { text: 'abc' },
+                        to: { text: 'a' }
                     }
                 }
             ]
