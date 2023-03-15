@@ -126,7 +126,7 @@ export default function Notification({
                         <div>
                             <div className="flex items-center justify-center">
                                 <span className={styles.user}>
-                                    {change.user.username}
+                                    {change.actor.username}
                                 </span>
                                 <div className={styles.type}>
                                     <span>

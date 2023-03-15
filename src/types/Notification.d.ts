@@ -5,7 +5,7 @@ export interface Notification {
 
 export interface Change {
     timestamp: any
-    user: User
+    actor: User
     change_type: string
     payload: any
 }
