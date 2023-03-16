@@ -6,7 +6,7 @@ import styles from '../../../../styles/Comment.module.scss'
 
 export default function CommentChange({ boardId, taskId, change }) {
     const [replySectionOpen, setReplySectionOpen] = useState(false)
-    const comment = change.payload
+    const comment = change.referencedComment
 
     return (
         <div
@@ -15,7 +15,10 @@ export default function CommentChange({ boardId, taskId, change }) {
         >
             <div className="w-full text-sm leading-[13px]">
                 <div className="flex flex-row justify-between mb-4">
-                    <span className="text-[13px]">game commented</span>
+                    <div className="text-[13px]">
+                        <span>game </span>
+                        <span className="text-[#abaeb0]">commented:</span>
+                    </div>
                     <RelativeDate timestamp={comment.timestamp} />
                 </div>
                 <div className={styles.comment}>
@@ -50,7 +53,11 @@ export default function CommentChange({ boardId, taskId, change }) {
                             <div className={styles.commentFooter}>
                                 <div className={styles.like}>{/*Like*/}</div>
                                 <div
-                                    className={styles.reply}
+                                    className={`text-[#7c828d] font-semibold px-[6px] py-1 rounded-[4px] cursor-pointer text-[11px] ${
+                                        comment.replies.length >= 1
+                                            ? 'bg-[#4169e1] text-white'
+                                            : null
+                                    }`}
                                     onClick={() => setReplySectionOpen(true)}
                                 >
                                     {comment.replies.length === 0 && 'Reply'}

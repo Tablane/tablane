@@ -58,7 +58,7 @@ function Comment({ comment, taskId, boardId }: Props) {
                     <div>
                         <div className={styles.commentHeader}>
                             <p>
-                                <span className={styles.authorSpan}>
+                                <span className="text-[rgb(65,105,225)]">
                                     {comment.author.username}
                                 </span>
                                 <span> commented</span>
@@ -109,7 +109,11 @@ function Comment({ comment, taskId, boardId }: Props) {
                             <div className={styles.commentFooter}>
                                 <div className={styles.like}>{/*Like*/}</div>
                                 <div
-                                    className={styles.reply}
+                                    className={`text-[#7c828d] font-semibold px-[6px] py-1 rounded-[4px] cursor-pointer text-[11px] ${
+                                        comment.replies.length >= 1
+                                            ? 'bg-[#4169e1] text-white'
+                                            : null
+                                    }`}
                                     onClick={() => setReplySectionOpen(true)}
                                 >
                                     {comment.replies.length === 0 && 'Reply'}

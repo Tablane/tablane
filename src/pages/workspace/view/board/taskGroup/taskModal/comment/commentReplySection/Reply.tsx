@@ -1,4 +1,4 @@
-import styles from '../../../../../../../../styles/TaskModal.module.scss'
+import styles from '../../../../../../../../styles/Comment.module.scss'
 import Editor from '../../../../../../../../utils/Editor.tsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -56,8 +56,8 @@ function Reply({ commentId, reply, taskId, boardId }: Props) {
                 ) : (
                     <div>
                         <div className={styles.commentHeader}>
-                            <p>
-                                <span className={styles.authorSpan}>
+                            <p className="text-[13px]">
+                                <span className="text-[rgb(65,105,225)]">
                                     {reply.author.username}
                                 </span>
                                 <span> commented</span>
@@ -65,7 +65,7 @@ function Reply({ commentId, reply, taskId, boardId }: Props) {
                             <p className={styles.date}>
                                 <RelativeDate timestamp={reply.timestamp} />
                             </p>
-                            <div className={styles.actions}>
+                            <div className={styles.actions + ' min-h-[21px]'}>
                                 <div onClick={handleEditingClick}>
                                     <FontAwesomeIcon icon={solid('pen')} />
                                     <span>Edit</span>
