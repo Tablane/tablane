@@ -10,7 +10,7 @@ export default function CommentChange({ boardId, taskId, change }) {
 
     return (
         <div
-            className="bg-[#fbfbfb] h-fit box-border min-h-[58px] flex justify-between items-center px-5 py-[15px] rounded-md"
+            className="bg-[#fbfbfb] h-fit box-border min-h-[58px] flex justify-between items-center px-5 pt-[15px] rounded-md"
             key={change.timestamp}
         >
             <div className="w-full text-sm leading-[13px]">
