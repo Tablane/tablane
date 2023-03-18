@@ -7,21 +7,49 @@ import styles from '../../../styles/Notifications.module.scss'
 import { diffWords } from 'diff'
 import CommentChange from './notification/CommentChange.tsx'
 import { Notification as NotificationType } from '../../../types/Notification'
+import {
+    useAddNotificationWatcherMutation,
+    useRemoveNotificationWatcherMutation
+} from '../../../modules/services/notificationSlice'
+import { useFetchUserQuery } from '../../../modules/services/userSlice'
 
 interface Props {
     notification: NotificationType
     handleClick: (taskId: string) => void
     condition: { cleared: boolean }
+    workspaceId: string
 }
 
 export default function Notification({
     notification,
     handleClick,
-    condition
+    condition,
+    workspaceId
 }: Props) {
+    const { data: user } = useFetchUserQuery()
+    const [addWatcher] = useAddNotificationWatcherMutation()
+    const [removeWatcher] = useRemoveNotificationWatcherMutation()
     const params = useParams()
     const board = notification.task.board
     const space = board.space
+
+    const handleWatcher = () => {
+        if (watching) {
+            removeWatcher({
+                taskId: notification.task._id,
+                userId: user._id,
+                workspaceId,
+                condition
+            })
+        } else {
+            addWatcher({
+                taskId: notification.task._id,
+                userId: user._id,
+                workspaceId,
+                condition
+            })
+        }
+    }
 
     const getDiff = (from, to) => {
         const groups = diffWords(from, to)
@@ -48,6 +76,9 @@ export default function Notification({
         return <span>{mappedNodes}</span>
     }
 
+    const watching = Boolean(
+        notification.task.watcher.find(x => x._id === user._id)
+    )
     return (
         <div className={styles.group} key={notification.task._id}>
             <div>
@@ -72,11 +103,16 @@ export default function Notification({
                 <div>
                     <Tooltip
                         disableInteractive
-                        title="Stop watching"
+                        title={
+                            watching
+                                ? 'Stop receiving notifications'
+                                : 'Watch to receive notifications'
+                        }
                         arrow
+                        className={watching ? 'text-[#4169e1]' : ''}
                         placement="top"
                     >
-                        <div className={styles.watch}>
+                        <div onClick={handleWatcher} className={styles.watch}>
                             <FontAwesomeIcon icon={regular('eye')} />
                         </div>
                     </Tooltip>

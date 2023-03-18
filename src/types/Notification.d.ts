@@ -24,9 +24,11 @@ export interface Board {
 export interface Task {
     name: string
     _id: string
+    watcher: User[]
     board: Board
 }
 
 export interface User {
+    _id: string
     username: string
 }

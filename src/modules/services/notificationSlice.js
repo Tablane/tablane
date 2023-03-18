@@ -75,6 +75,64 @@ export const notificationApi = api.injectEndpoints({
                     if (handleQueryError({ err })) patchResult.undo()
                 }
             }
+        }),
+        addNotificationWatcher: builder.mutation({
+            query: ({ taskId, userId }) => ({
+                url: `task/watcher/${taskId}`,
+                method: 'POST',
+                body: { userId }
+            }),
+            async onQueryStarted(
+                { taskId, workspaceId, condition, userId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    notificationApi.util.updateQueryData(
+                        'fetchNotifications',
+                        { workspaceId, condition },
+                        ({ notifications }) => {
+                            notifications
+                                .find(x => x.task._id === taskId)
+                                .task.watcher.push({ _id: userId })
+                        }
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
+                }
+            }
+        }),
+        removeNotificationWatcher: builder.mutation({
+            query: ({ taskId, userId }) => ({
+                url: `task/watcher/${taskId}`,
+                method: 'DELETE',
+                body: { userId }
+            }),
+            async onQueryStarted(
+                { taskId, workspaceId, condition, userId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    notificationApi.util.updateQueryData(
+                        'fetchNotifications',
+                        { workspaceId, condition },
+                        ({ notifications }) => {
+                            notifications.find(
+                                x => x.task._id === taskId
+                            ).task.watcher = notifications
+                                .find(x => x.task._id === taskId)
+                                .task.watcher.filter(x => x._id !== userId)
+                        }
+                    )
+                )
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    if (handleQueryError({ err })) patchResult.undo()
+                }
+            }
         })
     })
 })
@@ -82,5 +140,7 @@ export const notificationApi = api.injectEndpoints({
 export const {
     useFetchNotificationsQuery,
     useClearNotificationMutation,
-    useUnclearNotificationMutation
+    useUnclearNotificationMutation,
+    useAddNotificationWatcherMutation,
+    useRemoveNotificationWatcherMutation
 } = notificationApi

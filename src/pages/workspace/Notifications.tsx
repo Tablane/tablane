@@ -78,6 +78,7 @@ function Notifications(props) {
                                         notification={notification}
                                         condition={condition}
                                         handleClick={handleClick}
+                                        workspaceId={workspace._id}
                                     />
                                 ))}
                         </div>
