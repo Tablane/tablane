@@ -16,7 +16,7 @@ export default function CommentChange({ boardId, taskId, change }) {
             <div className="w-full text-sm leading-[13px]">
                 <div className="flex flex-row justify-between mb-4">
                     <div className="text-[13px]">
-                        <span>game </span>
+                        <span>{change.actor.username} </span>
                         <span className="text-[#abaeb0]">commented:</span>
                     </div>
                     <RelativeDate timestamp={comment.timestamp} />
