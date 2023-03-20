@@ -12,6 +12,7 @@ import {
     useRemoveNotificationWatcherMutation
 } from '../../../modules/services/notificationSlice'
 import { useFetchUserQuery } from '../../../modules/services/userSlice'
+import ReplyNotification from './notification/ReplyNotification.tsx'
 
 interface Props {
     notification: NotificationType
@@ -147,6 +148,16 @@ export default function Notification({
                 if (change.change_type === 'new comment') {
                     return (
                         <CommentChange
+                            key={change.timestamp}
+                            boardId={notification.task.board._id}
+                            taskId={notification.task._id}
+                            change={change}
+                        />
+                    )
+                }
+                if (change.change_type === 'new reply') {
+                    return (
+                        <ReplyNotification
                             key={change.timestamp}
                             boardId={notification.task.board._id}
                             taskId={notification.task._id}

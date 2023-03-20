@@ -1,6 +1,5 @@
 import { api } from './api'
 import handleQueryError from '../../utils/handleQueryError'
-import { current } from 'immer'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
