@@ -1,8 +1,9 @@
 import Editor from '../../../../utils/Editor.tsx'
 import RelativeDate from '../../../../utils/RelativeDate'
 
-export default function ReplyNotification({ boardId, taskId, change }) {
+export default function ReplyNotification({ actor, change }) {
     const comment = change.referencedComment
+    const thread = change.referencedComment.thread
 
     return (
         <div
@@ -23,14 +24,14 @@ export default function ReplyNotification({ boardId, taskId, change }) {
                                     singleLine={true}
                                     type="comment"
                                     readOnly={true}
-                                    content={comment.content}
+                                    content={thread.content}
                                 />
                             </div>
                         </div>
                         <div className="flex flex-row justify-between m-[20px]">
                             <div className="mt-[10px] shrink-0 w-[42px]">
                                 <div className="bg-[rgb(65,105,225)] w-[30px] h-[30px] flex justify-center items-center text-[11px] text-[white] rounded-[50px]">
-                                    {comment.author.username
+                                    {actor.username
                                         .substring(0, 2)
                                         .toUpperCase()}
                                 </div>
@@ -40,7 +41,7 @@ export default function ReplyNotification({ boardId, taskId, change }) {
                                     <div className="text-[#abaeb0] flex justify-between flex-row pt-2.5 pb-0 px-4">
                                         <p className="text-[13px]">
                                             <span className="text-[rgb(65,105,225)]">
-                                                {comment.author.username}
+                                                {actor.username}
                                             </span>
                                             <span> commented</span>
                                         </p>

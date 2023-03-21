@@ -158,9 +158,8 @@ export default function Notification({
                 if (change.change_type === 'new reply') {
                     return (
                         <ReplyNotification
+                            actor={change.actor}
                             key={change.timestamp}
-                            boardId={notification.task.board._id}
-                            taskId={notification.task._id}
                             change={change}
                         />
                     )
