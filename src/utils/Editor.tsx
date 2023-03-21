@@ -19,13 +19,15 @@ interface Props {
     saveComment: (any) => void
     readOnly: boolean
     cancelEditing?: () => void
+    singleLine?: boolean
 }
 function Editor({
     type,
     content = '',
     saveComment,
     readOnly = false,
-    cancelEditing
+    cancelEditing,
+    singleLine = false
 }: Props) {
     const getPlaceholder = x => {
         switch (x) {
@@ -41,7 +43,9 @@ function Editor({
             case 'description':
                 return `${styles.ProseMirror} ${styles.description}`
             case 'comment':
-                return `${styles.ProseMirror} ${styles.comment}`
+                return `${styles.ProseMirror} ${styles.comment} ${
+                    singleLine ? '!whitespace-nowrap' : ''
+                }`
             case 'comment-edit':
                 return `${styles.ProseMirror} ${styles.commendEdit}`
             default:

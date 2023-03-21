@@ -12,11 +12,19 @@ export default function ReplyNotification({ boardId, taskId, change }) {
             <div className="w-full text-sm leading-[13px]">
                 <div className="flex flex-row justify-between mb-5">
                     <div className="bg-white grow flex flex-col rounded-[10px] border border-solid border-[#dedede]">
-                        <div className="flex justify-between items-center h-10 px-4 py-0 border-t-[#e9ebf0] border-b border-solid">
+                        <div className="flex justify-start items-center h-10 px-4 py-0 border-t-[#e9ebf0] border-b border-solid">
                             <div className="text-[13px]">
                                 <span className="text-[#abaeb0]">
                                     Replied to thread:
                                 </span>
+                            </div>
+                            <div className="flex-1 w-0">
+                                <Editor
+                                    singleLine={true}
+                                    type="comment"
+                                    readOnly={true}
+                                    content={comment.content}
+                                />
                             </div>
                         </div>
                         <div className="flex flex-row justify-between m-[20px]">
