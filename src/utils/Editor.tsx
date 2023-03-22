@@ -44,7 +44,7 @@ function Editor({
                 return `${styles.ProseMirror} ${styles.description}`
             case 'comment':
                 return `${styles.ProseMirror} ${styles.comment} ${
-                    singleLine ? '!whitespace-nowrap' : ''
+                    singleLine ? '!whitespace-nowrap !border-none' : ''
                 }`
             case 'comment-edit':
                 return `${styles.ProseMirror} ${styles.commendEdit}`
