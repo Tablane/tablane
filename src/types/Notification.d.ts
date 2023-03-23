@@ -7,6 +7,8 @@ export interface Change {
     timestamp: any
     actor: User
     change_type: string
+    field_type: string
+    field_name: string
     payload: any
 }
 

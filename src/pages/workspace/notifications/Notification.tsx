@@ -175,11 +175,18 @@ export default function Notification({
                                     {change.actor.username}
                                 </span>
                                 <div className={styles.type}>
-                                    <span>
-                                        {change.change_type.toUpperCase()}
-                                    </span>
+                                    {change.change_type === 'changed field' ? (
+                                        <span>
+                                            {'CHANGED ' +
+                                                change.field_name.toUpperCase()}
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            {change.change_type.toUpperCase()}
+                                        </span>
+                                    )}
                                 </div>
-                                {change.change_type === 'changed status' && (
+                                {change.field_type === 'status' && (
                                     <div className={styles.change}>
                                         <span
                                             style={{
@@ -200,7 +207,8 @@ export default function Notification({
                                         </span>
                                     </div>
                                 )}
-                                {change.change_type === 'changed name' && (
+                                {(change.change_type === 'changed name' ||
+                                    change?.field_type === 'text') && (
                                     <div className="flex items-center text-[#2a2e34]">
                                         {getDiff(
                                             change.payload.from.text,
