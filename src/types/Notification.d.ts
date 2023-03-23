@@ -6,6 +6,7 @@ export interface Notification {
 export interface Change {
     timestamp: any
     actor: User
+    referencedUser: User
     change_type: string
     field_type: string
     field_name: string

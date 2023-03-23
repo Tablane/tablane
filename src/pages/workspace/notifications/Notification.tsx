@@ -175,16 +175,38 @@ export default function Notification({
                                     {change.actor.username}
                                 </span>
                                 <div className={styles.type}>
-                                    {change.change_type === 'changed field' ? (
+                                    {change.change_type === 'changed field' &&
+                                    ['status', 'text'].includes(
+                                        change?.field_type
+                                    ) ? (
                                         <span>
                                             {'CHANGED ' +
                                                 change.field_name.toUpperCase()}
                                         </span>
-                                    ) : (
+                                    ) : null}
+                                    {change.change_type === 'changed field' &&
+                                    ['people.removed'].includes(
+                                        change?.field_type
+                                    ) ? (
+                                        <span>
+                                            {'REMOVED ' +
+                                                change.field_name.toUpperCase()}
+                                        </span>
+                                    ) : null}
+                                    {change.change_type === 'changed field' &&
+                                    ['people.added'].includes(
+                                        change?.field_type
+                                    ) ? (
+                                        <span>
+                                            {'ADDED ' +
+                                                change.field_name.toUpperCase()}
+                                        </span>
+                                    ) : null}
+                                    {change.change_type !== 'changed field' ? (
                                         <span>
                                             {change.change_type.toUpperCase()}
                                         </span>
-                                    )}
+                                    ) : null}
                                 </div>
                                 {change.field_type === 'status' && (
                                     <div className={styles.change}>
@@ -204,6 +226,15 @@ export default function Notification({
                                             }}
                                         >
                                             {change.payload.to.text}
+                                        </span>
+                                    </div>
+                                )}
+                                {['people.added', 'people.removed'].includes(
+                                    change.field_type
+                                ) && (
+                                    <div>
+                                        <span>
+                                            {change.referencedUser.username}
                                         </span>
                                     </div>
                                 )}
