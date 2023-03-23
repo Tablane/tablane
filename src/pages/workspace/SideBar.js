@@ -81,7 +81,6 @@ function SideBar(props) {
     const params = useParams()
     const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { data: user } = useFetchUserQuery()
-    const unseenCount = 1
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
@@ -500,8 +499,10 @@ function SideBar(props) {
                 >
                     <div className="icon text-[#53575e]">
                         <FontAwesomeIcon icon={solid('bell')} />
-                        {unseenCount > 0 && (
-                            <span className="indicator">{unseenCount}</span>
+                        {user.unseenNotifications > 0 && (
+                            <span className="indicator">
+                                {user.unseenNotifications}
+                            </span>
                         )}
                     </div>
                     <span className="text-[14px] text-[#53575e]">
