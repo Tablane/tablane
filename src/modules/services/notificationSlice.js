@@ -1,5 +1,6 @@
 import { api } from './api'
 import handleQueryError from '../../utils/handleQueryError'
+import pusher from '../../pusher/pusher.ts'
 
 export const notificationApi = api.injectEndpoints({
     endpoints: builder => ({
@@ -10,8 +11,42 @@ export const notificationApi = api.injectEndpoints({
                 method: 'POST',
                 body: { condition }
             }),
+            refetchOnFocus: true,
             keepUnusedDataFor: 0,
             providesTags: ['Notifications']
+        }),
+        getUnseenCount: builder.query({
+            query: ({ workspaceId }) => ({
+                url: `notification/${workspaceId}/unseen`
+            }),
+            async onCacheEntryAdded(
+                { userId, workspaceId },
+                { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+            ) {
+                let channel
+                try {
+                    await cacheDataLoaded
+                    channel = pusher.subscribe('private-user-' + userId)
+                    channel.bind('notification-update-' + workspaceId, data => {
+                        if (data === 'add-one') {
+                            updateCachedData(notification => {
+                                notification.unseenCount =
+                                    notification.unseenCount + 1
+                            })
+                        } else if (data === 'reset') {
+                            updateCachedData(notification => {
+                                notification.unseenCount = 0
+                            })
+                        }
+                    })
+                } catch (err) {
+                    handleQueryError({ err })
+                }
+                await cacheEntryRemoved
+                channel.unbind()
+            },
+            keepUnusedDataFor: 5,
+            providesTags: ['NotificationUnseenCount']
         }),
         clearNotification: builder.mutation({
             query: ({ workspaceId, taskId, condition }) => ({
@@ -138,6 +173,7 @@ export const notificationApi = api.injectEndpoints({
 
 export const {
     useFetchNotificationsQuery,
+    useGetUnseenCountQuery,
     useClearNotificationMutation,
     useUnclearNotificationMutation,
     useAddNotificationWatcherMutation,

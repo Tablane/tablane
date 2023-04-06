@@ -28,9 +28,10 @@ import {
     useSortBoardMutation,
     useSortSpaceMutation
 } from '../../modules/services/workspaceSlice'
-import { useFetchUserQuery } from '../../modules/services/userSlice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useGetUnseenCountQuery } from '../../modules/services/notificationSlice'
+import { useFetchUserQuery } from '../../modules/services/userSlice'
 
 function SideBar(props) {
     const [addBoard] = useAddBoardMutation()
@@ -79,8 +80,12 @@ function SideBar(props) {
 
     // workspace
     const params = useParams()
-    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
     const { data: user } = useFetchUserQuery()
+    const { data: workspace } = useFetchWorkspaceQuery(params.workspace)
+    const { data: unseenCount } = useGetUnseenCountQuery({
+        workspaceId: workspace._id,
+        userId: user._id
+    })
 
     const boardClick = (space, board, e) => {
         e.preventDefault()
@@ -499,9 +504,9 @@ function SideBar(props) {
                 >
                     <div className="icon text-[#53575e]">
                         <FontAwesomeIcon icon={solid('bell')} />
-                        {user.unseenNotifications > 0 && (
+                        {unseenCount?.unseenCount > 0 && (
                             <span className="indicator">
-                                {user.unseenNotifications}
+                                {unseenCount.unseenCount}
                             </span>
                         )}
                     </div>
