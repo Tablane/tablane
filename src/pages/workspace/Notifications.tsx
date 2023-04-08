@@ -26,16 +26,24 @@ function Notifications(props) {
 
     const handleClick = taskId => {
         if (!condition.cleared) {
+            const changeIds = notifications
+                .find(x => x.task._id === taskId)
+                .changes.map(x => x._id)
             clearNotification({
                 workspaceId: workspace._id,
                 taskId,
-                condition
+                condition,
+                changeIds
             })
         } else if (condition.cleared) {
+            const changeIds = notifications
+                .find(x => x.task._id === taskId)
+                .changes.map(x => x._id)
             unclearNotification({
                 workspaceId: workspace._id,
                 taskId,
-                condition
+                condition,
+                changeIds
             })
         }
     }

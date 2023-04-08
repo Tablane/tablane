@@ -49,10 +49,10 @@ export const notificationApi = api.injectEndpoints({
             providesTags: ['NotificationUnseenCount']
         }),
         clearNotification: builder.mutation({
-            query: ({ workspaceId, taskId, condition }) => ({
-                url: `notification/${workspaceId}/${taskId}`,
+            query: ({ workspaceId, taskId, condition, changeIds }) => ({
+                url: `notification/${workspaceId}/${taskId}/changes`,
                 method: 'DELETE',
-                body: { condition }
+                body: { condition, changeIds }
             }),
             async onQueryStarted(
                 { taskId, workspaceId, condition },
@@ -80,10 +80,10 @@ export const notificationApi = api.injectEndpoints({
             }
         }),
         unclearNotification: builder.mutation({
-            query: ({ workspaceId, taskId, condition }) => ({
-                url: `notification/${workspaceId}/${taskId}`,
+            query: ({ workspaceId, taskId, condition, changeIds }) => ({
+                url: `notification/${workspaceId}/${taskId}/changes`,
                 method: 'PATCH',
-                body: { condition }
+                body: { condition, changeIds }
             }),
             async onQueryStarted(
                 { taskId, workspaceId, condition },
